@@ -14,6 +14,8 @@ sing-box / universal proxy toolchain for Android.
 
 [下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
+[Google Play](https://play.google.com/store/apps/details?id=moe.nb4a)
+
 ## 更改记录 & 发布频道 / Changelog & Telegram channel
 
 https://t.me/Matsuridayo
@@ -40,14 +42,14 @@ https://matsuridayo.github.io
 
 Please go to the project homepage to download plugins.
 
-### 订阅 / Subscription
+## 订阅 / Subscription
 
 * Raw: some widely used formats (like shadowsocks, clash and v2rayN)
 * 原始格式：一些广泛使用的格式（如 shadowsocks、clash 和 v2rayN）
-* [Open Online Config](https://github.com/Shadowsocks-NET/OpenOnlineConfig)
-* [Shadowsocks SIP008](https://shadowsocks.org/guide/sip008.html)
 
-### 捐助 / Donate
+## 捐助 / Donate
+
+您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠
 
 欢迎捐赠以支持项目开发。
 
@@ -58,3 +60,14 @@ USDT TRC20
 XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
+
+## Credits
+
+Core:
+- [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
+- [Matsuridayo/sing-box-extra](https://github.com/MatsuriDayo/sing-box-extra)
+
+Android GUI:
+- [shadowsocks/shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
+- [SagerNet/SagerNet](https://github.com/SagerNet/SagerNet)
+- [Matsuridayo/Matsuri](https://github.com/MatsuriDayo/Matsuri)
