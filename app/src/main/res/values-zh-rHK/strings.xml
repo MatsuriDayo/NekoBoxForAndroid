@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github">源碼</string>
+    <string name="app_version">版本</string>
+    <string name="version_x">版本 (%s)</string>
+    <string name="menu_about">關於</string>
+    <string name="telegram">Telegram 更新頻道</string>
+    <string name="app_desc">以 Kotlin 編寫的 Android 通用代理工具鏈。</string>
+    <string name="logcat_summary">超級有用啊wow</string>
+    <string name="group_update">更新</string>
+    <string name="theme">主題</string>
+    <string name="document">文件</string>
+    <string name="project">項目</string>
+    <string name="oss_licenses">開放源碼授權條款</string>
+    <string name="menu_group">分組</string>
+    <string name="group_name">分組名稱</string>
+    <string name="group_status_empty_subscription">尚未更新</string>
+    <string name="group_no_difference">%s: 沒有變化</string>
+    <string name="group_updated">%s: 更新了 %d 個代理</string>
+    <string name="group_added">已新增：
+\n%s</string>
+    <string name="group_changed">已更新：
+\n%s</string>
+    <string name="group_deleted">已移除：
+\n%s</string>
+    <string name="connection_test_testing">測試中……</string>
+    <string name="connection_test_available">連接成功: HTTPS 握手需時 %dms</string>
+    <string name="tls">使用 TLS</string>
+    <string name="server_address">伺服器</string>
+    <string name="server_port">伺服器端口</string>
+    <string name="username">用户名稱</string>
+    <string name="username_opt">用户名稱 （可選）</string>
+    <string name="key_opt">鑰匙（可選）</string>
+    <string name="password">密碼</string>
+    <string name="enc_method">加密方式</string>
+    <string name="protocol">協議</string>
+    <string name="route_opt_block_analysis">封鎖追蹤器</string>
+    <string name="domain_strategy">域名解析策略</string>
+    <string name="share_qr_nfc">二維碼</string>
+    <string name="plugin">插件</string>
+    <string name="action_download">下載</string>
+    <string name="install_from_fdroid">從 F-Droid 安裝</string>
+    <string name="menu_tools">工具</string>
+    <string name="tools_network">網絡</string>
+    <string name="backup">備份</string>
+    <string name="auto_connect_summary">在開機或本程式更新後將自動重新啓用代理</string>
+    <string name="delete">移除</string>
+    <string name="enable">啟用</string>
+    <string name="donate_info">世界好得意 請比世界錢</string>
+    <string name="route_bypass">繞過</string>
+    <string name="route_block">封鎖</string>
+    <string name="add_profile_methods_scan_qr_code">掃描二維碼</string>
+    <string name="install_from_play_store">從 Play Store 安裝</string>
+    <string name="auto_update">自動更新</string>
+    <string name="auto_connect">自動連接</string>
+    <string name="disable">禁用</string>
+    <string name="auto">自動</string>
+    <string name="action_scan_china_apps">尋找國產應用程式</string>
+    <string name="download">下載</string>
+    <string name="apply">套用</string>
+    <string name="random">隨機</string>
+    <string name="connection_test">連接測試</string>
+    <string name="group_create">創建分組</string>
+    <string name="group_delete_confirm_prompt">你確定要移除這個分組嗎？</string>
+    <string name="group_status_proxies">%d 個代理</string>
+    <string name="group_status_proxies_subscription">%d 個代理 | 於 %s 更新</string>
+    <string name="group_diff">變化 (%s)</string>
+    <string name="group_show_diff">變化</string>
+    <string name="group_duplicate">重複：
+\n%s</string>
+    <string name="general_settings">應用程式設定</string>
+    <string name="cag_misc">其他設定</string>
+    <string name="speed">%s/s</string>
+    <string name="connection_test_error">失敗：%s</string>
+    <string name="connection_test_available_http">連接成功: HTTP 握手需時 %dms</string>
+    <string name="password_opt">密碼（可選）</string>
+    <string name="start">開始</string>
+    <string name="quick_toggle">切換</string>
+    <string name="group_edit">編輯</string>
+    <string name="cag_ws">WebSocket 設定</string>
+    <string name="show_direct_speed">顯示直連速度</string>
+    <string name="security_settings">安全設定</string>
+    <string name="speed_detail">代理： %1$s↑ %2$s↓
+\n直連： %3$s↑ %4$s↓</string>
+    <string name="cag_dns">DNS 設定</string>
+    <string name="direct_dns">直連 DNS</string>
+    <string name="enable_dns_routing">啟用 DNS 路由</string>
+    <string name="dns_hosts">域名重寫</string>
+    <string name="transproxy_mode">透明代理模式</string>
+    <string name="encryption">加密</string>
+    <string name="route_rules_official">官方</string>
+    <string name="route_opt_block_ads">封鎖廣告</string>
+    <string name="route_asset_no_update">沒有更新</string>
+    <string name="insecure">不安全</string>
+    <string name="connection_test_icmp_ping_unavailable">ICMPing 不可用</string>
+</resources>

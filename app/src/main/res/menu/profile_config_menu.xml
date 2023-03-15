@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_delete"
+        android:alphabeticShortcut="d"
+        android:icon="@drawable/ic_action_delete"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_apply"
+        android:alphabeticShortcut="s"
+        android:icon="@drawable/ic_action_done"
+        android:title="@string/apply"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_create_shortcut"
+        android:title="@string/create_shortcut"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_move"
+        android:title="@string/move"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_custom_outbound_json"
+        android:title="@string/custom_outbound_json"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_custom_config_json"
+        android:title="@string/custom_config_json"
+        android:visible="false" />
+</menu>

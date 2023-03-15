@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_group_qr"
+        android:title="@string/share_qr_nfc">
+        <menu>
+            <item
+                android:id="@+id/action_standard_qr"
+                android:title="@string/standard" />
+            <item
+                android:id="@+id/action_universal_qr"
+                android:title="@string/app_name" />
+            <item
+                android:id="@+id/action_v2rayn_qr"
+                android:title="@string/v2rayn" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_group_clipboard"
+        android:title="@string/action_export_clipboard">
+        <menu>
+            <item
+                android:id="@+id/action_standard_clipboard"
+                android:title="@string/standard" />
+            <item
+                android:id="@+id/action_universal_clipboard"
+                android:title="@string/app_name" />
+            <item
+                android:id="@+id/action_v2rayn_clipboard"
+                android:title="@string/v2rayn" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_group_configuration"
+
+        android:title="@string/menu_configuration">
+        <menu>
+            <item
+                android:id="@+id/action_config_export_clipboard"
+                android:title="@string/action_export_clipboard" />
+            <item
+                android:id="@+id/action_config_export_file"
+                android:title="@string/action_export_file" />
+        </menu>
+    </item>
+</menu>

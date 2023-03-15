@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<resources> 
+    <string name="app_desc">La cadena de herramientas proxy universal para Android, escrita en Kotlin.</string>
+    <string name="project">Proyecto</string> 
+    <string name="github">Código fuente</string> 
+    <string name="telegram">Canal de actualización de Telegram</string> 
+    <string name="oss_licenses">Licencias de código abierto</string> 
+    <string name="app_version">Versión</string> 
+    <string name="version_x">Versión (%s)</string> 
+    <string name="logcat">Exportar información de depuración</string> 
+    <string name="logcat_summary">Tan útil, muy guau</string> 
+    <string name="menu_configuration">Configuración</string> 
+    <string name="menu_group">Grupo</string> 
+    <string name="menu_about">Acerca de</string> 
+    <string name="theme">Tema</string> 
+    <string name="document">Documento</string> 
+    <string name="group_default">Desagrupado</string> 
+    <string name="quick_toggle">Alternar</string> 
+    <string name="tile_title">Conmutador</string> 
+    <string name="menu_traffic">Tráfico</string> 
+    <!-- externel --> 
+    <string name="action_copy">Copiar</string> 
+    <string name="action_open">Abrir</string> 
+    <!-- group --> 
+    <string name="group_name">Nombre del grupo</string> 
+    <string name="group_update">Actualizar</string> 
+    <string name="group_subscription_link">Enlace de suscripción</string> 
+    <string name="group_name_required">Nombre de grupo requerido</string> 
+    <string name="group_create">Crear grupo</string> 
+    <string name="group_create_subscription">Crear suscripción</string> 
+    <string name="group_edit">Editar grupo</string> 
+    <string name="group_edit_subscription">Editar suscripción</string> 
+    <string name="group_status_empty">Grupo vacío</string> 
+    <string name="group_status_empty_subscription">Aún no actualizado</string> 
+    <string name="group_status_proxies">%d proxys</string> 
+    <string name="group_status_proxies_subscription">%d proxys | Actualizado el %s</string> 
+    <string name="group_no_difference">%s: Sin diferencia</string> 
+    <string name="group_updated">%s: %d proxys actualizados</string> 
+    <string name="group_show_diff">Diferencia</string> 
+    <string name="group_diff">Diferencia (%s)</string> 
+    <string name="group_delete_confirm_prompt">¿Seguro que quieres eliminar este grupo?</string> 
+    <string name="group_added">Añadido: \n%s</string> 
+    <string name="group_changed">Actualizado: \n%s</string> 
+    <string name="group_deleted">Eliminado: \n%s</string> 
+    <string name="group_duplicate">Duplicado: \n%s</string> 
+    <!-- misc --> 
+    <string name="service_mode">Modo de servicio</string> 
+    <string name="service_mode_proxy">Solo proxy</string> 
+    <string name="service_mode_vpn" translatable="false">VPN</string> 
+    <string name="port_proxy">Puerto proxy SOCKS5</string> 
+    <string name="port_http">Puerto proxy HTTP</string> 
+    <string name="port_transproxy">Puerto transproxy</string> 
+    <string name="cag_route">Ajustes de ruta</string> 
+    <string name="allow_access">Permitir conexiones desde la LAN</string> 
+    <string name="allow_access_sum">Vincular servidores entrantes a 0.0.0.0</string> 
+    <string name="inbound_settings">Ajustes de entrada</string> 
+    <string name="general_settings">Ajustes de la app</string> 
+    <string name="require_http">Activar HTTP entrante</string> 
+    <string name="cag_ws">Ajustes de WebSocket</string> 
+    <string name="ws_max_early_data" translatable="false">Max early data</string> 
+    <string name="ws_browser_forwarding">Reenvío del navegador</string> 
+    <string name="ws_browser_forwarding_sum">Reenvía los WebSockets correspondientes a través del navegador.</string> 
+    <string name="speed_interval">Intervalo de actualización de notificación de velocidad</string> 
+    <string name="cag_misc">Ajustes misceláneos</string> 
+    <string name="show_stop">Mostrar botón Detener</string> 
+    <string name="show_stop_sum">Si no desea utilizar mosaico como interruptor</string> 
+    <string name="show_direct_speed">Mostrar velocidad directa</string> 
+    <string name="show_direct_speed_sum">Muestra la velocidad del tráfico sin proxy en la notificación también</string> 
+    <string name="security_settings">Ajustes de seguridad</string> 
+    <string name="allow_insecure">Permitir inseguro</string> 
+    <string name="allow_insecure_sum">Desactiva la comprobación de certificados. Cuando está activada, esta configuración es tan segura como el texto sin formato</string> 
+    <string name="traffic" translatable="false">%1$s↑ %2$s↓</string> 
+    <string name="speed_detail">Proxy： %1$s↑ %2$s↓\nDirecto： %3$s↑ %4$s↓</string> 
+    <string name="speed">%s/s</string> 
+    <string name="connection_test_testing">Probando…</string> 
+    <string name="connection_test_available">Éxito: el protocolo de enlace HTTPS tomó %dms</string> 
+    <string name="connection_test_available_http">Éxito: el protocolo de enlace HTTP tomó %dms</string> 
+    <string name="connection_test_error">Error: %s</string> 
+    <string name="connection_test_fail">Internet no disponible</string> 
+    <string name="connection_test_error_status_code">Código de error: #%d</string> 
+    <string name="cag_dns">Ajustes de DNS</string> 
+    <string name="remote_dns">DNS remoto</string> 
+    <string name="direct_dns">DNS directo</string> 
+    <string name="direct_dns_use_system">Utilizar DNS del sistema como DNS directo</string> 
+    <string name="enable_dns_routing">Activar enrutamiento DNS</string> 
+    <string name="dns_routing_message">Resuelve dominios en rutas de omisión con el DNS directo. Tenga en cuenta las posibles fugas de DNS</string> 
+    <string name="enable_fakedns">Activar DNS falso</string> 
+    <string name="fakedns_message">Puede hacer que sea necesario reiniciar otras aplicaciones para volver a conectarse a la red después de detener el proxy</string> 
+    <string name="dns_hosts">Reescritura de dominio</string> 
+    <string name="port_local_dns">Puerto DNS local</string> 
+    <string name="require_transproxy">Activar transproxy entrante</string> 
+    <string name="transproxy_mode">Modo transproxy</string> 
+    <string name="connection_test_url">URL de prueba de conexión</string> 
+    <!-- proxy category --> 
+    <string name="profile_name">Nombre de perfil</string> 
+    <string name="server_address">Servidor</string> 
+    <string name="server_port">Puerto remoto</string> 
+    <string name="username">Nombre de usuario</string> 
+    <string name="username_opt">Nombre de usuario (Opcional)</string> 
+    <string name="password_opt">Contraseña (Opcional)</string> 
+    <string name="key_opt">Clave (Opcional)</string> 
+    <string name="password">Contraseña</string> 
+    <string name="enc_method">Método de cifrado</string> 
+    <string name="protocol">Protocolo</string> 
+    <string name="protocol_param">Parámetro de protocolo</string> 
+    <string name="obfs">Obfs</string> 
+    <string name="obfs_param">Parámetro obfs</string> 
+    <string name="uuid">ID de usuario</string> 
+    <string name="alter_id">ID alternativo</string> 
+    <string name="security">Cifrado de la capa de transporte</string> 
+    <string name="network">Red</string> 
+    <string name="header_type">Tipo de encabezado</string> 
+    <string name="ws_host">Host WebSocket</string> 
+    <string name="ws_path">Ruta WebSocket</string> 
+    <string name="http_host">Host HTTP</string> 
+    <string name="http_path">Ruta HTTP</string> 
+    <string name="grpc_service_name">Nombre de servicio gRPC</string> 
+    <string name="tls">Usar TLS</string> 
+    <string name="sni">Indicación del nombre del servidor</string> 
+    <string name="alpn">Negociación de protocolo de capa de aplicación</string> 
+    <string name="certificates">Certificados</string> 
+    <string name="pinned_peer_certificate_chain_sha256">Cadena de certificados fijada</string> 
+    <string name="early_data_header_name">Nombre de encabezado de datos tempranos</string> 
+    <string name="encryption">Cifrado</string> 
+    <string name="extra_headers">Encabezados adicionales</string> 
+    <string name="config_type">Tipo de configuración</string> 
+    <string name="edit_config">Editar configuración</string> 
+    <!-- feature category --> 
+    <string name="ipv6">Ruta IPv6</string> 
+    <string name="prefer">Preferir</string> 
+    <string name="only">Solo</string> 
+    <string name="metered">Sugerencia medida</string> 
+    <string name="metered_summary">Sistema de sugerencias para tratar la VPN como medida</string> 
+    <string name="menu_route">Ruta</string> 
+    <string name="route_add">Crear ruta</string> 
+    <string name="delete_route_prompt">¿Está seguro de que desea eliminar esta ruta?</string> 
+    <string name="route_name">Nombre de ruta</string> 
+    <string name="route_proxy">Proxy</string> 
+    <string name="route_bypass">Omitir</string> 
+    <string name="route_block">Bloquear</string> 
+    <string name="route_profile">Seleccionar perfil…</string> 
+    <string name="empty_route">Ruta vacía</string> 
+    <string name="empty_route_notice">Establezca algunas reglas antes de guardar</string> 
+    <string name="route_bypass_domain">Regla de dominio para %s</string> 
+    <string name="route_play_store">Regla de la Play Store para %s</string> 
+    <string name="route_bypass_ip">Regla de IP para %s</string> 
+    <string name="route_reset">Reiniciar</string> 
+    <string name="route_reverse">Proxy inverso</string> 
+    <string name="route_reverse_redirect">Redirección inversa</string> 
+    <string name="route_manage_assets">Administrar activos de ruta</string> 
+    <string name="route_assets">Activos</string> 
+    <string name="route_rules_provider">Proveedor de activos de reglas</string> 
+    <string name="route_rules_official">Oficial</string> 
+    <string name="route_asset_status">Versión local: %s</string> 
+    <string name="route_asset_no_update">Sin actualización</string> 
+    <string name="route_asset_updated">Actualizado</string> 
+    <string name="route_not_asset">No es un archivo de activos: excepto .dat, pero %s</string> 
+    <string name="route_opt_bypass_lan">Omitir LAN</string> 
+    <string name="route_opt_block_ads">Bloquear anuncios</string> 
+    <string name="route_opt_block_analysis">Bloquear analítica</string> 
+    <string name="domain_strategy">Estrategia de resolución de dominio</string> 
+    <string name="traffic_sniffing">Activar rastreo de tráfico</string> 
+    <string name="enable_mux">Activar multiplexor</string> 
+    <string name="mux_sum">Mux está diseñado para reducir la latencia del protocolo de enlace TCP, no para aumentar el rendimiento de la conexión. Usar Mux para ver videos, descargar o probar la velocidad suele ser contraproducente</string> 
+    <string name="mux_concurrency">Conexiones simultáneas Mux</string> 
+    <string name="mux_for_all">Activar Mux para todos los protocolos admitidos posibles</string> 
+    <string name="mux_for_all_sum">Si el servidor no es compatible con Mux, no podremos conectarnos a él.</string> 
+    <string name="tcp_keep_alive_interval">TCP mantiene activo el intervalo de entrega de paquetes</string> 
+    <string name="proxied_apps">Modo VPN de aplicaciones</string> 
+    <string name="proxied_apps_summary">Configurar el modo VPN para las aplicaciones seleccionadas</string> 
+    <string name="on">Encendido</string> 
+    <string name="off">Apagado</string> 
+    <string name="search_apps">Buscar…</string> 
+    <string name="scanning">Escaneando…</string> 
+    <string name="invert_selections">Invertir selecciones</string> 
+    <string name="clear_selections">Borrar selecciones</string> 
+    <string name="bypass_apps">Omitir</string> 
+    <string name="show_system_apps">Mostrar aplicaciones del sistema</string> 
+    <string name="auto_connect">Autoconectar</string> 
+    <string name="auto_connect_summary">Activa el proxy en el inicio/actualización de la aplicación si se estaba ejecutando antes</string> 
+    <string name="direct_boot_aware">Permitir alternar en la pantalla de bloqueo</string> 
+    <string name="direct_boot_aware_summary">La información de su perfil seleccionado estará menos protegida</string> 
+    <!-- notification category --> 
+    <string name="service_vpn">Servicio VPN</string> 
+    <string name="service_proxy">Servicio de proxy</string> 
+    <string name="forward_success">Proxy iniciado.</string> 
+    <string name="invalid_server">Nombre de servidor no válido</string> 
+    <string name="service_failed">Fallido:</string> 
+    <string name="stop">Detener</string> 
+    <string name="stopping">Apagando…</string> 
+    <string name="vpn_error">%s</string> 
+    <string name="vpn_permission_denied">Permiso denegado para crear un servicio VPN</string> 
+    <string name="reboot_required">No se pudo iniciar el servicio VPN. Es posible que deba reiniciar su dispositivo.</string> 
+    <!-- alert category --> 
+    <string name="profile_empty">Por favor seleccione un perfil</string> 
+    <string name="connect">Conectar</string> 
+    <string name="clipboard_empty">El portapapeles está vacío</string> 
+    <!-- menu category --> 
+    <string name="settings">Ajustes</string> 
+    <string name="edit">Editar</string> 
+    <string name="share">Compartir</string> 
+    <string name="add_profile">Añadir perfil</string> 
+    <string name="select_profile">Seleccionar perfil</string> 
+    <string name="action_socks" translatable="false">SOCKS</string> 
+    <string name="action_http" translatable="false">HTTP</string> 
+    <string name="action_shadowsocks" translatable="false">Shadowsocks</string> 
+    <string name="action_shadowsocksr" translatable="false">ShadowsocksR</string> 
+    <string name="action_vmess" translatable="false">VMess</string> 
+    <string name="action_trojan" translatable="false">Trojan</string> 
+    <string name="action_trojan_go" translatable="false">Trojan Go</string> 
+    <string name="action_naive" translatable="false">Naïve</string> 
+    <string name="action_ping_tunnel" translatable="false">Ping Tunnel</string> 
+    <string name="action_hysteria" translatable="false">Hysteria</string> 
+    <string name="action_ssh" translatable="false">SSH</string> 
+    <string name="action_wireguard" translatable="false">WireGuard</string> 
+    <string name="proxy_chain">Cadena del proxy</string> 
+    <string name="custom_config">Configuración personalizada</string> 
+    <string name="balancer">Equilibrador</string> 
+    <string name="balancer_settings">Ajustes del equilibrador</string> 
+    <string name="balancer_type">Tipo</string> 
+    <string name="balancer_strategy">Estrategia</string> 
+    <string name="chain_settings">Ajustes de la cadena</string> 
+    <string name="config_settings">Ajustes de configuración</string> 
+    <string name="circular_reference">Referencia circular</string> 
+    <string name="circular_reference_sum">La ruta no puede contenerse a sí misma.</string> 
+    <string name="clear_profiles">Borrar</string> 
+    <string name="action_create_group">Grupo vacío</string> 
+    <string name="action_from_link">Desde suscripción</string> 
+    <string name="action_scan_china_apps">Escanear aplicaciones de China</string> 
+    <string name="action_export_file">Exportar a archivo</string> 
+    <string name="action_export_clipboard">Exportar al portapapeles</string> 
+    <string name="action_export">Exportar</string> 
+    <string name="action_import">Importar desde portapapeles</string> 
+    <string name="action_import_file">Importar desde archivo</string> 
+    <string name="action_export_msg">¡Exportación exitosa!</string> 
+    <string name="action_export_err">Error al exportar.</string> 
+    <string name="action_import_msg">¡Importación exitosa!</string> 
+    <string name="action_import_err">No se pudo importar.</string> 
+    <string name="file_manager_missing">Su dispositivo carece de un selector de archivos estándar de Android, instale uno, como Material Files.</string> 
+    <!-- share --> 
+    <!-- profile --> 
+    <string name="profile_config">Configuración de perfil</string> 
+    <string name="delete">Eliminar</string> 
+    <string name="delete_confirm_prompt">¿Está seguro de que desea eliminar este perfil?</string> 
+    <string name="share_qr_nfc">Código QR</string> 
+    <string name="add_profile_methods_scan_qr_code">Escanear código QR</string> 
+    <string name="add_profile_methods_manual_settings">Ajustes manuales</string> 
+    <plurals name="removed"> 
+        <item quantity="one">Eliminado</item> 
+        <item quantity="other">%d elementos eliminados</item> 
+    </plurals> 
+    <plurals name="added"> 
+        <item quantity="one">Añadido</item> 
+        <item quantity="other">%d proxys añadidos</item> 
+    </plurals> 
+    <string name="undo">Deshacer</string> 
+    <string name="insecure_warn">Aviso de seguridad</string> 
+    <string name="insecure_warn_sum">Proporcionado por la comunidad de desarrolladores de Qv2ray</string> 
+    <string name="insecure">Inseguro</string> 
+    <string name="deprecated">Obsoleto</string> 
+    <!-- tasker --> 
+    <!-- status --> 
+    <string name="connecting">Conectando…</string> 
+    <string name="vpn_connected">Conectado, toque para verificar la conexión</string> 
+    <string name="not_connected">No conectado</string> 
+    <!-- subscriptions --> 
+    <string name="subscriptions">Suscripciones</string> 
+    <string name="cleartext_http_warning">El tráfico HTTP de texto claro no es seguro</string> 
+    <string name="error_title">Error</string> 
+    <string name="no_proxies_found">No se encontraron proxys en el enlace</string> 
+    <string name="no_proxies_found_in_subscription">No se encontraron proxys en la suscripción</string> 
+    <string name="no_proxies_found_in_file">No se encontraron proxys en el archivo</string> 
+    <string name="no_proxies_found_in_clipboard">No se encontraron proxys en el portapapeles</string> 
+    <string name="deduplication">Deduplicación</string> 
+    <string name="donate">Donar</string> 
+    <string name="donate_info">Amo el dinero</string> 
+    <string name="ignore_battery_optimizations">Ignorar optimizaciones de batería</string> 
+    <string name="ignore_battery_optimizations_sum">Eliminar algunas restricciones</string> 
+    <!-- plugin --> 
+    <string name="plugin">Complemento</string> 
+    <string name="plugin_configure">Configurar…</string> 
+    <string name="plugin_disabled">Desactivado</string> 
+    <string name="plugin_unknown">Complemento desconocido %s</string> 
+    <string name="plugin_untrusted">Advertencia: este complemento no parece provenir de una fuente confiable conocida.</string> 
+    <string name="plugin_auto_connect_unlock_only">Es posible que este complemento no funcione con Autoconectar</string> 
+    <string name="proxy_cat">Ajustes del servidor</string> 
+    <string name="ss_cat">Ajustes de Shadowsocks</string> 
+    <string name="unsaved_changes_prompt">Cambios no guardados. ¿Quieres guardar?</string> 
+    <string name="yes">Sí</string> 
+    <string name="no">No</string> 
+    <string name="apply">Aplicar</string> 
+    <string name="restart">Vuelva a cargar el servicio de proxy para aplicar los cambios</string> 
+    <string name="license">Licencia</string> 
+    <string name="route_warn">Asegúrese de haber leído la documentación antes de agregar reglas personalizadas; de lo contrario, es posible que no pueda conectarse a Internet.</string> 
+    <string name="lines">%d líneas</string> 
+    <string name="night_mode">Modo nocturno</string> 
+    <string name="follow_system">Seguir sistema</string> 
+    <string name="enable">Permitir</string> 
+    <string name="disable">Desactivar</string> 
+    <string name="auto">Automático</string> 
+    <string name="enable_log">Activar registro</string> 
+    <string name="enable_log_sum">Para propósitos de depuración</string> 
+    <string name="list">Lista</string> 
+    <string name="random">Aleatorio</string> 
+    <string name="leastPing" translatable="false">Ping</string> 
+    <string name="api_port">Puerto API</string> 
+    <string name="probe_interval">Intervalo de observación del equilibrador</string> 
+    <string name="standard">Estándar</string> 
+    <string name="v2rayn" translatable="false">V2RayN</string> 
+    <string name="available" translatable="false">%dms</string> 
+    <string name="unavailable">No disponible</string> 
+    <string name="always_show_address">Mostrar siempre la dirección</string> 
+    <string name="always_show_address_sum">Muestra siempre la dirección del servidor en la tarjeta de configuración</string> 
+    <string name="clear_traffic_statistics">Borrar estadísticas de tráfico</string> 
+    <string name="connection_test">Prueba de conexión</string> 
+    <string name="connection_test_clear_results">Borrar resultados de la prueba</string> 
+    <string name="connection_test_tcp_ping" translatable="false">TCPing</string> 
+    <string name="connection_test_tcp_ping_unavailable">TCPing no disponible</string> 
+    <string name="connection_test_icmp_ping" translatable="false">ICMPing</string> 
+    <string name="connection_test_icmp_ping_unavailable">ICMPing no disponible</string> 
+    <string name="connection_test_url_test" translatable="false">URL Test</string> 
+    <string name="connection_test_domain_not_found">Dominio no encontrado</string> 
+    <string name="connection_test_refused">Conexión denegada</string> 
+    <string name="connection_test_unreachable">Inalcanzable</string> 
+    <string name="connection_test_timeout">Se acabó el tiempo</string> 
+    <string name="append_http_proxy">Añadir proxy HTTP a la VPN</string> 
+    <string name="append_http_proxy_sum">El proxy HTTP se utilizará directamente desde (navegador/algunas aplicaciones compatibles), sin pasar por el dispositivo NIC virtual (Android 10+)</string> 
+    <string name="bypass_lan_in_core_only">Omitir LAN solo en núcleo</string> 
+    <string name="bypass_lan_in_core_only_sum">Si la opción "Permitir que los clientes de hotspot usen VPN" de Lineage no funciona, intente esto.</string> 
+    <string name="protocol_settings">Ajustes de protocolo</string> 
+    <string name="trojan_provider">Proveedor Trojan</string> 
+    <string name="group_basic">Básico</string> 
+    <string name="group_settings">Ajustes de grupo</string> 
+    <string name="subscription">Suscripción</string> 
+    <string name="subscription_settings">Ajustes de suscripción</string> 
+    <string name="group_type">Tipo de grupo</string> 
+    <string name="subscription_type">Tipo de suscripción</string> 
+    <string name="delete_group_prompt">¿Seguro que quieres eliminar este grupo?</string> 
+    <string name="force_resolve">Forzar resolución</string> 
+    <string name="force_resolve_sum">Resuelve todos los nombres de dominio a direcciones IP al actualizar. Host y SNI se agregarán automáticamente si es posible</string> 
+    <string name="deduplication_sum">Eliminar configuraciones duplicadas al actualizar</string> 
+    <string name="raw">Raw</string> 
+    <string name="update_settings">Ajustes de actualización</string> 
+    <string name="auto_update">Actualización automática</string> 
+    <string name="auto_update_delay">Retraso de actualización automática (en minutos)</string> 
+    <string name="update_when_connected_only">Actualizar solo cuando está conectado</string> 
+    <string name="update_when_connected_only_sum">Evita la fuga de direcciones IP</string> 
+    <string name="subscription_user_agent">Agente de usuario</string> 
+    <string name="confirm">Confirmar</string> 
+    <string name="missing_plugin">Complemento faltante</string> 
+    <string name="profile_requiring_plugin">El perfil %s requiere que se instale el complemento %s, pero no se encontró.</string> 
+    <string name="action_learn_more">APRENDER MÁS</string> 
+    <string name="action_download">DESCARGAR</string> 
+    <string name="install_from_play_store">Instalar desde Play Store</string> 
+    <string name="install_from_fdroid">Instalar desde F-Droid</string> 
+    <string name="download">Descargar</string> 
+    <string name="ooc_subscription_token" translatable="false">OOCv1 API Token</string> 
+    <string name="ooc_subscription_token_invalid">Token OOCv1 no válido</string> 
+    <string name="update_subscription_warning">El proxy no está conectado, ¿estás seguro de que deseas continuar con la actualización?</string> 
+    <string name="ooc_warning">Advertencia</string> 
+    <string name="ooc_missing_protocol">La suscripción requiere compatibilidad con el protocolo %s, pero no se encuentra. Los perfiles no admitidos serán ignorados.</string> 
+    <string name="service_subscription">Servicio de actualización de suscripción</string> 
+    <string name="subscription_update">Actualización de suscripción</string> 
+    <string name="subscription_update_message">Actualizando %s…</string> 
+    <string name="group_filter">Filtrar</string> 
+    <string name="group_filter_groups">Grupos</string> 
+    <string name="group_filter_tags">Etiquetas</string> 
+    <string name="group_filter_owners">Propietarios</string> 
+    <string name="group_filter_ns">Se requiere suscripción OOCv1 para usar la función de filtrado</string> 
+    <string name="group_filter_groups_nf">No hay grupos en esta suscripción</string> 
+    <string name="group_filter_tags_nf">No hay etiquetas en esta suscripción</string> 
+    <string name="group_filter_owners_nf">No hay propietarios en esta suscripción</string> 
+    <string name="subscription_used">%s usado</string> 
+    <string name="subscription_traffic">%s usados ​​/ %s restantes</string> 
+    <string name="subscription_import">Importar suscripción</string> 
+    <string name="subscription_import_message">¿Confirma que desea importar la suscripción %s? Si proviene de una fuente que no es de confianza, hacer esto puede provocar que se filtre su IP y su comportamiento.</string> 
+    <string name="profile_import">Importar perfil</string> 
+    <string name="profile_import_message">¿Confirma que desea importar el perfil %s?</string> 
+    <string name="clear_profiles_message">¿Estás seguro de que quieres borrar este grupo?</string> 
+    <string name="apps">Aplicaciones</string> 
+    <string name="select_apps">Seleccionar aplicaciones</string> 
+    <string name="apps_message">%d aplicaciones</string> 
+    <string name="hysteria_obfs">Contraseña de ofuscación</string> 
+    <string name="hysteria_auth_type">Tipo de autenticación</string> 
+    <string name="hysteria_auth_payload">Payload de autenticación</string> 
+    <string name="hysteria_upload_mbps">Velocidad máxima de carga (en Mbps)</string> 
+    <string name="hysteria_download_mbps">Velocidad máxima de descarga (en Mbps)</string> 
+    <string name="experimental_settings">Experimental</string> 
+    <string name="experimental_authenticated_length">Hace que la longitud de cada segmento de payload ya no sea maleable. Este experimento requiere que el servidor y el cliente usen la misma versión de v2ray-core. Se esperan más actualizaciones de última hora sobre este experimento.</string> 
+    <string name="experimental_no_termination_signal">No envía una señal de terminación dúplex simple de conexión para la conexión TCP cuando se transfiera a través de VMess. Esto romperá alguna aplicación.</string> 
+    <string name="hysteria_stream_receive_window">Ventana de recepción de transmisión QUIC</string> 
+    <string name="hysteria_connection_receive_window">Ventana de recepción de conexión QUIC</string> 
+    <string name="group_order">Orden</string> 
+    <string name="group_order_origin">Origen</string> 
+    <string name="group_order_by_name">Por nombre</string> 
+    <string name="group_order_by_delay">Por retraso</string> 
+    <string name="plugin_exists_but_on_shit_system">El perfil %s requiere el complemento %s, pero el proveedor de su equipo patentado (por lo general, los gigantes del capital de vigilancia y el fabricante de malware) manipuló su Android e inutilizó el complemento.</string> 
+ 
+    <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (complemento de Android Shadowsocks)</string> 
+    <string name="shadowsocks_plugin_v2ray">V2Ray (complemento de Android Shadowsocks)</string> 
+ 
+    <string name="traffic_uplink" translatable="false">%s | %s/s ↑</string> 
+    <string name="traffic_downlink" translatable="false">%s | %s/s ↓</string> 
+ 
+    <string name="traffic_uplink_total" translatable="false">%s ↑</string> 
+    <string name="traffic_downlink_total" translatable="false">%s ↓</string> 
+    <string name="traffic_active">Activo</string> 
+    <string name="traffic_stats">Estadísticas</string> 
+ 
+    <string name="tcp_connections">%d conexiones TCP</string> 
+    <string name="udp_connections">%d conexiones UDP</string> 
+ 
+    <string name="traffic_holder">Abra la VPN para registrar las estadísticas de tráfico</string> 
+ 
+    <string name="copy_label">Copiar nombre</string> 
+    <string name="copy_package_name">Copiar nombre del paquete</string> 
+    <string name="open_app">Abrir la app</string> 
+    <string name="open_settings">Abrir los ajustes</string> 
+    <string name="open_market">Abrir la tienda</string> 
+    <string name="create_rule">Crear regla</string> 
+ 
+    <string name="copy_success">¡Copiado exitoso!</string> 
+    <string name="copy_failed">Error al copiar.</string> 
+    <string name="app_no_launcher">La aplicación no tiene interfaz.</string> 
+    <string name="route_for">Regla para %s</string> 
+ 
+    <string name="route_need_vpn">La regla de enrutamiento %s depende de que la VPN esté en vigor, por lo que se ignora.</string> 
+ 
+    <string name="app_traffic_statistics">Estadísticas de tráfico de aplicaciones</string> 
+    <string name="profile_traffic_statistics">Estadísticas de tráfico del perfil</string> 
+    <string name="traffic_statistics_summary">Puede aumentar el consumo de energía</string> 
+    <string name="profile_traffic_statistics_summary">Cuando está desactivado, el tráfico utilizado no se contará</string> 
+    <string name="no_statistics">Aún no hay estadísticas</string> 
+    <string name="app_statistics_disabled">Estadísticas de tráfico de aplicaciones desactivado</string> 
+    <string name="ssh_auth_type_none">Ninguna</string> 
+    <string name="ssh_public_key">Llave pública</string> 
+    <string name="ssh_private_key">Llave privada</string> 
+    <string name="ssh_private_key_passphrase">Frase de contraseña de clave privada</string> 
+    <string name="translate_platform">Plataforma de traducción</string> 
+    <string name="menu_tools">Herramientas</string> 
+    <string name="menu_log">Registros</string> 
+    <string name="clear_logcat">Borrar Logcat</string> 
+    <string name="wireguard_local_address">Dirección local</string> 
+    <string name="wireguard_public_key">Clave pública de pares</string> 
+    <string name="wireguard_psk">Clave precompartida de pares</string> 
+ 
+    <string name="cloudflare_wrap" translatable="false">Cloudflare Warp</string> 
+    <string name="warp_license">CloudFlare Warp es un proveedor gratuito de la VPN WireGuard. Al usarlo, usted acepta los TOS.</string> 
+    <string name="warp_generate">Generar configuración</string> 
+    <string name="generating">Generando…</string> 
+    <string name="tun_implementation">Implementación TUN</string> 
+    <string name="destination_override">Anular destino</string> 
+    <string name="destination_override_summary">Usa el dominio rastreado para sobrescribir la dirección de destino, no solo para el enrutamiento</string> 
+    <string name="resolve_destination">Resolver destino</string> 
+    <string name="resolve_destination_summary">Si la dirección de destino es un dominio, se distribuye según la estrategia IPv6.</string> 
+    <string name="pcap" translatable="false">Pcap</string> 
+    <string name="enable_pcap">Activar Pcap</string> 
+    <string name="pcap_summary">Guardar tráfico en un archivo .pcap</string> 
+    <string name="pcap_notice">Los archivos Pcap se guardarán en %s</string> 
+    <string name="naive_insecure_concurrency">Concurrencia insegura</string> 
+    <string name="naive_insecure_concurrency_summary">Usa N conexiones de túnel concurrentes para ser más robusto en malas condiciones de red. Más conexiones hacen que la tunelización sea más fácil de detectar y menos segura. Este proyecto se esfuerza por lograr la mayor seguridad contra el análisis del tráfico. Usarlo de manera insegura anula su propósito. \n\nSi debe usar esto, pruebe N=2 primero para ver si resuelve sus problemas. Se recomienda enfáticamente no usar más de 4 conexiones aquí.</string> 
+ 
+    <string name="stun_test">Descubrimiento de comportamiento NAT</string> 
+    <string name="stun_test_summary">Determine el comportamiento de asignación de NAT del cliente y el comportamiento de filtrado de NAT definido en RFC 3478 mediante STUN.</string> 
+    <string name="start">Iniciar</string> 
+    <string name="stun_attest_loading">Esto puede tomar unos pocos minutos…</string> 
+    <string name="nat_stun_server_hint">Servidor Stun</string> 
+    <string name="nat_result_hint">Resultado de la comprobación de NAT</string> 
+    <string name="tools_network">Red</string> 
+    <string name="mtu" translatable="false">MTU</string> 
+ 
+    <string name="backup">Respaldo</string> 
+    <string name="backup_groups_and_configurations">Grupos y configuraciones</string> 
+    <string name="backup_rules">Reglas de enrutamiento</string> 
+    <string name="backup_settings">Ajustes</string> 
+    <string name="backup_summary">Si no se realiza un respaldo de los ajustes de enrutamiento con las configuraciones, se perderán las salidas personalizadas.</string> 
+    <string name="backup_not_file">No es un archivo de respaldo: excepto .json, pero %s</string> 
+    <string name="invalid_backup_file">Archivo de respaldo no válido</string> 
+    <string name="backup_import">Importar</string> 
+    <string name="backup_import_summary">La importación sobrescribirá los datos existentes.</string> 
+    <string name="backup_importing">Importando…</string> 
+ 
+    <string name="packet_encoding">Codificación de paquetes</string> 
+    <string name="experimental_reduced_iv_head_entropy">Esta es la propuesta de GFWReport para una contramedida para el flujo aleatorio como comportamiento de bloqueo de protocolo observado en GFW. Esta opción reasigna los primeros 6 bytes de IV a caracteres imprimibles, es posible que cualquier persona en la ruta de red privilegiada identifique el protocolo cuando está activado.</string> 
+    <string name="acquire_wake_lock">Adquirir WakeLock</string> 
+    <string name="release_wake_lock">Liberar WakeLock</string> 
+    <string name="acquire_wake_lock_summary">Mantener la CPU encendida</string> 
+    <string name="action_switch">Cambiar</string> 
+ 
+    <string name="connection_test_delete_unavailable">Borrado no disponible</string> 
+    <string name="neko_plugin">Complemento avanzado</string> 
+    <string name="neko_plugin_internal_error">%s error interno</string> 
+ 
+</resources> 

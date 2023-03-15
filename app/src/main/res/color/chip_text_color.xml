@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="?attr/primaryOrTextPrimary" android:state_enabled="true" android:state_selected="true" />
+    <item android:color="?attr/primaryOrTextPrimary" android:state_checked="true" android:state_enabled="true" />
+    <!-- 87% opacity. -->
+    <item android:alpha="0.87" android:color="?attr/colorOnSurface" android:state_enabled="true" />
+    <!-- 38% of 87% opacity. -->
+    <item android:alpha="0.33" android:color="?attr/colorOnSurface" />
+
+</selector>

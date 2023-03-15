@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="UnusedAttribute" severity="ignore" />
+    <issue id="UnknownNullness" severity="ignore" />
+    <issue id="DiscouragedPrivateApi" severity="ignore" />
+    <issue id="Typos" severity="ignore" />
+    <issue id="RtlSymmetry" severity="ignore" />
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
+    <issue id="VectorRaster" severity="ignore" />
+    <issue id="PrivateResource" severity="ignore" />
+
+    <issue id="Untranslatable" severity="ignore" />
+    <issue id="PluralsCandidate" severity="ignore" />
+    <issue id="TypographyQuotes" severity="ignore" />
+    <issue id="DuplicateStrings" severity="ignore" />
+    <issue id="ImpliedQuantity" severity="ignore" />
+    <issue id="MissingQuantity" severity="ignore" />
+
+    <issue id="SelectableText" severity="ignore" />
+    <issue id="InsecureBaseConfiguration" severity="ignore" />
+    <issue id="NotifyDataSetChanged" severity="ignore" />
+    <issue id="UselessParent" severity="ignore" />
+    <issue id="SyntheticAccessor" severity="ignore" />
+    <issue id="UselessLeaf" severity="ignore" />
+    <issue id="UnusedIds" severity="ignore" />
+    <issue id="ConvertToWebp" severity="ignore" />
+    <issue id="SetTextI18n" severity="ignore" />
+    <issue id="HardcodedText" severity="ignore" />
+    <issue id="RtlHardcoded" severity="ignore" />
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="ExtraTranslation" severity="ignore" />
+    <issue id="RestrictedApi" severity="ignore" />
+
+    <issue id="InvalidPackage" severity="ignore" />
+    <issue id="TrustAllX509TrustManager" severity="ignore" />
+</lint>

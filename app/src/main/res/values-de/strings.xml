@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="group_subscription_link">Abonnement-Link</string>
+    <string name="group_update">Aktualisieren</string>
+    <string name="group_name">Gruppen name</string>
+    <string name="tile_title">Umschalter</string>
+    <string name="quick_toggle">Umschalten</string>
+    <string name="group_default">Ungruppiert</string>
+    <string name="document">Dokument</string>
+    <string name="theme">Style</string>
+    <string name="menu_about">Über</string>
+    <string name="menu_group">Gruppe</string>
+    <string name="menu_configuration">Konfiguration</string>
+    <string name="app_version">Version</string>
+    <string name="logcat_summary">So nützlich sehr wow</string>
+    <string name="logcat">Debug-Informationen exportieren</string>
+    <string name="version_x">Version (%s)</string>
+    <string name="oss_licenses">Quelloffene Lizenzen</string>
+    <string name="telegram">Telegramm-Update-Kanal</string>
+    <string name="github">Quellcode</string>
+    <string name="project">Projekt</string>
+    <string name="app_desc">Die universelle Proxy-Toolchain für Android, geschrieben in Kotlin.</string>
+    <string name="group_create">Erstellen Gruppe</string>
+    <string name="group_name_required">Gruppen Name benötigt</string>
+    <string name="group_delete_confirm_prompt">Bist du dir sicher das du diese Gruppe entfernen möchtest\?</string>
+    <string name="license">Lizenz</string>
+    <string name="lines">%d Linien</string>
+    <string name="auto">Automatisch</string>
+    <string name="api_port">API-Port</string>
+    <string name="night_mode">Nachtmodus</string>
+    <string name="follow_system">System folgen</string>
+    <string name="enable">Aktivieren</string>
+    <string name="disable">Deaktivieren</string>
+    <string name="enable_log">Aktiviere Protokoll</string>
+    <string name="list">Liste</string>
+    <string name="random">Zufällig</string>
+    <string name="enable_log_sum">Für Debugging-Zwecken</string>
+</resources>

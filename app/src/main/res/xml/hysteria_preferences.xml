@@ -1,0 +1,97 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:icon="@drawable/ic_social_emoji_symbols"
+        app:key="profileName"
+        app:title="@string/profile_name"
+        app:useSimpleSummaryProvider="true" />
+
+    <PreferenceCategory app:title="@string/proxy_cat">
+
+        <EditTextPreference
+            app:icon="@drawable/ic_hardware_router"
+            app:key="serverAddress"
+            app:title="@string/server_address"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_maps_directions_boat"
+            app:key="serverPort"
+            app:title="@string/server_port"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="serverObfs"
+            app:title="@string/hysteria_obfs"
+            app:useSimpleSummaryProvider="true" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/hysteria_auth_type"
+            app:entryValues="@array/int_array_3"
+            app:icon="@drawable/ic_baseline_compare_arrows_24"
+            app:key="serverAuthType"
+            app:title="@string/hysteria_auth_type"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_settings_password"
+            app:key="serverPassword"
+            app:title="@string/hysteria_auth_payload" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:defaultValue="https"
+            app:entries="@array/hysteria_protocol"
+            app:entryValues="@array/int_array_3"
+            app:icon="@drawable/ic_baseline_layers_24"
+            app:key="serverProtocol"
+            app:title="@string/protocol"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_action_copyright"
+            app:key="serverSNI"
+            app:title="@string/sni"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_legend_toggle_24"
+            app:key="serverALPN"
+            app:title="@string/alpn"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_vpn_key_24"
+            app:key="serverCertificates"
+            app:title="@string/certificates"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/ic_notification_enhanced_encryption"
+            app:key="serverAllowInsecure"
+            app:summary="@string/allow_insecure_sum"
+            app:title="@string/allow_insecure" />
+        <EditTextPreference
+            app:icon="@drawable/ic_file_file_upload"
+            app:key="serverUploadSpeed"
+            app:title="@string/hysteria_upload_mbps"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_download_24"
+            app:key="serverDownloadSpeed"
+            app:title="@string/hysteria_download_mbps"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="serverStreamReceiveWindow"
+            app:title="@string/hysteria_stream_receive_window"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_transform_24"
+            app:key="serverConnectionReceiveWindow"
+            app:title="@string/hysteria_connection_receive_window"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/ic_baseline_multiple_stop_24"
+            app:key="serverDisableMtuDiscovery"
+            app:title="@string/hysteria_disable_mtu_discovery" />
+        <EditTextPreference
+            app:key="hopInterval"
+            app:title="@string/hop_interval"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen> 

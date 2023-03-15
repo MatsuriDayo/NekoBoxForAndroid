@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fab_color_progress">@color/material_light_white</color>
+</resources>

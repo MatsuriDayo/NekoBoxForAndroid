@@ -1,0 +1,3 @@
+This configuration (VMess MD5 authentication) has been deprecated by upstream because of its questionable resistance to tampering and concealment.
+
+As of January 1, 2022, compatibility with MD5 authentication information will be disabled on the server side by default. Any client using MD5 authentication information will not be able to connect to a server with VMess MD5 authentication information disabled.

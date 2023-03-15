@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/action_copy">
+        <menu>
+            <item
+                android:id="@+id/copy_label"
+                android:title="@string/copy_label" />
+            <item
+                android:id="@+id/copy_package_name"
+                android:title="@string/copy_package_name" />
+        </menu>
+    </item>
+    <item android:title="@string/action_open">
+        <menu>
+            <item
+                android:id="@+id/open_app"
+                android:title="@string/open_app" />
+            <item
+                android:id="@+id/open_settings"
+                android:title="@string/open_settings" />
+            <item
+                android:id="@+id/open_market"
+                android:title="@string/open_market" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/create_rule"
+        android:title="@string/create_rule" />
+
+</menu>

@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:icon="@drawable/ic_social_emoji_symbols"
+        app:key="profileName"
+        app:title="@string/profile_name"
+        app:useSimpleSummaryProvider="true" />
+
+    <com.takisoft.preferencex.SimpleMenuPreference
+        app:defaultValue="0"
+        app:entries="@array/balancer_type"
+        app:entryValues="@array/int_array_2"
+        app:icon="@drawable/ic_baseline_nfc_24"
+        app:key="balancerType"
+        app:title="@string/balancer_type"
+        app:useSimpleSummaryProvider="true" />
+
+    <com.takisoft.preferencex.SimpleMenuPreference
+        app:entries="@array/balancer_strategy_entry"
+        app:entryValues="@array/balancer_strategy_value"
+        app:icon="@drawable/ic_baseline_compare_arrows_24"
+        app:key="balancerStrategy"
+        app:title="@string/balancer_strategy"
+        app:useSimpleSummaryProvider="true" />
+
+    <io.nekohasekai.sagernet.widget.GroupPreference
+        app:icon="@drawable/ic_baseline_view_list_24"
+        app:key="balancerGroup"
+        app:title="@string/menu_group"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_baseline_refresh_24"
+        android:title="@string/group_update"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_send_logcat"
+        android:icon="@drawable/baseline_send_24"
+        android:title="@string/logcat"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_clear_logcat"
+        android:icon="@drawable/baseline_delete_sweep_24"
+        android:title="@string/clear_logcat"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_configuration"
+            android:icon="@drawable/ic_action_description"
+            android:title="@string/menu_configuration" />
+
+        <item
+            android:id="@+id/nav_group"
+            android:icon="@drawable/ic_baseline_view_list_24"
+            android:title="@string/menu_group" />
+
+        <item
+            android:id="@+id/nav_route"
+            android:icon="@drawable/ic_maps_directions"
+            android:title="@string/menu_route" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_action_settings"
+            android:title="@string/settings" />
+    </group>
+
+    <group
+        android:id="@+id/misc"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logcat"
+            android:icon="@drawable/ic_baseline_bug_report_24"
+            android:title="@string/menu_log" />
+        <item
+            android:id="@+id/nav_traffic"
+            android:icon="@drawable/ic_baseline_transform_24"
+            android:title="@string/menu_dashboard" />
+        <item
+            android:id="@+id/nav_tools"
+            android:icon="@drawable/baseline_construction_24"
+            android:title="@string/menu_tools" />
+    </group>
+
+    <group
+        android:id="@+id/about"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tuiguang"
+            android:icon="@drawable/ic_baseline_airplanemode_active_24"
+            android:title="推广" />
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_device_data_usage"
+            android:title="@string/document" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/menu_about" />
+    </group>
+
+</menu>

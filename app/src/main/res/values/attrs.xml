@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <attr name="colorMaterial100" format="color" />
+    <attr name="colorMaterial300" format="color" />
+    <attr name="accentOrTextSecondary" format="color" />
+    <attr name="accentOrTextPrimary" format="color" />
+    <attr name="primaryOrTextSecondary" format="color" />
+    <attr name="primaryOrTextPrimary" format="color" />
+    <attr name="fabColorBackground" format="color" />
+    <attr name="selectedColorPrimary" format="color" />
+    <attr name="whiteOrTextPrimary" format="color" />
+</resources>

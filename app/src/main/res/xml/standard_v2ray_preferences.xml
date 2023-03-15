@@ -1,0 +1,124 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:icon="@drawable/ic_social_emoji_symbols"
+        app:key="name"
+        app:title="@string/profile_name"
+        app:useSimpleSummaryProvider="true" />
+
+    <PreferenceCategory app:title="@string/proxy_cat">
+
+        <EditTextPreference
+            app:icon="@drawable/ic_hardware_router"
+            app:key="serverAddress"
+            app:title="@string/server_address"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_maps_directions_boat"
+            app:key="serverPort"
+            app:title="@string/server_port"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_person_24"
+            app:key="username"
+            app:title="@string/username_opt"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_settings_password"
+            app:key="password"
+            app:title="@string/password_opt" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_baseline_person_24"
+            app:key="uuid"
+            app:title="@string/uuid" />
+        <EditTextPreference
+            app:icon="@drawable/ic_maps_360"
+            app:key="alterId"
+            app:title="@string/alter_id"
+            app:useSimpleSummaryProvider="true" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/vmess_encryption_value"
+            app:entryValues="@array/vmess_encryption_value"
+            app:icon="@drawable/ic_notification_enhanced_encryption"
+            app:key="encryption"
+            app:title="@string/encryption"
+            app:useSimpleSummaryProvider="true" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/packet_encoding_entry"
+            app:entryValues="@array/int_array_3"
+            app:icon="@drawable/baseline_widgets_24"
+            app:key="packetEncoding"
+            app:title="@string/packet_encoding"
+            app:useSimpleSummaryProvider="true" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/networks_value"
+            app:entryValues="@array/networks_value"
+            app:icon="@drawable/ic_baseline_compare_arrows_24"
+            app:key="type"
+            app:title="@string/network"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_airplanemode_active_24"
+            app:key="host"
+            app:title="@string/http_host"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_format_align_left_24"
+            app:key="path"
+            app:title="@string/http_path"
+            app:useSimpleSummaryProvider="true" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:entries="@array/transport_layer_encryption_value"
+            app:entryValues="@array/transport_layer_encryption_value"
+            app:icon="@drawable/ic_baseline_layers_24"
+            app:key="security"
+            app:title="@string/security"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="serverSecurityCategory"
+        app:title="@string/security_settings">
+        <EditTextPreference
+            app:icon="@drawable/ic_action_copyright"
+            app:key="sni"
+            app:title="@string/sni"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_legend_toggle_24"
+            app:key="alpn"
+            app:title="@string/alpn"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_vpn_key_24"
+            app:key="certificates"
+            app:title="@string/certificates"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/ic_notification_enhanced_encryption"
+            app:key="allowInsecure"
+            app:summary="@string/allow_insecure_sum"
+            app:title="@string/allow_insecure" />
+        <com.takisoft.preferencex.SimpleMenuPreference
+            app:defaultValue=""
+            app:entries="@array/utls_fingerprint_entry"
+            app:entryValues="@array/utls_fingerprint_entry"
+            app:icon="@drawable/ic_baseline_fingerprint_24"
+            app:key="utlsFingerprint"
+            app:title="@string/utls_fingerprint"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_vpn_key_24"
+            app:key="realityPubKey"
+            app:title="Reality Public Key"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="realityShortId"
+            app:title="Reality ShortId"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

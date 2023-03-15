@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/share">
+        <menu>
+            <item
+                android:id="@+id/action_universal_clipboard"
+                android:title="@string/action_export_clipboard" />
+            <item
+                android:id="@+id/action_universal_qr"
+                android:title="@string/share_qr_nfc" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_export"
+        android:title="@string/action_export">
+        <menu>
+            <item
+                android:id="@+id/action_export_clipboard"
+                android:title="@string/action_export_clipboard" />
+            <item
+                android:id="@+id/action_export_file"
+                android:title="@string/action_export_file" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_clear"
+        android:title="@string/clear_profiles" />
+</menu>

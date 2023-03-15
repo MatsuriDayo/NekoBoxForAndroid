@@ -1,0 +1,3 @@
+This configuration (Shadowsocks streaming cipher) can be accurately proactively detected and decrypted by censors without requiring a password, and cannot be mitigated by turning on IV replay filters on the server side.
+
+Learn more: https://github.com/net4people/bbs/issues/24

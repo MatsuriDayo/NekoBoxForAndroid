@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logcat_summary">너무 유용하다 와우</string>
+    <string name="logcat">디버그 정보 내보내기</string>
+    <string name="version_x">버전(%s)</string>
+    <string name="app_version">버전</string>
+    <string name="oss_licenses">오픈 소스 라이선스</string>
+    <string name="telegram">텔레그램 업데이트 채널</string>
+    <string name="github">소스 코드</string>
+    <string name="project">프로젝트</string>
+    <string name="app_desc">코틀린에 기록 된 안드로이드에 대한 보편적 인 프록시 도구 체인.</string>
+    <string name="quick_toggle">비녀장</string>
+    <string name="group_default">그룹 해제</string>
+    <string name="document">문서</string>
+    <string name="theme">테마</string>
+    <string name="menu_about">대하여</string>
+    <string name="menu_group">그룹</string>
+    <string name="menu_configuration">구성</string>
+</resources>

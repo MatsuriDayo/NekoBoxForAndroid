@@ -1,0 +1,1 @@
+This configuration (not encrypted) is extremely easy to detect and identify, the transmission is fully visible to the censor, and there is no resistance to man-in-the-middle tampering with the content of the communication.

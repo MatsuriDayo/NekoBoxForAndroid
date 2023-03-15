@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/configuration_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingLeft="4dp"
+    android:paddingTop="4dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="48dp"
+    android:scrollbarSize="0dp"
+    app:fastScrollAutoHide="true"
+    app:fastScrollThumbColor="?colorPrimary"
+    app:fastScrollThumbInactiveColor="?colorPrimary"
+    tools:listitem="@layout/layout_profile" />

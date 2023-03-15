@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/backup_configurations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/backup_groups_and_configurations"
+        android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+    <CheckBox
+        android:id="@+id/backup_rules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/backup_rules"
+        android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+    <CheckBox
+        android:id="@+id/backup_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/backup_settings"
+        android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/material_red_accent_200"
+        android:text="@string/backup_import_summary">
+
+    </TextView>
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:icon="@drawable/ic_qu_shadowsocks_launcher"
+        android:shortcutId="toggle"
+        android:shortcutLongLabel="@string/quick_toggle"
+        android:shortcutShortLabel="@string/quick_toggle">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="io.nekohasekai.sagernet.QuickToggleShortcut"
+            android:targetPackage="moe.nb4a" />
+    </shortcut>
+    <shortcut
+        android:icon="@drawable/ic_qu_camera_launcher"
+        android:shortcutId="scan"
+        android:shortcutLongLabel="@string/add_profile_methods_scan_qr_code"
+        android:shortcutShortLabel="@string/add_profile_methods_scan_qr_code">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="io.nekohasekai.sagernet.ui.ScannerActivity"
+            android:targetPackage="moe.nb4a" />
+    </shortcut>
+</shortcuts>

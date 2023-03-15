@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logcat">Esporta informazioni di debug</string>
+    <string name="version_x">Versione (%s)</string>
+    <string name="app_version">Versione</string>
+    <string name="oss_licenses">Licenze open source</string>
+    <string name="telegram">Canale di aggiornamento di Telegram</string>
+    <string name="github">Codice sorgente</string>
+    <string name="project">Progetto</string>
+    <string name="app_desc">La toolchain proxy universale per Android, scritta in Kotlin.</string>
+</resources>

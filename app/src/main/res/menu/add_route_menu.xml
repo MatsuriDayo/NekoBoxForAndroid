@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_new_route"
+        android:icon="@drawable/ic_baseline_add_road_24"
+        android:title="@string/route_add"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_reset_route"
+        android:title="@string/route_reset"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_manage_assets"
+        android:title="@string/route_manage_assets"
+        app:showAsAction="never" />
+
+</menu>

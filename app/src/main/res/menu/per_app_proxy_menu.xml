@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_scan_china_apps"
+        android:title="@string/action_scan_china_apps"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_invert_selections"
+        android:title="@string/invert_selections"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_clear_selections"
+        android:title="@string/clear_selections"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_export_clipboard"
+        android:icon="?attr/actionModeCopyDrawable"
+        android:title="@string/action_export_clipboard"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_import_clipboard"
+        android:icon="?attr/actionModePasteDrawable"
+        android:title="@string/action_import"
+        app:showAsAction="always" />
+</menu>
