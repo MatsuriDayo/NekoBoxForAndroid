@@ -14,6 +14,6 @@ func GetBuildTime() int64 {
 
 func GetExpireTime() int64 {
 	buildTime := time.Unix(GetBuildTime(), 0)
-	expireTime := buildTime.AddDate(0, 0, 7) // current force update: 6 months
+	expireTime := buildTime.AddDate(0, 6, 0) // current force update: 6 months
 	return expireTime.Unix()
 }

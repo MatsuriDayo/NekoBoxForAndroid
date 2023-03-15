@@ -31,7 +31,9 @@ import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListHolderListener
 import kotlinx.coroutines.launch
+import libcore.Libcore
 import moe.matsuri.nb4a.utils.Util
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : ThemedActivity(),
@@ -450,8 +452,6 @@ class MainActivity : ThemedActivity(),
     override fun onResume() {
         super.onResume()
 
-        // TODO nb4a release
-        /*      
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val now = System.currentTimeMillis()
         val expire = Libcore.getExpireTime() * 1000
@@ -484,7 +484,6 @@ class MainActivity : ThemedActivity(),
                 .setCancelable(false)
                 .show()
         }
-        */
     }
 
 }
