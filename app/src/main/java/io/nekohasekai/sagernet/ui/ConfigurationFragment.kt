@@ -558,14 +558,16 @@ class ConfigurationFragment @JvmOverloads constructor(
 
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun pingTest(icmpPing: Boolean) {
-        stopService()
-
         val test = TestDialog()
         val testJobs = mutableListOf<Job>()
         val dialog = test.builder.show()
         val mainJob = runOnDefaultDispatcher {
+            if (DataStore.serviceState.started) {
+                stopService()
+                delay(500) // wait for service stop
+            }
             val group = DataStore.currentGroup()
-            var profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
+            val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
             test.proxyN = profilesUnfiltered.size
             val profiles = ConcurrentLinkedQueue(profilesUnfiltered)
             val testPool = newFixedThreadPoolContext(5, "Connection test pool")
@@ -692,13 +694,15 @@ class ConfigurationFragment @JvmOverloads constructor(
     }
 
     fun urlTest() {
-        stopService()
-
         val test = TestDialog()
         val dialog = test.builder.show()
         val testJobs = mutableListOf<Job>()
 
         val mainJob = runOnDefaultDispatcher {
+            if (DataStore.serviceState.started) {
+                stopService()
+                delay(500) // wait for service stop
+            }
             val group = DataStore.currentGroup()
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
             test.proxyN = profilesUnfiltered.size
