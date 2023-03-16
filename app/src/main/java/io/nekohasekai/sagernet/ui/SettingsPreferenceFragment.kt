@@ -24,6 +24,7 @@ import io.nekohasekai.sagernet.utils.Theme
 import io.nekohasekai.sagernet.widget.AppListPreference
 import moe.matsuri.nb4a.Protocols
 import moe.matsuri.nb4a.ui.ColorPickerPreference
+import moe.matsuri.nb4a.ui.LongClickMenuPreference
 import moe.matsuri.nb4a.ui.LongClickSwitchPreference
 import moe.matsuri.nb4a.ui.MTUPreference
 
@@ -117,14 +118,14 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val requireTransproxy = findPreference<SwitchPreference>(Key.REQUIRE_TRANSPROXY)!!
         val transproxyPort = findPreference<EditTextPreference>(Key.TRANSPROXY_PORT)!!
         val transproxyMode = findPreference<SimpleMenuPreference>(Key.TRANSPROXY_MODE)!!
-        val enableLog = findPreference<LongClickSwitchPreference>(Key.ENABLE_LOG)!!
+        val logLevel = findPreference<LongClickMenuPreference>(Key.LOG_LEVEL)!!
         val mtu = findPreference<MTUPreference>(Key.MTU)!!
 
-        enableLog.setOnPreferenceChangeListener { _, _ ->
+        logLevel.setOnPreferenceChangeListener { _, _ ->
             needRestart()
             true
         }
-        enableLog.setOnLongClickListener {
+        logLevel.setOnLongClickListener {
             if (context == null) return@setOnLongClickListener true
 
             val view = EditText(context).apply {

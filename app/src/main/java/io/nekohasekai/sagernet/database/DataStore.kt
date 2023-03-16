@@ -106,7 +106,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var dnsNetwork by configurationStore.stringSet(Key.DNS_NETWORK)
 
     var rulesProvider by configurationStore.stringToInt(Key.RULES_PROVIDER)
-    var enableLog by configurationStore.boolean(Key.ENABLE_LOG)
+    var logLevel by configurationStore.stringToInt(Key.LOG_LEVEL)
     var logBufSize by configurationStore.int(Key.LOG_BUF_SIZE) { 0 }
     var acquireWakeLock by configurationStore.boolean(Key.ACQUIRE_WAKE_LOCK)
 

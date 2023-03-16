@@ -146,6 +146,17 @@ fun buildConfig(
             }
         }
 
+        log = LogOptions().apply {
+            level = when (DataStore.logLevel) {
+                0 -> "panic"
+                1 -> "warn"
+                2 -> "info"
+                3 -> "debug"
+                4 -> "trace"
+                else -> "info"
+            }
+        }
+
         dns = DNSOptions().apply {
             // TODO nb4a hosts?
 //            hosts = DataStore.hosts.split("\n")

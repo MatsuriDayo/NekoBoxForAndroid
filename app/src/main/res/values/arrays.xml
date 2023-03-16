@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="int_array_2">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="int_array_3">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="int_array_4">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="int_array_5">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
     <string-array name="bypass_private_route">
         <item>1.0.0.0/8</item>
         <item>2.0.0.0/7</item>
@@ -294,10 +321,6 @@
         <item>TPROXY</item>
     </string-array>
 
-    <string-array name="int_array_2">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
 
     <string-array name="naive_proto_entry">
         <item>HTTPS</item>
@@ -315,13 +338,6 @@
         <item>@string/disable</item>
         <item>@string/auto</item>
     </string-array>
-    <string-array name="int_array_4">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
     <string-array name="ipv6_mode">
         <item>@string/disable</item>
         <item>@string/enable</item>
@@ -348,11 +364,6 @@
         <item>leastPing</item>
     </string-array>
 
-    <string-array name="int_array_3">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
 
     <string-array name="group_types">
         <item>@string/group_basic</item>
@@ -476,6 +487,14 @@
         <item></item>
         <item>obfs-local</item>
         <item>v2ray-plugin</item>
+    </string-array>
+
+    <string-array name="log_level" translatable="false">
+        <item>none</item>
+        <item>warn</item>
+        <item>info</item>
+        <item>debug</item>
+        <item>trace</item>
     </string-array>
 
 </resources>

@@ -77,7 +77,7 @@ class SagerNet : Application(),
             filesDir.absolutePath + "/",
             externalAssets.absolutePath + "/",
             DataStore.logBufSize,
-            DataStore.enableLog,
+            DataStore.logLevel > 0,
             this
         )
 

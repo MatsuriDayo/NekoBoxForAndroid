@@ -31,10 +31,7 @@ import io.nekohasekai.sagernet.bg.Executable
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ui.MainActivity
 import io.nekohasekai.sagernet.ui.ThemedActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.*
 import moe.matsuri.nb4a.utils.NGUtil
 import java.io.FileDescriptor
 import java.net.*
@@ -241,10 +238,13 @@ fun Fragment.needReload() {
 
 fun Fragment.needRestart() {
     snackbar("Restart APP to apply changes.").setAction(R.string.apply) {
-        Executable.killAll(true)
-        ProcessPhoenix.triggerRebirth(
-            requireContext(), Intent(requireContext(), MainActivity::class.java)
-        )
+        SagerNet.stopService()
+        val ctx = requireContext()
+        runOnDefaultDispatcher {
+            delay(500)
+            Executable.killAll(true)
+            ProcessPhoenix.triggerRebirth(ctx, Intent(ctx, MainActivity::class.java))
+        }
     }.show()
 }
 

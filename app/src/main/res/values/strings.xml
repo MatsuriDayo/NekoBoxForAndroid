@@ -524,5 +524,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="enable_clash_api">Enable Clash API</string>
     <string name="enable_clash_api_summary"><![CDATA[Provide clash api & yacd dashboard at 127.0.0.1:9090]]></string>
     <string name="xtls_flow">Flow (VLESS Sub-protocol)</string>
+    <string name="log_level">Log Level</string>
 
 </resources>

@@ -71,11 +71,14 @@
             app:summary="@string/show_direct_speed_sum"
             app:title="@string/show_direct_speed"
             app:useSimpleSummaryProvider="true" />
-        <moe.matsuri.nb4a.ui.LongClickSwitchPreference
+        <moe.matsuri.nb4a.ui.LongClickMenuPreference
+            app:defaultValue="0"
+            app:entries="@array/log_level"
+            app:entryValues="@array/int_array_5"
             app:icon="@drawable/ic_baseline_bug_report_24"
-            app:key="enableLog"
-            app:summary="@string/enable_log_sum"
-            app:title="@string/enable_log" />
+            app:key="logLevel"
+            app:title="@string/log_level"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_route">

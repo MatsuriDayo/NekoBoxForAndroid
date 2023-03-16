@@ -80,7 +80,7 @@ fun NaiveBean.buildNaiveConfig(port: Int): String {
         if (extraHeaders.isNotBlank()) {
             put("extra-headers", extraHeaders.split("\n").joinToString("\r\n"))
         }
-        if (DataStore.enableLog) {
+        if (DataStore.logLevel > 0) {
             put("log", "")
         }
         if (insecureConcurrency > 0) {

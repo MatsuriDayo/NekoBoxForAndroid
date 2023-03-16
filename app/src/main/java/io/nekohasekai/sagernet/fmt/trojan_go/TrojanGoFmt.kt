@@ -91,7 +91,7 @@ fun TrojanGoBean.buildTrojanGoConfig(port: Int): String {
         put("password", JSONArray().apply {
             put(password)
         })
-        put("log_level", if (DataStore.enableLog) 0 else 2)
+        put("log_level", if (DataStore.logLevel > 0) 0 else 2)
         if (Protocols.shouldEnableMux("trojan-go")) put("mux", JSONObject().apply {
             put("enabled", true)
             put("concurrency", DataStore.muxConcurrency)

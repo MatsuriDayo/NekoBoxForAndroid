@@ -59,6 +59,6 @@ fun TuicBean.buildTuicConfig(port: Int, cacheFile: (() -> File)?): String {
             put("ip", LOCALHOST)
             put("port", port)
         })
-        put("log_level", if (DataStore.enableLog) "debug" else "info")
+        put("log_level", if (DataStore.logLevel > 0) "debug" else "info")
     }.toStringPretty()
 }
