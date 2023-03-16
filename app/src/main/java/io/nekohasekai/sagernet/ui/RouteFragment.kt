@@ -264,7 +264,7 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
         inner class DocumentHolder(binding: LayoutEmptyRouteBinding) : RecyclerView.ViewHolder(binding.root) {
             fun bind() {
                 itemView.setOnClickListener {
-                    it.context.launchCustomTab("https://sing-box.sagernet.org/configuration/route/rule/")
+                    it.context.launchCustomTab("https://matsuridayo.github.io/nb4a-route/")
                 }
             }
         }

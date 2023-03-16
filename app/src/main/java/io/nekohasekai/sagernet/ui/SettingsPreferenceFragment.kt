@@ -22,7 +22,6 @@ import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.utils.Theme
 import io.nekohasekai.sagernet.widget.AppListPreference
-import libcore.Libcore
 import moe.matsuri.nb4a.Protocols
 import moe.matsuri.nb4a.ui.ColorPickerPreference
 import moe.matsuri.nb4a.ui.LongClickSwitchPreference
@@ -39,7 +38,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         listView.layoutManager = FixedLinearLayoutManager(listView)
     }
 
-    val reloadListener = Preference.OnPreferenceChangeListener { _, _ ->
+    private val reloadListener = Preference.OnPreferenceChangeListener { _, _ ->
         needReload()
         true
     }
@@ -50,7 +49,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.global_preferences)
 
         DataStore.routePackages = DataStore.nekoPlugins
-        nekoPlugins = findPreference<AppListPreference>(Key.NEKO_PLUGIN_MANAGED)!!
+        nekoPlugins = findPreference(Key.NEKO_PLUGIN_MANAGED)!!
         nekoPlugins.setOnPreferenceClickListener {
             // borrow from route app settings
             startActivity(Intent(
@@ -80,7 +79,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
         val mixedPort = findPreference<EditTextPreference>(Key.MIXED_PORT)!!
-        val speedInterval = findPreference<Preference>(Key.SPEED_INTERVAL)!!
         val serviceMode = findPreference<Preference>(Key.SERVICE_MODE)!!
         val allowAccess = findPreference<Preference>(Key.ALLOW_ACCESS)!!
         val appendHttpProxy = findPreference<SwitchPreference>(Key.APPEND_HTTP_PROXY)!!
@@ -96,14 +94,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         tcpKeepAliveInterval.isVisible = false
 
         val bypassLan = findPreference<SwitchPreference>(Key.BYPASS_LAN)!!
-        val bypassLanInCoreOnly = findPreference<SwitchPreference>(Key.BYPASS_LAN_IN_CORE_ONLY)!!
-
-        bypassLanInCoreOnly.isEnabled = bypassLan.isChecked
-        bypassLan.setOnPreferenceChangeListener { _, newValue ->
-            bypassLanInCoreOnly.isEnabled = newValue as Boolean
-            needReload()
-            true
-        }
+        val bypassLanInCore = findPreference<SwitchPreference>(Key.BYPASS_LAN_IN_CORE)!!
 
         val remoteDns = findPreference<EditTextPreference>(Key.REMOTE_DNS)!!
         val directDns = findPreference<EditTextPreference>(Key.DIRECT_DNS)!!
@@ -192,9 +183,10 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
         val profileTrafficStatistics =
             findPreference<SwitchPreference>(Key.PROFILE_TRAFFIC_STATISTICS)!!
-        speedInterval.isEnabled = profileTrafficStatistics.isChecked
-        profileTrafficStatistics.setOnPreferenceChangeListener { _, newValue ->
-            speedInterval.isEnabled = newValue as Boolean
+        val speedInterval = findPreference<SimpleMenuPreference>(Key.SPEED_INTERVAL)!!
+        profileTrafficStatistics.isEnabled = speedInterval.value.toString() != "0"
+        speedInterval.setOnPreferenceChangeListener { _, newValue ->
+            profileTrafficStatistics.isEnabled = newValue.toString() != "0"
             needReload()
             true
         }
@@ -209,7 +201,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val acquireWakeLock = findPreference<SwitchPreference>(Key.ACQUIRE_WAKE_LOCK)!!
         val enableClashAPI = findPreference<SwitchPreference>(Key.ENABLE_CLASH_API)!!
 
-        speedInterval.onPreferenceChangeListener = reloadListener
         mixedPort.onPreferenceChangeListener = reloadListener
         appendHttpProxy.onPreferenceChangeListener = reloadListener
         showDirectSpeed.onPreferenceChangeListener = reloadListener
@@ -217,7 +208,8 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         trafficSniffing.onPreferenceChangeListener = reloadListener
         muxConcurrency.onPreferenceChangeListener = reloadListener
         tcpKeepAliveInterval.onPreferenceChangeListener = reloadListener
-        bypassLanInCoreOnly.onPreferenceChangeListener = reloadListener
+        bypassLan.onPreferenceChangeListener = reloadListener
+        bypassLanInCore.onPreferenceChangeListener = reloadListener
         mtu.onPreferenceChangeListener = reloadListener
 
         enableFakeDns.onPreferenceChangeListener = reloadListener

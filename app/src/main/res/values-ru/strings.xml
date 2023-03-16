@@ -296,7 +296,7 @@
     <string name="domain_strategy">Стратегия разрешения доменов</string>
     <string name="route_opt_block_ads">Блокировать рекламу</string>
     <string name="route_opt_bypass_lan">Обход LAN</string>
-    <string name="route_not_asset">Не файл ресурса: ожидался .dat, а не %s</string>
+    <string name="route_not_asset">Не файл ресурса: ожидался .db, а не %s</string>
     <string name="route_asset_updated">Обновлено</string>
     <string name="route_asset_no_update">Обновлений нет</string>
     <string name="route_asset_status">Локальная версия: %s</string>

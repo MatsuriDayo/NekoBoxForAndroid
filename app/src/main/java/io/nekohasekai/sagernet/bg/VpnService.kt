@@ -109,7 +109,7 @@ class VpnService : BaseVpnService(),
         builder.addDnsServer(PRIVATE_VLAN4_ROUTER)
 
         // route
-        if (DataStore.bypassLan && !DataStore.bypassLanInCoreOnly) {
+        if (DataStore.bypassLan) {
             resources.getStringArray(R.array.bypass_private_route).forEach {
                 val subnet = Subnet.fromString(it)!!
                 builder.addRoute(subnet.address.hostAddress!!, subnet.prefixSize)
@@ -142,7 +142,7 @@ class VpnService : BaseVpnService(),
         var bypass = DataStore.bypass
         var workaroundSYSTEM = false /* DataStore.tunImplementation == TunImplementation.SYSTEM */
         var needBypassRootUid = workaroundSYSTEM || data.proxy!!.config.trafficMap.values.any {
-            it.nekoBean?.needBypassRootUid() == true || it.hysteriaBean?.protocol == HysteriaBean.PROTOCOL_FAKETCP
+            it[0].nekoBean?.needBypassRootUid() == true || it[0].hysteriaBean?.protocol == HysteriaBean.PROTOCOL_FAKETCP
         }
 
         if (proxyApps || needBypassRootUid) {

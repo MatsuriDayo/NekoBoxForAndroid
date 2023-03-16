@@ -157,7 +157,7 @@
     <string name="route_asset_status">Local version: %s</string>
     <string name="route_asset_no_update">No update</string>
     <string name="route_asset_updated">Updated</string>
-    <string name="route_not_asset">Not an asset file: excepted .dat, but %s</string>
+    <string name="route_not_asset">Not an asset file: excepted .db, but %s</string>
     <string name="route_opt_bypass_lan">Bypass LAN</string>
     <string name="route_opt_block_ads">Block ADs</string>
     <string name="route_opt_block_analysis">Block analysis</string>
@@ -331,7 +331,6 @@
     <string name="append_http_proxy">Append HTTP Proxy to VPN</string>
     <string name="append_http_proxy_sum">HTTP proxy will be used directly from (browser/ some supported apps), without going through the virtual NIC device (Android 10+)</string>
     <string name="bypass_lan_in_core_only">Bypass LAN in Core Only</string>
-    <string name="bypass_lan_in_core_only_sum">If Lineage\'s "Allow hotspot clients to use VPNs" does not work, try this.</string>
     <string name="protocol_settings">Protocol Settings</string>
     <string name="trojan_provider">Trojan Provider</string>
     <string name="group_basic">Basic</string>

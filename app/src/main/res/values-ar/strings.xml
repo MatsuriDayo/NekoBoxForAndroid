@@ -220,7 +220,7 @@
     <string name="domain_strategy">استراتيجية حل المجال</string>
     <string name="route_opt_block_ads">إعلانات كتلة</string>
     <string name="route_opt_bypass_lan">جانبا LAN</string>
-    <string name="route_not_asset">ليس ملف أصل: استثناء .dat، لكن %s</string>
+    <string name="route_not_asset">ليس ملف أصل: استثناء .db، لكن %s</string>
     <string name="hysteria_download_mbps">أقصى سرعة تنزيل (بالميجابت في الثانية)</string>
     <string name="hysteria_upload_mbps">أقصى سرعة تحميل (بالميجابت في الثانية)</string>
     <string name="hysteria_auth_payload">حمولة المصادقة</string>

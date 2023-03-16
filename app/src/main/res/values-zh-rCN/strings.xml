@@ -262,7 +262,7 @@
     <string name="lines">%d 行</string>
     <string name="only">仅</string>
     <string name="prefer">优先</string>
-    <string name="route_not_asset">不是资源文件: 预期 .dat 为扩展名, 但 %s</string>
+    <string name="route_not_asset">不是资源文件: 预期 .db 为扩展名, 但 %s</string>
     <string name="route_asset_no_update">已为最新</string>
     <string name="route_asset_updated">已更新</string>
     <string name="route_asset_status">本地版本: %s</string>

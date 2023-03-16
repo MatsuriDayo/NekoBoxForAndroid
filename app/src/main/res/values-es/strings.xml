@@ -154,7 +154,7 @@
     <string name="route_asset_status">Versión local: %s</string> 
     <string name="route_asset_no_update">Sin actualización</string> 
     <string name="route_asset_updated">Actualizado</string> 
-    <string name="route_not_asset">No es un archivo de activos: excepto .dat, pero %s</string> 
+    <string name="route_not_asset">No es un archivo de activos: excepto .db, pero %s</string> 
     <string name="route_opt_bypass_lan">Omitir LAN</string> 
     <string name="route_opt_block_ads">Bloquear anuncios</string> 
     <string name="route_opt_block_analysis">Bloquear analítica</string> 

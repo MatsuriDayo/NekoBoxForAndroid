@@ -33,7 +33,7 @@ object Key {
     const val RESOLVE_DESTINATION = "resolveDestination"
 
     const val BYPASS_LAN = "bypassLan"
-    const val BYPASS_LAN_IN_CORE_ONLY = "bypassLanInCoreOnly"
+    const val BYPASS_LAN_IN_CORE = "bypassLanInCore"
 
     const val MIXED_PORT = "mixedPort"
     const val ALLOW_ACCESS = "allowAccess"

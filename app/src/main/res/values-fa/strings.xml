@@ -152,7 +152,7 @@
     <string name="route_asset_status">نسخه محلی: %s</string>
     <string name="route_asset_no_update">بدون آپدیت</string>
     <string name="route_asset_updated">به روز رسانی</string>
-    <string name="route_not_asset">نه یک فایل پشتیبان: به جز .dat، اما %s</string>
+    <string name="route_not_asset">نه یک فایل پشتیبان: به جز .db، اما %s</string>
     <string name="route_opt_bypass_lan">دور زدن LAN</string>
     <string name="route_opt_block_ads">مسدود کردن تبلیغات</string>
     <string name="route_opt_block_analysis">بلاک کردن انالیز ها</string>

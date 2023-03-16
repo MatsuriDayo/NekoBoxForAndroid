@@ -42,13 +42,11 @@ class ServiceNotification(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
     }
 
-    val trafficStatistics = DataStore.profileTrafficStatistics
     val showDirectSpeed = DataStore.showDirectSpeed
 
     private val callback: ISagerNetServiceCallback by lazy {
         object : ISagerNetServiceCallback.Stub() {
             override fun cbSpeedUpdate(stats: SpeedDisplayData) {
-                if (!trafficStatistics) return
                 builder.apply {
                     if (showDirectSpeed) {
                         val speedDetail = (service as Context).getString(
@@ -180,7 +178,7 @@ class ServiceNotification(
     }
 
     private fun updateCallback(screenOn: Boolean) {
-        if (!trafficStatistics) return
+        if (DataStore.speedInterval == 0) return
         if (screenOn) {
             service.data.binder.registerCallback(callback)
             callbackRegistered = true

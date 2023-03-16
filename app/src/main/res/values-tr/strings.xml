@@ -369,7 +369,7 @@
     <string name="alter_id">Alternatif ID</string>
     <string name="obfs">Şaşırtmaca</string>
     <string name="tcp_keep_alive_interval">TCP aktif paket teslim koruma aralığı</string>
-    <string name="route_not_asset">Varlık dosyası değil: .dat beklendi ama %s</string>
+    <string name="route_not_asset">Varlık dosyası değil: .db beklendi ama %s</string>
     <string name="route_rules_provider">Rota Varlıkları Sağlayıcısı</string>
     <string name="route_assets">Varlıklar</string>
     <string name="route_manage_assets">Rota Varlıklarını Yönet</string>

@@ -237,7 +237,7 @@
     <string name="domain_strategy">Domeneløsningsstrategi</string>
     <string name="route_opt_block_ads">Blokker annonser</string>
     <string name="route_opt_bypass_lan">Omgå LAN</string>
-    <string name="route_not_asset">Ikke en ressursfil: unntatt .dat, men %s</string>
+    <string name="route_not_asset">Ikke en ressursfil: unntatt .db, men %s</string>
     <string name="route_asset_updated">Oppdatert</string>
     <string name="route_asset_no_update">Ingen oppdatering</string>
     <string name="route_asset_status">Lokal versjon: %s</string>

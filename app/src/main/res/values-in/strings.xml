@@ -181,7 +181,7 @@
     <string name="mux_sum">Mux dirancang untuk mengurangi latensi handshake TCP, bukan untuk meningkatkan throughput koneksi. Menggunakan Mux untuk menonton video, mengunduh, atau uji kecepatan biasanya kontra produktif</string>
     <string name="domain_strategy">Strategi Resolusi Domain</string>
     <string name="route_opt_bypass_lan">Lewati LAN</string>
-    <string name="route_not_asset">Bukan file aset: kecuali .dat, tapi %s</string>
+    <string name="route_not_asset">Bukan file aset: kecuali .db, tapi %s</string>
     <string name="route_rules_provider">Penyedia Aset Aturan</string>
     <string name="route_reverse_redirect">Pengalihan Terbalik</string>
     <string name="route_bypass_domain">Aturan domain untuk %s</string>

@@ -16,22 +16,25 @@ class TrafficLooper
 ) {
 
     private var job: Job? = null
-    private val items = mutableMapOf<String, TrafficUpdater.TrafficLooperData>()
+    private val items = mutableMapOf<Long, TrafficUpdater.TrafficLooperData>()
 
     suspend fun stop() {
         job?.cancel()
-        // finally
+        // finally traffic post
+        if (!DataStore.profileTrafficStatistics) return
         val traffic = mutableMapOf<Long, TrafficData>()
-        data.proxy?.config?.trafficMap?.forEach { (tag, ent) ->
-            val item = items[tag] ?: return@forEach
-            ent.rx = item.rx
-            ent.tx = item.tx
-            ProfileManager.updateProfile(ent) // update DB
-            traffic[ent.id] = TrafficData(
-                id = ent.id,
-                rx = ent.rx,
-                tx = ent.tx,
-            )
+        data.proxy?.config?.trafficMap?.forEach { (_, ents) ->
+            for (ent in ents) {
+                val item = items[ent.id] ?: return@forEach
+                ent.rx = item.rx
+                ent.tx = item.tx
+                ProfileManager.updateProfile(ent) // update DB
+                traffic[ent.id] = TrafficData(
+                    id = ent.id,
+                    rx = ent.rx,
+                    tx = ent.tx,
+                )
+            }
         }
         data.binder.broadcast { b ->
             for (t in traffic) {
@@ -64,31 +67,35 @@ class TrafficLooper
                 if (!proxy.isInitialized()) continue
                 items.clear()
                 itemBypass = TrafficUpdater.TrafficLooperData(tag = "bypass")
-                items["bypass"] = itemBypass
-//                    proxy.config.trafficMap.forEach { (tag, ent) ->
-                proxy.config.outboundTags.forEach { tag ->
-                    // TODO g-xx query traffic return 0?
-                    val ent = proxy.config.trafficMap[tag] ?: return@forEach
-                    val item = TrafficUpdater.TrafficLooperData(
-                        tag = tag,
-                        rx = ent.rx,
-                        tx = ent.tx,
-                    )
-                    if (tag == proxy.config.outboundTagMain) {
-                        itemMain = item
-                        itemMainBase = TrafficUpdater.TrafficLooperData(
+                items[-1] = itemBypass
+                //
+                val tags = hashSetOf("bypass")
+                proxy.config.trafficMap.forEach { (tag, ents) ->
+                    for (ent in ents) {
+                        val item = TrafficUpdater.TrafficLooperData(
                             tag = tag,
                             rx = ent.rx,
                             tx = ent.tx,
                         )
+                        if (ent.id == proxy.config.mainEntId) {
+                            itemMain = item
+                            itemMainBase = TrafficUpdater.TrafficLooperData(
+                                tag = tag,
+                                rx = ent.rx,
+                                tx = ent.tx,
+                            )
+                            Logs.d("traffic count $tag to main")
+                        }
+                        items[ent.id] = item
+                        tags.add(tag)
+                        Logs.d("traffic count $tag to ${ent.id}")
                     }
-                    items[tag] = item
-                    Logs.d("traffic count $tag to ${ent.id}")
                 }
+                //
                 trafficUpdater = TrafficUpdater(
-                    box = proxy.box, items = items
+                    box = proxy.box, items = items.values.toList()
                 )
-                proxy.box.setV2rayStats(items.keys.joinToString("\n"))
+                proxy.box.setV2rayStats(tags.joinToString("\n"))
             }
 
             trafficUpdater.updateAll()
@@ -106,16 +113,20 @@ class TrafficLooper
 
             // traffic
             val traffic = mutableMapOf<Long, TrafficData>()
-            proxy.config.trafficMap.forEach { (tag, ent) ->
-                val item = items[tag] ?: return@forEach
-                ent.rx = item.rx
-                ent.tx = item.tx
+            if (DataStore.profileTrafficStatistics) {
+                proxy.config.trafficMap.forEach { (tag, ents) ->
+                    for (ent in ents) {
+                        val item = items[ent.id] ?: return@forEach
+                        ent.rx = item.rx
+                        ent.tx = item.tx
 //                    ProfileManager.updateProfile(ent) // update DB
-                traffic[ent.id] = TrafficData(
-                    id = ent.id,
-                    rx = ent.rx,
-                    tx = ent.tx,
-                ) // display
+                        traffic[ent.id] = TrafficData(
+                            id = ent.id,
+                            rx = ent.rx,
+                            tx = ent.tx,
+                        ) // display
+                    }
+                }
             }
 
             // broadcast

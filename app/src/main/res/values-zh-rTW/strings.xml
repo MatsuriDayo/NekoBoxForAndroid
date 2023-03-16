@@ -234,7 +234,7 @@
     <string name="route_asset_status">本地版本：%s</string>
     <string name="route_asset_no_update">無更新</string>
     <string name="route_asset_updated">已更新</string>
-    <string name="route_not_asset">非資源檔案：預期副檔名為 .dat，但 %s</string>
+    <string name="route_not_asset">非資源檔案：預期副檔名為 .db，但 %s</string>
     <string name="route_opt_bypass_lan">略過區域網路位址</string>
     <string name="route_opt_block_ads">封鎖廣告</string>
     <string name="domain_strategy">網域解析策略</string>

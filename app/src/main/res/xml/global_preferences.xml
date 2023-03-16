@@ -89,8 +89,7 @@
             app:key="bypassLan"
             app:title="@string/route_opt_bypass_lan" />
         <SwitchPreference
-            android:summary="@string/bypass_lan_in_core_only_sum"
-            app:key="bypassLanInCoreOnly"
+            app:key="bypassLanInCore"
             app:title="@string/bypass_lan_in_core_only" />
         <SwitchPreference
             app:defaultValue="true"

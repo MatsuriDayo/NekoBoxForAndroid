@@ -51,16 +51,15 @@ const val LOCAL_DNS_SERVER = "underlying://0.0.0.0"
 class ConfigBuildResult(
     var config: String,
     var externalIndex: List<IndexEntity>,
-    var outboundTags: List<String>,
-    var outboundTagMain: String,
-    var trafficMap: Map<String, ProxyEntity>,
+    var mainEntId: Long,
+    var trafficMap: Map<String, List<ProxyEntity>>,
     val alerts: List<Pair<Int, String>>,
 ) {
     data class IndexEntity(var chain: LinkedHashMap<Int, ProxyEntity>)
 }
 
 fun mergeJSON(j: String, to: MutableMap<String, Any>) {
-    if (j.isNullOrBlank()) return
+    if (j.isBlank()) return
     val m = gson.fromJson(j, to.javaClass)
     m.forEach { (k, v) ->
         if (v is Map<*, *> && to[k] is Map<*, *>) {
@@ -83,19 +82,14 @@ fun buildConfig(
             return ConfigBuildResult(
                 bean.config,
                 listOf(),
-                listOf(TAG_PROXY), //
-                TAG_PROXY, //
-                mapOf(
-                    TAG_PROXY to proxy
-                ),
+                proxy.id, //
+                mapOf(TAG_PROXY to listOf(proxy)), //
                 listOf()
             )
         }
     }
 
-    val outboundTags = ArrayList<String>()
-    var outboundTagMain = TAG_BYPASS
-    val trafficMap = HashMap<String, ProxyEntity>()
+    val trafficMap = HashMap<String, MutableList<ProxyEntity>>()
     val globalOutbounds = ArrayList<Long>()
 
     fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
@@ -141,7 +135,7 @@ fun buildConfig(
     val resolveDestination = DataStore.resolveDestination
     val alerts = mutableListOf<Pair<Int, String>>()
 
-    var optionsToMerge: String = ""
+    var optionsToMerge = ""
 
     return MyOptions().apply {
         if (!forTest && DataStore.enableClashAPI) experimental = ExperimentalOptions().apply {
@@ -254,7 +248,7 @@ fun buildConfig(
 
             // chainTagOut: v2ray outbound tag for this chain
             var chainTagOut = ""
-            var chainTag = "c-$chainId"
+            val chainTag = "c-$chainId"
             var muxApplied = false
 
             fun genDomainStrategy(noAsIs: Boolean): String {
@@ -307,8 +301,6 @@ fun buildConfig(
                 } else {
                     // index == 0 means last profile in chain / not chain
                     chainTagOut = tagOut
-                    outboundTags.add(tagOut)
-                    if (chainId == 0L) outboundTagMain = tagOut
                 }
 
                 if (needGlobal) {
@@ -318,8 +310,10 @@ fun buildConfig(
                     globalOutbounds.add(proxyEntity.id)
                 }
 
-                // include g-xx
-                trafficMap[tagOut] = proxyEntity
+                // include g-xx & chain ent
+                val mapList = mutableListOf(proxyEntity)
+                if (index == 0 && profileList.size > 1) mapList.add(proxy) // chain ent
+                trafficMap[tagOut] = mapList
 
                 // Chain outbound
                 if (proxyEntity.needExternal()) {
@@ -474,10 +468,26 @@ fun buildConfig(
                     makeSingBoxRule(rule.ip.split("\n"), true)
                 }
                 if (rule.port.isNotBlank()) {
-                    port = rule.port.split("\n").map { it.toIntOrNull() ?: 0 }
+                    port = mutableListOf<Int>()
+                    port_range = mutableListOf<String>()
+                    rule.port.split(",").map {
+                        if (it.contains(":")) {
+                            port_range.add(it)
+                        } else {
+                            it.toIntOrNull()?.apply { port.add(this) }
+                        }
+                    }
                 }
                 if (rule.sourcePort.isNotBlank()) {
-                    source_port = rule.sourcePort.split("\n").map { it.toIntOrNull() ?: 0 }
+                    source_port = mutableListOf<Int>()
+                    source_port_range = mutableListOf<String>()
+                    rule.sourcePort.split(",").map {
+                        if (it.contains(":")) {
+                            source_port_range.add(it)
+                        } else {
+                            it.toIntOrNull()?.apply { source_port.add(this) }
+                        }
+                    }
                 }
                 if (rule.network.isNotBlank()) {
                     network = rule.network
@@ -656,15 +666,15 @@ fun buildConfig(
         }
 
         if (!forTest) {
-            route.rules.add(Rule_DefaultOptions().apply {
+            route.rules.add(0, Rule_DefaultOptions().apply {
                 inbound = listOf(TAG_DNS_IN)
                 outbound = TAG_DNS_OUT
             })
-            route.rules.add(Rule_DefaultOptions().apply {
+            route.rules.add(0, Rule_DefaultOptions().apply {
                 port = listOf(53)
                 outbound = TAG_DNS_OUT
             }) // TODO new mode use system dns?
-            if (DataStore.bypassLan && DataStore.bypassLanInCoreOnly) {
+            if (DataStore.bypassLanInCore) {
                 route.rules.add(Rule_DefaultOptions().apply {
                     outbound = TAG_BYPASS
                     geoip = listOf("private")
@@ -700,8 +710,7 @@ fun buildConfig(
                 mergeJSON(optionsToMerge, this)
             }),
             externalIndexMap,
-            outboundTags,
-            outboundTagMain,
+            proxy.id,
             trafficMap,
             alerts
         )

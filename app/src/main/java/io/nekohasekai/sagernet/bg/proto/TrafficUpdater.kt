@@ -4,10 +4,11 @@ import io.nekohasekai.sagernet.ktx.onIoDispatcher
 
 class TrafficUpdater(
     private val box: libcore.BoxInstance,
-    val items: Map<String, TrafficLooperData>, // contain "bypass"
+    val items: List<TrafficLooperData>, // contain "bypass"
 ) {
 
     class TrafficLooperData(
+        // Don't associate proxyEntity
         var tag: String,
         var tx: Long = 0,
         var rx: Long = 0,
@@ -52,12 +53,12 @@ class TrafficUpdater(
 
     suspend fun updateAll() {
         val updated = mutableMapOf<String, TrafficLooperData>() // diffs
-        items.forEach { (tag, item) ->
-            var diff = updated[tag]
+        items.forEach { item ->
+            var diff = updated[item.tag]
             // query a tag only once
             if (diff == null) {
                 diff = updateOne(item)
-                updated[tag] = diff
+                updated[item.tag] = diff
             } else {
                 item.rx += diff.rx
                 item.tx += diff.tx
