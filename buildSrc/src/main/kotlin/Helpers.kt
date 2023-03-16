@@ -46,7 +46,7 @@ fun Project.requireFlavor(): String {
 fun Project.requireMetadata(): Properties {
     if (!::metadata.isInitialized) {
         metadata = Properties().apply {
-            load(rootProject.file("sager.properties").inputStream())
+            load(rootProject.file("nb4a.properties").inputStream())
         }
     }
     return metadata

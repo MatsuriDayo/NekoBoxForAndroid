@@ -1,5 +1,6 @@
 package io.nekohasekai.sagernet.group
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.*
@@ -30,6 +31,7 @@ import java.io.StringReader
 @Suppress("EXPERIMENTAL_API_USAGE")
 object RawUpdater : GroupUpdater() {
 
+    @SuppressLint("Recycle")
     override suspend fun doUpdate(
         proxyGroup: ProxyGroup,
         subscription: SubscriptionBean,
@@ -283,6 +285,8 @@ object RawUpdater : GroupUpdater() {
                                             "h2" -> bean.type = "http"
                                         }
                                     }
+                                    "client-fingerprint" -> bean.utlsFingerprint =
+                                        opt.value as String
                                     "tls" -> bean.security =
                                         if (opt.value?.toString() == "true") "tls" else ""
                                     "skip-cert-verify" -> bean.allowInsecure =
@@ -354,6 +358,8 @@ object RawUpdater : GroupUpdater() {
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
                                     "password" -> bean.password = opt.value?.toString()
+                                    "client-fingerprint" -> bean.utlsFingerprint =
+                                        opt.value as String
                                     "sni" -> bean.sni = opt.value?.toString()
                                     "skip-cert-verify" -> bean.allowInsecure =
                                         opt.value?.toString() == "true"

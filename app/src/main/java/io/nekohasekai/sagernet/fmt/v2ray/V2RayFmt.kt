@@ -186,6 +186,10 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             encryption = it
         }
     }
+
+    url.queryParameter("fp")?.let {
+        utlsFingerprint = it
+    }
 }
 
 // 不确定是谁的格式
@@ -266,7 +270,8 @@ fun parseV2RayN(link: String): VMessBean {
 
     bean.name = json.getStr("ps") ?: ""
     bean.sni = json.getStr("sni") ?: bean.host
-    bean.security = json.getStr("tls")
+    bean.security = json.getStr("tls") ?: "none"
+    bean.utlsFingerprint = json.getStr("fp") ?: ""
 
     if (json.optInt("v", 2) < 2) {
         when (bean.type) {
@@ -354,7 +359,8 @@ data class VmessQRCode(
     var path: String = "",
     var tls: String = "",
     var sni: String = "",
-    var alpn: String = ""
+    var alpn: String = "",
+    var fp: String = "",
 )
 
 fun VMessBean.toV2rayN(): String {
@@ -379,6 +385,7 @@ fun VMessBean.toV2rayN(): String {
         tls = if (this@toV2rayN.security == "tls") "tls" else ""
         sni = this@toV2rayN.sni
         scy = this@toV2rayN.encryption
+        fp = this@toV2rayN.utlsFingerprint
     }.let {
         NGUtil.encode(Gson().toJson(it))
     }
@@ -438,7 +445,12 @@ fun StandardV2RayBean.toUri(standard: Boolean = true): String {
                 if (certificates.isNotBlank()) {
                     builder.addQueryParameter("cert", certificates)
                 }
-                if (allowInsecure) builder.addQueryParameter("allowInsecure", "1")
+                if (allowInsecure) {
+                    builder.addQueryParameter("allowInsecure", "1")
+                }
+                if (utlsFingerprint.isNotBlank()) {
+                    builder.addQueryParameter("fp", utlsFingerprint)
+                }
             }
         }
     }
