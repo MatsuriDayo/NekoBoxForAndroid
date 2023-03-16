@@ -38,9 +38,9 @@ https://matsuridayo.github.io
 * NaïveProxy ( naive-plugin )
 * Hysteria ( hysteria-plugin )
 
-请到项目主页下载插件。
+请到[项目主页](https://matsuridayo.github.io)下载插件。
 
-Please go to the project homepage to download plugins.
+Please go to the [project homepage](https://matsuridayo.github.io) to download plugins.
 
 ## 订阅 / Subscription
 
@@ -49,9 +49,9 @@ Please go to the project homepage to download plugins.
 
 ## 捐助 / Donate
 
-您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠
-
 欢迎捐赠以支持项目开发。
+
+您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠
 
 USDT TRC20
 

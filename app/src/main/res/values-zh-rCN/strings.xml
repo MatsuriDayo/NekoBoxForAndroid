@@ -188,6 +188,8 @@
     <string name="http_path">HTTP 路径</string>
     <string name="quic_security">QUIC 加密方式</string>
     <string name="quic_key">QUIC 密钥</string>
+    <string name="show_bottom_bar">像 SagerNet 一样显示底栏</string>
+    <string name="utls_fingerprint">uTLS 指纹</string>
     <string name="kcp_seed">mKCP 混淆密码</string>
     <string name="grpc_service_name">gRPC 服务名称</string>
     <string name="alpn">应用层协议协商</string>
@@ -467,6 +469,7 @@
     <string name="experimental_reduced_iv_head_entropy">这是 GFWReport 针对 GFW 上观察到的类似随机流的协议阻塞行为提出的对策。  这个选项将 IV 的前 6 个字节重新映射为可打印的字符，启用后，特权网络路径上的任何人都有可能识别该协议。</string>
     <string name="exe_prefer_provider">首选插件提供者</string>
     <string name="create_shortcut">创建快捷方式</string>
+    <string name="app_tls_version">订阅最低 TLS 版本</string>
     <string name="hop_interval">端口跳跃间隔(秒)</string>
     <string name="dns_network">DNS 查询类型</string>
     <string name="tuic_disable_sni">禁用 SNI</string>
@@ -476,4 +479,14 @@
     <string name="tuic_congestion_controller">拥塞控制</string>
     <string name="tuic_udp_relay_mode">UDP 转发模式</string>
     <string name="tuic_token">令牌</string>
+    <string name="menu_dashboard">sing-box 仪表板</string>
+    <string name="custom_outbound_json">自定义出站 JSON</string>
+    <string name="custom_config_json">自定义配置 JSON</string>
+    <string name="is_outbound_only">设置的 JSON 是出站</string>
+    <string name="save">保存</string>
+    <string name="set_panel_url">设置面板 URL</string>
+    <string name="enable_clash_api">启用 Clash API</string>
+    <string name="enable_clash_api_summary">在 127.0.0.1:9090 提供 clash api 和 yacd 仪表板</string>
+    <string name="xtls_flow">Flow（VLESS 子协议）</string>
+    <string name="log_level">日志级别</string>
 </resources>
