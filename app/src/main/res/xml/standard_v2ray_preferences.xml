@@ -79,6 +79,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="serverWsCategory"
+        app:title="@string/cag_ws">
+        <EditTextPreference
+            app:defaultValue="0"
+            app:icon="@drawable/ic_baseline_compare_arrows_24"
+            app:key="wsMaxEarlyData"
+            app:title="@string/ws_max_early_data"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_stream_24"
+            app:key="earlyDataHeaderName"
+            app:title="@string/early_data_header_name"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="serverSecurityCategory"
         app:title="@string/security_settings">
         <EditTextPreference

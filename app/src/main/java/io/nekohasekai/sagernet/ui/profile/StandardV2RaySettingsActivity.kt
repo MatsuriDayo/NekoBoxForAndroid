@@ -34,6 +34,8 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val host = pbm.add(PreferenceBinding(Type.Text, "host"))
     private val path = pbm.add(PreferenceBinding(Type.Text, "path"))
     private val packetEncoding = pbm.add(PreferenceBinding(Type.TextToInt, "packetEncoding"))
+    private val wsMaxEarlyData = pbm.add(PreferenceBinding(Type.TextToInt, "wsMaxEarlyData"))
+    private val earlyDataHeaderName = pbm.add(PreferenceBinding(Type.Text, "earlyDataHeaderName"))
     private val security = pbm.add(PreferenceBinding(Type.Text, "security"))
     private val sni = pbm.add(PreferenceBinding(Type.Text, "sni"))
     private val alpn = pbm.add(PreferenceBinding(Type.Text, "alpn"))
@@ -62,6 +64,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     }
 
     lateinit var securityCategory: PreferenceCategory
+    lateinit var wsCategory: PreferenceCategory
 
     override fun PreferenceFragmentCompat.createPreferences(
         savedInstanceState: Bundle?,
@@ -70,6 +73,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         addPreferencesFromResource(R.xml.standard_v2ray_preferences)
         pbm.setPreferenceFragment(this)
         securityCategory = findPreference(Key.SERVER_SECURITY_CATEGORY)!!
+        wsCategory = findPreference(Key.SERVER_WS_CATEGORY)!!
 
         serverPort.preference.apply {
             this as EditTextPreference
@@ -133,6 +137,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     fun updateView(network: String) {
         host.preference.isVisible = false
         path.preference.isVisible = false
+        wsCategory.isVisible = false
 
         when (network) {
             "tcp" -> {
@@ -150,6 +155,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
                 path.preference.setTitle(R.string.ws_path)
                 host.preference.isVisible = true
                 path.preference.isVisible = true
+                wsCategory.isVisible = true
             }
             "grpc" -> {
                 path.preference.setTitle(R.string.grpc_service_name)

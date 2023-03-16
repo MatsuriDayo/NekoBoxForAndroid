@@ -62,8 +62,8 @@ class TrafficUpdater(
             } else {
                 item.rx += diff.rx
                 item.tx += diff.tx
-                item.rxRate += diff.rxRate
-                item.txRate += diff.txRate
+                item.rxRate = diff.rxRate
+                item.txRate = diff.txRate
             }
         }
     }
