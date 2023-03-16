@@ -40,66 +40,6 @@ public class SingBoxOptions {
         public ExperimentalOptions experimental;
     }
 
-    public static class Outbound_WireGuardOptions_Fix extends Outbound {
-
-        // Generate note: nested type DialerOptions
-        public String detour;
-
-        public String bind_interface;
-
-        public String inet4_bind_address;
-
-        public String inet6_bind_address;
-
-        public String protect_path;
-
-        public Integer routing_mark;
-
-        public Boolean reuse_addr;
-
-        public Long connect_timeout;
-
-        public Boolean tcp_fast_open;
-
-        public Boolean udp_fragment;
-
-
-        public String domain_strategy;
-
-        public Long fallback_delay;
-
-        // End of public DialerOptions ;
-
-        // Generate note: nested type ServerOptions
-        public String server;
-
-        public Integer server_port;
-
-        // End of public ServerOptions ;
-
-        public Boolean system_interface;
-
-        public String interface_name;
-
-        // Generate note: Listable
-        public List<String> local_address;
-
-        public String private_key;
-
-        public String peer_public_key;
-
-        public String pre_shared_key;
-
-        public String reserved; // fixed, can fill a base64 str
-
-        public Integer workers;
-
-        public Integer mtu;
-
-        public String network;
-
-    }
-
     // paste generate output here
 
     public static class ClashAPIOptions extends SingBoxOption {
@@ -475,7 +415,8 @@ public class SingBoxOptions {
 
         public String name;
 
-        public List<Byte> auth;
+        // Generate note: Base64 String
+        public String auth;
 
         public String auth_str;
 
@@ -529,7 +470,8 @@ public class SingBoxOptions {
 
         public String obfs;
 
-        public List<Byte> auth;
+        // Generate note: Base64 String
+        public String auth;
 
         public String auth_str;
 
@@ -2349,7 +2291,8 @@ public class SingBoxOptions {
 
         public String pre_shared_key;
 
-        public List<Integer> reserved;
+        // Generate note: Base64 String
+        public String reserved;
 
         public Integer workers;
 
@@ -3408,7 +3351,8 @@ public class SingBoxOptions {
 
         public String pre_shared_key;
 
-        public List<Integer> reserved;
+        // Generate note: Base64 String
+        public String reserved;
 
         public Integer workers;
 
@@ -3465,7 +3409,8 @@ public class SingBoxOptions {
 
         public String obfs;
 
-        public List<Byte> auth;
+        // Generate note: Base64 String
+        public String auth;
 
         public String auth_str;
 

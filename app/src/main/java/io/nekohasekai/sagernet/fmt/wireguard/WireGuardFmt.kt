@@ -2,8 +2,8 @@ package io.nekohasekai.sagernet.fmt.wireguard
 
 import moe.matsuri.nb4a.SingBoxOptions
 
-fun buildSingBoxOutboundWireguardBean(bean: WireGuardBean): SingBoxOptions.Outbound_WireGuardOptions_Fix {
-    return SingBoxOptions.Outbound_WireGuardOptions_Fix().apply {
+fun buildSingBoxOutboundWireguardBean(bean: WireGuardBean): SingBoxOptions.Outbound_WireGuardOptions {
+    return SingBoxOptions.Outbound_WireGuardOptions().apply {
         type = "wireguard"
         server = bean.serverAddress
         server_port = bean.serverPort

@@ -211,7 +211,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): SingBoxOptions.Outboun
         obfs = bean.obfuscation
         disable_mtu_discovery = bean.disableMtuDiscovery
         when (bean.authPayloadType) {
-            HysteriaBean.TYPE_BASE64 -> auth = Util.b64Decode(bean.authPayload).toList()
+            HysteriaBean.TYPE_BASE64 -> auth = bean.authPayload
             HysteriaBean.TYPE_STRING -> auth_str = bean.authPayload
         }
         if (bean.streamReceiveWindow > 0) {
