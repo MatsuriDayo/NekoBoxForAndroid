@@ -91,6 +91,7 @@ fun buildConfig(
 
     val trafficMap = HashMap<String, MutableList<ProxyEntity>>()
     val globalOutbounds = ArrayList<Long>()
+    var optionsToMerge = ""
 
     fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
         val bean = requireBean()
@@ -134,8 +135,6 @@ fun buildConfig(
     val ipv6Mode = if (forTest) IPv6Mode.ENABLE else DataStore.ipv6Mode
     val resolveDestination = DataStore.resolveDestination
     val alerts = mutableListOf<Pair<Int, String>>()
-
-    var optionsToMerge = ""
 
     return MyOptions().apply {
         if (!forTest && DataStore.enableClashAPI) experimental = ExperimentalOptions().apply {
@@ -377,7 +376,6 @@ fun buildConfig(
                     if (index == 0 && bean.customConfigJson.isNotBlank()) {
                         optionsToMerge = bean.customConfigJson
                     }
-
                 }
 
                 pastEntity?.requireBean()?.apply {

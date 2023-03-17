@@ -33,6 +33,7 @@ class WebviewFragment : ToolbarFragment(R.layout.layout_webview), Toolbar.OnMenu
 
         // webview
         mWebView = binding.webview
+        mWebView.settings.domStorageEnabled = true
         mWebView.settings.javaScriptEnabled = true
         mWebView.webViewClient = object : WebViewClient() {
             override fun onReceivedError(
@@ -46,13 +47,6 @@ class WebviewFragment : ToolbarFragment(R.layout.layout_webview), Toolbar.OnMenu
             }
         }
         mWebView.loadUrl(DataStore.yacdURL)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // mWebView.onPause()
-        // mWebView.removeAllViews()
-        // mWebView.destroy()
     }
 
     @SuppressLint("CheckResult")
@@ -70,6 +64,11 @@ class WebviewFragment : ToolbarFragment(R.layout.layout_webview), Toolbar.OnMenu
                     }
                     positiveButton(R.string.save)
                 }
+            }
+            R.id.close -> {
+                mWebView.onPause()
+                mWebView.removeAllViews()
+                mWebView.destroy()
             }
         }
         return true

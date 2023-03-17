@@ -313,7 +313,7 @@ class MainActivity : ThemedActivity(),
             .replace(R.id.fragment_holder, RouteFragment())
             .commitAllowingStateLoss()
         if (DataStore.serviceState.started) {
-            snackbar(getString(R.string.restart)).setAction(R.string.apply) {
+            snackbar(getString(R.string.need_reload)).setAction(R.string.apply) {
                 SagerNet.reloadService()
             }.show()
         }
@@ -402,7 +402,7 @@ class MainActivity : ThemedActivity(),
             Key.SERVICE_MODE -> onBinderDied()
             Key.PROXY_APPS, Key.BYPASS_MODE, Key.INDIVIDUAL -> {
                 if (DataStore.serviceState.canStop) {
-                    snackbar(getString(R.string.restart)).setAction(R.string.apply) {
+                    snackbar(getString(R.string.need_reload)).setAction(R.string.apply) {
                         SagerNet.reloadService()
                     }.show()
                 }

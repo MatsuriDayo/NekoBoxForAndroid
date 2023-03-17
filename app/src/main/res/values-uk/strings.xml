@@ -73,7 +73,6 @@
     <string name="menu_about">Про</string>
     <string name="menu_group">Група</string>
     <string name="menu_configuration">Конфігурація</string>
-    <string name="logcat_summary">Такі корисні дуже вау</string>
     <string name="logcat">Експорт інформації про налагодження</string>
     <string name="version_x">Версія (%s)</string>
     <string name="app_version">Версія</string>
@@ -96,15 +95,11 @@
     <string name="extra_headers">Додаткові заголовки</string>
     <string name="encryption">Шифрування</string>
     <string name="early_data_header_name">Назва раннього заголовка даних</string>
-    <string name="pinned_peer_certificate_chain_sha256">Закріплений ланцюжок сертифікатів</string>
     <string name="certificates">Сертифікати</string>
     <string name="alpn">Переговори про протокол шару додатків</string>
     <string name="sni">Індикація імені сервера</string>
     <string name="tls">Використовуйте TLS</string>
     <string name="grpc_service_name">ім\'я служби gRPC</string>
-    <string name="kcp_seed">Насіння mKCP</string>
-    <string name="quic_key">Швидкий КЛЮЧ</string>
-    <string name="quic_security">QUIC Безпека</string>
     <string name="http_path">Шлях HTTP</string>
     <string name="http_host">Хост HTTP</string>
     <string name="ws_path">Шлях WebSocket</string>

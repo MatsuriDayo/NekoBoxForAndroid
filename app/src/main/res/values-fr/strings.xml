@@ -36,9 +36,6 @@
     <string name="apps">Applications</string>
     <string name="clear_profiles_message">Êtes-vous sûr(e) de vouloir supprimer ce groupe \?</string>
     <string name="profile_import_message">Confirmez-vous que vous voulez importer le profil %s \?</string>
-    <string name="group_filter_tags_nf">Aucune étiquette dans cet abonnement</string>
-    <string name="group_filter_tags">Étiquettes</string>
-    <string name="group_filter_groups">Groupes</string>
     <string name="general_settings">Paramètres de l\'appli</string>
     <string name="cag_route">Paramètres d\'itinéraire</string>
     <string name="service_mode">Mode service</string>
@@ -86,7 +83,6 @@
     <string name="service_mode_proxy">Agent seulement</string>
     <string name="group_duplicate">Reproduction:
 \n%s</string>
-    <string name="logcat_summary">Ça marche</string>
     <string name="connection_test_clear_results">Effacer les résultats des tests</string>
     <string name="action_export_err">Échec de l\'export.</string>
     <string name="ssh_private_key">Clé privée</string>
@@ -202,11 +198,8 @@
     <string name="ooc_warning">Notice</string>
     <string name="install_from_fdroid">Installer depuis F-Droid</string>
     <string name="subscription_update_message">Mise à jour de %s…</string>
-    <string name="group_filter_owners">Propriétaires</string>
     <string name="group_order">Ordre</string>
     <string name="group_order_origin">Origine</string>
-    <string name="traffic_active">Actif</string>
-    <string name="traffic_stats">Statistiques</string>
     <string name="tcp_connections">%d connexions TCP</string>
     <string name="udp_connections">%d connexions UDP</string>
     <string name="copy_package_name">Copier le nom du paquet</string>
@@ -231,13 +224,12 @@
     <string name="group_order_by_name">Par nom</string>
     <string name="wireguard_local_address">Adresse locale</string>
     <string name="proxy_cat">Préférences du serveur</string>
-    <string name="restart">Recharger le service de proxy pour appliquer les modifications</string>
+    <string name="need_reload">Recharger le service de proxy pour appliquer les modifications</string>
     <string name="append_http_proxy">Ajouter un proxy HTTP au VPN</string>
     <string name="subscription_settings">Préférences de souscription</string>
     <string name="group_type">Type du groupe</string>
     <string name="subscription_type">Type de souscription</string>
     <string name="install_from_play_store">Installer depuis le Play Store</string>
-    <string name="group_filter_groups_nf">Aucun groupe pour cette souscription</string>
     <string name="subscription_used">%s utilisé</string>
     <string name="group_order_by_delay">Par délai</string>
     <string name="route_bypass_ip">Règle IP pour %s</string>
@@ -267,7 +259,6 @@
     <string name="app_no_launcher">L\'appli n\'a pas d\'interface.</string>
     <string name="destination_override">Écraser la destination</string>
     <string name="resolve_destination">Résoudre la destination</string>
-    <string name="pcap_summary">Enregistrer le trafic dans un fichier .pcap</string>
     <string name="add_profile_methods_manual_settings">Préférences manuels</string>
     <string name="backup">Sauvegarde</string>
     <string name="backup_settings">Préférences</string>
@@ -299,11 +290,9 @@
     <string name="auto_update">Mise à jour auto</string>
     <string name="subscription_traffic">%s utilisé(s) / %s restant(s)</string>
     <string name="subscription_import">Importer une souscription</string>
-    <string name="group_filter_owners_nf">Aucun propriétaire dans cette souscription</string>
     <string name="profile_import">Importer un profil</string>
     <string name="warp_generate">Générer une configuration</string>
     <string name="stun_attest_loading">Cela peut prendre quelques minutes…</string>
-    <string name="traffic_statistics_summary">Peut augmenter la consommation d\'énergie</string>
     <string name="invalid_backup_file">Fichier de sauvegarde invalide</string>
     <string name="backup_import_summary">L\'importation écrasera les données existantes.</string>
     <string name="tools_network">Réseaux</string>

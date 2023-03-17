@@ -54,6 +54,11 @@ public class WireGuardBean extends AbstractBean {
         reserved = input.readString();
     }
 
+    @Override
+    public boolean canTCPing() {
+        return false;
+    }
+
     @NotNull
     @Override
     public WireGuardBean clone() {

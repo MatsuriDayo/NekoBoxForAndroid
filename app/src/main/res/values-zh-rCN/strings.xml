@@ -7,7 +7,6 @@
     <string name="oss_licenses">开放源代码协议</string>
     <string name="app_version">版本</string>
     <string name="logcat">导出调试信息</string>
-    <string name="logcat_summary">这种非常有用哇</string>
     <string name="menu_configuration">配置</string>
     <string name="menu_group">分组</string>
     <string name="menu_about">关于</string>
@@ -180,17 +179,14 @@
     <string name="traffic_sniffing">启用流量探测</string>
     <string name="disable">禁用</string>
     <string name="cag_misc">杂项</string>
-    <string name="enable_mux">启用多路复用 (sing-box smux)</string>
+    <string name="enable_mux">启用多路复用</string>
     <string name="mux_concurrency">复用最大并发</string>
     <string name="ws_host">WebSocket 主机</string>
     <string name="ws_path">WebSocket 路径</string>
     <string name="http_host">HTTP 主机</string>
     <string name="http_path">HTTP 路径</string>
-    <string name="quic_security">QUIC 加密方式</string>
-    <string name="quic_key">QUIC 密钥</string>
     <string name="show_bottom_bar">像 SagerNet 一样显示底栏</string>
     <string name="utls_fingerprint">uTLS 指纹</string>
-    <string name="kcp_seed">mKCP 混淆密码</string>
     <string name="grpc_service_name">gRPC 服务名称</string>
     <string name="alpn">应用层协议协商</string>
     <string name="group_duplicate">重复:
@@ -202,8 +198,6 @@
     <string name="ss_cat">Shadowsocks 设置</string>
     <string name="insecure">不安全</string>
     <string name="deprecated">已废弃</string>
-    <string name="insecure_warn">安全建议</string>
-    <string name="insecure_warn_sum">由 Qv2ray 开发者社区提供</string>
     <string name="show_direct_speed">显示直连速度</string>
     <string name="show_direct_speed_sum">在通知中也显示不经过代理的流量速度</string>
     <string name="select_profile">选择配置</string>
@@ -211,9 +205,7 @@
     <string name="chain_settings">链设置</string>
     <string name="circular_reference">循环引用</string>
     <string name="circular_reference_sum">路由中不能包含自己.</string>
-    <string name="mux_sum">多路复用是为了减少 TCP 的握手延迟而设计, 而非提高连接的吞吐量. 用于看视频、下载或者测速通常都有反效果</string>
-    <string name="mux_for_all">为所有可能支持的协议启用多路复用</string>
-    <string name="mux_for_all_sum">如果服务器不支持, 则将无法连接.</string>
+    <string name="mux_sum">多路复用是为了减少 TCP 的握手延迟而设计, 而非提高连接的吞吐量. 用于看视频、下载或者测速通常都有反效果。如果服务器不支持，则无法上网。</string>
     <string name="tcp_keep_alive_interval">TCP 保持活跃数据包发送间隔</string>
     <string name="route_add">新建路由规则</string>
     <string name="delete_route_prompt">您确定要移除此路由吗\?</string>
@@ -229,7 +221,7 @@
     <string name="route_reset">重置</string>
     <string name="clear_profiles">清空</string>
     <string name="file_manager_missing">您的设备缺少 Android 标准文件选择器, 请安装一个, 如 Material Files.</string>
-    <string name="restart">重载代理服务以应用修改</string>
+    <string name="need_reload">重载代理服务以应用修改</string>
     <string name="theme">主题颜色</string>
     <string name="donate">捐款</string>
     <string name="donate_info">猫猫很可爱 请给猫猫钱</string>
@@ -242,10 +234,8 @@
     <string name="port_transproxy">透明代理端口</string>
     <string name="connection_test_url">连接测试链接</string>
     <string name="connection_test_available_http">连接成功: HTTP 握手耗时 %dms</string>
-    <string name="route_reverse">反向代理</string>
-    <string name="route_reverse_redirect">反向地址</string>
     <string name="certificates">证书 (链)</string>
-    <string name="pinned_peer_certificate_chain_sha256">固定证书链散列</string>
+    <string name="bypass_lan_in_core">在核心中绕过 LAN</string>
     <string name="ignore_battery_optimizations">忽略电池优化</string>
     <string name="ignore_battery_optimizations_sum">移除一些限制</string>
     <string name="document">文档</string>
@@ -298,8 +288,6 @@
     <string name="append_http_proxy">追加 HTTP 代理至 VPN</string>
     <string name="append_http_proxy_sum">浏览器 / 一些支持的应用 将直接使用 HTTP 代理, 而不经过虚拟网卡设备 (Android 10+)</string>
     <string name="connection_test_icmp_ping_unavailable">ICMPing 不可用</string>
-    <string name="bypass_lan_in_core_only">仅在 Core 中绕过局域网</string>
-    <string name="bypass_lan_in_core_only_sum">如果 Lineage 之 \"允许热点客户端使用 VPN\" 无法使用, 尝试启用此项.</string>
     <string name="protocol_settings">协议设置</string>
     <string name="trojan_provider">Trojan 提供程序</string>
     <string name="group_basic">基本</string>
@@ -335,11 +323,6 @@
     <string name="subscription_update_message">正更新 %s …</string>
     <string name="update_subscription_warning">代理未连接, 您确定要继续更新吗\?</string>
     <string name="group_filter">筛选</string>
-    <string name="group_filter_groups">组</string>
-    <string name="group_filter_tags">标签</string>
-    <string name="group_filter_groups_nf">该订阅中没有分组</string>
-    <string name="group_filter_tags_nf">该订阅中没有标签</string>
-    <string name="group_filter_ns">您需要一个 OOCv1 订阅以使用筛选功能</string>
     <string name="subscription_used">已用 %s</string>
     <string name="subscription_traffic">已用 %s / 剩余 %s</string>
     <string name="subscription_import">导入订阅</string>
@@ -376,8 +359,6 @@
     <string name="plugin_exists_but_on_shit_system">配置 %s 需要插件 %s，但你的专有设备供应商（通常也是监视资本主义巨头和恶意软件制造商）篡改了你的安卓系统，使该插件无法使用。</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray （Shadowsocks Android 插件）</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs （Shadowsocks Android 插件）</string>
-    <string name="experimental_no_termination_signal">通过 VMess 传输时，不要为TCP连接发送连接单双工终止信号。这将破坏与一些应用程序的兼容性。</string>
-    <string name="experimental_authenticated_length">让每个有效载荷段的长度不再具有可塑性。这个实验要求服务器和客户端使用相同版本的 v2ray-core。预计会有更多关于这个实验的破坏性更新。</string>
     <string name="menu_traffic">流量</string>
     <string name="route_for">%s 路由</string>
     <string name="app_no_launcher">该应用没有界面。</string>
@@ -389,14 +370,10 @@
     <string name="open_app">打开应用</string>
     <string name="copy_package_name">复制包名</string>
     <string name="copy_label">复制应用名</string>
-    <string name="traffic_holder">启用 VPN 以统计流量</string>
     <string name="udp_connections">%d UDP 连接</string>
     <string name="tcp_connections">%d TCP 连接</string>
-    <string name="traffic_stats">统计</string>
-    <string name="traffic_active">活动</string>
     <string name="route_need_vpn">路由规则 %s 依赖 VPN 以生效，所以其已被忽略。</string>
     <string name="no_statistics">暂无数据</string>
-    <string name="traffic_statistics_summary">可能增加电量使用</string>
     <string name="ssh_private_key_passphrase">私钥密码句</string>
     <string name="ssh_private_key">私钥</string>
     <string name="ssh_public_key">公钥</string>
@@ -418,13 +395,8 @@
     <string name="warp_license">CloudFlare Warp 是一个免费的 WireGuard VPN 提供源. 使用它, 代表您同意其服务条款。</string>
     <string name="profile_traffic_statistics_summary">禁用后将不统计使用的流量</string>
     <string name="app_statistics_disabled">应用流量统计已禁用</string>
-    <string name="enable_pcap">启用 Pcap</string>
-    <string name="pcap_summary">保存流量到 .pcap 文件</string>
     <string name="pcap_notice">Pcap 文件将被保存到 %s</string>
-    <string name="app_traffic_statistics">应用流量统计</string>
     <string name="profile_traffic_statistics">配置流量统计</string>
-    <string name="group_filter_owners">拥有者</string>
-    <string name="group_filter_owners_nf">该订阅中没有拥有者</string>
     <string name="stun_test_summary">使用 STUN 确定客户端的 RFC 3478 中定义的 NAT 过滤行为。</string>
     <string name="stun_test">NAT 行为发现</string>
     <string name="start">开始</string>
@@ -466,7 +438,6 @@
     <string name="move">移动</string>
     <string name="subscription_expire">过期: %s</string>
     <string name="update_all_subscription">更新所有订阅</string>
-    <string name="experimental_reduced_iv_head_entropy">这是 GFWReport 针对 GFW 上观察到的类似随机流的协议阻塞行为提出的对策。  这个选项将 IV 的前 6 个字节重新映射为可打印的字符，启用后，特权网络路径上的任何人都有可能识别该协议。</string>
     <string name="exe_prefer_provider">首选插件提供者</string>
     <string name="create_shortcut">创建快捷方式</string>
     <string name="app_tls_version">订阅最低 TLS 版本</string>
@@ -489,4 +460,6 @@
     <string name="enable_clash_api_summary">在 127.0.0.1:9090 提供 clash api 和 yacd 仪表板</string>
     <string name="xtls_flow">Flow（VLESS 子协议）</string>
     <string name="log_level">日志级别</string>
+    <string name="ads">推广</string>
+    <string name="need_restart">重新启动应用程序以应用更改</string>
 </resources>

@@ -10,7 +10,6 @@
     <string name="app_version">Version</string>
     <string name="version_x">Version (%s)</string>
     <string name="logcat">Export debug information</string>
-    <string name="logcat_summary">Such useful very wow</string>
     <string name="menu_configuration">Configuration</string>
     <string name="menu_group">Group</string>
     <string name="menu_about">About</string>
@@ -148,8 +147,6 @@
     <string name="route_play_store">Play store rule for %s</string>
     <string name="route_bypass_ip">IP rule for %s</string>
     <string name="route_reset">Reset</string>
-    <string name="route_reverse">Reverse Proxy</string>
-    <string name="route_reverse_redirect">Reverse Redirect</string>
     <string name="route_manage_assets">Manage Route Assets</string>
     <string name="route_assets">Assets</string>
     <string name="route_rules_provider">Rule Assets Provider</string>
@@ -164,11 +161,9 @@
     <string name="route_opt_block_quic">Block QUIC</string>
     <string name="domain_strategy">Domain Resolution Strategy</string>
     <string name="traffic_sniffing">Enable Traffic Sniffing</string>
-    <string name="enable_mux">Enable Multiplexer (sing-box smux)</string>
-    <string name="mux_sum">Mux is designed to reduce TCP handshake latency, not to increase connection throughput. Using Mux to watch videos, download or speed test is usually counter productive</string>
+    <string name="enable_mux">Enable Multiplexer</string>
+    <string name="mux_sum">Mux is designed to reduce TCP handshake latency, not to increase connection throughput. Using Mux to watch videos, download or speed test is usually counter productive. If the server does not support it, you will not be able to access the Internet.</string>
     <string name="mux_concurrency">Mux Concurrent Connections</string>
-    <string name="mux_for_all">Enable Mux for all possible supported protocols</string>
-    <string name="mux_for_all_sum">If the server does not support Mux, we will not be able to connect to it.</string>
     <string name="tcp_keep_alive_interval">TCP keep active packet delivery interval</string>
     <string name="proxied_apps">Apps VPN mode</string>
     <string name="proxied_apps_summary">Configure VPN mode for selected apps</string>
@@ -259,8 +254,6 @@
         <item quantity="other">%d proxies added</item>
     </plurals>
     <string name="undo">Undo</string>
-    <string name="insecure_warn">Security Advisory</string>
-    <string name="insecure_warn_sum">Provided by the Qv2ray Developer Community</string>
     <string name="insecure">Insecure</string>
     <string name="deprecated">Deprecated</string>
     <!-- tasker -->
@@ -294,7 +287,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="apply">Apply</string>
-    <string name="restart">Reload proxy service to apply changes</string>
+    <string name="need_reload">Reload proxy service to apply changes</string>
     <string name="license">License</string>
     <string name="route_warn">Make sure you have read the documentation before adding custom rules, otherwise you may not be able to connect to the Internet.</string>
     <string name="lines">%d Lines</string>
@@ -330,7 +323,6 @@
     <string name="connection_test_timeout">Timeout</string>
     <string name="append_http_proxy">Append HTTP Proxy to VPN</string>
     <string name="append_http_proxy_sum">HTTP proxy will be used directly from (browser/ some supported apps), without going through the virtual NIC device (Android 10+)</string>
-    <string name="bypass_lan_in_core_only">Bypass LAN in Core Only</string>
     <string name="protocol_settings">Protocol Settings</string>
     <string name="trojan_provider">Trojan Provider</string>
     <string name="group_basic">Basic</string>
@@ -367,13 +359,6 @@
     <string name="subscription_update">Subscription Update</string>
     <string name="subscription_update_message">Updating %s …</string>
     <string name="group_filter">Filter</string>
-    <string name="group_filter_groups">Groups</string>
-    <string name="group_filter_tags">Tags</string>
-    <string name="group_filter_owners">Owners</string>
-    <string name="group_filter_ns">OOCv1 subscription is required to use the filtering feature</string>
-    <string name="group_filter_groups_nf">No groups in this subscription</string>
-    <string name="group_filter_tags_nf">No tags in this subscription</string>
-    <string name="group_filter_owners_nf">No owners in this subscription</string>
     <string name="subscription_used">%s Used</string>
     <string name="subscription_traffic">%s Used / %s Remaining</string>
     <string name="subscription_expire">Expire: %s</string>
@@ -391,8 +376,6 @@
     <string name="hysteria_upload_mbps">Max Upload Speed (in Mbps)</string>
     <string name="hysteria_download_mbps">Max Download Speed (in Mbps)</string>
     <string name="experimental_settings">Experimental</string>
-    <string name="experimental_authenticated_length">Make the length of each payload segment no longer malleable. This experiment requires the server and client use the same version of v2ray-core. More breaking updates on this experiment is expected.</string>
-    <string name="experimental_no_termination_signal">Do not send connection single duplex termination signal for TCP connection when transferred over VMess. This will break some application.</string>
     <string name="hysteria_stream_receive_window">QUIC Stream Receive Window</string>
     <string name="hysteria_connection_receive_window">QUIC Connection Receive Window</string>
     <string name="hysteria_disable_mtu_discovery">Disable Path MTU Discovery</string>
@@ -410,13 +393,9 @@
 
     <string name="traffic_uplink_total" translatable="false">%s ↑</string>
     <string name="traffic_downlink_total" translatable="false">%s ↓</string>
-    <string name="traffic_active">Active</string>
-    <string name="traffic_stats">Statistics</string>
 
     <string name="tcp_connections">%d TCP connections</string>
     <string name="udp_connections">%d UDP connections</string>
-
-    <string name="traffic_holder">Open VPN to record traffic statistics</string>
 
     <string name="copy_label">Copy Name</string>
     <string name="copy_package_name">Copy Package Name</string>
@@ -432,9 +411,7 @@
 
     <string name="route_need_vpn">Routing rule %s relies on the VPN to be in effect, so it is ignored.</string>
 
-    <string name="app_traffic_statistics">App Traffic Statistics</string>
     <string name="profile_traffic_statistics">Profile Traffic Statistics</string>
-    <string name="traffic_statistics_summary">May increase power consumption</string>
     <string name="profile_traffic_statistics_summary">When disabled, the used traffic will not be counted</string>
     <string name="no_statistics">No statistics yet</string>
     <string name="app_statistics_disabled">App Traffic statistics disabled</string>
@@ -460,8 +437,6 @@
     <string name="resolve_destination">Resolve Destination</string>
     <string name="resolve_destination_summary">If the destination address is a domain, it is then passed out based on the IPv6 strategy (conflicts with FakeDNS)</string>
     <string name="pcap" translatable="false">Pcap</string>
-    <string name="enable_pcap">Enable Pcap</string>
-    <string name="pcap_summary">Save traffic to .pcap file</string>
     <string name="pcap_notice">Pcap files will be saved to %s</string>
     <string name="naive_insecure_concurrency">Insecure Concurrency</string>
     <string name="naive_insecure_concurrency_summary">Use N concurrent tunnel connections to be more robust under bad network conditions. More connections make the tunneling easier to detect and less secure. This project strives for the strongest security against traffic analysis. Using it in an insecure way defeats its purpose. \n\nIf you must use this, try N=2 first to see if it solves your issues. Strongly recommend against using more than 4 connections here.</string>
@@ -487,7 +462,6 @@
     <string name="backup_importing">Importing…</string>
 
     <string name="packet_encoding">Packet Encoding</string>
-    <string name="experimental_reduced_iv_head_entropy">This is GFWReport\'s proposal for a countermeasure for the random stream like protocol blocking behaviour observed on GFW.   This option remap the first 6 bytes of IV to printable characters, it\'s possible for anyone on the privileged network path to identify the protocol when enabled.</string>
     <string name="acquire_wake_lock">Acquire WakeLock</string>
     <string name="release_wake_lock">Release WakeLock</string>
     <string name="acquire_wake_lock_summary">Keep the CPU on</string>
@@ -525,5 +499,8 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="log_level">Log Level</string>
     <string name="enable_clash_api_summary">Provide clash api and yacd dashboard at 127.0.0.1:9090</string>
     <string name="xtls_flow">Flow (VLESS Sub-protocol)</string>
+    <string name="ads">Ads</string>
+    <string name="bypass_lan_in_core">Bypass LAN in Core</string>
+    <string name="need_restart">Restart APP to apply changes</string>
 
 </resources>

@@ -88,10 +88,20 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         }
                         .build())
                     .addItem(MaterialAboutActionItem.Builder()
-                        .icon(R.drawable.ic_baseline_airplanemode_active_24)
+                        .icon(R.drawable.ic_baseline_layers_24)
                         .text(getString(R.string.version_x, "sing-box"))
                         .subText(Libcore.versionBox())
                         .setOnClickAction { }
+                        .build())
+                    .addItem(MaterialAboutActionItem.Builder()
+                        .icon(R.drawable.ic_baseline_card_giftcard_24)
+                        .text(R.string.donate)
+                        .subText(R.string.donate_info)
+                        .setOnClickAction {
+                            requireContext().launchCustomTab(
+                                "https://matsuridayo.github.io/#donate"
+                            )
+                        }
                         .build())
                     .apply {
                         for ((_, pkg) in PackageCache.installedPluginPackages) {

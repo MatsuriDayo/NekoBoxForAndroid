@@ -7,7 +7,6 @@
     <string name="menu_about">Sobre</string>
     <string name="menu_group">Grupo</string>
     <string name="menu_configuration">Configuração</string>
-    <string name="logcat_summary">Tão útil muito uau</string>
     <string name="logcat">Exportar informações de depuração</string>
     <string name="version_x">Versão (%s)</string>
     <string name="app_version">Versão</string>

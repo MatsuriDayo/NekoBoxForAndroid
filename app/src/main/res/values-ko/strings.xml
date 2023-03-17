@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="logcat_summary">너무 유용하다 와우</string>
     <string name="logcat">디버그 정보 내보내기</string>
     <string name="version_x">버전(%s)</string>
     <string name="app_version">버전</string>

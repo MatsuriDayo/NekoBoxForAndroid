@@ -89,7 +89,6 @@
     <string name="menu_about">Tentang</string>
     <string name="menu_group">Grup</string>
     <string name="menu_configuration">Konfigurasi</string>
-    <string name="logcat_summary">Sangat bermanfaat sekali</string>
     <string name="logcat">Ekspor informasi debug</string>
     <string name="version_x">Versi (%s)</string>
     <string name="app_version">Versi</string>
@@ -106,7 +105,6 @@
     <string name="profile_empty">Silakan pilih profil</string>
     <string name="auto_connect">Sambungkan Otomatis</string>
     <string name="encryption">Enkripsi</string>
-    <string name="kcp_seed">mKCP Seed</string>
     <string name="select_profile">Pilih Profil</string>
     <string name="add_profile">Tambah Profil</string>
     <string name="share">Bagikan</string>
@@ -135,7 +133,6 @@
     <string name="route_asset_no_update">Tidak ada pembaruan</string>
     <string name="route_asset_status">Versi lokal: %s</string>
     <string name="route_rules_official">Resmi</string>
-    <string name="route_reverse">Reverse Proksi</string>
     <string name="route_reset">Setel ulang</string>
     <string name="empty_route">Rute Kosong</string>
     <string name="route_profile">Pilih Profil…</string>
@@ -175,15 +172,11 @@
     <string name="proxied_apps_summary">Konfigurasikan mode VPN untuk aplikasi yang dipilih</string>
     <string name="proxied_apps">Modus aplikasi VPN</string>
     <string name="tcp_keep_alive_interval">TCP menjaga interval pengiriman paket aktif</string>
-    <string name="mux_for_all_sum">Jika server tidak mendukung Mux, kami tidak akan dapat menyambungkannya.</string>
-    <string name="mux_for_all">Aktifkan Mux untuk semua kemungkinan protokol yang didukung</string>
     <string name="mux_concurrency">Koneksi Mux Concurrent</string>
-    <string name="mux_sum">Mux dirancang untuk mengurangi latensi handshake TCP, bukan untuk meningkatkan throughput koneksi. Menggunakan Mux untuk menonton video, mengunduh, atau uji kecepatan biasanya kontra produktif</string>
     <string name="domain_strategy">Strategi Resolusi Domain</string>
     <string name="route_opt_bypass_lan">Lewati LAN</string>
     <string name="route_not_asset">Bukan file aset: kecuali .db, tapi %s</string>
     <string name="route_rules_provider">Penyedia Aset Aturan</string>
-    <string name="route_reverse_redirect">Pengalihan Terbalik</string>
     <string name="route_bypass_domain">Aturan domain untuk %s</string>
     <string name="empty_route_notice">Tetapkan beberapa aturan sebelum menyimpan</string>
     <string name="delete_route_prompt">Apakah anda yakin ingin menghapus rute ini\?</string>
@@ -194,12 +187,9 @@
     <string name="config_type">Jenis Konfigurasi</string>
     <string name="extra_headers">Header Ekstra</string>
     <string name="early_data_header_name">Nama Header Data Awal</string>
-    <string name="pinned_peer_certificate_chain_sha256">Rantai Sertifikat yang Disematkan</string>
     <string name="alpn">Negosiasi Protokol Lapisan Aplikasi</string>
     <string name="sni">Indikasi Nama Server</string>
     <string name="grpc_service_name">Nama Layanan gRPC</string>
-    <string name="quic_key">KUNCI Quic</string>
-    <string name="quic_security">Keamanan QUIC</string>
     <string name="http_path">Jalur HTTP</string>
     <string name="http_host">HTTP Host</string>
     <string name="ws_path">Jalur Soket Web</string>

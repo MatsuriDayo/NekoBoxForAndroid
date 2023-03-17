@@ -45,8 +45,8 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_tuiguang"
-            android:icon="@drawable/ic_baseline_airplanemode_active_24"
-            android:title="推广" />
+            android:icon="@drawable/ic_social_share"
+            android:title="@string/ads" />
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_device_data_usage"

@@ -8,7 +8,9 @@ fun buildSingBoxOutboundSSHBean(bean: SSHBean): SingBoxOptions.Outbound_SSHOptio
         server = bean.serverAddress
         server_port = bean.serverPort
         user = bean.username
-        host_key = bean.privateKey.split("\n")
+        if (bean.publicKey.isNotBlank()) {
+            host_key = bean.publicKey.split("\n")
+        }
         when (bean.authType) {
             SSHBean.AUTH_TYPE_PRIVATE_KEY -> {
                 private_key = bean.privateKey

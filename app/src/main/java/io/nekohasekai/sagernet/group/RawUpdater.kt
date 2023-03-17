@@ -19,6 +19,7 @@ import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.ktx.*
 import libcore.Libcore
 import moe.matsuri.nb4a.Protocols
+import moe.matsuri.nb4a.proxy.config.ConfigBean
 import org.ini4j.Ini
 import org.json.JSONArray
 import org.json.JSONObject
@@ -479,10 +480,16 @@ object RawUpdater : GroupUpdater() {
                 json.has("remote_addr") -> {
                     return listOf(json.parseTrojanGo())
                 }
-                else -> json.forEach { _, it ->
-                    if (isJsonObjectValid(it)) {
-                        proxies.addAll(parseJSON(it))
-                    }
+                json.has("outbounds") -> {
+                    return listOf(ConfigBean().applyDefaultValues().apply {
+                        config = json.toStringPretty()
+                    })
+                }
+                json.has("server") && json.has("server_port") -> {
+                    return listOf(ConfigBean().applyDefaultValues().apply {
+                        type = 1
+                        config = json.toStringPretty()
+                    })
                 }
             }
         } else {

@@ -41,7 +41,6 @@
     <string name="menu_about">このアプリについて</string>
     <string name="menu_group">グループ</string>
     <string name="menu_configuration">設定</string>
-    <string name="logcat_summary">そのような便利な非常にすごい</string>
     <string name="logcat">デバッグ情報のエクスポート</string>
     <string name="version_x">バージョン (%s)</string>
     <string name="app_version">バージョン</string>

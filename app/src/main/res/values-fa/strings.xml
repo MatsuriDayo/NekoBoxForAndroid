@@ -8,7 +8,6 @@
     <string name="app_version">نسخه</string>
     <string name="version_x">نسخه (%s)</string>
     <string name="logcat">صادر اطلاعات اشکال زدایی</string>
-    <string name="logcat_summary">بسیار مفید است</string>
     <string name="menu_configuration">پیکربندی</string>
     <string name="menu_group">گروه</string>
     <string name="menu_about">در باره</string>
@@ -117,7 +116,6 @@
     <string name="sni">نشانگر نام سرور</string>
     <string name="alpn">سطح کاربردی مذاکرات پروتکل</string>
     <string name="certificates">گواهینامه ها</string>
-    <string name="pinned_peer_certificate_chain_sha256">زنجیره گواهی پین شده</string>
     <string name="early_data_header_name">نام هدر داده اولیه</string>
     <string name="encryption">رمزگذاری</string>
     <string name="extra_headers">هدر های اضافی</string>
@@ -143,8 +141,6 @@
     <string name="route_play_store">قانون فروشگاه Play برای %s</string>
     <string name="route_bypass_ip">قانون IP برای %s</string>
     <string name="route_reset">بازنشانی کنید</string>
-    <string name="route_reverse">پروکسی معکوس</string>
-    <string name="route_reverse_redirect">تغییر مسیر معکوس</string>
     <string name="route_manage_assets">مدیریت مسیر</string>
     <string name="route_assets">دارایی</string>
     <string name="route_rules_provider">ارائه دهنده دارایی های قانون</string>
@@ -160,10 +156,7 @@
     <string name="domain_strategy">استراتژی حل و فصل دامنه</string>
     <string name="traffic_sniffing">بو کشیدن ترافیک را فعال کنید</string>
     <string name="enable_mux">مولتی پلکسر را فعال کنید</string>
-    <string name="mux_sum">Mux برای کاهش تأخیر در دست دادن TCP طراحی شده است، نه برای افزایش توان اتصال. استفاده از Mux برای تماشای فیلم، دانلود یا تست سرعت معمولاً نتیجه‌ای ندارد</string>
     <string name="mux_concurrency">Mux اتصالات همزمان</string>
-    <string name="mux_for_all">Mux را برای همه پروتکل های پشتیبانی شده ممکن فعال کنید</string>
-    <string name="mux_for_all_sum">اگر سرور از Mux پشتیبانی نکند، نمی توانیم به آن متصل شویم.</string>
     <string name="tcp_keep_alive_interval">TCP بازه تحویل بسته را فعال نگه می دارد</string>
     <string name="proxied_apps">حالت VPN برنامه ها</string>
     <string name="proxied_apps_summary">حالت VPN را برای برنامه های انتخابی پیکربندی کنید</string>
@@ -241,8 +234,6 @@
         <item quantity="other">%d پروکسی اضافه شد</item>
     </plurals>
     <string name="undo">واگرد</string>
-    <string name="insecure_warn">مشاوره امنیتی</string>
-    <string name="insecure_warn_sum">ارائه شده توسط انجمن توسعه دهندگان Qv2ray</string>
     <string name="insecure">ناامن</string>
     <string name="deprecated">Deprecated</string>
     <!-- tasker -->
@@ -276,7 +267,7 @@
     <string name="yes">آره</string>
     <string name="no">نه</string>
     <string name="apply">اعمال کردن</string>
-    <string name="restart">برای اعمال تغییرات، سرویس پروکسی را دوباره بارگیری کنید</string>
+    <string name="need_reload">برای اعمال تغییرات، سرویس پروکسی را دوباره بارگیری کنید</string>
     <string name="license">مجوز</string>
     <string name="route_warn">قبل از افزودن قوانین سفارشی مطمئن شوید که اسناد را مطالعه کرده اید، در غیر این صورت ممکن است نتوانید به اینترنت متصل شوید.</string>
     <string name="lines">%d خطوط</string>
@@ -306,8 +297,6 @@
     <string name="connection_test_timeout">تایم اوت</string>
     <string name="append_http_proxy">پروکسی HTTP را به VPN اضافه کنید</string>
     <string name="append_http_proxy_sum">پروکسی HTTP مستقیماً از (مرورگر/برخی برنامه‌های پشتیبانی‌شده) بدون استفاده از دستگاه NIC مجازی (Android 10+) استفاده می‌شود.</string>
-    <string name="bypass_lan_in_core_only">دور زدن LAN در Core</string>
-    <string name="bypass_lan_in_core_only_sum">اگر Lineage \"اجازه دادن به سرویس گیرندگان هات اسپات برای استفاده از VPN\" کار نمی کند، این را امتحان کنید.</string>
     <string name="protocol_settings">تنظیمات پروتکل</string>
     <string name="trojan_provider">ارائه دهنده تروجان</string>
     <string name="group_basic">پایه ای</string>
@@ -343,13 +332,6 @@
     <string name="subscription_update">به روز رسانی اشتراک</string>
     <string name="subscription_update_message">در حال بروز رسانی %s …</string>
     <string name="group_filter">فیلتر</string>
-    <string name="group_filter_groups">گروه ها</string>
-    <string name="group_filter_tags">تگ ها</string>
-    <string name="group_filter_owners">صاحبان</string>
-    <string name="group_filter_ns">اشتراک OOCv1 برای استفاده از ویژگی فیلتر کردن لازم است</string>
-    <string name="group_filter_groups_nf">هیچ گروهی در این اشتراک وجود ندارد</string>
-    <string name="group_filter_tags_nf">هیچ تگ در این اشتراک وجود ندارد</string>
-    <string name="group_filter_owners_nf">هیچ مالکی در این اشتراک وجود ندارد</string>
     <string name="subscription_used">%s استفاده شده</string>
     <string name="subscription_traffic">%s استفاده شده / %s باقی مانده است</string>
     <string name="subscription_expire">انقضا: %s</string>
@@ -367,8 +349,6 @@
     <string name="hysteria_upload_mbps">حداکثر سرعت آپلود (به مگابیت بر ثانیه)</string>
     <string name="hysteria_download_mbps">حداکثر سرعت دانلود (به مگابیت بر ثانیه)</string>
     <string name="experimental_settings">تجربی</string>
-    <string name="experimental_authenticated_length">طول هر بخش محموله بار دیگر قابل انعطاف نباشد. این آزمایش مستلزم استفاده سرور و کلاینت از نسخه مشابه v2ray-core است. انتظار می‌رود به‌روزرسانی‌های سریع‌تری درباره این آزمایش انجام شود.</string>
-    <string name="experimental_no_termination_signal">هنگام انتقال از طریق VMess، سیگنال پایان دوطرفه برای اتصال TCP ارسال نکنید. این باعث شکستن برخی از برنامه ها می شود.</string>
     <string name="hysteria_stream_receive_window">پنجره دریافت جریان QUIC</string>
     <string name="hysteria_connection_receive_window">پنجره دریافت اتصال QUIC</string>
     <string name="hysteria_disable_mtu_discovery">Path MTU Discovery را غیرفعال کنید</string>
@@ -379,11 +359,8 @@
     <string name="plugin_exists_but_on_shit_system">پروفایل %s نیاز دارد %s افزونه، اما فروشنده تجهیزات اختصاصی شما (معمولا غول های سرمایه نظارتی و سازنده بدافزار) اندروید شما را دستکاری کرده و باعث غیرقابل استفاده شدن افزونه شده است.</string>
     <string name="shadowsocks_plugin_simple_obfs">Obfs ساده (افزونه اندروید Shadowsocks)</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (افزونه Shadowsocks Android)</string>
-    <string name="traffic_active">فعال</string>
-    <string name="traffic_stats">آمار</string>
     <string name="tcp_connections">%d اتصالات TCP</string>
     <string name="udp_connections">%d اتصالات UDP</string>
-    <string name="traffic_holder">VPN را برای ثبت آمار ترافیک باز کنید</string>
     <string name="copy_label">کپی نام</string>
     <string name="copy_package_name">کپی نام بسته</string>
     <string name="open_app">اپلیکیشن را باز کن</string>
@@ -395,9 +372,7 @@
     <string name="app_no_launcher">برنامه هیچ رابطی ندارد.</string>
     <string name="route_for">قانون برای %s</string>
     <string name="route_need_vpn">قانون مسیریابی %s برای کارایی VPN متکی است، بنابراین نادیده گرفته می شود.</string>
-    <string name="app_traffic_statistics">آمار ترافیک اپلیکیشن</string>
     <string name="profile_traffic_statistics">آمار ترافیک پروفایل</string>
-    <string name="traffic_statistics_summary">ممکن است مصرف برق را افزایش دهد</string>
     <string name="profile_traffic_statistics_summary">در صورت غیرفعال شدن، ترافیک استفاده شده محاسبه نخواهد شد</string>
     <string name="no_statistics">هنوز آماری وجود ندارد</string>
     <string name="app_statistics_disabled">آمار ترافیک برنامه غیرفعال شد</string>
@@ -420,8 +395,6 @@
     <string name="destination_override_summary">از دامنه sniffed برای بازنویسی آدرس مقصد استفاده کنید، نه فقط برای مسیریابی</string>
     <string name="resolve_destination">مقصد را حل کنید</string>
     <string name="resolve_destination_summary">اگر آدرس مقصد یک دامنه باشد، بر اساس استراتژی IPv6 (تعارض با FakeDNS) از بین می‌رود.</string>
-    <string name="enable_pcap">Pcap را فعال کنید</string>
-    <string name="pcap_summary">ذخیره ترافیک در فایل pcap</string>
     <string name="pcap_notice">فایل های Pcap در ذخیره می شوند%s</string>
     <string name="naive_insecure_concurrency">همزمانی ناامن</string>
     <string name="naive_insecure_concurrency_summary">از N اتصال تونل همزمان برای قوی تر بودن در شرایط بد شبکه استفاده کنید. اتصالات بیشتر تشخیص تونل را آسان تر و ایمن تر می کند. این پروژه برای قوی ترین امنیت در برابر تجزیه و تحلیل ترافیک تلاش می کند. استفاده از آن به روشی ناامن، هدف آن را شکست می دهد. \n\n اگر باید از این استفاده کنید، ابتدا N=2 را امتحان کنید تا ببینید آیا مشکلات شما حل می شود یا خیر. اکیداً توصیه می شود از بیش از 4 اتصال در اینجا استفاده نکنید.</string>
@@ -443,7 +416,6 @@
     <string name="backup_import_summary">وارد کردن داده‌های موجود را بازنویسی می‌کند.</string>
     <string name="backup_importing">وارد کردن…</string>
     <string name="packet_encoding">رمزگذاری بسته ها</string>
-    <string name="experimental_reduced_iv_head_entropy">این پیشنهاد GFWReport برای یک اقدام متقابل برای جریان تصادفی مانند رفتار مسدود کردن پروتکل مشاهده شده در GFW است. این گزینه 6 بایت اول IV را به کاراکترهای قابل چاپ بازنگری می‌کند، این امکان برای هر کسی که در مسیر شبکه ممتاز است می‌تواند در صورت فعال بودن پروتکل را شناسایی کند.</string>
     <string name="acquire_wake_lock">WakeLock را بدست آورید</string>
     <string name="release_wake_lock">WakeLock را آزاد کنید</string>
     <string name="acquire_wake_lock_summary">CPU را روشن نگه دارید</string>

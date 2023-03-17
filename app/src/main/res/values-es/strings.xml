@@ -7,9 +7,8 @@
     <string name="oss_licenses">Licencias de código abierto</string> 
     <string name="app_version">Versión</string> 
     <string name="version_x">Versión (%s)</string> 
-    <string name="logcat">Exportar información de depuración</string> 
-    <string name="logcat_summary">Tan útil, muy guau</string> 
-    <string name="menu_configuration">Configuración</string> 
+    <string name="logcat">Exportar información de depuración</string>
+    <string name="menu_configuration">Configuración</string>
     <string name="menu_group">Grupo</string> 
     <string name="menu_about">Acerca de</string> 
     <string name="theme">Tema</string> 
@@ -118,9 +117,8 @@
     <string name="tls">Usar TLS</string> 
     <string name="sni">Indicación del nombre del servidor</string> 
     <string name="alpn">Negociación de protocolo de capa de aplicación</string> 
-    <string name="certificates">Certificados</string> 
-    <string name="pinned_peer_certificate_chain_sha256">Cadena de certificados fijada</string> 
-    <string name="early_data_header_name">Nombre de encabezado de datos tempranos</string> 
+    <string name="certificates">Certificados</string>
+    <string name="early_data_header_name">Nombre de encabezado de datos tempranos</string>
     <string name="encryption">Cifrado</string> 
     <string name="extra_headers">Encabezados adicionales</string> 
     <string name="config_type">Tipo de configuración</string> 
@@ -144,10 +142,8 @@
     <string name="route_bypass_domain">Regla de dominio para %s</string> 
     <string name="route_play_store">Regla de la Play Store para %s</string> 
     <string name="route_bypass_ip">Regla de IP para %s</string> 
-    <string name="route_reset">Reiniciar</string> 
-    <string name="route_reverse">Proxy inverso</string> 
-    <string name="route_reverse_redirect">Redirección inversa</string> 
-    <string name="route_manage_assets">Administrar activos de ruta</string> 
+    <string name="route_reset">Reiniciar</string>
+    <string name="route_manage_assets">Administrar activos de ruta</string>
     <string name="route_assets">Activos</string> 
     <string name="route_rules_provider">Proveedor de activos de reglas</string> 
     <string name="route_rules_official">Oficial</string> 
@@ -160,12 +156,9 @@
     <string name="route_opt_block_analysis">Bloquear analítica</string> 
     <string name="domain_strategy">Estrategia de resolución de dominio</string> 
     <string name="traffic_sniffing">Activar rastreo de tráfico</string> 
-    <string name="enable_mux">Activar multiplexor</string> 
-    <string name="mux_sum">Mux está diseñado para reducir la latencia del protocolo de enlace TCP, no para aumentar el rendimiento de la conexión. Usar Mux para ver videos, descargar o probar la velocidad suele ser contraproducente</string> 
-    <string name="mux_concurrency">Conexiones simultáneas Mux</string> 
-    <string name="mux_for_all">Activar Mux para todos los protocolos admitidos posibles</string> 
-    <string name="mux_for_all_sum">Si el servidor no es compatible con Mux, no podremos conectarnos a él.</string> 
-    <string name="tcp_keep_alive_interval">TCP mantiene activo el intervalo de entrega de paquetes</string> 
+    <string name="enable_mux">Activar multiplexor</string>
+    <string name="mux_concurrency">Conexiones simultáneas Mux</string>
+    <string name="tcp_keep_alive_interval">TCP mantiene activo el intervalo de entrega de paquetes</string>
     <string name="proxied_apps">Modo VPN de aplicaciones</string> 
     <string name="proxied_apps_summary">Configurar el modo VPN para las aplicaciones seleccionadas</string> 
     <string name="on">Encendido</string> 
@@ -253,10 +246,8 @@
         <item quantity="one">Añadido</item> 
         <item quantity="other">%d proxys añadidos</item> 
     </plurals> 
-    <string name="undo">Deshacer</string> 
-    <string name="insecure_warn">Aviso de seguridad</string> 
-    <string name="insecure_warn_sum">Proporcionado por la comunidad de desarrolladores de Qv2ray</string> 
-    <string name="insecure">Inseguro</string> 
+    <string name="undo">Deshacer</string>
+    <string name="insecure">Inseguro</string>
     <string name="deprecated">Obsoleto</string> 
     <!-- tasker --> 
     <!-- status --> 
@@ -289,7 +280,7 @@
     <string name="yes">Sí</string> 
     <string name="no">No</string> 
     <string name="apply">Aplicar</string> 
-    <string name="restart">Vuelva a cargar el servicio de proxy para aplicar los cambios</string> 
+    <string name="need_reload">Vuelva a cargar el servicio de proxy para aplicar los cambios</string>
     <string name="license">Licencia</string> 
     <string name="route_warn">Asegúrese de haber leído la documentación antes de agregar reglas personalizadas; de lo contrario, es posible que no pueda conectarse a Internet.</string> 
     <string name="lines">%d líneas</string> 
@@ -324,10 +315,8 @@
     <string name="connection_test_unreachable">Inalcanzable</string> 
     <string name="connection_test_timeout">Se acabó el tiempo</string> 
     <string name="append_http_proxy">Añadir proxy HTTP a la VPN</string> 
-    <string name="append_http_proxy_sum">El proxy HTTP se utilizará directamente desde (navegador/algunas aplicaciones compatibles), sin pasar por el dispositivo NIC virtual (Android 10+)</string> 
-    <string name="bypass_lan_in_core_only">Omitir LAN solo en núcleo</string> 
-    <string name="bypass_lan_in_core_only_sum">Si la opción "Permitir que los clientes de hotspot usen VPN" de Lineage no funciona, intente esto.</string> 
-    <string name="protocol_settings">Ajustes de protocolo</string> 
+    <string name="append_http_proxy_sum">El proxy HTTP se utilizará directamente desde (navegador/algunas aplicaciones compatibles), sin pasar por el dispositivo NIC virtual (Android 10+)</string>
+    <string name="protocol_settings">Ajustes de protocolo</string>
     <string name="trojan_provider">Proveedor Trojan</string> 
     <string name="group_basic">Básico</string> 
     <string name="group_settings">Ajustes de grupo</string> 
@@ -362,15 +351,8 @@
     <string name="service_subscription">Servicio de actualización de suscripción</string> 
     <string name="subscription_update">Actualización de suscripción</string> 
     <string name="subscription_update_message">Actualizando %s…</string> 
-    <string name="group_filter">Filtrar</string> 
-    <string name="group_filter_groups">Grupos</string> 
-    <string name="group_filter_tags">Etiquetas</string> 
-    <string name="group_filter_owners">Propietarios</string> 
-    <string name="group_filter_ns">Se requiere suscripción OOCv1 para usar la función de filtrado</string> 
-    <string name="group_filter_groups_nf">No hay grupos en esta suscripción</string> 
-    <string name="group_filter_tags_nf">No hay etiquetas en esta suscripción</string> 
-    <string name="group_filter_owners_nf">No hay propietarios en esta suscripción</string> 
-    <string name="subscription_used">%s usado</string> 
+    <string name="group_filter">Filtrar</string>
+    <string name="subscription_used">%s usado</string>
     <string name="subscription_traffic">%s usados ​​/ %s restantes</string> 
     <string name="subscription_import">Importar suscripción</string> 
     <string name="subscription_import_message">¿Confirma que desea importar la suscripción %s? Si proviene de una fuente que no es de confianza, hacer esto puede provocar que se filtre su IP y su comportamiento.</string> 
@@ -385,10 +367,8 @@
     <string name="hysteria_auth_payload">Payload de autenticación</string> 
     <string name="hysteria_upload_mbps">Velocidad máxima de carga (en Mbps)</string> 
     <string name="hysteria_download_mbps">Velocidad máxima de descarga (en Mbps)</string> 
-    <string name="experimental_settings">Experimental</string> 
-    <string name="experimental_authenticated_length">Hace que la longitud de cada segmento de payload ya no sea maleable. Este experimento requiere que el servidor y el cliente usen la misma versión de v2ray-core. Se esperan más actualizaciones de última hora sobre este experimento.</string> 
-    <string name="experimental_no_termination_signal">No envía una señal de terminación dúplex simple de conexión para la conexión TCP cuando se transfiera a través de VMess. Esto romperá alguna aplicación.</string> 
-    <string name="hysteria_stream_receive_window">Ventana de recepción de transmisión QUIC</string> 
+    <string name="experimental_settings">Experimental</string>
+    <string name="hysteria_stream_receive_window">Ventana de recepción de transmisión QUIC</string>
     <string name="hysteria_connection_receive_window">Ventana de recepción de conexión QUIC</string> 
     <string name="group_order">Orden</string> 
     <string name="group_order_origin">Origen</string> 
@@ -403,16 +383,12 @@
     <string name="traffic_downlink" translatable="false">%s | %s/s ↓</string> 
  
     <string name="traffic_uplink_total" translatable="false">%s ↑</string> 
-    <string name="traffic_downlink_total" translatable="false">%s ↓</string> 
-    <string name="traffic_active">Activo</string> 
-    <string name="traffic_stats">Estadísticas</string> 
- 
+    <string name="traffic_downlink_total" translatable="false">%s ↓</string>
+
     <string name="tcp_connections">%d conexiones TCP</string> 
-    <string name="udp_connections">%d conexiones UDP</string> 
- 
-    <string name="traffic_holder">Abra la VPN para registrar las estadísticas de tráfico</string> 
- 
-    <string name="copy_label">Copiar nombre</string> 
+    <string name="udp_connections">%d conexiones UDP</string>
+
+    <string name="copy_label">Copiar nombre</string>
     <string name="copy_package_name">Copiar nombre del paquete</string> 
     <string name="open_app">Abrir la app</string> 
     <string name="open_settings">Abrir los ajustes</string> 
@@ -424,12 +400,10 @@
     <string name="app_no_launcher">La aplicación no tiene interfaz.</string> 
     <string name="route_for">Regla para %s</string> 
  
-    <string name="route_need_vpn">La regla de enrutamiento %s depende de que la VPN esté en vigor, por lo que se ignora.</string> 
- 
-    <string name="app_traffic_statistics">Estadísticas de tráfico de aplicaciones</string> 
-    <string name="profile_traffic_statistics">Estadísticas de tráfico del perfil</string> 
-    <string name="traffic_statistics_summary">Puede aumentar el consumo de energía</string> 
-    <string name="profile_traffic_statistics_summary">Cuando está desactivado, el tráfico utilizado no se contará</string> 
+    <string name="route_need_vpn">La regla de enrutamiento %s depende de que la VPN esté en vigor, por lo que se ignora.</string>
+
+    <string name="profile_traffic_statistics">Estadísticas de tráfico del perfil</string>
+    <string name="profile_traffic_statistics_summary">Cuando está desactivado, el tráfico utilizado no se contará</string>
     <string name="no_statistics">Aún no hay estadísticas</string> 
     <string name="app_statistics_disabled">Estadísticas de tráfico de aplicaciones desactivado</string> 
     <string name="ssh_auth_type_none">Ninguna</string> 
@@ -453,10 +427,8 @@
     <string name="destination_override_summary">Usa el dominio rastreado para sobrescribir la dirección de destino, no solo para el enrutamiento</string> 
     <string name="resolve_destination">Resolver destino</string> 
     <string name="resolve_destination_summary">Si la dirección de destino es un dominio, se distribuye según la estrategia IPv6.</string> 
-    <string name="pcap" translatable="false">Pcap</string> 
-    <string name="enable_pcap">Activar Pcap</string> 
-    <string name="pcap_summary">Guardar tráfico en un archivo .pcap</string> 
-    <string name="pcap_notice">Los archivos Pcap se guardarán en %s</string> 
+    <string name="pcap" translatable="false">Pcap</string>
+    <string name="pcap_notice">Los archivos Pcap se guardarán en %s</string>
     <string name="naive_insecure_concurrency">Concurrencia insegura</string> 
     <string name="naive_insecure_concurrency_summary">Usa N conexiones de túnel concurrentes para ser más robusto en malas condiciones de red. Más conexiones hacen que la tunelización sea más fácil de detectar y menos segura. Este proyecto se esfuerza por lograr la mayor seguridad contra el análisis del tráfico. Usarlo de manera insegura anula su propósito. \n\nSi debe usar esto, pruebe N=2 primero para ver si resuelve sus problemas. Se recomienda enfáticamente no usar más de 4 conexiones aquí.</string> 
  
@@ -480,9 +452,8 @@
     <string name="backup_import_summary">La importación sobrescribirá los datos existentes.</string> 
     <string name="backup_importing">Importando…</string> 
  
-    <string name="packet_encoding">Codificación de paquetes</string> 
-    <string name="experimental_reduced_iv_head_entropy">Esta es la propuesta de GFWReport para una contramedida para el flujo aleatorio como comportamiento de bloqueo de protocolo observado en GFW. Esta opción reasigna los primeros 6 bytes de IV a caracteres imprimibles, es posible que cualquier persona en la ruta de red privilegiada identifique el protocolo cuando está activado.</string> 
-    <string name="acquire_wake_lock">Adquirir WakeLock</string> 
+    <string name="packet_encoding">Codificación de paquetes</string>
+    <string name="acquire_wake_lock">Adquirir WakeLock</string>
     <string name="release_wake_lock">Liberar WakeLock</string> 
     <string name="acquire_wake_lock_summary">Mantener la CPU encendida</string> 
     <string name="action_switch">Cambiar</string> 

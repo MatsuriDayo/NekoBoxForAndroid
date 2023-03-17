@@ -5,4 +5,8 @@
         android:id="@+id/action_set_url"
         android:title="@string/set_panel_url"
         app:showAsAction="false" />
+    <item
+        android:id="@+id/close"
+        android:title="@string/mal_close"
+        app:showAsAction="false" />
 </menu>

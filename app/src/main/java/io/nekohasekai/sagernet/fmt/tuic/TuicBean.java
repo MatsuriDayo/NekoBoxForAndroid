@@ -76,6 +76,11 @@ public class TuicBean extends AbstractBean {
         }
     }
 
+    @Override
+    public boolean canTCPing() {
+        return false;
+    }
+
     @NotNull
     @Override
     public TuicBean clone() {

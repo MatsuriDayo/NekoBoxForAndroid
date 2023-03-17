@@ -2,7 +2,6 @@
 <resources>
     <string name="menu_group">مجموعة</string>
     <string name="menu_configuration">ترتيب</string>
-    <string name="logcat_summary">هذا مفيد جدا نجاح باهر</string>
     <string name="logcat">تصدير معلومات التصحيح</string>
     <string name="version_x">الإصدار (%s)</string>
     <string name="app_version">إصدار</string>
@@ -119,8 +118,6 @@
     <string name="route_rules_provider">مزود أصول القاعدة</string>
     <string name="route_assets">الأصول</string>
     <string name="route_manage_assets">إدارة أصول الطريق</string>
-    <string name="route_reverse_redirect">إعادة التوجيه العكسي</string>
-    <string name="route_reverse">عكس البروکسی</string>
     <string name="route_reset">إعادة تعيين</string>
     <string name="route_bypass_ip">قاعدة IP ل %s</string>
     <string name="route_bypass_domain">قاعدة المجال ل %s</string>
@@ -144,7 +141,6 @@
     <string name="extra_headers">رؤوس إضافية</string>
     <string name="encryption">التشفير</string>
     <string name="early_data_header_name">اسم رأس البيانات المبكر</string>
-    <string name="pinned_peer_certificate_chain_sha256">سلسلة الشهادات المثبتة</string>
     <string name="certificates">الشهادات</string>
     <string name="alpn">تفاوض بروتوكول طبقة التطبيق</string>
     <string name="sni">بيان اسم الخادم</string>
@@ -212,8 +208,6 @@
     <string name="proxied_apps">وضع تطبيقات VPN</string>
     <string name="tcp_keep_alive_interval">يحتفظ TCP بالفاصل الزمني النشط لتسليم الحزم</string>
     <string name="mux_sum">تم تصميم Mux لتقليل زمن انتقال مصافحة TCP، وليس لزيادة إنتاجية الاتصال. عادةً ما يؤدي استخدام Mux لمشاهدة مقاطع الفيديو أو التنزيل أو اختبار السرعة إلى نتائج عكسية</string>
-    <string name="mux_for_all_sum">إذا كان الخادم لا يدعم Mux، فلن نتمكن من الاتصال به.</string>
-    <string name="mux_for_all">قم بتمكين Mux لجميع البروتوكولات المدعومة الممكنة</string>
     <string name="mux_concurrency">اتصالات مسك المتزامنة</string>
     <string name="enable_mux">تمكين المضاعف</string>
     <string name="traffic_sniffing">تمكين استنشاق حركة المرور</string>
@@ -236,11 +230,6 @@
     <string name="subscription_import">اشتراك الاستيراد</string>
     <string name="subscription_traffic">%s مستخدمة / %s متبقية</string>
     <string name="subscription_used">%s مستخدمة</string>
-    <string name="group_filter_tags_nf">لا توجد علامات في هذا الاشتراك</string>
-    <string name="group_filter_groups_nf">لا توجد مجموعات في هذا الاشتراك</string>
-    <string name="group_filter_ns">مطلوب اشتراك OOCv1 لاستخدام ميزة التصفية</string>
-    <string name="group_filter_tags">العلامات</string>
-    <string name="group_filter_groups">مجموعات</string>
     <string name="group_filter">التكرير</string>
     <string name="subscription_update_message">جاري تحديث %s …</string>
     <string name="subscription_update">تحديث الاشتراك</string>
@@ -276,8 +265,6 @@
     <string name="group_basic">أساسي</string>
     <string name="trojan_provider">Trojan مزود</string>
     <string name="protocol_settings">إعدادات البروتوكول</string>
-    <string name="bypass_lan_in_core_only_sum">إذا لم يعمل Lineage\'s السماح لعملاء نقطة الاتصال باستخدام شبكات VPN، فجرّب ذلك.</string>
-    <string name="bypass_lan_in_core_only">تجاوز LAN في النواة فقط</string>
     <string name="append_http_proxy_sum">سيتم استخدام بروکسی HTTP مباشرة من (المتصفح/ بعض التطبيقات المدعومة)، دون المرور عبر جهاز NIC الافتراضي (Android 10+)</string>
     <string name="append_http_proxy">إلحاق بروکسی HTTP ب VPN</string>
     <string name="connection_test_timeout">نفذ الوقت</string>
@@ -307,7 +294,7 @@
     <string name="lines">%d سطور</string>
     <string name="route_warn">تأكد من قراءة الوثائق قبل إضافة القواعد المخصصة، وإلا فقد لا تتمكن من الاتصال بالإنترنت.</string>
     <string name="license">الرخصة</string>
-    <string name="restart">أعد تحميل خدمة البروکسی لتطبيق التغييرات</string>
+    <string name="need_reload">أعد تحميل خدمة البروکسی لتطبيق التغييرات</string>
     <string name="apply">تطبيق</string>
     <string name="no">لا</string>
     <string name="yes">نعم</string>
@@ -337,8 +324,6 @@
     <string name="connecting">يتصل…</string>
     <string name="deprecated">مهجور</string>
     <string name="insecure">غير آمن</string>
-    <string name="insecure_warn_sum">مقدم من مجتمع مطوري Qv2ray</string>
-    <string name="insecure_warn">استشارات أمنية</string>
     <string name="undo">تراجع</string>
     <plurals name="added">
         <item quantity="zero">مضاف</item>
@@ -357,8 +342,6 @@
         <item quantity="other"/>
     </plurals>
     <string name="add_profile_methods_manual_settings">الإعدادات اليدوية</string>
-    <string name="experimental_no_termination_signal">لا ترسل إشارة إنهاء اتصال فردية مزدوجة لاتصال TCP عند نقلها عبر VMess. سيؤدي هذا إلى كسر بعض التطبيقات.</string>
-    <string name="experimental_authenticated_length">لم يعد طول كل شحنة مرنًا. يتطلب هذا الاختبار خادمًا ويستخدم العميل نفس إصدار v2ray-core. من المتوقع المزيد من التحديثات الفورية في هذا الاختبار.</string>
     <string name="experimental_settings">تجريبي</string>
     <string name="route_need_vpn">تعتمد قاعدة التوجيه %s على أن تكون VPN سارية المفعول، لذلك يتم تجاهلها.</string>
     <string name="route_for">حكم ل %s</string>
@@ -371,11 +354,8 @@
     <string name="open_app">افتح التطبيق</string>
     <string name="copy_package_name">نسخ اسم الحزمة</string>
     <string name="copy_label">نسخ الاسم</string>
-    <string name="traffic_holder">افتح VPN لتسجيل إحصائيات حركة المرور</string>
     <string name="udp_connections">%d اتصالات UDP</string>
     <string name="tcp_connections">%d اتصالات TCP</string>
-    <string name="traffic_stats">إحصائيات</string>
-    <string name="traffic_active">نشط</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (مكون أندرويد الإضافي Shadowsocks)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (مكون أندرويد الإضافي Shadowsocks)</string>
     <string name="plugin_exists_but_on_shit_system">يتطلب الملف التعریف %s المكوّن الإضافي %s، لكن بائع المعدات المملوكة لك (عادةً عمالقة المراقبة وصانع البرامج الضارة) تلاعب بجهاز أندرويد، مما يجعل المكون الإضافي غير قابل للاستخدام.</string>
@@ -388,7 +368,6 @@
     <string name="hysteria_stream_receive_window">نافذة تلقي دفق QUIC</string>
     <string name="menu_traffic">مرور</string>
     <string name="no_statistics">لا توجد إحصاءات حتى الآن</string>
-    <string name="traffic_statistics_summary">قد يزيد من استهلاك الطاقة</string>
     <string name="clear_logcat">تقارير أداء واضحة</string>
     <string name="menu_log">السجلات</string>
     <string name="menu_tools">أدوات</string>

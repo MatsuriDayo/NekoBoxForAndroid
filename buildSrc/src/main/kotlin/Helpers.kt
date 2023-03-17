@@ -225,7 +225,7 @@ fun Project.setupApp() {
             create("oss")
             create("fdroid")
             create("play") {
-                versionCode = verCode - 4
+                versionCode = verCode + 1
             }
         }
 

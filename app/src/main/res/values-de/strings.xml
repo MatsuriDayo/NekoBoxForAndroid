@@ -12,7 +12,6 @@
     <string name="menu_group">Gruppe</string>
     <string name="menu_configuration">Konfiguration</string>
     <string name="app_version">Version</string>
-    <string name="logcat_summary">So nützlich sehr wow</string>
     <string name="logcat">Debug-Informationen exportieren</string>
     <string name="version_x">Version (%s)</string>
     <string name="oss_licenses">Quelloffene Lizenzen</string>

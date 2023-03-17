@@ -75,6 +75,12 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         securityCategory = findPreference(Key.SERVER_SECURITY_CATEGORY)!!
         wsCategory = findPreference(Key.SERVER_WS_CATEGORY)!!
 
+
+        // vmess/vless/http/trojan
+        val isHttp = tmpBean is HttpBean
+        val isVmess = tmpBean is VMessBean && tmpBean?.isVLESS == false
+        val isVless = tmpBean?.isVLESS == true
+
         serverPort.preference.apply {
             this as EditTextPreference
             setOnBindEditTextListener(EditTextPreferenceModifiers.Port)
@@ -87,14 +93,13 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
 
         uuid.preference.summaryProvider = PasswordSummaryProvider
 
-        type.preference.isVisible = tmpBean !is HttpBean
-        uuid.preference.isVisible = tmpBean !is HttpBean
-        packetEncoding.preference.isVisible = tmpBean !is HttpBean
-        alterId.preference.isVisible = tmpBean is VMessBean && tmpBean?.isVLESS == false
-        encryption.preference.isVisible = tmpBean is VMessBean
-        type.preference.isVisible = tmpBean !is HttpBean
-        username.preference.isVisible = tmpBean is HttpBean
-        password.preference.isVisible = tmpBean is HttpBean
+        type.preference.isVisible = !isHttp
+        uuid.preference.isVisible = !isHttp
+        packetEncoding.preference.isVisible = isVmess || isVless
+        alterId.preference.isVisible = isVmess
+        encryption.preference.isVisible = isVmess || isVless
+        username.preference.isVisible = isHttp
+        password.preference.isVisible = isHttp
 
         if (tmpBean is TrojanBean) {
             uuid.preference.title = resources.getString(R.string.password)

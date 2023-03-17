@@ -83,7 +83,6 @@
     <string name="menu_about">О приложении</string>
     <string name="menu_group">Группы</string>
     <string name="menu_configuration">Конфигурация</string>
-    <string name="logcat_summary">Такой полезный очень вау</string>
     <string name="logcat">Экспорт отладочной информации</string>
     <string name="version_x">Версия (%s)</string>
     <string name="server_port">Удаленный порт</string>
@@ -110,7 +109,6 @@
         <item quantity="many">%d элементов удалено</item>
         <item quantity="other">%d элементов удалено</item>
     </plurals>
-    <string name="mux_sum">Mux разработан для уменьшения задержки рукопожатия TCP, а не для увеличения пропускной способности соединения. Использование Mux для просмотра видео, загрузки или проверки скорости как правило контрпродуктивно</string>
     <string name="apps_message">%d приложений</string>
     <string name="select_apps">Выберите приложения</string>
     <string name="apps">Приложения</string>
@@ -121,11 +119,6 @@
     <string name="subscription_import">Импортировать подписку</string>
     <string name="subscription_traffic">%s Использовано / %s Осталось</string>
     <string name="subscription_used">%s Использовано</string>
-    <string name="group_filter_tags_nf">В этой подписке нет тегов</string>
-    <string name="group_filter_groups_nf">В этой подписке нет групп</string>
-    <string name="group_filter_ns">Для использования функции фильтрации требуется подписка OOCv1</string>
-    <string name="group_filter_tags">Теги</string>
-    <string name="group_filter_groups">Группы</string>
     <string name="group_filter">Фильтр</string>
     <string name="subscription_update_message">Обновление %s …</string>
     <string name="subscription_update">Обновление подписки</string>
@@ -161,8 +154,6 @@
     <string name="group_basic">Базовый</string>
     <string name="trojan_provider">Провайдер Trojan</string>
     <string name="protocol_settings">Настройки протокола</string>
-    <string name="bypass_lan_in_core_only_sum">Если в LineageOS не работает функция \"Разрешить клиентам точки доступа использовать VPN\", попробуйте включить эту настройку.</string>
-    <string name="bypass_lan_in_core_only">Обход LAN только в ядре</string>
     <string name="append_http_proxy_sum">HTTP-прокси будет использоваться напрямую из (браузера / некоторых поддерживаемых приложений), без использования виртуального сетевого интерфейса (Android 10+)</string>
     <string name="append_http_proxy">Добавить HTTP-прокси к VPN</string>
     <string name="connection_test_timeout">Тайм-аут</string>
@@ -192,7 +183,7 @@
     <string name="lines">%d строк</string>
     <string name="route_warn">Перед добавлением собственных правил убедитесь, что вы прочитали документацию, иначе подключение к Интернету может не удасться.</string>
     <string name="license">Лицензия</string>
-    <string name="restart">Перезагрузите прокси-сервис, чтобы применить изменения</string>
+    <string name="need_reload">Перезагрузите прокси-сервис, чтобы применить изменения</string>
     <string name="apply">Применить</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
@@ -222,8 +213,6 @@
     <string name="connecting">Подключение…</string>
     <string name="deprecated">Устарело</string>
     <string name="insecure">Ненадежный</string>
-    <string name="insecure_warn_sum">Предоставлено сообществом разработчиков Qv2ray</string>
-    <string name="insecure_warn">Security Advisory</string>
     <string name="undo">Отменить</string>
     <string name="add_profile_methods_manual_settings">Ручные настройки</string>
     <string name="add_profile_methods_scan_qr_code">Отсканировать QR-код</string>
@@ -288,8 +277,6 @@
     <string name="proxied_apps_summary">Настроить режим VPN для выбранных приложений</string>
     <string name="proxied_apps">Режим VPN для приложений</string>
     <string name="tcp_keep_alive_interval">Интервал доставки пакетов TCP keep-alive</string>
-    <string name="mux_for_all_sum">Если сервер не поддерживает Mux, мы не сможем к нему подключиться.</string>
-    <string name="mux_for_all">Включите Mux для всех возможных поддерживаемых протоколов</string>
     <string name="mux_concurrency">Число одновременных подключений Mux</string>
     <string name="enable_mux">Включить мультиплексор</string>
     <string name="traffic_sniffing">Включить анализ трафика</string>
@@ -304,8 +291,6 @@
     <string name="route_rules_provider">Поставщик ресурсов правил</string>
     <string name="route_assets">Ресурсы</string>
     <string name="route_manage_assets">Управление ресурсами маршрутов</string>
-    <string name="route_reverse_redirect">Обратное перенаправление</string>
-    <string name="route_reverse">Обратный прокси</string>
     <string name="route_reset">Сброс</string>
     <string name="route_bypass_ip">Правило IP для %s</string>
     <string name="route_bypass_domain">Правило домена для %s</string>
@@ -329,15 +314,11 @@
     <string name="extra_headers">Дополнительные заголовки</string>
     <string name="encryption">Шифрование</string>
     <string name="early_data_header_name">Имя заголовка ранних данных</string>
-    <string name="pinned_peer_certificate_chain_sha256">Цепочка закрепленных сертификатов</string>
     <string name="certificates">Сертификаты</string>
     <string name="alpn">Согласование протокола уровня приложений</string>
     <string name="sni">Server Name Indication (SNI)</string>
     <string name="tls">Использовать TLS</string>
     <string name="grpc_service_name">Имя службы gRPC</string>
-    <string name="kcp_seed">mKCP Seed</string>
-    <string name="quic_key">Быстрый КЛЮЧ</string>
-    <string name="quic_security">Защита протокола QUIC</string>
     <string name="http_path">HTTP-путь</string>
     <string name="http_host">HTTP-хост</string>
     <string name="ws_path">Путь к WebSocket</string>
@@ -354,8 +335,6 @@
     <string name="hysteria_auth_payload">Полезные данные аутентификации</string>
     <string name="hysteria_auth_type">Тип аутентификации</string>
     <string name="hysteria_obfs">Обфускация пароля</string>
-    <string name="experimental_no_termination_signal">Не отправлять одинарный дуплексный сигнал завершения соединения для TCP-соединения при передаче через VMess. Это нарушит работу некоторых приложений.</string>
-    <string name="experimental_authenticated_length">Сделать длину каждого сегмента полезной нагрузки постоянной. Этот эксперимент требует, чтобы сервер и клиент использовали одну и ту же версию v2ray-core. Ожидаются новые важные обновления по этому эксперименту.</string>
     <string name="experimental_settings">Экспериментальный</string>
     <string name="route_need_vpn">Правило маршрутизации `%s` зависит от VPN, поэтому игнорируется.</string>
     <string name="route_for">Правило для %s</string>
@@ -368,11 +347,8 @@
     <string name="open_app">Открыть приложение</string>
     <string name="copy_package_name">Копировать имя пакета</string>
     <string name="copy_label">Копировать имя</string>
-    <string name="traffic_holder">Откройте VPN для записи статистики трафика</string>
     <string name="udp_connections">%d UDP-соединений</string>
     <string name="tcp_connections">%d TCP-соединений</string>
-    <string name="traffic_stats">Статистика</string>
-    <string name="traffic_active">Активный</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (плагин Shadowsocks для Android)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (плагин Shadowsocks для Android)</string>
     <string name="plugin_exists_but_on_shit_system">Профиль %s требует плагин %s, но поставщик вашего проприетарного оборудования (обычно это большие компании, занимающиеся слежкой и производители вредоносного ПО) изменил ваш Android, сделав плагин непригодным для использования.</string>
@@ -385,7 +361,6 @@
     <string name="hysteria_stream_receive_window">Окно приема потока QUIC</string>
     <string name="menu_traffic">Трафик</string>
     <string name="no_statistics">Статистики пока нет</string>
-    <string name="traffic_statistics_summary">Может увеличить потребление энергии</string>
     <string name="clear_logcat">Очистить Logcat</string>
     <string name="menu_log">Логи</string>
     <string name="menu_tools">Инструменты</string>
@@ -394,18 +369,13 @@
     <string name="ssh_private_key">Закрытый ключ</string>
     <string name="ssh_public_key">Открытый ключ</string>
     <string name="ssh_auth_type_none">Без аутентификации</string>
-    <string name="group_filter_owners">Владельцы</string>
     <string name="profile_traffic_statistics">Статистика трафика профиля</string>
-    <string name="group_filter_owners_nf">В этой подписке нет владельцев</string>
-    <string name="app_traffic_statistics">Статистика трафика приложений</string>
     <string name="profile_traffic_statistics_summary">Когда отключено, использованный трафик не будет отображаться</string>
     <string name="app_statistics_disabled">Статистика трафика приложений отключена в настройках</string>
     <string name="warp_generate">Создать конфигурацию</string>
     <string name="generating">Создание…</string>
     <string name="tun_implementation">Реализация TUN</string>
     <string name="wireguard_local_address">Частный адрес</string>
-    <string name="enable_pcap">Включить Pcap</string>
-    <string name="pcap_summary">Сохранять трафик в файл .pcap</string>
     <string name="destination_override">Переопределять адрес назначения</string>
     <string name="resolve_destination_summary">Если адрес назначения является доменом, то он передается в соответствии со стратегией IPv6.</string>
     <string name="destination_override_summary">Использовать перехваченный домен для переопределения адреса назначения, а не только для маршрутизации</string>
@@ -435,8 +405,5 @@
     <string name="backup_import">Импортировать</string>
     <string name="backup_groups_and_configurations">Группы и конфигурации</string>
     <string name="backup_summary">Если правила маршрутизации резервируются без конфигураций, то пользовательские исходящие соединения будут потеряны.</string>
-    <string name="experimental_reduced_iv_head_entropy">Это предложение GFWReport по контрмерам блокировке потоковых протоколов случайных данных, наблюдаемой на GFW.
-\n
-\nЭта опция заменяет первые 6 байт вектора инициализации на буквенные символы, что позволяет кому угодно в сети провайдера идентифицировать протокол когда опция включена.</string>
     <string name="packet_encoding">Кодирование пакетов</string>
 </resources>
