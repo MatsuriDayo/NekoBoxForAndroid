@@ -24,6 +24,7 @@ import (
 
 	sblog "github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
+	"github.com/sagernet/sing-box/outbound"
 )
 
 var mainInstance *BoxInstance
@@ -70,7 +71,8 @@ type BoxInstance struct {
 	cancel context.CancelFunc
 	state  int
 
-	v2api *boxapi.SbV2rayServer
+	v2api    *boxapi.SbV2rayServer
+	selector *outbound.Selector
 
 	ForTest bool
 }
@@ -110,6 +112,13 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	platformFormatter_ = reflect.NewAt(platformFormatter_.Type(), unsafe.Pointer(platformFormatter_.UnsafeAddr())) // get unexported Formatter
 	platformFormatter := platformFormatter_.Interface().(*sblog.Formatter)
 	platformFormatter.DisableColors = true
+
+	// selector
+	if proxy, ok := b.Router().Outbound("proxy"); ok {
+		if selector, ok := proxy.(*outbound.Selector); ok {
+			b.selector = selector
+		}
+	}
 
 	return b, nil
 }
@@ -180,6 +189,13 @@ func (b *BoxInstance) QueryStats(tag, direct string) int64 {
 		return 0
 	}
 	return b.v2api.QueryStats(fmt.Sprintf("outbound>>>%s>>>traffic>>>%s", tag, direct))
+}
+
+func (b *BoxInstance) SelectOutbound(tag string) bool {
+	if b.selector != nil {
+		return b.selector.SelectOutbound(tag)
+	}
+	return false
 }
 
 func UrlTest(i *BoxInstance, link string, timeout int32) (int32, error) {

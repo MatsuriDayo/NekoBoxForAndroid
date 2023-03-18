@@ -47,7 +47,7 @@ class BaseService {
         val receiver = broadcastReceiver { _, intent ->
             when (intent.action) {
                 Intent.ACTION_SHUTDOWN -> service.persistStats()
-                Action.RELOAD -> service.forceLoad()
+                Action.RELOAD -> service.reload()
                 Action.SWITCH_WAKE_LOCK -> runOnDefaultDispatcher { service.switchWakeLock() }
                 else -> service.stopRunner()
             }
@@ -82,7 +82,7 @@ class BaseService {
             cb.updateWakeLockStatus(data?.proxy?.service?.wakeLock != null)
         }
 
-        val boardcastMutex = Mutex()
+        private val boardcastMutex = Mutex()
 
         suspend fun broadcast(work: (ISagerNetServiceCallback) -> Unit) {
             boardcastMutex.withLock {
@@ -143,9 +143,22 @@ class BaseService {
         fun onBind(intent: Intent): IBinder? =
             if (intent.action == Action.SERVICE) data.binder else null
 
-        fun forceLoad() {
+        fun reload() {
             if (DataStore.selectedProxy == 0L) {
                 stopRunner(false, (this as Context).getString(R.string.profile_empty))
+            }
+            if (canReloadSelector()) {
+                var tag = ""
+                data.proxy!!.config.trafficMap.forEach { (t, list) ->
+                    if (list.map { it.id }.contains(DataStore.selectedProxy)) {
+                        tag = t
+                    }
+                }
+                if (tag.isNotBlank()) {
+                    val success = data.proxy!!.box.selectOutbound(tag)
+                    Logs.d("selectOutbound $tag $success")
+                }
+                return
             }
             val s = data.state
             when {
@@ -153,6 +166,18 @@ class BaseService {
                 s.canStop -> stopRunner(true)
                 else -> Logs.w("Illegal state $s when invoking use")
             }
+        }
+
+        fun canReloadSelector(): Boolean {
+            if ((data.proxy?.config?.selectorGroupId ?: -1L) < 0) return false
+            val ent = SagerDatabase.proxyDao.getById(DataStore.selectedProxy) ?: return false
+            val tmpBox = ProxyInstance(ent)
+            tmpBox.buildConfigTmp()
+            if (tmpBox.lastSelectorGroupId == data.proxy?.lastSelectorGroupId) {
+                return true
+                // TODO if profile changed?
+            }
+            return false
         }
 
         suspend fun startProcesses() {

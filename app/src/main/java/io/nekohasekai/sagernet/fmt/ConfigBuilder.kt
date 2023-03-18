@@ -54,6 +54,7 @@ class ConfigBuildResult(
     var mainEntId: Long,
     var trafficMap: Map<String, List<ProxyEntity>>,
     val alerts: List<Pair<Int, String>>,
+    val selectorGroupId: Long,
 ) {
     data class IndexEntity(var chain: LinkedHashMap<Int, ProxyEntity>)
 }
@@ -84,16 +85,19 @@ fun buildConfig(
                 listOf(),
                 proxy.id, //
                 mapOf(TAG_PROXY to listOf(proxy)), //
-                listOf()
+                listOf(),
+                -1L
             )
         }
     }
 
     val trafficMap = HashMap<String, MutableList<ProxyEntity>>()
     val globalOutbounds = ArrayList<Long>()
+    val group = SagerDatabase.groupDao.getById(proxy.groupId)
     var optionsToMerge = ""
 
     fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
+        val frontProxy = group?.frontProxy?.let { SagerDatabase.proxyDao.getById(it) }
         val bean = requireBean()
         if (bean is ChainBean) {
             val beans = SagerDatabase.proxyDao.getEntities(bean.proxies)
@@ -103,18 +107,26 @@ fun buildConfig(
                 val item = beansMap[proxyId] ?: continue
                 beanList.addAll(item.resolveChain())
             }
-            return beanList.asReversed()
+            return if (frontProxy == null) {
+                beanList.asReversed()
+            } else {
+                beanList.add(0, frontProxy)
+                beanList.asReversed()
+            }
         }
-        return mutableListOf(this)
+        return if (frontProxy == null) {
+            mutableListOf(this)
+        } else {
+            mutableListOf(this, frontProxy)
+        }
     }
 
-    val proxies = proxy.resolveChain()
     val extraRules = if (forTest) listOf() else SagerDatabase.rulesDao.enabledRules()
     val extraProxies =
-        if (forTest) mapOf() else SagerDatabase.proxyDao.getEntities(extraRules.mapNotNull { rule ->
+        (if (forTest) mapOf() else SagerDatabase.proxyDao.getEntities(extraRules.mapNotNull { rule ->
             rule.outbound.takeIf { it > 0 && it != proxy.id }
-        }.toHashSet().toList()).associate { it.id to it.resolveChain() }
-
+        }.toHashSet().toList()).associate { it.id to it.resolveChain() }).toMutableMap()
+    val buildSelector = !forTest && group?.isSelector == true
     val uidListDNSRemote = mutableListOf<Int>()
     val uidListDNSDirect = mutableListOf<Int>()
     val domainListDNSRemote = mutableListOf<String>()
@@ -444,8 +456,23 @@ fun buildConfig(
             return chainTagOut
         }
 
-        val tagProxy = buildChain(0, proxies)
+        // build outbounds
         val tagMap = mutableMapOf<Long, String>()
+        if (buildSelector) {
+            val list = group?.id?.let { SagerDatabase.proxyDao.getByGroup(it) }
+            list?.forEach {
+                tagMap[it.id] = buildChain(it.id, it.resolveChain())
+            }
+            outbounds.add(0, Outbound_SelectorOptions().apply {
+                type = "selector"
+                tag = TAG_PROXY
+                default_ = tagMap[proxy.id]
+                outbounds = tagMap.values.toList()
+            }.asMap())
+        } else {
+            buildChain(0, proxy.resolveChain())
+        }
+        // build outbounds from route item
         extraProxies.forEach { (key, entities) ->
             tagMap[key] = buildChain(key, entities)
         }
@@ -521,10 +548,10 @@ fun buildConfig(
                 }
 
                 outbound = when (val outId = rule.outbound) {
-                    0L -> tagProxy
+                    0L -> TAG_PROXY
                     -1L -> TAG_BYPASS
                     -2L -> TAG_BLOCK
-                    else -> if (outId == proxy.id) tagProxy else tagMap[outId]
+                    else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId]
                         ?: throw Exception("invalid rule")
                 }
             })
@@ -569,7 +596,7 @@ fun buildConfig(
         for (dns in remoteDns) {
             if (!dns.isIpAddress()) continue
             route.rules.add(Rule_DefaultOptions().apply {
-                outbound = tagProxy
+                outbound = TAG_PROXY
                 ip_cidr = listOf(dns)
             })
         }
@@ -721,7 +748,8 @@ fun buildConfig(
             externalIndexMap,
             proxy.id,
             trafficMap,
-            alerts
+            alerts,
+            if (buildSelector) group!!.id else -1L
         )
     }
 
