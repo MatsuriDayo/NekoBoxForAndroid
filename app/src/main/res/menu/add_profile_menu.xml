@@ -61,6 +61,9 @@
                         android:id="@+id/action_new_wg"
                         android:title="@string/action_wireguard" />
                     <item
+                        android:id="@+id/action_new_shadowtls"
+                        android:title="@string/action_shadowtls" />
+                    <item
                         android:id="@+id/action_new_config"
                         android:title="@string/custom_config" />
                     <item

@@ -32,6 +32,8 @@ import moe.matsuri.nb4a.DNS.makeSingBoxRule
 import moe.matsuri.nb4a.SingBoxOptions.*
 import moe.matsuri.nb4a.plugin.Plugins
 import moe.matsuri.nb4a.proxy.config.ConfigBean
+import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
+import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -360,7 +362,9 @@ fun buildConfig(
                     currentOutbound = when (bean) {
                         is ConfigBean ->
                             gson.fromJson(bean.config, currentOutbound.javaClass)
-                        is StandardV2RayBean ->
+                        is ShadowTLSBean -> // before StandardV2RayBean
+                            buildSingBoxOutboundShadowTLSBean(bean).asMap()
+                        is StandardV2RayBean -> // http/trojan/vmess/vless
                             buildSingBoxOutboundStandardV2RayBean(bean).asMap()
                         is HysteriaBean ->
                             buildSingBoxOutboundHysteriaBean(bean).asMap()

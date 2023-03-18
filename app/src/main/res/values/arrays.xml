@@ -507,4 +507,9 @@
         <item>trace</item>
     </string-array>
 
+    <string-array name="shadowtls_version_value">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>

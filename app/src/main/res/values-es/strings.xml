@@ -193,20 +193,8 @@
     <string name="edit">Editar</string> 
     <string name="share">Compartir</string> 
     <string name="add_profile">Añadir perfil</string> 
-    <string name="select_profile">Seleccionar perfil</string> 
-    <string name="action_socks" translatable="false">SOCKS</string> 
-    <string name="action_http" translatable="false">HTTP</string> 
-    <string name="action_shadowsocks" translatable="false">Shadowsocks</string> 
-    <string name="action_shadowsocksr" translatable="false">ShadowsocksR</string> 
-    <string name="action_vmess" translatable="false">VMess</string> 
-    <string name="action_trojan" translatable="false">Trojan</string> 
-    <string name="action_trojan_go" translatable="false">Trojan Go</string> 
-    <string name="action_naive" translatable="false">Naïve</string> 
-    <string name="action_ping_tunnel" translatable="false">Ping Tunnel</string> 
-    <string name="action_hysteria" translatable="false">Hysteria</string> 
-    <string name="action_ssh" translatable="false">SSH</string> 
-    <string name="action_wireguard" translatable="false">WireGuard</string> 
-    <string name="proxy_chain">Cadena del proxy</string> 
+    <string name="select_profile">Seleccionar perfil</string>
+    <string name="proxy_chain">Cadena del proxy</string>
     <string name="custom_config">Configuración personalizada</string> 
     <string name="balancer">Equilibrador</string> 
     <string name="balancer_settings">Ajustes del equilibrador</string> 

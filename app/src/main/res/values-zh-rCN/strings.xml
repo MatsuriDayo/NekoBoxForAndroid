@@ -462,4 +462,8 @@
     <string name="log_level">日志级别</string>
     <string name="ads">推广</string>
     <string name="need_restart">重新启动应用程序以应用更改</string>
+    <string name="use_selector">启用 selector （免重载切换节点）</string>
+    <string name="front_proxy">前置代理</string>
+    <string name="landing_proxy">落地代理</string>
+    <string name="shadowtls_version">ShadowTLS 版本</string>
 </resources>

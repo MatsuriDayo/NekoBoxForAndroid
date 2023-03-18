@@ -185,6 +185,9 @@
             android:name="io.nekohasekai.sagernet.ui.profile.ChainSettingsActivity"
             android:configChanges="uiMode" />
         <activity
+            android:name="moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSSettingsActivity"
+            android:configChanges="uiMode" />
+        <activity
             android:name="moe.matsuri.nb4a.proxy.neko.NekoSettingActivity"
             android:configChanges="uiMode" />
         <activity
