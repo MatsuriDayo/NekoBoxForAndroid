@@ -1,17 +1,13 @@
 package moe.matsuri.nb4a.proxy.neko
 
-import androidx.preference.Preference
-import androidx.preference.PreferenceScreen
-import androidx.preference.SwitchPreference
-import com.takisoft.preferencex.EditTextPreference
-import com.takisoft.preferencex.PreferenceCategory
-import com.takisoft.preferencex.SimpleMenuPreference
+import androidx.preference.*
 import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
 import io.nekohasekai.sagernet.ktx.forEach
 import io.nekohasekai.sagernet.ktx.getStr
 import io.nekohasekai.sagernet.ui.profile.ProfileSettingsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 import moe.matsuri.nb4a.utils.getDrawableByName
 import org.json.JSONArray
 import org.json.JSONObject
@@ -37,14 +33,24 @@ object NekoPreferenceInflater {
                             "EditTextPreference" -> {
                                 p = EditTextPreference(context).apply {
                                     when (any.getStr("summaryProvider")) {
-                                        null -> summaryProvider = androidx.preference.EditTextPreference.SimpleSummaryProvider.getInstance()
-                                        "PasswordSummaryProvider" -> summaryProvider = ProfileSettingsActivity.PasswordSummaryProvider
+                                        null -> summaryProvider =
+                                            EditTextPreference.SimpleSummaryProvider.getInstance()
+                                        "PasswordSummaryProvider" -> summaryProvider =
+                                            ProfileSettingsActivity.PasswordSummaryProvider
                                     }
                                     when (any.getStr("EditTextPreferenceModifiers")) {
-                                        "Monospace" -> onBindEditTextListener = EditTextPreferenceModifiers.Monospace
-                                        "Hosts" -> onBindEditTextListener = EditTextPreferenceModifiers.Hosts
-                                        "Port" -> onBindEditTextListener = EditTextPreferenceModifiers.Port
-                                        "Number" -> onBindEditTextListener = EditTextPreferenceModifiers.Number
+                                        "Monospace" -> setOnBindEditTextListener(
+                                            EditTextPreferenceModifiers.Monospace
+                                        )
+                                        "Hosts" -> setOnBindEditTextListener(
+                                            EditTextPreferenceModifiers.Hosts
+                                        )
+                                        "Port" -> setOnBindEditTextListener(
+                                            EditTextPreferenceModifiers.Port
+                                        )
+                                        "Number" -> setOnBindEditTextListener(
+                                            EditTextPreferenceModifiers.Number
+                                        )
                                     }
                                 }
                             }
@@ -53,7 +59,6 @@ object NekoPreferenceInflater {
                             }
                             "SimpleMenuPreference" -> {
                                 p = SimpleMenuPreference(context).apply {
-                                    summaryProvider = androidx.preference.ListPreference.SimpleSummaryProvider.getInstance()
                                     val entries = any.optJSONObject("entries")
                                     if (entries != null) setMenu(this, entries)
                                 }
@@ -85,8 +90,8 @@ object NekoPreferenceInflater {
             menuEntries.add(b as String)
         }
         entries.apply {
-            p.setEntries(menuEntries.toTypedArray())
-            p.setEntryValues(menuEntryValues.toTypedArray())
+            p.entries = menuEntries.toTypedArray()
+            p.entryValues = menuEntryValues.toTypedArray()
         }
     }
 }

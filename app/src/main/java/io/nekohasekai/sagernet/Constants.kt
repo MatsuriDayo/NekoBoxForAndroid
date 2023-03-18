@@ -133,6 +133,7 @@ object Key {
     const val GROUP_NAME = "groupName"
     const val GROUP_TYPE = "groupType"
     const val GROUP_ORDER = "groupOrder"
+    const val GROUP_IS_SELECTOR = "groupIsSelector"
 
     const val GROUP_SUBSCRIPTION = "groupSubscription"
     const val SUBSCRIPTION_LINK = "subscriptionLink"

@@ -7,7 +7,7 @@
         app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory app:title="@string/proxy_cat">
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="2"
             app:entries="@array/socks_versions"
             app:entryValues="@array/int_array_3"

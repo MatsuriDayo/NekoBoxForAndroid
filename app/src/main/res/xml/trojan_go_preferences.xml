@@ -33,7 +33,7 @@
             app:key="serverAllowInsecure"
             app:summary="@string/allow_insecure_sum"
             app:title="@string/allow_insecure" />
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="none"
             app:entries="@array/trojan_go_networks_entry"
             app:entryValues="@array/trojan_go_networks_value"
@@ -41,7 +41,7 @@
             app:key="serverNetwork"
             app:title="@string/network"
             app:useSimpleSummaryProvider="true" />
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/trojan_go_security_entry"
             app:entryValues="@array/trojan_go_security_value"
             app:icon="@drawable/ic_baseline_layers_24"
@@ -69,7 +69,7 @@
         app:key="serverSsCategory"
         app:title="@string/ss_cat">
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="AES-128-GCM"
             app:entries="@array/trojan_go_methods"
             app:entryValues="@array/trojan_go_methods"

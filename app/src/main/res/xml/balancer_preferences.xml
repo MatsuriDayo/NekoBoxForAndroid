@@ -6,7 +6,7 @@
         app:title="@string/profile_name"
         app:useSimpleSummaryProvider="true" />
 
-    <com.takisoft.preferencex.SimpleMenuPreference
+    <moe.matsuri.nb4a.ui.SimpleMenuPreference
         app:defaultValue="0"
         app:entries="@array/balancer_type"
         app:entryValues="@array/int_array_2"
@@ -15,7 +15,7 @@
         app:title="@string/balancer_type"
         app:useSimpleSummaryProvider="true" />
 
-    <com.takisoft.preferencex.SimpleMenuPreference
+    <moe.matsuri.nb4a.ui.SimpleMenuPreference
         app:entries="@array/balancer_strategy_entry"
         app:entryValues="@array/balancer_strategy_value"
         app:icon="@drawable/ic_baseline_compare_arrows_24"

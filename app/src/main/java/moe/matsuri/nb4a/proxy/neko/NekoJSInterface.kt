@@ -5,7 +5,6 @@ import android.webkit.*
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
-import com.takisoft.preferencex.SimpleMenuPreference
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
@@ -14,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import moe.matsuri.nb4a.plugin.NekoPluginManager
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 import moe.matsuri.nb4a.utils.JavaUtil
 import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.WebViewUtil

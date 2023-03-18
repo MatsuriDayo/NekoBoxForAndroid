@@ -3,26 +3,26 @@ package io.nekohasekai.sagernet.widget
 import android.content.Context
 import android.net.Uri
 import android.util.AttributeSet
+import androidx.core.content.res.TypedArrayUtils
 import androidx.core.widget.addTextChangedListener
+import androidx.preference.EditTextPreference
 import com.google.android.material.textfield.TextInputLayout
-import com.takisoft.preferencex.EditTextPreference
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.readableMessage
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
-class LinkOrContentPreference : EditTextPreference {
-
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
-
-    constructor(
-        context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
-
+class LinkOrContentPreference
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = TypedArrayUtils.getAttr(
+        context, R.attr.editTextPreferenceStyle,
+        android.R.attr.editTextPreferenceStyle
+    ),
+    defStyleRes: Int = 0
+) : EditTextPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {
         dialogLayoutResource = R.layout.layout_link_dialog

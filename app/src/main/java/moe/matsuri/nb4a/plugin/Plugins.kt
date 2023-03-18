@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.plugin.PluginManager.loadString
 import io.nekohasekai.sagernet.utils.PackageCache
 

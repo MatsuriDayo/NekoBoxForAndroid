@@ -1,20 +1,21 @@
 package io.nekohasekai.sagernet.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.preference.*
 import com.github.shadowsocks.plugin.Empty
 import com.github.shadowsocks.plugin.fragment.AlertDialogFragment
-import com.takisoft.preferencex.PreferenceFragmentCompat
-import com.takisoft.preferencex.SimpleMenuPreference
 import io.nekohasekai.sagernet.GroupType
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
@@ -24,8 +25,10 @@ import io.nekohasekai.sagernet.ktx.applyDefaultValues
 import io.nekohasekai.sagernet.ktx.onMainDispatcher
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.widget.ListListener
+import io.nekohasekai.sagernet.widget.OutboundPreference
 import io.nekohasekai.sagernet.widget.UserAgentPreference
 import kotlinx.parcelize.Parcelize
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
 @Suppress("UNCHECKED_CAST")
 class GroupSettingsActivity(
@@ -33,10 +36,16 @@ class GroupSettingsActivity(
 ) : ThemedActivity(resId),
     OnPreferenceDataStoreChangeListener {
 
+    private lateinit var frontProxyPreference: OutboundPreference
+
     fun ProxyGroup.init() {
         DataStore.groupName = name ?: ""
         DataStore.groupType = type
         DataStore.groupOrder = order
+        DataStore.groupIsSelector = isSelector
+        DataStore.routeOutboundRule = frontProxy
+        DataStore.routeOutbound = if (frontProxy >= 0) 3 else 0
+
         val subscription = subscription ?: SubscriptionBean().applyDefaultValues()
         DataStore.subscriptionLink = subscription.link
         DataStore.subscriptionForceResolve = subscription.forceResolve
@@ -51,6 +60,8 @@ class GroupSettingsActivity(
         name = DataStore.groupName.takeIf { it.isNotBlank() } ?: "My group"
         type = DataStore.groupType
         order = DataStore.groupOrder
+        isSelector = DataStore.groupIsSelector
+        frontProxy = if (DataStore.routeOutbound == 3) DataStore.routeOutboundRule else -1
 
         val isSubscription = type == GroupType.SUBSCRIPTION
         if (isSubscription) {
@@ -76,6 +87,22 @@ class GroupSettingsActivity(
         rootKey: String?,
     ) {
         addPreferencesFromResource(R.xml.group_preferences)
+
+        frontProxyPreference = findPreference(Key.ROUTE_OUTBOUND)!!
+        frontProxyPreference.apply {
+            entries = listOf("None", "Select...").toTypedArray()
+            entryValues = listOf("0", "3").toTypedArray()
+            setOnPreferenceChangeListener { _, newValue ->
+                if (newValue.toString() == "3") {
+                    selectProfileForAdd.launch(
+                        Intent(this@GroupSettingsActivity, ProfileSelectActivity::class.java)
+                    )
+                    false
+                } else {
+                    true
+                }
+            }
+        }
 
         val groupType = findPreference<SimpleMenuPreference>(Key.GROUP_TYPE)!!
         val groupSubscription = findPreference<PreferenceCategory>(Key.GROUP_SUBSCRIPTION)!!
@@ -252,7 +279,7 @@ class GroupSettingsActivity(
 
         lateinit var activity: GroupSettingsActivity
 
-        override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.profileCacheStore
             activity.apply {
                 createPreferences(savedInstanceState, rootKey)
@@ -310,6 +337,22 @@ class GroupSettingsActivity(
             }
         }
 
+    }
+
+    val selectProfileForAdd = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) runOnDefaultDispatcher {
+            val profile = ProfileManager.getProfile(
+                it.data!!.getLongExtra(
+                    ProfileSelectActivity.EXTRA_PROFILE_ID, 0
+                )
+            ) ?: return@runOnDefaultDispatcher
+            DataStore.routeOutboundRule = profile.id
+            onMainDispatcher {
+                frontProxyPreference.value = "3"
+            }
+        }
     }
 
 }

@@ -17,7 +17,7 @@
             app:key="serverPort"
             app:title="@string/server_port"
             app:useSimpleSummaryProvider="true" />
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/ss_enc_method_value"
             app:entryValues="@array/ss_enc_method_value"
             app:icon="@drawable/ic_notification_enhanced_encryption"
@@ -32,7 +32,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/plugin">
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue=""
             app:entries="@array/box_shadowsocks_plugins"
             app:entryValues="@array/box_shadowsocks_plugins"

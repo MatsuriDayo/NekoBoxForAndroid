@@ -1,9 +1,7 @@
 package moe.matsuri.nb4a.proxy
 
 import androidx.preference.Preference
-import com.takisoft.preferencex.EditTextPreference
-import com.takisoft.preferencex.PreferenceFragmentCompat
-import com.takisoft.preferencex.SimpleMenuPreference
+import androidx.preference.PreferenceFragmentCompat
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.readableMessage

@@ -24,8 +24,8 @@ import io.nekohasekai.sagernet.fmt.v2ray.VMessBean;
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean;
 import io.nekohasekai.sagernet.ktx.KryosKt;
 import io.nekohasekai.sagernet.ktx.Logs;
-import moe.matsuri.nb4a.proxy.neko.NekoBean;
 import moe.matsuri.nb4a.proxy.config.ConfigBean;
+import moe.matsuri.nb4a.proxy.neko.NekoBean;
 import moe.matsuri.nb4a.utils.JavaUtil;
 
 public class KryoConverters {

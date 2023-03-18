@@ -31,13 +31,9 @@ import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
 import io.nekohasekai.sagernet.ui.profile.*
 import moe.matsuri.nb4a.Protocols
-import moe.matsuri.nb4a.proxy.neko.*
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
-import moe.matsuri.nb4a.proxy.neko.NekoBean
-import moe.matsuri.nb4a.proxy.neko.NekoSettingActivity
-import moe.matsuri.nb4a.proxy.neko.haveStandardLink
-import moe.matsuri.nb4a.proxy.neko.shareLink
+import moe.matsuri.nb4a.proxy.neko.*
 
 @Entity(
     tableName = "proxy_entities", indices = [Index("groupId", name = "groupId")]

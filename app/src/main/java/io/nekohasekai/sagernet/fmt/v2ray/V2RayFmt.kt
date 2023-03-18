@@ -3,8 +3,8 @@ package io.nekohasekai.sagernet.fmt.v2ray
 import com.google.gson.Gson
 import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
-import moe.matsuri.nb4a.SingBoxOptions.*
 import io.nekohasekai.sagernet.ktx.*
+import moe.matsuri.nb4a.SingBoxOptions.*
 import moe.matsuri.nb4a.utils.NGUtil
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl

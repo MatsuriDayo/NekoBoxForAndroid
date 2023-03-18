@@ -1,7 +1,7 @@
 package io.nekohasekai.sagernet.fmt.shadowsocks
 
-import moe.matsuri.nb4a.SingBoxOptions
 import io.nekohasekai.sagernet.ktx.*
+import moe.matsuri.nb4a.SingBoxOptions
 import moe.matsuri.nb4a.utils.Util
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONObject

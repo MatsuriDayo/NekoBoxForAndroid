@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fab_color_progress">@color/material_light_white</color>
+    <color name="preference_simple_menu_background">#303030</color>
 </resources>

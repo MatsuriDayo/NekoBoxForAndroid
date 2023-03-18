@@ -2,20 +2,14 @@ package io.nekohasekai.sagernet.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.SagerDatabase
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
-class GroupPreference : SimpleMenuPreference {
-
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
-        context, attrs, defStyle
-    )
-
-    constructor(
-        context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+class GroupPreference
+@JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = R.attr.dropdownPreferenceStyle
+) : SimpleMenuPreference(context, attrs, defStyle, 0) {
 
     init {
         val groups = SagerDatabase.groupDao.allGroups()

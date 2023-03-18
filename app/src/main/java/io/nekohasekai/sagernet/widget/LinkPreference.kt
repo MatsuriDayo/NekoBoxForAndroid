@@ -2,50 +2,28 @@ package io.nekohasekai.sagernet.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.core.content.res.TypedArrayUtils
 import androidx.core.widget.addTextChangedListener
+import androidx.preference.EditTextPreference
 import com.google.android.material.textfield.TextInputLayout
-import com.takisoft.preferencex.EditTextPreference
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.readableMessage
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
-class LinkPreference : EditTextPreference {
+class LinkPreference
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = TypedArrayUtils.getAttr(
+        context, R.attr.editTextPreferenceStyle,
+        android.R.attr.editTextPreferenceStyle
+    ),
+    defStyleRes: Int = 0
+) : EditTextPreference(context, attrs, defStyleAttr, defStyleRes) {
 
-    var defaultValue: String? = null
-
-    constructor(context: Context) : this(context, null)
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-    ) : this(context, attrs, com.takisoft.preferencex.R.attr.editTextPreferenceStyle)
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-    ) : this(context, attrs, defStyleAttr, 0)
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int,
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        val a = context.obtainStyledAttributes(
-            attrs, R.styleable.Preference, defStyleAttr, defStyleRes
-        )
-        if (a.hasValue(androidx.preference.R.styleable.Preference_defaultValue)) {
-            defaultValue = onGetDefaultValue(
-                a, androidx.preference.R.styleable.Preference_defaultValue
-            )?.toString()
-        } else if (a.hasValue(androidx.preference.R.styleable.Preference_android_defaultValue)) {
-            defaultValue = onGetDefaultValue(
-                a, androidx.preference.R.styleable.Preference_android_defaultValue
-            )?.toString()
-        }
-    }
+//    var defaultValue: String? = null
 
     init {
         dialogLayoutResource = R.layout.layout_link_dialog
@@ -79,7 +57,7 @@ class LinkPreference : EditTextPreference {
 
         setOnPreferenceChangeListener { _, newValue ->
             if ((newValue as String).isBlank()) {
-                text = defaultValue
+//                text = defaultValue
                 false
             } else try {
                 newValue.toHttpUrl()

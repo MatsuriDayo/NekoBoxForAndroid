@@ -24,7 +24,7 @@
             app:title="@string/username"
             app:useSimpleSummaryProvider="true" />
 
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/ssh_auth_type"
             app:entryValues="@array/int_array_3"
             app:icon="@drawable/ic_baseline_compare_arrows_24"

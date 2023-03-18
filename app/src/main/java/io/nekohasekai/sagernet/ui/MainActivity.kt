@@ -30,7 +30,6 @@ import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
 import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListHolderListener
-import kotlinx.coroutines.launch
 import libcore.Libcore
 import moe.matsuri.nb4a.utils.Util
 import java.text.SimpleDateFormat

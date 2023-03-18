@@ -7,13 +7,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.app.ActivityCompat
-import androidx.preference.EditTextPreference
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
-import androidx.preference.SwitchPreference
+import androidx.preference.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.takisoft.preferencex.PreferenceFragmentCompat
-import com.takisoft.preferencex.SimpleMenuPreference
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
@@ -25,8 +20,8 @@ import io.nekohasekai.sagernet.widget.AppListPreference
 import moe.matsuri.nb4a.Protocols
 import moe.matsuri.nb4a.ui.ColorPickerPreference
 import moe.matsuri.nb4a.ui.LongClickMenuPreference
-import moe.matsuri.nb4a.ui.LongClickSwitchPreference
 import moe.matsuri.nb4a.ui.MTUPreference
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
 class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
@@ -44,7 +39,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         true
     }
 
-    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = DataStore.configurationStore
         DataStore.initGlobal()
         addPreferencesFromResource(R.xml.global_preferences)

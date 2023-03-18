@@ -5,21 +5,15 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.PreferenceViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.R
 
-class MTUPreference : SimpleMenuPreference {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
-
-    constructor(
-        context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
-
+class MTUPreference
+@JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = R.attr.dropdownPreferenceStyle
+) : SimpleMenuPreference(context, attrs, defStyle, 0) {
     init {
         setSummaryProvider {
             value.toString()

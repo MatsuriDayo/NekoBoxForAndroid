@@ -33,7 +33,7 @@
             app:key="serverCertificates"
             app:title="@string/certificates"
             app:useSimpleSummaryProvider="true" />
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="https"
             app:entries="@array/tuic_udp_relay_mode_entry"
             app:entryValues="@array/tuic_udp_relay_mode_value"
@@ -41,7 +41,7 @@
             app:key="serverUDPRelayMode"
             app:title="@string/tuic_udp_relay_mode"
             app:useSimpleSummaryProvider="true" />
-        <com.takisoft.preferencex.SimpleMenuPreference
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="https"
             app:entries="@array/tuic_congestion_controller_entry"
             app:entryValues="@array/tuic_congestion_controller_value"

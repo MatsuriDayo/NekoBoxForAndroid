@@ -56,9 +56,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import moe.matsuri.nb4a.Protocols
 import moe.matsuri.nb4a.Protocols.getProtocolColor
+import moe.matsuri.nb4a.plugin.NekoPluginManager
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
 import moe.matsuri.nb4a.proxy.neko.NekoJSInterface
-import moe.matsuri.nb4a.plugin.NekoPluginManager
 import moe.matsuri.nb4a.proxy.neko.NekoSettingActivity
 import moe.matsuri.nb4a.proxy.neko.canShare
 import okhttp3.internal.closeQuietly
@@ -1467,14 +1467,14 @@ class ConfigurationFragment @JvmOverloads constructor(
                         popup.menuInflater.inflate(R.menu.profile_share_menu, popup.menu)
 
                         if (proxyEntity.vmessBean == null || proxyEntity.vmessBean!!.isVLESS) {
-                            popup.menu.findItem(R.id.action_group_qr).subMenu.removeItem(R.id.action_v2rayn_qr)
-                            popup.menu.findItem(R.id.action_group_clipboard).subMenu.removeItem(R.id.action_v2rayn_clipboard)
+                            popup.menu.findItem(R.id.action_group_qr).subMenu?.removeItem(R.id.action_v2rayn_qr)
+                            popup.menu.findItem(R.id.action_group_clipboard).subMenu?.removeItem(R.id.action_v2rayn_clipboard)
                         }
 
                         when {
                             !proxyEntity.haveStandardLink() -> {
-                                popup.menu.findItem(R.id.action_group_qr).subMenu.removeItem(R.id.action_standard_qr)
-                                popup.menu.findItem(R.id.action_group_clipboard).subMenu.removeItem(
+                                popup.menu.findItem(R.id.action_group_qr).subMenu?.removeItem(R.id.action_standard_qr)
+                                popup.menu.findItem(R.id.action_group_clipboard).subMenu?.removeItem(
                                     R.id.action_standard_clipboard
                                 )
                             }

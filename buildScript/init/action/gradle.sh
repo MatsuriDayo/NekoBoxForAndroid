@@ -5,6 +5,8 @@ set -e
 #### Download assets
 bash buildScript/lib/assets.sh
 
+exit
+
 #### Download "external" from Internet
 rm -rf external
 mkdir -p external

@@ -2,13 +2,7 @@ package moe.matsuri.nb4a.utils
 
 import android.annotation.SuppressLint
 import android.util.Base64
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonParseException
 import java.io.ByteArrayOutputStream
-import java.lang.reflect.Type
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Deflater

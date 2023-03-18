@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <dimen name="qrcode_size">264dp</dimen>
     <dimen name="main_list_padding_bottom">88dp</dimen>
     <dimen name="bottom_sheet_padding">8dp</dimen>

@@ -288,15 +288,6 @@
     <color name="color_ng_black_accent">#9E9E9E</color>
     <color name="color_ng_black_primary">#2B2B2B</color>
 
-<!--    <color name="colorPrimary">#607D8B</color>-->
-<!--    <color name="colorPrimary_dark">#455A64</color>-->
-<!--    <color name="colorPrimary_light">#CFD8DC</color>-->
-<!--    <color name="accent">#</color>-->
-<!--    <color name="colorPrimary_text">#212121</color>-->
-<!--    <color name="secondary_text">#757575</color>-->
-<!--    <color name="icons">#FFFFFF</color>-->
-<!--    <color name="divider">#BDBDBD</color>-->
-<!--    <color name="colorPing">#185534</color>-->
-<!--    <color name="colorSubscription">#247BA0</color>-->
+    <color name="preference_simple_menu_background">#FAFAFA</color>
 
 </resources>

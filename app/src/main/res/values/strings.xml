@@ -502,5 +502,7 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="ads">Ads</string>
     <string name="bypass_lan_in_core">Bypass LAN in Core</string>
     <string name="need_restart">Restart APP to apply changes</string>
+    <string name="use_selector">Use selector</string>
+    <string name="front_proxy">Front proxy</string>
 
 </resources>

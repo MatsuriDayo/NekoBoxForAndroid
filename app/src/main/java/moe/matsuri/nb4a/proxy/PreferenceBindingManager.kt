@@ -1,6 +1,7 @@
 package moe.matsuri.nb4a.proxy
 
-import com.takisoft.preferencex.PreferenceFragmentCompat
+import androidx.preference.PreferenceFragmentCompat
+
 
 class PreferenceBindingManager {
     val items = mutableListOf<PreferenceBinding>()
