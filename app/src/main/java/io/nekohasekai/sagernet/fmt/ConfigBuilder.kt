@@ -96,8 +96,7 @@ fun buildConfig(
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
     var optionsToMerge = ""
 
-    fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
-        val frontProxy = group?.frontProxy?.let { SagerDatabase.proxyDao.getById(it) }
+    fun ProxyEntity.resolveChainInternal(): MutableList<ProxyEntity> {
         val bean = requireBean()
         if (bean is ChainBean) {
             val beans = SagerDatabase.proxyDao.getEntities(bean.proxies)
@@ -105,20 +104,24 @@ fun buildConfig(
             val beanList = ArrayList<ProxyEntity>()
             for (proxyId in bean.proxies) {
                 val item = beansMap[proxyId] ?: continue
-                beanList.addAll(item.resolveChain())
+                beanList.addAll(item.resolveChainInternal())
             }
-            return if (frontProxy == null) {
-                beanList.asReversed()
-            } else {
-                beanList.add(0, frontProxy)
-                beanList.asReversed()
-            }
+            return beanList.asReversed()
         }
-        return if (frontProxy == null) {
-            mutableListOf(this)
-        } else {
-            mutableListOf(this, frontProxy)
+        return mutableListOf(this)
+    }
+
+    fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
+        val frontProxy = group?.frontProxy?.let { SagerDatabase.proxyDao.getById(it) }
+        val landingProxy = group?.landingProxy?.let { SagerDatabase.proxyDao.getById(it) }
+        val list = resolveChainInternal()
+        if (frontProxy != null) {
+            list.add(frontProxy)
         }
+        if (landingProxy != null) {
+            list.add(0, landingProxy)
+        }
+        return list
     }
 
     val extraRules = if (forTest) listOf() else SagerDatabase.rulesDao.enabledRules()

@@ -247,6 +247,16 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="front_proxy_entry">
+        <item>@string/ssh_auth_type_none</item>
+        <item>@string/route_profile</item>
+    </string-array>
+
+    <string-array name="front_proxy_value">
+        <item>0</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="networks_value">
         <item>tcp</item>
         <item>ws</item>

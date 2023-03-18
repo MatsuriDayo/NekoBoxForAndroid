@@ -127,13 +127,14 @@ object Key {
     const val ROUTE_SOURCE = "routeSource"
     const val ROUTE_PROTOCOL = "routeProtocol"
     const val ROUTE_OUTBOUND = "routeOutbound"
-    const val ROUTE_OUTBOUND_RULE = "routeOutboundRule"
     const val ROUTE_PACKAGES = "routePackages"
 
     const val GROUP_NAME = "groupName"
     const val GROUP_TYPE = "groupType"
     const val GROUP_ORDER = "groupOrder"
     const val GROUP_IS_SELECTOR = "groupIsSelector"
+    const val GROUP_FRONT_PROXY = "groupFrontProxy"
+    const val GROUP_LANDING_PROXY = "groupLandingProxy"
 
     const val GROUP_SUBSCRIPTION = "groupSubscription"
     const val SUBSCRIPTION_LINK = "subscriptionLink"

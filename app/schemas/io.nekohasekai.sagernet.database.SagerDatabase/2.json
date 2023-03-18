@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "062104587ad7088bb9926683389e995d",
+    "identityHash": "937a517378a0cb35dc1f8bd181683882",
     "entities": [
       {
         "tableName": "proxy_groups",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userOrder` INTEGER NOT NULL, `ungrouped` INTEGER NOT NULL, `name` TEXT, `type` INTEGER NOT NULL, `subscription` BLOB, `order` INTEGER NOT NULL, `isSelector` INTEGER NOT NULL, `frontProxy` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userOrder` INTEGER NOT NULL, `ungrouped` INTEGER NOT NULL, `name` TEXT, `type` INTEGER NOT NULL, `subscription` BLOB, `order` INTEGER NOT NULL, `isSelector` INTEGER NOT NULL, `frontProxy` INTEGER NOT NULL, `landingProxy` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,13 +61,19 @@
             "columnName": "frontProxy",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "landingProxy",
+            "columnName": "landingProxy",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -222,10 +228,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [
           {
@@ -324,10 +330,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -336,7 +342,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '062104587ad7088bb9926683389e995d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '937a517378a0cb35dc1f8bd181683882')"
     ]
   }
 }

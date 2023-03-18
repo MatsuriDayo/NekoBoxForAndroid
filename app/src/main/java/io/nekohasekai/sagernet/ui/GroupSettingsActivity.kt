@@ -37,14 +37,18 @@ class GroupSettingsActivity(
     OnPreferenceDataStoreChangeListener {
 
     private lateinit var frontProxyPreference: OutboundPreference
+    private lateinit var landingProxyPreference: OutboundPreference
 
     fun ProxyGroup.init() {
         DataStore.groupName = name ?: ""
         DataStore.groupType = type
         DataStore.groupOrder = order
         DataStore.groupIsSelector = isSelector
-        DataStore.routeOutboundRule = frontProxy
-        DataStore.routeOutbound = if (frontProxy >= 0) 3 else 0
+
+        DataStore.frontProxy = frontProxy
+        DataStore.landingProxy = landingProxy
+        DataStore.frontProxyTmp = if (frontProxy >= 0) 3 else 0
+        DataStore.landingProxyTmp = if (landingProxy >= 0) 3 else 0
 
         val subscription = subscription ?: SubscriptionBean().applyDefaultValues()
         DataStore.subscriptionLink = subscription.link
@@ -61,7 +65,9 @@ class GroupSettingsActivity(
         type = DataStore.groupType
         order = DataStore.groupOrder
         isSelector = DataStore.groupIsSelector
-        frontProxy = if (DataStore.routeOutbound == 3) DataStore.routeOutboundRule else -1
+
+        frontProxy = if (DataStore.frontProxyTmp == 3) DataStore.frontProxy else -1
+        landingProxy = if (DataStore.landingProxyTmp == 3) DataStore.landingProxy else -1
 
         val isSubscription = type == GroupType.SUBSCRIPTION
         if (isSubscription) {
@@ -88,13 +94,28 @@ class GroupSettingsActivity(
     ) {
         addPreferencesFromResource(R.xml.group_preferences)
 
-        frontProxyPreference = findPreference(Key.ROUTE_OUTBOUND)!!
+        frontProxyPreference = findPreference(Key.GROUP_FRONT_PROXY)!!
         frontProxyPreference.apply {
-            entries = listOf("None", "Select...").toTypedArray()
-            entryValues = listOf("0", "3").toTypedArray()
+            setEntries(R.array.front_proxy_entry)
+            setEntryValues(R.array.front_proxy_value)
             setOnPreferenceChangeListener { _, newValue ->
                 if (newValue.toString() == "3") {
-                    selectProfileForAdd.launch(
+                    selectProfileForAddFront.launch(
+                        Intent(this@GroupSettingsActivity, ProfileSelectActivity::class.java)
+                    )
+                    false
+                } else {
+                    true
+                }
+            }
+        }
+        landingProxyPreference = findPreference(Key.GROUP_LANDING_PROXY)!!
+        landingProxyPreference.apply {
+            setEntries(R.array.front_proxy_entry)
+            setEntryValues(R.array.front_proxy_value)
+            setOnPreferenceChangeListener { _, newValue ->
+                if (newValue.toString() == "3") {
+                    selectProfileForAddLanding.launch(
                         Intent(this@GroupSettingsActivity, ProfileSelectActivity::class.java)
                     )
                     false
@@ -119,8 +140,6 @@ class GroupSettingsActivity(
             true
         }
 
-        val subscriptionUserAgent =
-            findPreference<UserAgentPreference>(Key.SUBSCRIPTION_USER_AGENT)!!
         val subscriptionAutoUpdate =
             findPreference<SwitchPreference>(Key.SUBSCRIPTION_AUTO_UPDATE)!!
         val subscriptionAutoUpdateDelay =
@@ -339,18 +358,30 @@ class GroupSettingsActivity(
 
     }
 
-    val selectProfileForAdd = registerForActivityResult(
+    val selectProfileForAddFront = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == Activity.RESULT_OK) runOnDefaultDispatcher {
             val profile = ProfileManager.getProfile(
-                it.data!!.getLongExtra(
-                    ProfileSelectActivity.EXTRA_PROFILE_ID, 0
-                )
+                it.data!!.getLongExtra(ProfileSelectActivity.EXTRA_PROFILE_ID, 0)
             ) ?: return@runOnDefaultDispatcher
-            DataStore.routeOutboundRule = profile.id
+            DataStore.frontProxy = profile.id
             onMainDispatcher {
                 frontProxyPreference.value = "3"
+            }
+        }
+    }
+
+    val selectProfileForAddLanding = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) runOnDefaultDispatcher {
+            val profile = ProfileManager.getProfile(
+                it.data!!.getLongExtra(ProfileSelectActivity.EXTRA_PROFILE_ID, 0)
+            ) ?: return@runOnDefaultDispatcher
+            DataStore.landingProxy = profile.id
+            onMainDispatcher {
+                landingProxyPreference.value = "3"
             }
         }
     }

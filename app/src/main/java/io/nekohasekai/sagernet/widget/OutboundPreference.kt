@@ -19,7 +19,7 @@ class OutboundPreference
 
     override fun getSummary(): CharSequence? {
         if (value == "3") {
-            val routeOutbound = DataStore.routeOutboundRule
+            val routeOutbound = DataStore.profileCacheStore.getLong(key + "Long") ?: 0
             if (routeOutbound > 0) {
                 ProfileManager.getProfile(routeOutbound)?.displayName()?.let {
                     return it

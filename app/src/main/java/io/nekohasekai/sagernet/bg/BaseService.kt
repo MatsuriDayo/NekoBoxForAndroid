@@ -13,6 +13,7 @@ import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.ISagerNetServiceCallback
 import io.nekohasekai.sagernet.bg.proto.ProxyInstance
 import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.plugin.PluginManager
@@ -149,14 +150,24 @@ class BaseService {
             }
             if (canReloadSelector()) {
                 var tag = ""
+                var ent: ProxyEntity? = null
                 data.proxy!!.config.trafficMap.forEach { (t, list) ->
-                    if (list.map { it.id }.contains(DataStore.selectedProxy)) {
-                        tag = t
+                    for (it in list) {
+                        if (it.id == DataStore.selectedProxy) {
+                            ent = it
+                            tag = t
+                            break
+                        }
                     }
                 }
-                if (tag.isNotBlank()) {
+                if (tag.isNotBlank() && ent != null) {
                     val success = data.proxy!!.box.selectOutbound(tag)
                     Logs.d("selectOutbound $tag $success")
+                    runOnDefaultDispatcher {
+                        data.binder.broadcast {
+                            it.stateChanged(-1, ent!!.displayName(), null)
+                        }
+                    }
                 }
                 return
             }

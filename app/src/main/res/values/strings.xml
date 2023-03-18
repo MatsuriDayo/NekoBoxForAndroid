@@ -504,5 +504,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="need_restart">Restart APP to apply changes</string>
     <string name="use_selector">Use selector</string>
     <string name="front_proxy">Front proxy</string>
+    <string name="landing_proxy">Landing Proxy</string>
 
 </resources>

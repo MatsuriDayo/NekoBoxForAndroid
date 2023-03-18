@@ -89,6 +89,9 @@ class ServiceNotification(
             }
 
             override fun stateChanged(state: Int, profileName: String?, msg: String?) {
+                if (state == -1) {
+                    builder.setContentTitle(profileName)
+                }
             }
 
             override fun missingPlugin(profileName: String?, pluginName: String?) {

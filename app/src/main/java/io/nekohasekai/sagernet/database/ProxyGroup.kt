@@ -20,7 +20,8 @@ data class ProxyGroup(
     var subscription: SubscriptionBean? = null,
     var order: Int = GroupOrder.ORIGIN,
     var isSelector: Boolean = false,
-    var frontProxy: Long = 0L
+    var frontProxy: Long = -1L,
+    var landingProxy: Long = -1L
 ) : Serializable() {
 
     @Transient

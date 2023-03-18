@@ -22,8 +22,14 @@
 
     <io.nekohasekai.sagernet.widget.OutboundPreference
         app:icon="@drawable/ic_hardware_router"
-        app:key="routeOutbound"
+        app:key="groupFrontProxy"
         app:title="@string/front_proxy"
+        app:useSimpleSummaryProvider="true" />
+
+    <io.nekohasekai.sagernet.widget.OutboundPreference
+        app:icon="@drawable/baseline_public_24"
+        app:key="groupLandingProxy"
+        app:title="@string/landing_proxy"
         app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory

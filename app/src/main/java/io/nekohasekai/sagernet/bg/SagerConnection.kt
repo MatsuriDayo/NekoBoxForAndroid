@@ -53,6 +53,7 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
     private val serviceCallback = object : ISagerNetServiceCallback.Stub() {
 
         override fun stateChanged(state: Int, profileName: String?, msg: String?) {
+            if (state < 0) return // skip private
             val s = BaseService.State.values()[state]
             DataStore.serviceState = s
             val callback = callback ?: return
