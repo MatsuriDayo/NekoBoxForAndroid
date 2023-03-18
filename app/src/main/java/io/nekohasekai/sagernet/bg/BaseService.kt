@@ -149,23 +149,14 @@ class BaseService {
                 stopRunner(false, (this as Context).getString(R.string.profile_empty))
             }
             if (canReloadSelector()) {
-                var tag = ""
-                var ent: ProxyEntity? = null
-                data.proxy!!.config.trafficMap.forEach { (t, list) ->
-                    for (it in list) {
-                        if (it.id == DataStore.selectedProxy) {
-                            ent = it
-                            tag = t
-                            break
-                        }
-                    }
-                }
+                val ent = SagerDatabase.proxyDao.getById(DataStore.selectedProxy)
+                val tag = data.proxy!!.config.profileTagMap[ent?.id] ?: ""
                 if (tag.isNotBlank() && ent != null) {
                     val success = data.proxy!!.box.selectOutbound(tag)
                     Logs.d("selectOutbound $tag $success")
                     runOnDefaultDispatcher {
                         data.binder.broadcast {
-                            it.stateChanged(-1, ent!!.displayName(), null)
+                            it.stateChanged(-1, ent.displayName(), null)
                         }
                     }
                 }

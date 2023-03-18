@@ -12,6 +12,7 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
     BoxInstance(profile) {
 
     var lastSelectorGroupId = -1L
+    var notTmp = true
 
     // for TrafficLooper
     private var looper: TrafficLooper? = null
@@ -20,12 +21,13 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
         super.buildConfig()
         lastSelectorGroupId = super.config.selectorGroupId
         //
-        Logs.d(config.config)
-        if (BuildConfig.DEBUG) Logs.d(JavaUtil.gson.toJson(config.trafficMap))
+        if (notTmp) Logs.d(config.config)
+        if (notTmp && BuildConfig.DEBUG) Logs.d(JavaUtil.gson.toJson(config.trafficMap))
     }
 
     // only use this in temporary instance
     fun buildConfigTmp() {
+        notTmp = false
         buildConfig()
     }
 

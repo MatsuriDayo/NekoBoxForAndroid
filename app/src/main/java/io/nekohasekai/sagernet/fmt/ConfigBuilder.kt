@@ -5,6 +5,7 @@ import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_CHAIN
 import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_CONFIG
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.fmt.ConfigBuildResult.IndexEntity
@@ -53,6 +54,7 @@ class ConfigBuildResult(
     var externalIndex: List<IndexEntity>,
     var mainEntId: Long,
     var trafficMap: Map<String, List<ProxyEntity>>,
+    var profileTagMap: Map<Long, String>,
     val alerts: List<Pair<Int, String>>,
     val selectorGroupId: Long,
 ) {
@@ -85,6 +87,7 @@ fun buildConfig(
                 listOf(),
                 proxy.id, //
                 mapOf(TAG_PROXY to listOf(proxy)), //
+                mapOf(proxy.id to TAG_PROXY), //
                 listOf(),
                 -1L
             )
@@ -92,6 +95,7 @@ fun buildConfig(
     }
 
     val trafficMap = HashMap<String, MutableList<ProxyEntity>>()
+    val tagMap = HashMap<Long, String>()
     val globalOutbounds = ArrayList<Long>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
     var optionsToMerge = ""
@@ -126,9 +130,9 @@ fun buildConfig(
 
     val extraRules = if (forTest) listOf() else SagerDatabase.rulesDao.enabledRules()
     val extraProxies =
-        (if (forTest) mapOf() else SagerDatabase.proxyDao.getEntities(extraRules.mapNotNull { rule ->
+        if (forTest) mapOf() else SagerDatabase.proxyDao.getEntities(extraRules.mapNotNull { rule ->
             rule.outbound.takeIf { it > 0 && it != proxy.id }
-        }.toHashSet().toList()).associate { it.id to it.resolveChain() }).toMutableMap()
+        }.toHashSet().toList()).associate { it.id to it }
     val buildSelector = !forTest && group?.isSelector == true
     val uidListDNSRemote = mutableListOf<Int>()
     val uidListDNSDirect = mutableListOf<Int>()
@@ -261,8 +265,9 @@ fun buildConfig(
 
         // returns outbound tag
         fun buildChain(
-            chainId: Long, profileList: List<ProxyEntity>
+            chainId: Long, entity: ProxyEntity
         ): String {
+            val profileList = entity.resolveChain()
             var currentOutbound = mutableMapOf<String, Any>()
             lateinit var pastOutbound: MutableMap<String, Any>
             lateinit var pastInboundTag: String
@@ -337,7 +342,7 @@ fun buildConfig(
 
                 // include g-xx & chain ent
                 val mapList = mutableListOf(proxyEntity)
-                if (index == 0 && profileList.size > 1) mapList.add(proxy) // chain ent
+                if (index == 0 && entity.type == TYPE_CHAIN) mapList.add(proxy) // chain ent
                 trafficMap[tagOut] = mapList
 
                 // Chain outbound
@@ -460,11 +465,10 @@ fun buildConfig(
         }
 
         // build outbounds
-        val tagMap = mutableMapOf<Long, String>()
         if (buildSelector) {
             val list = group?.id?.let { SagerDatabase.proxyDao.getByGroup(it) }
             list?.forEach {
-                tagMap[it.id] = buildChain(it.id, it.resolveChain())
+                tagMap[it.id] = buildChain(it.id, it)
             }
             outbounds.add(0, Outbound_SelectorOptions().apply {
                 type = "selector"
@@ -473,11 +477,11 @@ fun buildConfig(
                 outbounds = tagMap.values.toList()
             }.asMap())
         } else {
-            buildChain(0, proxy.resolveChain())
+            buildChain(0, proxy)
         }
         // build outbounds from route item
-        extraProxies.forEach { (key, entities) ->
-            tagMap[key] = buildChain(key, entities)
+        extraProxies.forEach { (key, p) ->
+            tagMap[key] = buildChain(key, p)
         }
 
         // apply user rules
@@ -756,6 +760,7 @@ fun buildConfig(
             externalIndexMap,
             proxy.id,
             trafficMap,
+            tagMap,
             alerts,
             if (buildSelector) group!!.id else -1L
         )

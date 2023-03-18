@@ -5,6 +5,7 @@ import io.nekohasekai.sagernet.aidl.TrafficData
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProfileManager
+import io.nekohasekai.sagernet.fmt.TAG_PROXY
 import io.nekohasekai.sagernet.ktx.Logs
 import kotlinx.coroutines.*
 import kotlin.time.DurationUnit
@@ -55,6 +56,8 @@ class TrafficLooper
 
         var trafficUpdater: TrafficUpdater? = null
         var proxy: ProxyInstance?
+
+        // for display
         var itemMain: TrafficUpdater.TrafficLooperData? = null
         var itemMainBase: TrafficUpdater.TrafficLooperData? = null
         var itemBypass: TrafficUpdater.TrafficLooperData? = null
@@ -77,7 +80,7 @@ class TrafficLooper
                             rx = ent.rx,
                             tx = ent.tx,
                         )
-                        if (ent.id == proxy.config.mainEntId) {
+                        if (proxy.config.selectorGroupId < 0L && ent.id == proxy.config.mainEntId) {
                             itemMain = item
                             itemMainBase = TrafficUpdater.TrafficLooperData(
                                 tag = tag,
@@ -90,6 +93,10 @@ class TrafficLooper
                         tags.add(tag)
                         Logs.d("traffic count $tag to ${ent.id}")
                     }
+                }
+                if (proxy.config.selectorGroupId >= 0L) {
+                    itemMain = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
+                    itemMainBase = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
                 }
                 //
                 trafficUpdater = TrafficUpdater(

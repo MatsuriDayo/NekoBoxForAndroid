@@ -1,14 +1,19 @@
 package io.nekohasekai.sagernet.ui
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.preference.PreferenceDataStore
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -82,6 +87,17 @@ class MainActivity : ThemedActivity(),
             onNewIntent(intent)
         }
 
+        // sdk 33 notification
+        if (Build.VERSION.SDK_INT >= 33) {
+            val checkPermission =
+                ContextCompat.checkSelfPermission(this@MainActivity, POST_NOTIFICATIONS)
+            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
+                //动态申请
+                ActivityCompat.requestPermissions(
+                    this@MainActivity, arrayOf<String>(POST_NOTIFICATIONS), 0
+                )
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
