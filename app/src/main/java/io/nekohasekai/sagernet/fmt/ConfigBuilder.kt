@@ -736,6 +736,11 @@ fun buildConfig(
                 strategy = "ipv4_only"
             })
             dns.rules.add(DNSRule_DefaultOptions().apply {
+                auth_user = listOf("fakedns")
+                server = "dns-remote"
+                disable_cache = true
+            })
+            dns.rules.add(DNSRule_DefaultOptions().apply {
                 inbound = listOf("tun-in")
                 server = "dns-fake"
             })
