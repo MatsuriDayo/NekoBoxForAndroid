@@ -702,6 +702,7 @@ fun buildConfig(
                 DNSRule_DefaultOptions().apply {
                     makeSingBoxRule(domainListDNSBlock.toHashSet().toList())
                     server = "dns-block"
+                    disable_cache = true
                 }
             )
         }
