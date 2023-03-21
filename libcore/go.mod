@@ -5,10 +5,10 @@ go 1.18
 require (
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1
-	github.com/matsuridayo/sing-box-extra v0.0.0-20230319092255-88cc9cec9580
+	github.com/matsuridayo/sing-box-extra v0.0.0-20230320103851-5151ef0514be
 	github.com/miekg/dns v1.1.52
-	github.com/sagernet/sing v0.1.9-0.20230317044231-85a9429eadb6
-	github.com/sagernet/sing-box v1.1.6-0.20230317050722-ce6d18634525
+	github.com/sagernet/sing v0.2.1-0.20230318094614-4bbf5f2c3046
+	github.com/sagernet/sing-box v1.1.6-0.20230320093659-f680d0acaf15
 	github.com/sagernet/sing-dns v0.1.4
 	github.com/sagernet/sing-tun v0.1.3-0.20230315134716-fe89bbded22d
 	github.com/ulikunitz/xz v0.5.10
@@ -17,12 +17,13 @@ require (
 
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
-	github.com/Dreamacro/clash v1.13.0 // indirect
+	github.com/Dreamacro/clash v1.14.0 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/caddyserver/certmagic v0.17.2 // indirect
 	github.com/cloudflare/circl v1.2.1-0.20221019164342-6ab4dfed8f3c // indirect
 	github.com/cretz/bine v0.2.0 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-chi/cors v1.2.1 // indirect
@@ -57,7 +58,7 @@ require (
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
 	github.com/sagernet/quic-go v0.0.0-20230202071646-a8c8afb18b32 // indirect
 	github.com/sagernet/reality v0.0.0-20230312150606-35ea9af0e0b8 // indirect
-	github.com/sagernet/sing-shadowsocks v0.1.2-0.20230221080503-769c01d6bba9 // indirect
+	github.com/sagernet/sing-shadowsocks v0.2.0 // indirect
 	github.com/sagernet/sing-shadowtls v0.1.0 // indirect
 	github.com/sagernet/sing-vmess v0.1.3 // indirect
 	github.com/sagernet/smux v0.0.0-20230312102458-337ec2a5af37 // indirect

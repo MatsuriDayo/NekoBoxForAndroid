@@ -737,6 +737,7 @@ fun buildConfig(
             dns.rules.add(DNSRule_DefaultOptions().apply {
                 domain_suffix = listOf(".arpa.", ".arpa")
                 server = "dns-block"
+                disable_cache = true
             })
         }
 

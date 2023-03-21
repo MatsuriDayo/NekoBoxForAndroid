@@ -15,6 +15,15 @@
         app:title="@string/group_type"
         app:useSimpleSummaryProvider="true" />
 
+    <moe.matsuri.nb4a.ui.SimpleMenuPreference
+        app:defaultValue="0"
+        app:entries="@array/group_orders"
+        app:entryValues="@array/int_array_3"
+        app:icon="@drawable/ic_baseline_low_priority_24"
+        app:key="groupOrder"
+        app:title="@string/group_order"
+        app:useSimpleSummaryProvider="true" />
+
     <SwitchPreference
         app:icon="@drawable/ic_baseline_manage_search_24"
         app:key="groupIsSelector"
