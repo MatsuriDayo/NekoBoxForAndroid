@@ -153,8 +153,8 @@ class BaseService {
                 val tag = data.proxy!!.config.profileTagMap[ent?.id] ?: ""
                 if (tag.isNotBlank() && ent != null) {
                     val success = data.proxy!!.box.selectOutbound(tag)
-                    Logs.d("selectOutbound $tag $success")
-                    runOnDefaultDispatcher {
+                    if (success) runOnDefaultDispatcher {
+                        data.proxy!!.looper?.selectMain(ent.id)
                         data.binder.broadcast {
                             it.stateChanged(-1, ent.displayName(), null)
                         }

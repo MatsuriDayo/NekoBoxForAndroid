@@ -15,7 +15,7 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
     var notTmp = true
 
     // for TrafficLooper
-    private var looper: TrafficLooper? = null
+    var looper: TrafficLooper? = null
 
     override fun buildConfig() {
         super.buildConfig()

@@ -5,7 +5,6 @@ import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
-import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_CHAIN
 import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_CONFIG
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.fmt.ConfigBuildResult.IndexEntity
@@ -96,7 +95,7 @@ fun buildConfig(
         }
     }
 
-    val trafficMap = HashMap<String, MutableList<ProxyEntity>>()
+    val trafficMap = HashMap<String, List<ProxyEntity>>()
     val tagMap = HashMap<Long, String>()
     val globalOutbounds = ArrayList<Long>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
@@ -270,6 +269,11 @@ fun buildConfig(
             chainId: Long, entity: ProxyEntity
         ): String {
             val profileList = entity.resolveChain()
+            val chainTrafficSet = HashSet<ProxyEntity>().apply {
+                plusAssign(profileList)
+                add(entity)
+            }
+
             var currentOutbound = mutableMapOf<String, Any>()
             lateinit var pastOutbound: MutableMap<String, Any>
             lateinit var pastInboundTag: String
@@ -341,11 +345,6 @@ fun buildConfig(
                     }
                     globalOutbounds.add(proxyEntity.id)
                 }
-
-                // include g-xx & chain ent
-                val mapList = mutableListOf(proxyEntity)
-                if (index == 0 && entity.type == TYPE_CHAIN) mapList.add(proxy) // chain ent
-                trafficMap[tagOut] = mapList
 
                 // Chain outbound
                 if (proxyEntity.needExternal()) {
@@ -465,6 +464,7 @@ fun buildConfig(
                 pastEntity = proxyEntity
             }
 
+            trafficMap[chainTagOut] = chainTrafficSet.toList()
             return chainTagOut
         }
 
