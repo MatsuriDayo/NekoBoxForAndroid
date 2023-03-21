@@ -1,7 +1,6 @@
 package io.nekohasekai.sagernet.fmt.trojan
 
 import io.nekohasekai.sagernet.fmt.v2ray.parseDuckSoft
-import io.nekohasekai.sagernet.fmt.v2ray.toUri
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 fun parseTrojan(server: String): TrojanBean {
@@ -16,8 +15,4 @@ fun parseTrojan(server: String): TrojanBean {
         link.queryParameter("peer")?.apply { if (this.isNotBlank()) sni = this }
     }
 
-}
-
-fun TrojanBean.toUri(): String {
-    return toUri(true).replace("vmess://", "trojan://")
 }

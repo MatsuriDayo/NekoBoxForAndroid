@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_share"
-        android:title="@string/share">
+        android:id="@+id/action_share_subscription"
+        android:title="@string/share_subscription">
         <menu>
             <item
                 android:id="@+id/action_universal_clipboard"

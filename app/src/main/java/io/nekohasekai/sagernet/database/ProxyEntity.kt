@@ -20,7 +20,6 @@ import io.nekohasekai.sagernet.fmt.socks.SOCKSBean
 import io.nekohasekai.sagernet.fmt.socks.toUri
 import io.nekohasekai.sagernet.fmt.ssh.SSHBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
-import io.nekohasekai.sagernet.fmt.trojan.toUri
 import io.nekohasekai.sagernet.fmt.trojan_go.TrojanGoBean
 import io.nekohasekai.sagernet.fmt.trojan_go.buildTrojanGoConfig
 import io.nekohasekai.sagernet.fmt.trojan_go.toUri
@@ -236,23 +235,18 @@ data class ProxyEntity(
         }
     }
 
-    fun toLink(compact: Boolean = false): String? = with(requireBean()) {
+    fun toStdLink(compact: Boolean = false): String = with(requireBean()) {
         when (this) {
             is SOCKSBean -> toUri()
             is HttpBean -> toUri()
             is ShadowsocksBean -> toUri()
-            is VMessBean -> if (compact) toV2rayN() else toUri()
-            is TrojanBean -> toUri()
+            is VMessBean -> toUriVMessVLESSTrojan(false)
+            is TrojanBean -> toUriVMessVLESSTrojan(true)
             is TrojanGoBean -> toUri()
             is NaiveBean -> toUri()
             is HysteriaBean -> toUri()
-            is SSHBean -> toUniversalLink()
-            is WireGuardBean -> toUniversalLink()
-            is TuicBean -> toUniversalLink()
-            is ShadowTLSBean -> toUniversalLink()
-            is ConfigBean -> toUniversalLink()
             is NekoBean -> shareLink()
-            else -> null
+            else -> toUniversalLink()
         }
     }
 

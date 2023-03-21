@@ -97,6 +97,7 @@ class TrafficLooper
                 if (proxy.config.selectorGroupId >= 0L) {
                     itemMain = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
                     itemMainBase = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
+                    tags.add(TAG_PROXY)
                 }
                 //
                 trafficUpdater = TrafficUpdater(

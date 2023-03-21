@@ -507,5 +507,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="landing_proxy">Landing Proxy</string>
     <string name="action_shadowtls" translatable="false">ShadowTLS</string>
     <string name="shadowtls_version">ShadowTLS Version</string>
+    <string name="share_subscription">Share Subscription</string>
 
 </resources>

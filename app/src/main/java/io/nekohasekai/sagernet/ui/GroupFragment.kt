@@ -130,30 +130,31 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
 
     private lateinit var selectedGroup: ProxyGroup
 
-    private val exportProfiles = registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
-        if (data != null) {
-            runOnDefaultDispatcher {
-                val profiles = SagerDatabase.proxyDao.getByGroup(selectedGroup.id)
-                val links = profiles.mapNotNull { it.toLink(compact = true) }.joinToString("\n")
-                try {
-                    (requireActivity() as MainActivity).contentResolver.openOutputStream(
-                        data
-                    )!!.bufferedWriter().use {
-                        it.write(links)
+    private val exportProfiles =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+            if (data != null) {
+                runOnDefaultDispatcher {
+                    val profiles = SagerDatabase.proxyDao.getByGroup(selectedGroup.id)
+                    val links = profiles.joinToString("\n") { it.toStdLink(compact = true) }
+                    try {
+                        (requireActivity() as MainActivity).contentResolver.openOutputStream(
+                            data
+                        )!!.bufferedWriter().use {
+                            it.write(links)
+                        }
+                        onMainDispatcher {
+                            snackbar(getString(R.string.action_export_msg)).show()
+                        }
+                    } catch (e: Exception) {
+                        Logs.w(e)
+                        onMainDispatcher {
+                            snackbar(e.readableMessage).show()
+                        }
                     }
-                    onMainDispatcher {
-                        snackbar(getString(R.string.action_export_msg)).show()
-                    }
-                } catch (e: Exception) {
-                    Logs.w(e)
-                    onMainDispatcher {
-                        snackbar(e.readableMessage).show()
-                    }
-                }
 
+                }
             }
         }
-    }
 
     inner class GroupAdapter : RecyclerView.Adapter<GroupHolder>(),
         GroupManager.Listener,
@@ -310,7 +311,8 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
         undoManager.flush()
     }
 
-    inner class GroupHolder(binding: LayoutGroupItemBinding) : RecyclerView.ViewHolder(binding.root),
+    inner class GroupHolder(binding: LayoutGroupItemBinding) :
+        RecyclerView.ViewHolder(binding.root),
         PopupMenu.OnMenuItemClickListener {
 
         lateinit var proxyGroup: ProxyGroup
@@ -343,8 +345,7 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                 R.id.action_export_clipboard -> {
                     runOnDefaultDispatcher {
                         val profiles = SagerDatabase.proxyDao.getByGroup(selectedGroup.id)
-                        val links = profiles.mapNotNull { it.toLink(compact = true) }
-                            .joinToString("\n")
+                        val links = profiles.joinToString("\n") { it.toStdLink(compact = true) }
                         onMainDispatcher {
                             SagerNet.trySetPrimaryClip(links)
                             snackbar(getString(R.string.copy_toast_msg)).show()
@@ -397,7 +398,7 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                 popup.menuInflater.inflate(R.menu.group_action_menu, popup.menu)
 
                 if (proxyGroup.type != GroupType.SUBSCRIPTION) {
-                    popup.menu.removeItem(R.id.action_share)
+                    popup.menu.removeItem(R.id.action_share_subscription)
                 }
                 popup.setOnMenuItemClickListener(this)
                 popup.show()
@@ -451,12 +452,12 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                 }
                 groupStatus.setPadding(0)
             } else if (subscription != null && !subscription.subscriptionUserinfo.isNullOrBlank()) { // Raw
-                var text = "";
+                var text = ""
 
                 fun get(regex: String): String? {
                     return regex.toRegex().findAll(subscription.subscriptionUserinfo).mapNotNull {
                         if (it.groupValues.size > 1) it.groupValues[1] else null
-                    }.firstOrNull();
+                    }.firstOrNull()
                 }
 
                 var used: Long = 0
@@ -484,7 +485,7 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
 
                 if (text.isNotEmpty()) {
                     groupTraffic.isVisible = true
-                    groupTraffic.text = text;
+                    groupTraffic.text = text
                     groupStatus.setPadding(0)
                 }
             } else {

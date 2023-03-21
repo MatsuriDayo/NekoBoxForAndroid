@@ -9,10 +9,7 @@
                 android:title="@string/standard" />
             <item
                 android:id="@+id/action_universal_qr"
-                android:title="@string/app_name" />
-            <item
-                android:id="@+id/action_v2rayn_qr"
-                android:title="@string/v2rayn" />
+                android:title="SN Link" />
         </menu>
     </item>
     <item
@@ -24,10 +21,7 @@
                 android:title="@string/standard" />
             <item
                 android:id="@+id/action_universal_clipboard"
-                android:title="@string/app_name" />
-            <item
-                android:id="@+id/action_v2rayn_clipboard"
-                android:title="@string/v2rayn" />
+                android:title="SN Link" />
         </menu>
     </item>
     <item

@@ -1,5 +1,6 @@
 package io.nekohasekai.sagernet.fmt.v2ray
 
+import android.text.TextUtils
 import com.google.gson.Gson
 import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
@@ -9,6 +10,24 @@ import moe.matsuri.nb4a.utils.NGUtil
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.json.JSONObject
+
+data class VmessQRCode(
+    var v: String = "",
+    var ps: String = "",
+    var add: String = "",
+    var port: String = "",
+    var id: String = "",
+    var aid: String = "0",
+    var scy: String = "",
+    var net: String = "",
+    var type: String = "",
+    var host: String = "",
+    var path: String = "",
+    var tls: String = "",
+    var sni: String = "",
+    var alpn: String = "",
+    var fp: String = "",
+)
 
 fun StandardV2RayBean.isTLS(): Boolean {
     return security == "tls"
@@ -104,7 +123,6 @@ fun parseV2Ray(link: String): StandardV2RayBean {
 }
 
 // https://github.com/XTLS/Xray-core/issues/91
-// NO allowInsecure
 fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     serverAddress = url.host
     serverPort = url.port
@@ -116,27 +134,26 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
         uuid = url.username
     }
 
+    // not ducksoft fmt path
     if (url.pathSegments.size > 1 || url.pathSegments[0].isNotBlank()) {
         path = url.pathSegments.joinToString("/")
     }
 
     type = url.queryParameter("type") ?: "tcp"
+    if (type == "h2") type = "http"
+
     security = url.queryParameter("security")
     if (security == null) {
-        security = if (this is TrojanBean) {
-            "tls"
-        } else {
-            "none"
-        }
+        security = if (this is TrojanBean) "tls" else "none"
     }
 
     when (security) {
-        "tls" -> {
+        "tls", "reality" -> {
             url.queryParameter("sni")?.let {
                 sni = it
             }
             url.queryParameter("alpn")?.let {
-                alpn = it
+                alpn = it.replace(",", "\n")
             }
             url.queryParameter("cert")?.let {
                 certificates = it
@@ -144,6 +161,15 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
         }
     }
     when (type) {
+        "tcp" -> {
+            // v2rayNG
+            if (url.queryParameter("headerType") == "http") {
+                url.queryParameter("host")?.let {
+                    type = "http"
+                    host = it
+                }
+            }
+        }
         "http" -> {
             url.queryParameter("host")?.let {
                 host = it
@@ -251,63 +277,43 @@ fun parseV2RayN(link: String): VMessBean {
         return parseCsvVMess(result)
     }
     val bean = VMessBean()
-    val json = JSONObject(result)
+    val vmessQRCode = Gson().fromJson(result, VmessQRCode::class.java)
 
-    bean.serverAddress = json.getStr("add") ?: ""
-    bean.serverPort = json.getIntNya("port") ?: 1080
-    bean.encryption = json.getStr("scy") ?: ""
-    bean.uuid = json.getStr("id") ?: ""
-    bean.alterId = json.getIntNya("aid") ?: 0
-    bean.type = json.getStr("net") ?: ""
-    bean.host = json.getStr("host") ?: ""
-    bean.path = json.getStr("path") ?: ""
+    // Although VmessQRCode fields are non null, looks like Gson may still create null fields
+    if (TextUtils.isEmpty(vmessQRCode.add)
+        || TextUtils.isEmpty(vmessQRCode.port)
+        || TextUtils.isEmpty(vmessQRCode.id)
+        || TextUtils.isEmpty(vmessQRCode.net)
+    ) {
+        throw Exception("invalid VmessQRCode")
+    }
+
+    bean.serverAddress = vmessQRCode.add
+    bean.serverPort = vmessQRCode.port.toIntOrNull()
+    bean.encryption = vmessQRCode.scy
+    bean.uuid = vmessQRCode.id
+    bean.alterId = vmessQRCode.aid.toIntOrNull()
+    bean.type = vmessQRCode.type
+    bean.host = vmessQRCode.host
+    bean.path = vmessQRCode.path
+    val headerType = vmessQRCode.type
 
     when (bean.type) {
-        "grpc" -> {
-            bean.path = bean.path
-        }
-    }
-
-    bean.name = json.getStr("ps") ?: ""
-    bean.sni = json.getStr("sni") ?: bean.host
-    bean.security = json.getStr("tls") ?: "none"
-    bean.utlsFingerprint = json.getStr("fp") ?: ""
-
-    if (json.optInt("v", 2) < 2) {
-        when (bean.type) {
-            "ws" -> {
-                var path = ""
-                var host = ""
-                val lstParameter = bean.host.split(";")
-                if (lstParameter.isNotEmpty()) {
-                    path = lstParameter[0].trim()
-                }
-                if (lstParameter.size > 1) {
-                    path = lstParameter[0].trim()
-                    host = lstParameter[1].trim()
-                }
-                bean.path = path
-                bean.host = host
-            }
-            "h2" -> {
-                var path = ""
-                var host = ""
-                val lstParameter = bean.host.split(";")
-                if (lstParameter.isNotEmpty()) {
-                    path = lstParameter[0].trim()
-                }
-                if (lstParameter.size > 1) {
-                    path = lstParameter[0].trim()
-                    host = lstParameter[1].trim()
-                }
-                bean.path = path
-                bean.host = host
+        "tcp" -> {
+            if (headerType == "http") {
+                bean.type = "http"
             }
         }
     }
+
+    bean.name = vmessQRCode.ps
+    bean.security = vmessQRCode.tls
+    if (bean.security == "reality") bean.security = "tls"
+    bean.sni = vmessQRCode.sni
+    bean.alpn = vmessQRCode.alpn.replace(",", "\n")
+    bean.utlsFingerprint = vmessQRCode.fp
 
     return bean
-
 }
 
 private fun parseCsvVMess(csv: String): VMessBean {
@@ -345,61 +351,61 @@ private fun parseCsvVMess(csv: String): VMessBean {
 
 }
 
-data class VmessQRCode(
-    var v: String = "",
-    var ps: String = "",
-    var add: String = "",
-    var port: String = "",
-    var id: String = "",
-    var aid: String = "0",
-    var scy: String = "",
-    var net: String = "",
-    var type: String = "",
-    var host: String = "",
-    var path: String = "",
-    var tls: String = "",
-    var sni: String = "",
-    var alpn: String = "",
-    var fp: String = "",
-)
-
 fun VMessBean.toV2rayN(): String {
-    if (isVLESS) return toUri(true)
+    val bean = this
     return "vmess://" + VmessQRCode().apply {
         v = "2"
-        ps = this@toV2rayN.name
-        add = this@toV2rayN.serverAddress
-        port = this@toV2rayN.serverPort.toString()
-        id = this@toV2rayN.uuid
-        aid = this@toV2rayN.alterId.toString()
-        net = this@toV2rayN.type
-        host = this@toV2rayN.host
-        path = this@toV2rayN.path
+        ps = bean.name
+        add = bean.serverAddress
+        port = bean.serverPort.toString()
+        id = bean.uuid
+        aid = bean.alterId.toString()
+        net = bean.type
+        host = bean.host
+        path = bean.path
 
         when (net) {
-            "grpc" -> {
-                path = this@toV2rayN.path
+            "http" -> {
+                if (!isTLS()) {
+                    type = "http"
+                    net = "tcp"
+                }
             }
         }
 
-        tls = if (this@toV2rayN.security == "tls") "tls" else ""
-        sni = this@toV2rayN.sni
-        scy = this@toV2rayN.encryption
-        fp = this@toV2rayN.utlsFingerprint
+        if (isTLS()) {
+            tls = "tls"
+            if (bean.realityPubKey.isNotBlank()) {
+                tls = "reality"
+            }
+        }
+
+        scy = bean.encryption
+        sni = bean.sni
+        alpn = bean.alpn.replace("\n", ",")
+        fp = bean.utlsFingerprint
     }.let {
         NGUtil.encode(Gson().toJson(it))
     }
 }
 
-fun StandardV2RayBean.toUri(standard: Boolean = true): String {
-    if (this is VMessBean && alterId > 0) return toV2rayN()
+fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
+    // VMess
+    if (this is VMessBean && !isVLESS) {
+        return toV2rayN()
+    }
 
+    // VLESS & Trojan (ducksoft fmt)
     val builder = linkBuilder()
         .username(if (this is TrojanBean) password else uuid)
         .host(serverAddress)
         .port(serverPort)
         .addQueryParameter("type", type)
-    if (this !is TrojanBean) builder.addQueryParameter("encryption", encryption)
+
+    if (isVLESS) {
+        builder.addQueryParameter("encryption", "none")
+        if (encryption != "auto") builder.addQueryParameter("flow", encryption)
+    }
 
     when (type) {
         "tcp" -> {}
@@ -408,11 +414,7 @@ fun StandardV2RayBean.toUri(standard: Boolean = true): String {
                 builder.addQueryParameter("host", host)
             }
             if (path.isNotBlank()) {
-                if (standard) {
-                    builder.addQueryParameter("path", path)
-                } else {
-                    builder.encodedPath(path.pathSafe())
-                }
+                builder.addQueryParameter("path", path)
             }
             if (type == "ws") {
                 if (wsMaxEarlyData > 0) {
@@ -422,12 +424,13 @@ fun StandardV2RayBean.toUri(standard: Boolean = true): String {
                     }
                 }
             } else if (type == "http" && !isTLS()) {
-                return "" // no fmt?
+                builder.setQueryParameter("type", "tcp")
+                builder.addQueryParameter("headerType", "http")
             }
         }
         "grpc" -> {
             if (path.isNotBlank()) {
-                builder.addQueryParameter("serviceName", path)
+                builder.setQueryParameter("serviceName", path)
             }
         }
     }
@@ -440,7 +443,7 @@ fun StandardV2RayBean.toUri(standard: Boolean = true): String {
                     builder.addQueryParameter("sni", sni)
                 }
                 if (alpn.isNotBlank()) {
-                    builder.addQueryParameter("alpn", alpn)
+                    builder.addQueryParameter("alpn", alpn.replace("\n", ","))
                 }
                 if (certificates.isNotBlank()) {
                     builder.addQueryParameter("cert", certificates)
@@ -468,10 +471,7 @@ fun StandardV2RayBean.toUri(standard: Boolean = true): String {
         builder.encodedFragment(name.urlSafe())
     }
 
-    // TODO vless flow: bean.encryption != "auto"
-
-    return builder.toLink(if (isVLESS) "vless" else "vmess")
-
+    return builder.toLink(if (isTrojan) "trojan" else "vless")
 }
 
 fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportOptions? {
