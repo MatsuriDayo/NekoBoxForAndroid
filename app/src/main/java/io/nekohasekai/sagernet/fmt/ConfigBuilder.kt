@@ -139,6 +139,7 @@ fun buildConfig(
     val uidListDNSDirect = mutableListOf<Int>()
     val domainListDNSRemote = mutableListOf<String>()
     val domainListDNSDirect = mutableListOf<String>()
+    val domainListDNSDirectForce = mutableListOf<String>()
     val domainListDNSBlock = mutableListOf<String>()
     val bypassDNSBeans = hashSetOf<AbstractBean>()
     val isVPN = DataStore.serviceMode == Key.MODE_VPN
@@ -404,7 +405,7 @@ fun buildConfig(
                 pastEntity?.requireBean()?.apply {
                     // don't loopback
                     if (currentDomainStrategy != "" && !serverAddress.isIpAddress()) {
-                        domainListDNSDirect.add("full:$serverAddress")
+                        domainListDNSDirectForce.add("full:$serverAddress")
                     }
                 }
                 if (forTest) {
@@ -628,7 +629,7 @@ fun buildConfig(
             }
 
             if (!serverAddr.isIpAddress()) {
-                domainListDNSDirect.add("full:${serverAddr}")
+                domainListDNSDirectForce.add("full:${serverAddr}")
             }
         }
 
@@ -639,7 +640,7 @@ fun buildConfig(
             }
             "https://$address".toHttpUrlOrNull()?.apply {
                 if (!host.isIpAddress()) {
-                    domainListDNSDirect.add("full:$host")
+                    domainListDNSDirectForce.add("full:$host")
                 }
             }
         }
@@ -675,6 +676,14 @@ fun buildConfig(
             address = "rcode://success"
             tag = "dns-block"
         })
+        if (domainListDNSDirectForce.isNotEmpty()) {
+            dns.rules.add(
+                DNSRule_DefaultOptions().apply {
+                    makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
+                    server = "dns-direct"
+                }
+            )
+        }
 
         // dns object user rules
         if (enableDnsRouting) {
@@ -696,15 +705,15 @@ fun buildConfig(
                     }
                 )
             }
-        }
-        if (domainListDNSBlock.isNotEmpty()) {
-            dns.rules.add(
-                DNSRule_DefaultOptions().apply {
-                    makeSingBoxRule(domainListDNSBlock.toHashSet().toList())
-                    server = "dns-block"
-                    disable_cache = true
-                }
-            )
+            if (domainListDNSBlock.isNotEmpty()) {
+                dns.rules.add(
+                    DNSRule_DefaultOptions().apply {
+                        makeSingBoxRule(domainListDNSBlock.toHashSet().toList())
+                        server = "dns-block"
+                        disable_cache = true
+                    }
+                )
+            }
         }
 
         // Disable DNS for test
