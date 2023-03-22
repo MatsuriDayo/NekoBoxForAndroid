@@ -31,8 +31,11 @@ enum class PluginEntry(
     TUIC(
         "tuic-plugin",
         SagerNet.application.getString(R.string.action_tuic),
-        "io.nekohasekai.sagernet.plugin.tuic",
-        DownloadSource(fdroid = false)
+        "moe.matsuri.exe.tuic", DownloadSource(
+            playStore = false,
+            fdroid = false,
+            downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=tuic"
+        )
     ),
     ;
 

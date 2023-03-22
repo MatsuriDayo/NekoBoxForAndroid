@@ -158,6 +158,12 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             url.queryParameter("cert")?.let {
                 certificates = it
             }
+            url.queryParameter("pbk")?.let {
+                realityPubKey = it
+            }
+            url.queryParameter("sid")?.let {
+                realityShortId = it
+            }
         }
     }
     when (type) {
@@ -293,7 +299,7 @@ fun parseV2RayN(link: String): VMessBean {
     bean.encryption = vmessQRCode.scy
     bean.uuid = vmessQRCode.id
     bean.alterId = vmessQRCode.aid.toIntOrNull()
-    bean.type = vmessQRCode.type
+    bean.type = vmessQRCode.net
     bean.host = vmessQRCode.host
     bean.path = vmessQRCode.path
     val headerType = vmessQRCode.type
@@ -305,10 +311,11 @@ fun parseV2RayN(link: String): VMessBean {
             }
         }
     }
+    when (vmessQRCode.tls) {
+        "tls", "reality" -> bean.security = "tls"
+    }
 
     bean.name = vmessQRCode.ps
-    bean.security = vmessQRCode.tls
-    if (bean.security == "reality") bean.security = "tls"
     bean.sni = vmessQRCode.sni
     bean.alpn = vmessQRCode.alpn.replace(",", "\n")
     bean.utlsFingerprint = vmessQRCode.fp
@@ -453,6 +460,11 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
                 }
                 if (utlsFingerprint.isNotBlank()) {
                     builder.addQueryParameter("fp", utlsFingerprint)
+                }
+                if (realityPubKey.isNotBlank()) {
+                    builder.setQueryParameter("security", "reality")
+                    builder.addQueryParameter("pbk", realityPubKey)
+                    builder.addQueryParameter("sid", realityShortId)
                 }
             }
         }
