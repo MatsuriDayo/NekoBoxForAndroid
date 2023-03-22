@@ -691,20 +691,34 @@ fun buildConfig(
 
         // dns object user rules
         if (enableDnsRouting) {
-            if (domainListDNSRemote.isNotEmpty() || uidListDNSRemote.isNotEmpty()) {
+            if (uidListDNSRemote.isNotEmpty()) {
                 dns.rules.add(
                     DNSRule_DefaultOptions().apply {
-                        makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
                         user_id = uidListDNSRemote.toHashSet().toList()
                         server = "dns-remote"
                     }
                 )
             }
-            if (domainListDNSDirect.isNotEmpty() || uidListDNSDirect.isNotEmpty()) {
+            if (domainListDNSRemote.isNotEmpty()) {
+                dns.rules.add(
+                    DNSRule_DefaultOptions().apply {
+                        makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
+                        server = "dns-remote"
+                    }
+                )
+            }
+            if (uidListDNSDirect.isNotEmpty()) {
+                dns.rules.add(
+                    DNSRule_DefaultOptions().apply {
+                        user_id = uidListDNSDirect.toHashSet().toList()
+                        server = "dns-direct"
+                    }
+                )
+            }
+            if (domainListDNSDirect.isNotEmpty()) {
                 dns.rules.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSDirect.toHashSet().toList())
-                        user_id = uidListDNSDirect.toHashSet().toList()
                         server = "dns-direct"
                     }
                 )
