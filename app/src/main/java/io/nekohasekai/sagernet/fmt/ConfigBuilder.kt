@@ -157,6 +157,16 @@ fun buildConfig(
     val resolveDestination = DataStore.resolveDestination
     val alerts = mutableListOf<Pair<Int, String>>()
 
+    fun genDomainStrategy(noAsIs: Boolean): String {
+        return when {
+            !resolveDestination && !noAsIs -> ""
+            ipv6Mode == IPv6Mode.DISABLE -> "ipv4_only"
+            ipv6Mode == IPv6Mode.PREFER -> "prefer_ipv6"
+            ipv6Mode == IPv6Mode.ONLY -> "ipv6_only"
+            else -> "prefer_ipv4"
+        }
+    }
+
     return MyOptions().apply {
         if (!forTest && DataStore.enableClashAPI) experimental = ExperimentalOptions().apply {
             clash_api = ClashAPIOptions().apply {
@@ -206,6 +216,7 @@ fun buildConfig(
                 stack = if (DataStore.tunImplementation == 1) "system" else "gvisor"
                 sniff = needSniff
                 endpoint_independent_nat = true
+                domain_strategy = genDomainStrategy(false)
                 when (ipv6Mode) {
                     IPv6Mode.DISABLE -> {
                         inet4_address = listOf(VpnService.PRIVATE_VLAN4_CLIENT + "/28")
@@ -224,6 +235,7 @@ fun buildConfig(
                 tag = TAG_MIXED
                 listen = bind
                 listen_port = DataStore.mixedPort
+                domain_strategy = genDomainStrategy(false)
                 if (needSniff) {
                     sniff = true
 //                destOverride = when {
@@ -245,6 +257,7 @@ fun buildConfig(
                     listen = bind
                     listen_port = DataStore.transproxyPort
                     sniff = needSniff
+                    domain_strategy = genDomainStrategy(false)
                 })
             } else {
                 inbounds.add(Inbound_RedirectOptions().apply {
@@ -253,6 +266,7 @@ fun buildConfig(
                     listen = bind
                     listen_port = DataStore.transproxyPort
                     sniff = needSniff
+                    domain_strategy = genDomainStrategy(false)
                 })
             }
         }
@@ -287,16 +301,6 @@ fun buildConfig(
             var chainTagOut = ""
             val chainTag = "c-$chainId"
             var muxApplied = false
-
-            fun genDomainStrategy(noAsIs: Boolean): String {
-                return when {
-                    !resolveDestination && !noAsIs -> ""
-                    ipv6Mode == IPv6Mode.DISABLE -> "ipv4_only"
-                    ipv6Mode == IPv6Mode.PREFER -> "prefer_ipv6"
-                    ipv6Mode == IPv6Mode.ONLY -> "ipv6_only"
-                    else -> "prefer_ipv4"
-                }
-            }
 
             var currentDomainStrategy = genDomainStrategy(false)
 
