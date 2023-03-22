@@ -18,7 +18,7 @@ class TrafficLooper
 ) {
 
     private var job: Job? = null
-    private val items = mutableMapOf<Long, TrafficUpdater.TrafficLooperData>()
+    private val items = mutableMapOf<Long, TrafficUpdater.TrafficLooperData>() // associate ent id
 
     suspend fun stop() {
         job?.cancel()
@@ -50,7 +50,7 @@ class TrafficLooper
         job = sc.launch { loop() }
     }
 
-    var selectorNowId = -1L
+    var selectorNowId = -114514L
     var selectorNowFakeTag = ""
 
     fun selectMain(id: Long) {
@@ -111,6 +111,7 @@ class TrafficLooper
                 if (proxy.config.selectorGroupId >= 0L) {
                     itemMain = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
                     itemMainBase = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
+                    items[-2] = itemMain!!
                     selectMain(proxy.config.mainEntId)
                 }
                 //
@@ -136,9 +137,9 @@ class TrafficLooper
             // traffic
             val traffic = mutableMapOf<Long, TrafficData>()
             if (DataStore.profileTrafficStatistics) {
-                proxy.config.trafficMap.forEach { (tag, ents) ->
+                proxy.config.trafficMap.forEach { (_, ents) ->
                     for (ent in ents) {
-                        val item = items[ent.id] ?: return@forEach
+                        val item = items[ent.id] ?: continue
                         ent.rx = item.rx
                         ent.tx = item.tx
 //                    ProfileManager.updateProfile(ent) // update DB

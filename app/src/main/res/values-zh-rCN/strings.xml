@@ -467,4 +467,5 @@
     <string name="landing_proxy">落地代理</string>
     <string name="shadowtls_version">ShadowTLS 版本</string>
     <string name="share_subscription">分享订阅</string>
+    <string name="show_group_in_notification">在通知中显示组名</string>
 </resources>

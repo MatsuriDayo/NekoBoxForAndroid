@@ -41,11 +41,6 @@
             app:icon="@drawable/baseline_public_24"
             app:key="mtu"
             app:title="@string/mtu" />
-        <SwitchPreference
-            app:defaultValue="true"
-            app:key="profileTrafficStatistics"
-            app:summary="@string/profile_traffic_statistics_summary"
-            app:title="@string/profile_traffic_statistics" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="1000"
             app:entries="@array/notification_entry"
@@ -54,6 +49,14 @@
             app:key="speedInterval"
             app:title="@string/speed_interval"
             app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="profileTrafficStatistics"
+            app:summary="@string/profile_traffic_statistics_summary"
+            app:title="@string/profile_traffic_statistics" />
+        <SwitchPreference
+            app:key="showGroupInNotification"
+            app:title="@string/show_group_in_notification" />
         <SwitchPreference
             app:icon="@drawable/ic_baseline_center_focus_weak_24"
             app:key="alwaysShowAddress"

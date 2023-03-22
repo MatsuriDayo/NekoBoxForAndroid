@@ -156,7 +156,7 @@ class BaseService {
                     if (success) runOnDefaultDispatcher {
                         data.proxy!!.looper?.selectMain(ent.id)
                         data.binder.broadcast {
-                            it.stateChanged(-1, ent.displayName(), null)
+                            it.stateChanged(-1, ServiceNotification.genTitle(ent), null)
                         }
                     }
                 }
@@ -321,7 +321,7 @@ class BaseService {
             data.changeState(State.Connecting)
             runOnMainDispatcher {
                 try {
-                    data.notification = createNotification(profile.displayName())
+                    data.notification = createNotification(ServiceNotification.genTitle(profile))
 
                     Executable.killAll()    // clean up old processes
                     preInit()

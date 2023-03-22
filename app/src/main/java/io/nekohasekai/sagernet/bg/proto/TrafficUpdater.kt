@@ -66,5 +66,7 @@ class TrafficUpdater(
                 item.txRate = diff.txRate
             }
         }
+//        Logs.d(JavaUtil.gson.toJson(items))
+//        Logs.d(JavaUtil.gson.toJson(updated))
     }
 }
