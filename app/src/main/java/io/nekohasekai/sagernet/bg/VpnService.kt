@@ -127,13 +127,7 @@ class VpnService : BaseVpnService(),
             }
         }
 
-        // ?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            // TODO listen for change?
-            if (SagerNet.underlyingNetwork != null) {
-                builder.setUnderlyingNetworks(arrayOf(SagerNet.underlyingNetwork))
-            }
-        }
+        updateUnderlyingNetwork(builder)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) builder.setMetered(metered)
 
         // app route
@@ -212,51 +206,14 @@ class VpnService : BaseVpnService(),
         return conn!!.fd
     }
 
-//
-//    val appStats = mutableListOf<AppStats>()
-//
-//    override fun updateStats(stats: AppStats) {
-//        appStats.add(stats)
-//    }
-//
-//    fun persistAppStats() {
-//        if (!DataStore.appTrafficStatistics) return
-//        val tun = getTun() ?: return
-//        appStats.clear()
-//        tun.readAppTraffics(this)
-//        val toUpdate = mutableListOf<StatsEntity>()
-//        val all = SagerDatabase.statsDao.all().associateBy { it.packageName }
-//        for (stats in appStats) {
-//            if (stats.nekoConnectionsJSON.isNotBlank()) continue
-//            val packageName = if (stats.uid >= 10000) {
-//                PackageCache.uidMap[stats.uid]?.iterator()?.next() ?: "android"
-//            } else {
-//                "android"
-//            }
-//            if (!all.containsKey(packageName)) {
-//                SagerDatabase.statsDao.create(
-//                    StatsEntity(
-//                        packageName = packageName,
-//                        tcpConnections = stats.tcpConnTotal,
-//                        udpConnections = stats.udpConnTotal,
-//                        uplink = stats.uplinkTotal,
-//                        downlink = stats.downlinkTotal
-//                    )
-//                )
-//            } else {
-//                val entity = all[packageName]!!
-//                entity.tcpConnections += stats.tcpConnTotal
-//                entity.udpConnections += stats.udpConnTotal
-//                entity.uplink += stats.uplinkTotal
-//                entity.downlink += stats.downlinkTotal
-//                toUpdate.add(entity)
-//            }
-//            if (toUpdate.isNotEmpty()) {
-//                SagerDatabase.statsDao.update(toUpdate)
-//            }
-//
-//        }
-//    }
+    fun updateUnderlyingNetwork(builder: Builder? = null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            SagerNet.underlyingNetwork?.let {
+                builder?.setUnderlyingNetworks(arrayOf(SagerNet.underlyingNetwork))
+                    ?: setUnderlyingNetworks(arrayOf(SagerNet.underlyingNetwork))
+            }
+        }
+    }
 
     override fun onRevoke() = stopRunner()
 

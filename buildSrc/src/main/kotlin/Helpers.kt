@@ -224,9 +224,7 @@ fun Project.setupApp() {
         productFlavors {
             create("oss")
             create("fdroid")
-            create("play") {
-                versionCode = verCode + 1
-            }
+            create("play")
         }
 
         applicationVariants.all {

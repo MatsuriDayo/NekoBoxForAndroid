@@ -246,6 +246,9 @@ class BaseService {
         suspend fun preInit() {
             DefaultNetworkListener.start(this) {
                 SagerNet.connectivity.getLinkProperties(it)?.also { link ->
+                    SagerNet.underlyingNetwork = it
+                    DataStore.vpnService?.updateUnderlyingNetwork()
+                    //
                     val oldName = upstreamInterfaceName
                     if (oldName != link.interfaceName) {
                         upstreamInterfaceName = link.interfaceName
