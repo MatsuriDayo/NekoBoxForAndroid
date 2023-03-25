@@ -22,6 +22,7 @@ import (
 	"github.com/matsuridayo/libneko/speedtest"
 	"github.com/matsuridayo/sing-box-extra/boxapi"
 
+	"github.com/sagernet/sing-box/common/dialer/conntrack"
 	sblog "github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
@@ -63,7 +64,9 @@ func VersionBox() string {
 }
 
 func ResetAllConnections(system bool) {
-	// TODO api
+	if system {
+		conntrack.Close()
+	}
 }
 
 type BoxInstance struct {
@@ -193,7 +196,11 @@ func (b *BoxInstance) QueryStats(tag, direct string) int64 {
 
 func (b *BoxInstance) SelectOutbound(tag string) bool {
 	if b.selector != nil {
-		return b.selector.SelectOutbound(tag)
+		var result = b.selector.SelectOutbound(tag)
+		if result {
+			ResetAllConnections(true)
+		}
+		return result
 	}
 	return false
 }
