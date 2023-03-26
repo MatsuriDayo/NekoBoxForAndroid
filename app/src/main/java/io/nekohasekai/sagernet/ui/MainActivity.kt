@@ -381,7 +381,7 @@ class MainActivity : ThemedActivity(),
         }
     }
 
-    val connection = SagerConnection(true)
+    val connection = SagerConnection(SagerConnection.CONNECTION_ID_MAINACTIVITY, true)
     override fun onServiceConnected(service: ISagerNetService) = changeState(
         try {
             BaseService.State.values()[service.state]

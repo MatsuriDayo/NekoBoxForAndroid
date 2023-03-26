@@ -37,7 +37,7 @@ class TileService : BaseTileService(), SagerConnection.Callback {
     }
     private var tapPending = false
 
-    private val connection = SagerConnection()
+    private val connection = SagerConnection(SagerConnection.CONNECTION_ID_TILE)
     override fun stateChanged(state: BaseService.State, profileName: String?, msg: String?) =
         updateTile(state) { profileName }
 

@@ -36,7 +36,7 @@ import io.nekohasekai.sagernet.database.DataStore
 
 @Suppress("DEPRECATION")
 class QuickToggleShortcut : Activity(), SagerConnection.Callback {
-    private val connection = SagerConnection()
+    private val connection = SagerConnection(SagerConnection.CONNECTION_ID_SHORTCUT)
     private var profileId = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -3,14 +3,13 @@ package io.nekohasekai.sagernet.bg.proto
 import io.nekohasekai.sagernet.aidl.SpeedDisplayData
 import io.nekohasekai.sagernet.aidl.TrafficData
 import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProfileManager
 import io.nekohasekai.sagernet.fmt.TAG_BYPASS
 import io.nekohasekai.sagernet.fmt.TAG_PROXY
 import io.nekohasekai.sagernet.ktx.Logs
 import kotlinx.coroutines.*
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 class TrafficLooper
     (
@@ -64,9 +63,10 @@ class TrafficLooper
     }
 
     private suspend fun loop() {
-        val delayMs = DataStore.speedInterval
+        val delayMs = DataStore.speedInterval.toLong()
         val showDirectSpeed = DataStore.showDirectSpeed
-        if (delayMs == 0) return
+        val profileTrafficStatistics = DataStore.profileTrafficStatistics
+        if (delayMs == 0L) return
 
         var trafficUpdater: TrafficUpdater? = null
         var proxy: ProxyInstance?
@@ -77,7 +77,7 @@ class TrafficLooper
         var itemBypass: TrafficUpdater.TrafficLooperData? = null
 
         while (sc.isActive) {
-            delay(delayMs.toDuration(DurationUnit.MILLISECONDS))
+            delay(delayMs)
             proxy = data.proxy ?: continue
 
             if (trafficUpdater == null) {
@@ -134,30 +134,23 @@ class TrafficLooper
                 itemMain!!.rx - itemMainBase!!.rx
             )
 
-            // traffic
-            val traffic = mutableMapOf<Long, TrafficData>()
-            if (DataStore.profileTrafficStatistics) {
-                proxy.config.trafficMap.forEach { (_, ents) ->
-                    for (ent in ents) {
-                        val item = items[ent.id] ?: continue
-                        ent.rx = item.rx
-                        ent.tx = item.tx
-//                    ProfileManager.updateProfile(ent) // update DB
-                        traffic[ent.id] = TrafficData(
-                            id = ent.id,
-                            rx = ent.rx,
-                            tx = ent.tx,
-                        ) // display
+            // broadcast (MainActivity)
+            data.binder.broadcast { b ->
+                if (data.binder.callbackIdMap[b] == SagerConnection.CONNECTION_ID_MAINACTIVITY) {
+                    b.cbSpeedUpdate(speed)
+                    if (profileTrafficStatistics) {
+                        items.forEach { (id, item) ->
+                            b.cbTrafficUpdate(
+                                TrafficData(id = id, rx = item.rx, tx = item.tx) // display
+                            )
+                        }
                     }
                 }
             }
 
-            // broadcast
-            data.binder.broadcast { b ->
-                b.cbSpeedUpdate(speed)
-                for (t in traffic) {
-                    b.cbTrafficUpdate(t.value)
-                }
+            // ServiceNotification
+            data.notification?.apply {
+                if (listenPostSpeed) postNotificationSpeedUpdate(speed)
             }
         }
     }

@@ -7,7 +7,6 @@ oneway interface ISagerNetServiceCallback {
   void stateChanged(int state, String profileName, String msg);
   void missingPlugin(String profileName, String pluginName);
   void routeAlert(int type, String routeName);
-  void updateWakeLockStatus(boolean acquired);
   void cbSpeedUpdate(in SpeedDisplayData stats);
   void cbTrafficUpdate(in TrafficData stats);
   void cbLogUpdate(String str);

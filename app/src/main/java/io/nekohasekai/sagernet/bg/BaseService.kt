@@ -13,7 +13,6 @@ import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.ISagerNetServiceCallback
 import io.nekohasekai.sagernet.bg.proto.ProxyInstance
 import io.nekohasekai.sagernet.database.DataStore
-import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.plugin.PluginManager
@@ -73,20 +72,22 @@ class BaseService {
             }
         }
 
+        val callbackIdMap = mutableMapOf<ISagerNetServiceCallback, Int>()
+
         override val coroutineContext = Dispatchers.Main.immediate + Job()
 
         override fun getState(): Int = (data?.state ?: State.Idle).ordinal
         override fun getProfileName(): String = data?.proxy?.profile?.displayName() ?: "Idle"
 
-        override fun registerCallback(cb: ISagerNetServiceCallback) {
+        override fun registerCallback(cb: ISagerNetServiceCallback, id: Int) {
             callbacks.register(cb)
-            cb.updateWakeLockStatus(data?.proxy?.service?.wakeLock != null)
+            callbackIdMap[cb] = id
         }
 
-        private val boardcastMutex = Mutex()
+        private val broadcastMutex = Mutex()
 
         suspend fun broadcast(work: (ISagerNetServiceCallback) -> Unit) {
-            boardcastMutex.withLock {
+            broadcastMutex.withLock {
                 val count = callbacks.beginBroadcast()
                 try {
                     repeat(count) {
@@ -103,6 +104,7 @@ class BaseService {
         }
 
         override fun unregisterCallback(cb: ISagerNetServiceCallback) {
+            callbackIdMap.remove(cb)
             callbacks.unregister(cb)
         }
 
@@ -155,9 +157,8 @@ class BaseService {
                     val success = data.proxy!!.box.selectOutbound(tag)
                     if (success) runOnDefaultDispatcher {
                         data.proxy!!.looper?.selectMain(ent.id)
-                        data.binder.broadcast {
-                            it.stateChanged(-1, ServiceNotification.genTitle(ent), null)
-                        }
+                        val title = ServiceNotification.genTitle(ent)
+                        data.notification?.postNotificationTitle(title)
                     }
                 }
                 return
@@ -267,14 +268,10 @@ class BaseService {
             wakeLock?.apply {
                 release()
                 wakeLock = null
-                data.binder.broadcast {
-                    it.updateWakeLockStatus(false)
-                }
+                data.notification?.postNotificationWakeLockStatus(false)
             } ?: apply {
                 acquireWakeLock()
-                data.binder.broadcast {
-                    it.updateWakeLockStatus(true)
-                }
+                data.notification?.postNotificationWakeLockStatus(true)
             }
         }
 
@@ -286,13 +283,9 @@ class BaseService {
 
             if (DataStore.acquireWakeLock) {
                 acquireWakeLock()
-                data.binder.broadcast {
-                    it.updateWakeLockStatus(true)
-                }
+                data.notification?.postNotificationWakeLockStatus(true)
             } else {
-                data.binder.broadcast {
-                    it.updateWakeLockStatus(false)
-                }
+                data.notification?.postNotificationWakeLockStatus(false)
             }
         }
 
