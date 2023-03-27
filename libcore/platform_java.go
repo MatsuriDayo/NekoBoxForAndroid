@@ -5,12 +5,7 @@ var intfNB4A NB4AInterface
 
 var useProcfs bool
 
-type NB4AGuiLogWriter interface {
-	Write(p []byte) (n int, err error)
-}
-
 type NB4AInterface interface {
-	NB4AGuiLogWriter
 	UseOfficialAssets() bool
 }
 

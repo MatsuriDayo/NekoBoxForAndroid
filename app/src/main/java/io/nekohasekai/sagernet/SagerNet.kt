@@ -262,20 +262,6 @@ class SagerNet : Application(),
 
     // nb4a interface
 
-    override fun write(p: ByteArray): Long {
-        // NB4AGuiLogWriter
-        if (isBgProcess) {
-            runOnDefaultDispatcher {
-                DataStore.baseService?.data?.binder?.broadcast {
-                    it.cbLogUpdate(String(p))
-                }
-            }
-        } else {
-            DataStore.postLogListener?.let { it(String(p)) }
-        }
-        return p.size.toLong()
-    }
-
     override fun useOfficialAssets(): Boolean {
         return DataStore.rulesProvider == 0
     }

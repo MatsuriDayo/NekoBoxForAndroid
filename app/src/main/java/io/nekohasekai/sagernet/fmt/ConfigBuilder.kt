@@ -695,7 +695,7 @@ fun buildConfig(
                 dns.rules.add(
                     DNSRule_DefaultOptions().apply {
                         user_id = uidListDNSRemote.toHashSet().toList()
-                        server = "dns-remote"
+                        server = if (useFakeDns) "dns-fake" else "dns-remote"
                     }
                 )
             }
@@ -703,7 +703,7 @@ fun buildConfig(
                 dns.rules.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
-                        server = "dns-remote"
+                        server = if (useFakeDns) "dns-fake" else "dns-remote"
                     }
                 )
             }
@@ -775,7 +775,7 @@ fun buildConfig(
                 tag = "dns-fake"
                 strategy = "ipv4_only"
             })
-            dns.rules.add(DNSRule_DefaultOptions().apply {
+            dns.rules.add(0, DNSRule_DefaultOptions().apply {
                 auth_user = listOf("fakedns")
                 server = "dns-remote"
                 disable_cache = true

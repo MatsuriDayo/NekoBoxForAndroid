@@ -1,7 +1,5 @@
 package io.nekohasekai.sagernet.bg.proto
 
-import io.nekohasekai.sagernet.ktx.onIoDispatcher
-
 class TrafficUpdater(
     private val box: libcore.BoxInstance,
     val items: List<TrafficLooperData>, // contain "bypass"
@@ -28,12 +26,8 @@ class TrafficUpdater(
         }
 
         // query
-        var tx = 0L
-        var rx = 0L
-        onIoDispatcher {
-            tx = box.queryStats(item.tag, "uplink")
-            rx = box.queryStats(item.tag, "downlink")
-        }
+        val tx = box.queryStats(item.tag, "uplink")
+        val rx = box.queryStats(item.tag, "downlink")
 
         // add diff
         item.rx += rx

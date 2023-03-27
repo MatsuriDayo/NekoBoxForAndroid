@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.ScrollView
 import androidx.appcompat.widget.Toolbar
 import io.nekohasekai.sagernet.R
-import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.databinding.LayoutLogcatBinding
 import io.nekohasekai.sagernet.ktx.*
 import libcore.Libcore
@@ -38,23 +37,7 @@ class LogcatFragment : ToolbarFragment(R.layout.layout_logcat),
         }
 
         reloadSession()
-
-        DataStore.postLogListener = {
-            runOnMainDispatcher {
-                val color = getColorForLine(it)
-                val span = SpannableString(it)
-                span.setSpan(color, 0, it.length, SPAN_EXCLUSIVE_EXCLUSIVE)
-                binding.textview.append(span)
-                binding.scroolview.post {
-                    binding.scroolview.fullScroll(ScrollView.FOCUS_DOWN)
-                }
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        DataStore.postLogListener = null
-        super.onDestroy()
+        // TODO new logcat
     }
 
     private fun getColorForLine(line: String): ForegroundColorSpan {

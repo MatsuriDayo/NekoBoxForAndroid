@@ -96,14 +96,6 @@ class SagerConnection(
             }
         }
 
-        override fun cbLogUpdate(str: String?) {
-            DataStore.postLogListener?.let {
-                if (str != null) {
-                    it(str)
-                }
-            }
-        }
-
     }
 
     private var binder: IBinder? = null

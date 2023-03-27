@@ -30,9 +30,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var vpnService: VpnService? = null
     var baseService: BaseService.Interface? = null
 
-    // only in GUI process
-    var postLogListener: ((String) -> Unit)? = null
-
     fun currentGroupId(): Long {
         val currentSelected = configurationStore.getLong(Key.PROFILE_GROUP, -1)
         if (currentSelected > 0L) return currentSelected

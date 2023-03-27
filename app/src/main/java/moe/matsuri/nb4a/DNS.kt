@@ -75,8 +75,8 @@ object DNS {
                 domain.plusAssign(it)
             }
         }
-        if (ip_cidr?.isEmpty() == true) geosite = null
-        if (geoip?.isEmpty() == true) geosite = null
+        if (ip_cidr?.isEmpty() == true) ip_cidr = null
+        if (geoip?.isEmpty() == true) geoip = null
         if (geosite?.isEmpty() == true) geosite = null
         if (domain?.isEmpty() == true) domain = null
         if (domain_suffix?.isEmpty() == true) domain_suffix = null
