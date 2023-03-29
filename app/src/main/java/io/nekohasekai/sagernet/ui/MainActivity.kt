@@ -381,7 +381,7 @@ class MainActivity : ThemedActivity(),
         }
     }
 
-    val connection = SagerConnection(SagerConnection.CONNECTION_ID_MAINACTIVITY, true)
+    val connection = SagerConnection(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND, true)
     override fun onServiceConnected(service: ISagerNetService) = changeState(
         try {
             BaseService.State.values()[service.state]
@@ -426,10 +426,12 @@ class MainActivity : ThemedActivity(),
     }
 
     override fun onStart() {
+        connection.updateConnectionId(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND)
         super.onStart()
     }
 
     override fun onStop() {
+        connection.updateConnectionId(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_BACKGROUND)
         super.onStop()
     }
 

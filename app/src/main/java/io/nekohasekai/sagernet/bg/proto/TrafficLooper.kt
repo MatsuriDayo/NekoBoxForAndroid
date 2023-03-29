@@ -56,10 +56,16 @@ class TrafficLooper
         Logs.d("select traffic count $TAG_PROXY to $id, old id is $selectorNowId")
         val oldData = items[selectorNowId]
         val data = items[id] ?: return
-        oldData?.tag = selectorNowFakeTag
+        oldData?.apply {
+            tag = selectorNowFakeTag
+            ignore = true
+        }
         selectorNowFakeTag = data.tag
-        data.tag = TAG_PROXY
         selectorNowId = id
+        data.apply {
+            tag = TAG_PROXY
+            ignore = false
+        }
     }
 
     private suspend fun loop() {
@@ -94,6 +100,7 @@ class TrafficLooper
                             tag = tag,
                             rx = ent.rx,
                             tx = ent.tx,
+                            ignore = proxy.config.selectorGroupId >= 0L,
                         )
                         if (tag == TAG_PROXY && itemMain == null) {
                             itemMain = item
@@ -135,14 +142,18 @@ class TrafficLooper
             )
 
             // broadcast (MainActivity)
-            data.binder.broadcast { b ->
-                if (data.binder.callbackIdMap[b] == SagerConnection.CONNECTION_ID_MAINACTIVITY) {
-                    b.cbSpeedUpdate(speed)
-                    if (profileTrafficStatistics) {
-                        items.forEach { (id, item) ->
-                            b.cbTrafficUpdate(
-                                TrafficData(id = id, rx = item.rx, tx = item.tx) // display
-                            )
+            if (data.state == BaseService.State.Connected
+                && data.binder.callbackIdMap.containsValue(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND)
+            ) {
+                data.binder.broadcast { b ->
+                    if (data.binder.callbackIdMap[b] == SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND) {
+                        b.cbSpeedUpdate(speed)
+                        if (profileTrafficStatistics) {
+                            items.forEach { (id, item) ->
+                                b.cbTrafficUpdate(
+                                    TrafficData(id = id, rx = item.rx, tx = item.tx) // display
+                                )
+                            }
                         }
                     }
                 }

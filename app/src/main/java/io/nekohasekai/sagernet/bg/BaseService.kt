@@ -80,7 +80,9 @@ class BaseService {
         override fun getProfileName(): String = data?.proxy?.profile?.displayName() ?: "Idle"
 
         override fun registerCallback(cb: ISagerNetServiceCallback, id: Int) {
-            callbacks.register(cb)
+            if (!callbackIdMap.contains(cb)) {
+                callbacks.register(cb)
+            }
             callbackIdMap[cb] = id
         }
 

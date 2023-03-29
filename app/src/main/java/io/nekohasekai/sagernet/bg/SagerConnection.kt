@@ -16,7 +16,7 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ktx.runOnMainDispatcher
 
 class SagerConnection(
-    private val connectionId: Int,
+    private var connectionId: Int,
     private var listenForDeath: Boolean = false
 ) : ServiceConnection, IBinder.DeathRecipient {
 
@@ -28,9 +28,10 @@ class SagerConnection(
                 else -> throw UnknownError()
             }.java
 
-        val CONNECTION_ID_SHORTCUT = 0
-        val CONNECTION_ID_TILE = 1
-        val CONNECTION_ID_MAINACTIVITY = 2
+        const val CONNECTION_ID_SHORTCUT = 0
+        const val CONNECTION_ID_TILE = 1
+        const val CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND = 2
+        const val CONNECTION_ID_MAIN_ACTIVITY_BACKGROUND = 3
     }
 
     interface Callback {
@@ -101,6 +102,11 @@ class SagerConnection(
     private var binder: IBinder? = null
 
     var service: ISagerNetService? = null
+
+    fun updateConnectionId(id: Int) {
+        connectionId = id
+        service?.registerCallback(serviceCallback, id)
+    }
 
     override fun onServiceConnected(name: ComponentName?, binder: IBinder) {
         this.binder = binder

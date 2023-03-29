@@ -13,9 +13,10 @@ class TrafficUpdater(
         var txRate: Long = 0,
         var rxRate: Long = 0,
         var lastUpdate: Long = 0,
+        var ignore: Boolean = false,
     )
 
-    private suspend fun updateOne(item: TrafficLooperData): TrafficLooperData {
+    private fun updateOne(item: TrafficLooperData): TrafficLooperData {
         // last update
         val now = System.currentTimeMillis()
         val interval = now - item.lastUpdate
@@ -48,6 +49,7 @@ class TrafficUpdater(
     suspend fun updateAll() {
         val updated = mutableMapOf<String, TrafficLooperData>() // diffs
         items.forEach { item ->
+            if (item.ignore) return@forEach
             var diff = updated[item.tag]
             // query a tag only once
             if (diff == null) {
