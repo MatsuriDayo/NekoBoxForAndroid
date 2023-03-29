@@ -149,6 +149,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
 
     when (security) {
         "tls", "reality" -> {
+            security = "tls"
             url.queryParameter("sni")?.let {
                 sni = it
             }

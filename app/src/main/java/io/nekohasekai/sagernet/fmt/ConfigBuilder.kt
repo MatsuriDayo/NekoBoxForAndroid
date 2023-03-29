@@ -680,14 +680,6 @@ fun buildConfig(
             address = "rcode://success"
             tag = "dns-block"
         })
-        if (domainListDNSDirectForce.isNotEmpty()) {
-            dns.rules.add(
-                DNSRule_DefaultOptions().apply {
-                    makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
-                    server = "dns-direct"
-                }
-            )
-        }
 
         // dns object user rules
         if (enableDnsRouting) {
@@ -778,11 +770,18 @@ fun buildConfig(
             dns.rules.add(0, DNSRule_DefaultOptions().apply {
                 auth_user = listOf("fakedns")
                 server = "dns-remote"
-                disable_cache = true
             })
             dns.rules.add(DNSRule_DefaultOptions().apply {
                 inbound = listOf("tun-in")
                 server = "dns-fake"
+            })
+        }
+
+        // force bypass
+        if (domainListDNSDirectForce.isNotEmpty()) {
+            dns.rules.add(0, DNSRule_DefaultOptions().apply {
+                makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
+                server = "dns-direct"
             })
         }
     }.let {
