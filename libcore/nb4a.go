@@ -1,6 +1,10 @@
 package libcore
 
 import (
+	"bufio"
+	"bytes"
+	"crypto/sha256"
+	"fmt"
 	"libcore/device"
 	"os"
 	"path/filepath"
@@ -11,6 +15,7 @@ import (
 
 	"log"
 
+	"github.com/avast/apkverifier"
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 )
@@ -74,13 +79,64 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 
 		if time.Now().Unix() >= GetExpireTime() {
 			outdated = "Your version is too old! Please update!! 版本太旧，请升级！"
-		} else if time.Now().Unix() < (GetBuildTime() - 86400) {
-			outdated = "Wrong system time! 系统时间错误！"
 		}
 
-		// Extract assets
+		// bg
 		if isBgProcess {
+			go verifyAPK()
 			extractAssets()
 		}
 	}()
+}
+
+var apkSignerSHA256 = [][]byte{
+	{0x35, 0x76, 0x27, 0x58, 0xce, 0x86, 0xa6, 0xec, 0x29, 0x7d, 0x9c, 0xca, 0xc6, 0x89, 0x46, 0x9b, 0xc4, 0x3b, 0x9f, 0xed, 0x8a, 0xe1, 0xb2, 0x7f, 0x10, 0x0a, 0x86, 0xbb, 0xac, 0x00, 0xa0, 0x55},
+}
+
+func verifyAPK() {
+	var apkPath string
+	f, err := os.Open("/proc/self/maps")
+	if err != nil {
+		outdated = fmt.Sprintf("verifyAPK: open maps: %v", err)
+		return
+	}
+	defer f.Close()
+	sc := bufio.NewScanner(f)
+	for sc.Scan() {
+		line := sc.Text()
+		if strings.HasSuffix(line, "/base.apk") {
+			apkPath = line[strings.Index(line, "/data/"):]
+			break
+		}
+	}
+	//
+	certs, err := apkverifier.ExtractCerts(apkPath, nil)
+	if certs == nil || err != nil {
+		outdated = fmt.Sprintf("verifyAPK: no certificate: %v", err)
+		return
+	}
+
+	var ok = false
+	for _, cert := range certs {
+		for _, c := range cert {
+			var s = sha256.Sum256(c.Raw)
+			if isGoodSigner(s[:]) {
+				ok = true
+				break
+			}
+		}
+	}
+
+	if !ok {
+		outdated = fmt.Sprintf("verifyAPK: unknown signer")
+	}
+}
+
+func isGoodSigner(sha256 []byte) bool {
+	for _, hash := range apkSignerSHA256 {
+		if bytes.Equal(sha256, hash) {
+			return true
+		}
+	}
+	return false
 }

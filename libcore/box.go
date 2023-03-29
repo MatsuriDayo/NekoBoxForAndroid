@@ -127,6 +127,9 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 }
 
 func (b *BoxInstance) Start() error {
+	if outdated != "" {
+		return errors.New(outdated)
+	}
 	if b.state == 0 {
 		b.state = 1
 		return b.Box.Start()
