@@ -2,7 +2,7 @@
 
 source ../buildScript/init/env_ndk.sh
 
-[ $rel ] || sed -i "s/buildDate .*/buildDate := \"`date +'%Y%m%d'`\"/g" date.go
+[ $rel ] || sed -i "s/buildDate .*/buildDate := `date +'%Y%m%d'`/g" date.go
 
 BUILD=".build"
 

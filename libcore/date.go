@@ -1,14 +1,15 @@
 package libcore
 
 import (
+	"strconv"
 	"time"
 )
 
 var outdated string
 
 func GetBuildTime() int64 {
-	buildDate := "20230327"
-	buildTime, _ := time.Parse("20060102", buildDate)
+	buildDate := 20230330
+	buildTime, _ := time.Parse("20060102", strconv.Itoa(buildDate))
 	return buildTime.Unix()
 }
 

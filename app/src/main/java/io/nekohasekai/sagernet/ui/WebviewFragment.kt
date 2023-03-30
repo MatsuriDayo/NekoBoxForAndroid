@@ -9,6 +9,7 @@ import android.webkit.*
 import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.databinding.LayoutWebviewBinding
@@ -32,6 +33,7 @@ class WebviewFragment : ToolbarFragment(R.layout.layout_webview), Toolbar.OnMenu
         val binding = LayoutWebviewBinding.bind(view)
 
         // webview
+        WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
         mWebView = binding.webview
         mWebView.settings.domStorageEnabled = true
         mWebView.settings.javaScriptEnabled = true

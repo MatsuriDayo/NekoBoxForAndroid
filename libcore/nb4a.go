@@ -105,11 +105,11 @@ func verifyAPK() {
 	for sc.Scan() {
 		line := sc.Text()
 		if strings.HasSuffix(line, "/base.apk") {
-			apkPath = line[strings.Index(line, "/data/"):]
+			apkPath = line[strings.Index(line, "/"):]
 			break
 		}
 	}
-	//
+
 	certs, err := apkverifier.ExtractCerts(apkPath, nil)
 	if certs == nil || err != nil {
 		outdated = fmt.Sprintf("verifyAPK: no certificate: %v", err)
@@ -128,7 +128,7 @@ func verifyAPK() {
 	}
 
 	if !ok {
-		outdated = fmt.Sprintf("verifyAPK: unknown signer")
+		outdated = "verifyAPK: unknown signer"
 	}
 }
 

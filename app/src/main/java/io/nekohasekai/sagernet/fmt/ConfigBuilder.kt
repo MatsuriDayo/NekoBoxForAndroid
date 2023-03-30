@@ -26,9 +26,10 @@ import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
-import moe.matsuri.nb4a.DNS.applyDNSNetworkSettings
-import moe.matsuri.nb4a.DNS.makeSingBoxRule
 import moe.matsuri.nb4a.SingBoxOptions.*
+import moe.matsuri.nb4a.applyDNSNetworkSettings
+import moe.matsuri.nb4a.checkEmpty
+import moe.matsuri.nb4a.makeSingBoxRule
 import moe.matsuri.nb4a.plugin.Plugins
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
@@ -77,7 +78,7 @@ fun mergeJSON(j: String, to: MutableMap<String, Any>) {
 }
 
 fun buildConfig(
-    proxy: ProxyEntity, forTest: Boolean = false
+    proxy: ProxyEntity, forTest: Boolean = false, forExport: Boolean = false
 ): ConfigBuildResult {
 
     if (proxy.type == TYPE_CONFIG) {
@@ -98,6 +99,7 @@ fun buildConfig(
     val trafficMap = HashMap<String, List<ProxyEntity>>()
     val tagMap = HashMap<Long, String>()
     val globalOutbounds = ArrayList<Long>()
+    val selectorNames = ArrayList<String>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
     var optionsToMerge = ""
 
@@ -114,6 +116,17 @@ fun buildConfig(
             return beanList.asReversed()
         }
         return mutableListOf(this)
+    }
+
+    fun selectorName(name_: String): String {
+        var name = name_
+        var count = 0
+        while (selectorNames.contains(name)) {
+            count++
+            name = "$name_-$count"
+        }
+        selectorNames.add(name)
+        return name
     }
 
     fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
@@ -133,8 +146,8 @@ fun buildConfig(
     val extraProxies =
         if (forTest) mapOf() else SagerDatabase.proxyDao.getEntities(extraRules.mapNotNull { rule ->
             rule.outbound.takeIf { it > 0 && it != proxy.id }
-        }.toHashSet().toList()).associate { it.id to it }
-    val buildSelector = !forTest && group?.isSelector == true
+        }.toHashSet().toList()).associateBy { it.id }
+    val buildSelector = !forTest && group?.isSelector == true && !forExport
     val uidListDNSRemote = mutableListOf<Int>()
     val uidListDNSDirect = mutableListOf<Int>()
     val domainListDNSRemote = mutableListOf<String>()
@@ -328,6 +341,11 @@ fun buildConfig(
                     tagOut = TAG_PROXY
                 }
 
+                // selector human readable name
+                if (buildSelector && index == 0) {
+                    tagOut = selectorName(bean.displayName())
+                }
+
                 // chain rules
                 if (index > 0) {
                     // chain route/proxy rules
@@ -495,26 +513,25 @@ fun buildConfig(
 
         // apply user rules
         for (rule in extraRules) {
-            val _uidList = rule.packages.map {
+            if (rule.packages.isNotEmpty()) {
+                PackageCache.awaitLoadSync()
+            }
+            val uidList2 = rule.packages.map {
+                if (!isVPN) {
+                    alerts.add(0 to rule.displayName())
+                }
                 PackageCache[it]?.takeIf { uid -> uid >= 1000 }
             }.toHashSet().filterNotNull()
 
-            if (rule.packages.isNotEmpty()) {
-                if (!isVPN) {
-                    alerts.add(0 to rule.displayName())
-                    continue
-                }
-            }
-            route.rules.add(Rule_DefaultOptions().apply {
-                if (rule.packages.isNotEmpty()) {
+            val ruleObj = Rule_DefaultOptions().apply {
+                if (uidList2.isNotEmpty()) {
                     PackageCache.awaitLoadSync()
-                    user_id = _uidList
+                    user_id = uidList2
                 }
-
-                var _domainList: List<String>? = null
+                var domainList2: List<String>? = null
                 if (rule.domains.isNotBlank()) {
-                    _domainList = rule.domains.split("\n")
-                    makeSingBoxRule(_domainList, false)
+                    domainList2 = rule.domains.split("\n")
+                    makeSingBoxRule(domainList2, false)
                 }
                 if (rule.ip.isNotBlank()) {
                     makeSingBoxRule(rule.ip.split("\n"), true)
@@ -554,13 +571,13 @@ fun buildConfig(
                 // also bypass lookup
                 // cannot use other outbound profile to lookup...
                 if (rule.outbound == -1L) {
-                    uidListDNSDirect += _uidList
-                    if (_domainList != null) domainListDNSDirect += _domainList
+                    uidListDNSDirect += uidList2
+                    if (domainList2 != null) domainListDNSDirect += domainList2
                 } else if (rule.outbound == 0L) {
-                    uidListDNSRemote += _uidList
-                    if (_domainList != null) domainListDNSRemote += _domainList
+                    uidListDNSRemote += uidList2
+                    if (domainList2 != null) domainListDNSRemote += domainList2
                 } else if (rule.outbound == -2L) {
-                    if (_domainList != null) domainListDNSBlock += _domainList
+                    if (domainList2 != null) domainListDNSBlock += domainList2
                 }
 
                 outbound = when (val outId = rule.outbound) {
@@ -570,7 +587,11 @@ fun buildConfig(
                     else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId]
                         ?: throw Exception("invalid rule")
                 }
-            })
+            }
+
+            if (!ruleObj.checkEmpty()) {
+                route.rules.add(ruleObj)
+            }
         }
 
         for (freedom in arrayOf(TAG_DIRECT, TAG_BYPASS)) outbounds.add(Outbound().apply {
@@ -683,8 +704,9 @@ fun buildConfig(
 
         // dns object user rules
         if (enableDnsRouting) {
+            val dnsRuleObj = mutableListOf<DNSRule_DefaultOptions>()
             if (uidListDNSRemote.isNotEmpty()) {
-                dns.rules.add(
+                dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         user_id = uidListDNSRemote.toHashSet().toList()
                         server = if (useFakeDns) "dns-fake" else "dns-remote"
@@ -692,7 +714,7 @@ fun buildConfig(
                 )
             }
             if (domainListDNSRemote.isNotEmpty()) {
-                dns.rules.add(
+                dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
                         server = if (useFakeDns) "dns-fake" else "dns-remote"
@@ -700,7 +722,7 @@ fun buildConfig(
                 )
             }
             if (uidListDNSDirect.isNotEmpty()) {
-                dns.rules.add(
+                dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         user_id = uidListDNSDirect.toHashSet().toList()
                         server = "dns-direct"
@@ -708,7 +730,7 @@ fun buildConfig(
                 )
             }
             if (domainListDNSDirect.isNotEmpty()) {
-                dns.rules.add(
+                dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSDirect.toHashSet().toList())
                         server = "dns-direct"
@@ -716,13 +738,16 @@ fun buildConfig(
                 )
             }
             if (domainListDNSBlock.isNotEmpty()) {
-                dns.rules.add(
+                dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSBlock.toHashSet().toList())
                         server = "dns-block"
                         disable_cache = true
                     }
                 )
+            }
+            dnsRuleObj.forEach {
+                if (!it.checkEmpty()) dns.rules.add(it)
             }
         }
 
@@ -774,6 +799,7 @@ fun buildConfig(
             dns.rules.add(DNSRule_DefaultOptions().apply {
                 inbound = listOf("tun-in")
                 server = "dns-fake"
+                disable_cache = true
             })
         }
 

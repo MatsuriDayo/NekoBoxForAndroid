@@ -255,7 +255,7 @@ data class ProxyEntity(
 
         return with(requireBean()) {
             StringBuilder().apply {
-                val config = buildConfig(this@ProxyEntity)
+                val config = buildConfig(this@ProxyEntity, forExport = true)
                 append(config.config)
 
                 if (!config.externalIndex.all { it.chain.isEmpty() }) {

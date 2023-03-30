@@ -199,7 +199,7 @@ object RawUpdater : GroupUpdater() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun parseRaw(text: String): List<AbstractBean>? {
+    suspend fun parseRaw(text: String, fileName: String = ""): List<AbstractBean>? {
 
         val proxies = mutableListOf<AbstractBean>()
 
@@ -399,7 +399,10 @@ object RawUpdater : GroupUpdater() {
         } else if (text.contains("[Interface]")) {
             // wireguard
             try {
-                proxies.addAll(parseWireGuard(text))
+                proxies.addAll(parseWireGuard(text).map {
+                    if (fileName.isNotBlank()) it.name = fileName
+                    it
+                })
                 return proxies
             } catch (e: Exception) {
                 Logs.w(e)
@@ -442,9 +445,7 @@ object RawUpdater : GroupUpdater() {
         val bean = WireGuardBean().applyDefaultValues()
         val localAddresses = iface.getAll("Address")
         if (localAddresses.isNullOrEmpty()) error("Empty address in 'Interface' selection")
-        bean.localAddress = localAddresses.flatMap { it.split(",") }.let { address ->
-            address.joinToString("\n") { it.substringBefore("/") }
-        }
+        bean.localAddress = localAddresses.flatMap { it.split(",") }.joinToString("\n")
         bean.privateKey = iface["PrivateKey"]
         val peers = ini.getAll("Peer")
         if (peers.isNullOrEmpty()) error("Missing 'Peer' selections")
