@@ -400,7 +400,7 @@ object RawUpdater : GroupUpdater() {
             // wireguard
             try {
                 proxies.addAll(parseWireGuard(text).map {
-                    if (fileName.isNotBlank()) it.name = fileName
+                    if (fileName.isNotBlank()) it.name = fileName.removeSuffix(".conf")
                     it
                 })
                 return proxies

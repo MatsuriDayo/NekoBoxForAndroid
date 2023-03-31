@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 @GenerateRoomMigrations
 abstract class PublicDatabase : RoomDatabase() {
     companion object {
-        private val instance by lazy {
+        val instance by lazy {
             SagerNet.application.getDatabasePath(Key.DB_PROFILE).parentFile?.mkdirs()
             Room.databaseBuilder(SagerNet.application, PublicDatabase::class.java, Key.DB_PUBLIC)
                 .allowMainThreadQueries()

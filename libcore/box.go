@@ -66,6 +66,7 @@ func VersionBox() string {
 func ResetAllConnections(system bool) {
 	if system {
 		conntrack.Close()
+		log.Println("Reset system connections done")
 	}
 }
 
