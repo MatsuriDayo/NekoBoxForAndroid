@@ -22,15 +22,16 @@ fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {
         if (it.startsWith("geosite:")) {
             geosite.plusAssign(it.removePrefix("geosite:"))
         } else if (it.startsWith("full:")) {
-            domain.plusAssign(it.removePrefix("full:"))
+            domain.plusAssign(it.removePrefix("full:").lowercase())
         } else if (it.startsWith("domain:")) {
-            domain_suffix.plusAssign(it.removePrefix("domain:"))
+            domain_suffix.plusAssign(it.removePrefix("domain:").lowercase())
         } else if (it.startsWith("regexp:")) {
-            domain_regex.plusAssign(it.removePrefix("regexp:"))
+            domain_regex.plusAssign(it.removePrefix("regexp:").lowercase())
         } else if (it.startsWith("keyword:")) {
-            domain_keyword.plusAssign(it.removePrefix("keyword:"))
+            domain_keyword.plusAssign(it.removePrefix("keyword:").lowercase())
         } else {
-            domain.plusAssign(it)
+            // https://github.com/SagerNet/sing-box/commit/5d41e328d4a9f7549dd27f11b4ccc43710a73664
+            domain.plusAssign(it.lowercase())
         }
     }
     if (geosite?.isEmpty() == true) geosite = null
@@ -73,15 +74,16 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
         if (it.startsWith("geosite:")) {
             geosite.plusAssign(it.removePrefix("geosite:"))
         } else if (it.startsWith("full:")) {
-            domain.plusAssign(it.removePrefix("full:"))
+            domain.plusAssign(it.removePrefix("full:").lowercase())
         } else if (it.startsWith("domain:")) {
-            domain_suffix.plusAssign(it.removePrefix("domain:"))
+            domain_suffix.plusAssign(it.removePrefix("domain:").lowercase())
         } else if (it.startsWith("regexp:")) {
-            domain_regex.plusAssign(it.removePrefix("regexp:"))
+            domain_regex.plusAssign(it.removePrefix("regexp:").lowercase())
         } else if (it.startsWith("keyword:")) {
-            domain_keyword.plusAssign(it.removePrefix("keyword:"))
+            domain_keyword.plusAssign(it.removePrefix("keyword:").lowercase())
         } else {
-            domain.plusAssign(it)
+            // https://github.com/SagerNet/sing-box/commit/5d41e328d4a9f7549dd27f11b4ccc43710a73664
+            domain.plusAssign(it.lowercase())
         }
     }
     if (ip_cidr?.isEmpty() == true) ip_cidr = null

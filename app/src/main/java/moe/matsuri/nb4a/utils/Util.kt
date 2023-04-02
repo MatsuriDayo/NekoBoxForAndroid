@@ -1,6 +1,7 @@
 package moe.matsuri.nb4a.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
@@ -124,6 +125,16 @@ object Util {
     fun tryToSetField(o: Any, name: String, value: Any) {
         try {
             o.javaClass.getField(name).set(o, value)
+        } catch (_: Exception) {
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    fun collapseStatusBar(context: Context) {
+        try {
+            val statusBarManager = context.getSystemService("statusbar")
+            val collapse = statusBarManager.javaClass.getMethod("collapsePanels")
+            collapse.invoke(statusBarManager)
         } catch (_: Exception) {
         }
     }

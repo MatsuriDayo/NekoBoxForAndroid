@@ -92,8 +92,8 @@ github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1 h1:+FflyEuq2hn
 github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1/go.mod h1:IRO07Queptz/rGFvEW+3Hmwpx7MCup6WiDs4p5jMt4g=
 github.com/matsuridayo/sing-box-extra v0.0.0-20230331092806-0c9ba905d3d7 h1:ooWjy/4SzEa0CIGpihuI5AiLDUl5F1/5xK+/wCm3mdg=
 github.com/matsuridayo/sing-box-extra v0.0.0-20230331092806-0c9ba905d3d7/go.mod h1:fC8s/F9U7qveKsU2675YaidrqgpDvLeRsubva5PU68Q=
-github.com/matsuridayo/sing-dns v0.0.0-20230331094727-dbe6239660c6 h1:H9/j4VScNW5seGI/URXG/8BkBOp07gYXRLCjPZjIZgA=
-github.com/matsuridayo/sing-dns v0.0.0-20230331094727-dbe6239660c6/go.mod h1:8x+rlRnPE/5/IagjlAUqR9TceRYRL2WyqmP5QYK3dkI=
+github.com/matsuridayo/sing-dns v0.0.0-20230402050810-781b80b9110f h1:BqIt3G/NXyTLao96ouiK6XIvzt0U7gAi2u6FeN88b0c=
+github.com/matsuridayo/sing-dns v0.0.0-20230402050810-781b80b9110f/go.mod h1:69PNSHyEmXdjf6C+bXBOdr2GQnPeEyWjIzo/MV8gmz8=
 github.com/mholt/acmez v1.1.0 h1:IQ9CGHKOHokorxnffsqDvmmE30mDenO1lptYZ1AYkHY=
 github.com/mholt/acmez v1.1.0/go.mod h1:zwo5+fbLLTowAX8o8ETfQzbDtwGEXnPhkmGdKIP+bgs=
 github.com/miekg/dns v1.1.53 h1:ZBkuHr5dxHtB1caEOlZTLPo7D3L3TWckgUUs/RHfDxw=
@@ -132,10 +132,10 @@ github.com/sagernet/reality v0.0.0-20230323230523-5fa25e693e7f h1:plVtFF9NVw5Py4
 github.com/sagernet/reality v0.0.0-20230323230523-5fa25e693e7f/go.mod h1:B8lp4WkQ1PwNnrVMM6KyuFR20pU8jYBD+A4EhJovEXU=
 github.com/sagernet/sing v0.0.0-20220817130738-ce854cda8522/go.mod h1:QVsS5L/ZA2Q5UhQwLrn0Trw+msNd/NPGEhBKR/ioWiY=
 github.com/sagernet/sing v0.1.8/go.mod h1:jt1w2u7lJQFFSGLiRrRIs5YWmx4kAPfWuOejuDW9qMk=
-github.com/sagernet/sing v0.2.1 h1:r0STYeyfKBBtoAHsBtW1dQonxG+3Qidde7/1VAMhdn8=
-github.com/sagernet/sing v0.2.1/go.mod h1:9uHswk2hITw8leDbiLS/xn0t9nzBcbePxzm9PJhwdlw=
-github.com/sagernet/sing-box v1.2.2-0.20230331082908-4db7eb9d9e78 h1:cD7wdW7Ikoq3cxZXx4mlg7hF2o1/4ACTPdYx/bdUt7A=
-github.com/sagernet/sing-box v1.2.2-0.20230331082908-4db7eb9d9e78/go.mod h1:zN6q9zAw2CNAzSm7aw2Skc0s2Lv/Z8XB2IjtsyA54+Y=
+github.com/sagernet/sing v0.2.2-0.20230402035613-6d63c1a7dca5 h1:UB1vAmu7/4ya2FzX2lwIAs0bRPcWQPY5kSCBK4RLi2g=
+github.com/sagernet/sing v0.2.2-0.20230402035613-6d63c1a7dca5/go.mod h1:9uHswk2hITw8leDbiLS/xn0t9nzBcbePxzm9PJhwdlw=
+github.com/sagernet/sing-box v1.2.3-0.20230402040603-f8be48401998 h1:WMHMHVEkzjUvnGDJcn27cV9Zvj/r02J5O5bd5nXLqos=
+github.com/sagernet/sing-box v1.2.3-0.20230402040603-f8be48401998/go.mod h1:6MoNX9YTqbC8UzEOSQcEA5vPe35JjtKisUg7838LJYo=
 github.com/sagernet/sing-shadowsocks v0.2.0 h1:ILDWL7pwWfkPLEbviE/MyCgfjaBmJY/JVVY+5jhSb58=
 github.com/sagernet/sing-shadowsocks v0.2.0/go.mod h1:ysYzszRLpNzJSorvlWRMuzU6Vchsp7sd52q+JNY4axw=
 github.com/sagernet/sing-shadowtls v0.1.0 h1:05MYce8aR5xfKIn+y7xRFsdKhKt44QZTSEQW+lG5IWQ=

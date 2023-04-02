@@ -490,7 +490,6 @@
     <string-array name="xtls_flow_value" translatable="false">
         <item></item>
         <item>xtls-rprx-vision</item>
-        <item>xtls-rprx-vision-udp443</item>
     </string-array>
 
     <string-array name="box_shadowsocks_plugins" translatable="false">
