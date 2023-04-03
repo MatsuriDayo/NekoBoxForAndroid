@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import androidx.core.content.res.TypedArrayUtils
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.nekohasekai.sagernet.R
@@ -13,11 +13,13 @@ import io.nekohasekai.sagernet.R
 class MTUPreference
 @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = R.attr.dropdownPreferenceStyle
-) : SimpleMenuPreference(context, attrs, defStyle, 0) {
+) : ListPreference(context, attrs, defStyle, 0) {
+
     init {
         setSummaryProvider {
             value.toString()
         }
+        dialogLayoutResource = R.layout.layout_mtu_help
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {

@@ -18,10 +18,7 @@ import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.utils.Theme
 import io.nekohasekai.sagernet.widget.AppListPreference
 import moe.matsuri.nb4a.Protocols
-import moe.matsuri.nb4a.ui.ColorPickerPreference
-import moe.matsuri.nb4a.ui.LongClickMenuPreference
-import moe.matsuri.nb4a.ui.MTUPreference
-import moe.matsuri.nb4a.ui.SimpleMenuPreference
+import moe.matsuri.nb4a.ui.*
 
 class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
@@ -113,9 +110,10 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val requireTransproxy = findPreference<SwitchPreference>(Key.REQUIRE_TRANSPROXY)!!
         val transproxyPort = findPreference<EditTextPreference>(Key.TRANSPROXY_PORT)!!
         val transproxyMode = findPreference<SimpleMenuPreference>(Key.TRANSPROXY_MODE)!!
-        val logLevel = findPreference<LongClickMenuPreference>(Key.LOG_LEVEL)!!
+        val logLevel = findPreference<LongClickListPreference>(Key.LOG_LEVEL)!!
         val mtu = findPreference<MTUPreference>(Key.MTU)!!
 
+        logLevel.dialogLayoutResource = R.layout.layout_loglevel_help
         logLevel.setOnPreferenceChangeListener { _, _ ->
             needRestart()
             true
