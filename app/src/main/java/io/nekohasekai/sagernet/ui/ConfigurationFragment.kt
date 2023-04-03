@@ -466,6 +466,57 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+            R.id.action_remove_duplicate -> {
+                runOnDefaultDispatcher {
+                    val profiles = SagerDatabase.proxyDao.getByGroup(DataStore.currentGroupId())
+                    val toClear = mutableListOf<ProxyEntity>()
+                    val uniqueProxies = LinkedHashSet<Protocols.Deduplication>()
+                    for (pf in profiles) {
+                        val proxy = Protocols.Deduplication(pf.requireBean(), pf.displayType())
+                        if (!uniqueProxies.add(proxy)) {
+                            toClear += pf
+                        }
+                    }
+                    if (toClear.isNotEmpty()) {
+                        onMainDispatcher {
+                            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm)
+                                .setMessage(
+                                    getString(R.string.delete_confirm_prompt) + "\n" +
+                                            toClear.mapIndexedNotNull { index, proxyEntity ->
+                                                if (index < 20) {
+                                                    proxyEntity.displayName()
+                                                } else if (index == 20) {
+                                                    "......"
+                                                } else {
+                                                    null
+                                                }
+                                            }.joinToString("\n")
+                                )
+                                .setPositiveButton(R.string.yes) { _, _ ->
+                                    for (profile in toClear) {
+                                        adapter.groupFragments[DataStore.selectedGroup]?.adapter?.apply {
+                                            val index = configurationIdList.indexOf(profile.id)
+                                            if (index >= 0) {
+                                                configurationIdList.removeAt(index)
+                                                configurationList.remove(profile.id)
+                                                notifyItemRemoved(index)
+                                            }
+                                        }
+                                    }
+                                    runOnDefaultDispatcher {
+                                        for (profile in toClear) {
+                                            ProfileManager.deleteProfile2(
+                                                profile.groupId, profile.id
+                                            )
+                                        }
+                                    }
+                                }
+                                .setNegativeButton(R.string.no, null)
+                                .show()
+                        }
+                    }
+                }
+            }
             R.id.action_connection_icmp_ping -> {
                 pingTest(true)
             }

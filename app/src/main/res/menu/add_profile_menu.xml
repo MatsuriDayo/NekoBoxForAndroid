@@ -87,6 +87,9 @@
                 android:id="@+id/action_clear_traffic_statistics"
                 android:title="@string/clear_traffic_statistics" />
             <item
+                android:id="@+id/action_remove_duplicate"
+                android:title="@string/remove_duplicate" />
+            <item
                 android:id="@+id/action_connection_test"
                 android:title="@string/connection_test">
                 <menu>

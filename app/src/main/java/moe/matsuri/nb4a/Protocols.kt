@@ -34,11 +34,11 @@ object Protocols {
     // Deduplication
 
     class Deduplication(
-        val bean: AbstractBean
+        val bean: AbstractBean, val type: String
     ) {
 
         fun hash(): String {
-            return bean.serverAddress + bean.serverPort
+            return bean.serverAddress + bean.serverPort + type
         }
 
         override fun hashCode(): Int {

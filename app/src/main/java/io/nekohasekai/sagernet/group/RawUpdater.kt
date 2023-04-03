@@ -91,7 +91,7 @@ object RawUpdater : GroupUpdater() {
             val uniqueProxies = LinkedHashSet<Protocols.Deduplication>()
             val uniqueNames = HashMap<Protocols.Deduplication, String>()
             for (_proxy in proxies) {
-                val proxy = Protocols.Deduplication(_proxy)
+                val proxy = Protocols.Deduplication(_proxy, _proxy.javaClass.toString())
                 if (!uniqueProxies.add(proxy)) {
                     val index = uniqueProxies.indexOf(proxy)
                     if (uniqueNames.containsKey(proxy)) {

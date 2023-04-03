@@ -469,4 +469,5 @@
     <string name="share_subscription">分享订阅</string>
     <string name="show_group_in_notification">在通知中显示组名</string>
     <string name="reset_connections">重置连接</string>
+    <string name="remove_duplicate">删除重复的服务器</string>
 </resources>
