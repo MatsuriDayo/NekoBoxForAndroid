@@ -6,7 +6,7 @@ require (
 	github.com/avast/apkverifier v0.0.0-20221110131049-7720fc1ebef0
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1
-	github.com/matsuridayo/sing-box-extra v0.0.0-20230331092806-0c9ba905d3d7
+	github.com/matsuridayo/sing-box-extra v0.0.0-20230403023034-c868033055eb
 	github.com/miekg/dns v1.1.53
 	github.com/sagernet/sing v0.2.2-0.20230402035613-6d63c1a7dca5
 	github.com/sagernet/sing-box v1.2.3-0.20230402040603-f8be48401998

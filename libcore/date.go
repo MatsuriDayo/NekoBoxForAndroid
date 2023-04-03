@@ -8,7 +8,7 @@ import (
 var outdated string
 
 func GetBuildTime() int64 {
-	buildDate := 20230330
+	buildDate := 20230403
 	buildTime, _ := time.Parse("20060102", strconv.Itoa(buildDate))
 	return buildTime.Unix()
 }

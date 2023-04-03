@@ -90,8 +90,8 @@ github.com/logrusorgru/aurora v2.0.3+incompatible h1:tOpm7WcpBTn4fjmVfgpQq0EfczG
 github.com/logrusorgru/aurora v2.0.3+incompatible/go.mod h1:7rIyQOR62GCctdiQpZ/zOJlFyk6y+94wXzv6RNZgaR4=
 github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1 h1:+FflyEuq2hn++MENFuT1/qFHz0KITKK/F6ZHxs23mrg=
 github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1/go.mod h1:IRO07Queptz/rGFvEW+3Hmwpx7MCup6WiDs4p5jMt4g=
-github.com/matsuridayo/sing-box-extra v0.0.0-20230331092806-0c9ba905d3d7 h1:ooWjy/4SzEa0CIGpihuI5AiLDUl5F1/5xK+/wCm3mdg=
-github.com/matsuridayo/sing-box-extra v0.0.0-20230331092806-0c9ba905d3d7/go.mod h1:fC8s/F9U7qveKsU2675YaidrqgpDvLeRsubva5PU68Q=
+github.com/matsuridayo/sing-box-extra v0.0.0-20230403023034-c868033055eb h1:+H4kzku3mIffN7fazOjr3gRV5oTZwE/K7cghWHTGU6Q=
+github.com/matsuridayo/sing-box-extra v0.0.0-20230403023034-c868033055eb/go.mod h1:MJNdOWGkzlQilH83i2lG5aSZx1IA8Y6Ywnn8Je9y5lY=
 github.com/matsuridayo/sing-dns v0.0.0-20230402050810-781b80b9110f h1:BqIt3G/NXyTLao96ouiK6XIvzt0U7gAi2u6FeN88b0c=
 github.com/matsuridayo/sing-dns v0.0.0-20230402050810-781b80b9110f/go.mod h1:69PNSHyEmXdjf6C+bXBOdr2GQnPeEyWjIzo/MV8gmz8=
 github.com/mholt/acmez v1.1.0 h1:IQ9CGHKOHokorxnffsqDvmmE30mDenO1lptYZ1AYkHY=
