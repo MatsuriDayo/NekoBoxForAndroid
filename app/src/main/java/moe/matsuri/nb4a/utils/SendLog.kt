@@ -68,6 +68,6 @@ object SendLog {
         if (max in 1 until len) {
             stream.skip(len - max) // TODO string?
         }
-        return stream.readBytes()
+        return stream.use { it.readBytes() }
     }
 }

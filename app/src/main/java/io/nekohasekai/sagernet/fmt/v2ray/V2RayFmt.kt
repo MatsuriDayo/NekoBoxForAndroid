@@ -563,7 +563,7 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
                 fingerprint = bean.utlsFingerprint
             }
         }
-        if (bean.realityPubKey.isNotBlank() && bean.realityShortId.isNotBlank()) {
+        if (bean.realityPubKey.isNotBlank()) {
             reality = OutboundRealityOptions().apply {
                 enabled = true
                 public_key = bean.realityPubKey

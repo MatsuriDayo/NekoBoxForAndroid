@@ -114,7 +114,11 @@ fun buildSingBoxOutboundShadowsocksBean(bean: ShadowsocksBean): SingBoxOptions.O
         server_port = bean.serverPort
         password = bean.password
         method = bean.method
-        udp_over_tcp = bean.sUoT
+        if (bean.sUoT) {
+            udp_over_tcp = SingBoxOptions.UDPOverTCPOptions().apply {
+                enabled = true
+            }
+        }
         if (bean.plugin.isNotBlank()) {
             plugin = bean.plugin.substringBefore(";")
             plugin_opts = bean.plugin.substringAfter(";")

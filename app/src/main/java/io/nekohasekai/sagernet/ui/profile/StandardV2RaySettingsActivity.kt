@@ -63,6 +63,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     }
 
     lateinit var securityCategory: PreferenceCategory
+    lateinit var tlsModifyCategory: PreferenceCategory
     lateinit var wsCategory: PreferenceCategory
 
     override fun PreferenceFragmentCompat.createPreferences(
@@ -72,6 +73,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         addPreferencesFromResource(R.xml.standard_v2ray_preferences)
         pbm.setPreferenceFragment(this)
         securityCategory = findPreference(Key.SERVER_SECURITY_CATEGORY)!!
+        tlsModifyCategory = findPreference(Key.SERVER_TLS_MODIFY_CATEGORY)!!
         wsCategory = findPreference(Key.SERVER_WS_CATEGORY)!!
 
 
@@ -171,6 +173,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     fun updateTle(tle: String) {
         val isTLS = tle == "tls"
         securityCategory.isVisible = isTLS
+        tlsModifyCategory.isVisible = isTLS
     }
 
 }

@@ -3,7 +3,6 @@ module libcore
 go 1.18
 
 require (
-	github.com/avast/apkverifier v0.0.0-20221110131049-7720fc1ebef0
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1
 	github.com/matsuridayo/sing-box-extra v0.0.0-20230403023034-c868033055eb
@@ -21,7 +20,6 @@ require (
 	github.com/Dreamacro/clash v1.14.0 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/avast/apkparser v0.0.0-20221012080151-bfc57d4d0502 // indirect
 	github.com/caddyserver/certmagic v0.17.2 // indirect
 	github.com/cloudflare/circl v1.2.1-0.20221019164342-6ab4dfed8f3c // indirect
 	github.com/cretz/bine v0.2.0 // indirect

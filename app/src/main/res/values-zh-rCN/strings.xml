@@ -246,7 +246,7 @@
     <string name="enable">启用</string>
     <string name="auto">自动</string>
     <string name="follow_system">跟随系统</string>
-    <string name="security_settings">安全设置</string>
+    <string name="security_settings">TLS 安全设置</string>
     <string name="allow_insecure">允许不安全的连接</string>
     <string name="allow_insecure_sum">禁用证书检查. 启用后该配置安全性相当于明文</string>
     <string name="config_type">配置类型</string>
@@ -470,4 +470,5 @@
     <string name="show_group_in_notification">在通知中显示组名</string>
     <string name="reset_connections">重置连接</string>
     <string name="remove_duplicate">删除重复的服务器</string>
+    <string name="tls_modify_settings">TLS 伪装设置</string>
 </resources>

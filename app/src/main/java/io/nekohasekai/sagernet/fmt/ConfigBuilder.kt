@@ -98,7 +98,7 @@ fun buildConfig(
 
     val trafficMap = HashMap<String, List<ProxyEntity>>()
     val tagMap = HashMap<Long, String>()
-    val globalOutbounds = ArrayList<Long>()
+    val globalOutbounds = HashMap<Long, String>()
     val selectorNames = ArrayList<String>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
     var optionsToMerge = ""
@@ -336,6 +336,13 @@ fun buildConfig(
                     bypassDNSBeans += proxyEntity.requireBean()
                 }
 
+                if (needGlobal) {
+                    globalOutbounds[proxyEntity.id]?.let {
+                        if (index == 0) chainTagOut = it // single, duplicate chain
+                        return@forEachIndexed
+                    }
+                }
+
                 // last profile set as "proxy"
                 if (chainId == 0L && index == 0) {
                     tagOut = TAG_PROXY
@@ -344,6 +351,11 @@ fun buildConfig(
                 // selector human readable name
                 if (buildSelector && index == 0) {
                     tagOut = selectorName(bean.displayName())
+                }
+
+                // now tagOut is determined
+                if (needGlobal) {
+                    globalOutbounds[proxyEntity.id] = tagOut
                 }
 
                 // chain rules
@@ -360,13 +372,6 @@ fun buildConfig(
                 } else {
                     // index == 0 means last profile in chain / not chain
                     chainTagOut = tagOut
-                }
-
-                if (needGlobal) {
-                    if (globalOutbounds.contains(proxyEntity.id)) {
-                        return@forEachIndexed
-                    }
-                    globalOutbounds.add(proxyEntity.id)
                 }
 
                 // Chain outbound
@@ -706,18 +711,32 @@ fun buildConfig(
         if (enableDnsRouting) {
             val dnsRuleObj = mutableListOf<DNSRule_DefaultOptions>()
             if (uidListDNSRemote.isNotEmpty()) {
+                if (useFakeDns) dnsRuleObj.add(
+                    DNSRule_DefaultOptions().apply {
+                        user_id = uidListDNSRemote.toHashSet().toList()
+                        server = "dns-fake"
+                        inbound = listOf("tun-in")
+                    }
+                )
                 dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         user_id = uidListDNSRemote.toHashSet().toList()
-                        server = if (useFakeDns) "dns-fake" else "dns-remote"
+                        server = "dns-remote"
                     }
                 )
             }
             if (domainListDNSRemote.isNotEmpty()) {
+                if (useFakeDns) dnsRuleObj.add(
+                    DNSRule_DefaultOptions().apply {
+                        makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
+                        server = "dns-fake"
+                        inbound = listOf("tun-in")
+                    }
+                )
                 dnsRuleObj.add(
                     DNSRule_DefaultOptions().apply {
                         makeSingBoxRule(domainListDNSRemote.toHashSet().toList())
-                        server = if (useFakeDns) "dns-fake" else "dns-remote"
+                        server = "dns-remote"
                     }
                 )
             }

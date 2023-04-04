@@ -104,5 +104,9 @@ fun SingBoxOptions.Rule_DefaultOptions.checkEmpty(): Boolean {
     if (domain_regex?.isNotEmpty() == true) return false
     if (domain_keyword?.isNotEmpty() == true) return false
     if (user_id?.isNotEmpty() == true) return false
+    //
+    if (port?.isNotEmpty() == true) return false
+    if (port_range?.isNotEmpty() == true) return false
+    if (source_ip_cidr?.isNotEmpty() == true) return false
     return true
 }

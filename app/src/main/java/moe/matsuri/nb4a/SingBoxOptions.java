@@ -82,6 +82,8 @@ public class SingBoxOptions {
 
     public static class Options extends SingBoxOption {
 
+        public String $schema;
+
         public LogOptions log;
 
         public DNSOptions dns;
@@ -111,6 +113,25 @@ public class SingBoxOptions {
         // Generate note: option type:  public Boolean DisableColor;
 
     }
+
+    public static class DebugOptions extends SingBoxOption {
+
+        public Integer gc_percent;
+
+        public Integer max_stack;
+
+        public Integer max_threads;
+
+        public Boolean panic_on_fault;
+
+        public String trace_back;
+
+        public Long memory_limit;
+
+        public Boolean oom_killer;
+
+    }
+
 
     public static class DirectInboundOptions extends SingBoxOption {
 
@@ -350,6 +371,8 @@ public class SingBoxOptions {
         public ClashAPIOptions clash_api;
 
         public V2RayAPIOptions v2ray_api;
+
+        public DebugOptions debug;
 
     }
 
@@ -616,6 +639,8 @@ public class SingBoxOptions {
         public Boolean enabled;
 
         public Long interval;
+
+        public Boolean write_to_system;
 
         // Generate note: nested type ServerOptions
         public String server;
@@ -1108,7 +1133,7 @@ public class SingBoxOptions {
 
         public String network;
 
-        public Boolean udp_over_tcp;
+        public UDPOverTCPOptions udp_over_tcp;
 
         public MultiplexOptions multiplex;
 
@@ -1436,7 +1461,7 @@ public class SingBoxOptions {
 
         public String network;
 
-        public Boolean udp_over_tcp;
+        public UDPOverTCPOptions udp_over_tcp;
 
     }
 
@@ -1955,6 +1980,14 @@ public class SingBoxOptions {
     }
 
 
+    public static class UDPOverTCPOptions extends SingBoxOption {
+
+        public Boolean enabled;
+
+        public Integer version;
+
+    }
+
     public static class V2RayAPIOptions extends SingBoxOption {
 
         public String listen;
@@ -2001,6 +2034,10 @@ public class SingBoxOptions {
 
         public Map<String, String> headers;
 
+        public Long idle_timeout;
+
+        public Long ping_timeout;
+
     }
 
     public static class V2RayWebsocketOptions extends SingBoxOption {
@@ -2019,6 +2056,12 @@ public class SingBoxOptions {
     public static class V2RayGRPCOptions extends SingBoxOption {
 
         public String service_name;
+
+        public Long idle_timeout;
+
+        public Long ping_timeout;
+
+        public Boolean permit_without_stream;
 
         // Generate note: option type:  public Boolean ForceLite;
 
@@ -3091,7 +3134,7 @@ public class SingBoxOptions {
 
         public String network;
 
-        public Boolean udp_over_tcp;
+        public UDPOverTCPOptions udp_over_tcp;
 
     }
 
@@ -3187,7 +3230,7 @@ public class SingBoxOptions {
 
         public String network;
 
-        public Boolean udp_over_tcp;
+        public UDPOverTCPOptions udp_over_tcp;
 
         public MultiplexOptions multiplex;
 
@@ -3793,6 +3836,10 @@ public class SingBoxOptions {
 
         public Map<String, String> headers;
 
+        public Long idle_timeout;
+
+        public Long ping_timeout;
+
     }
 
     public static class V2RayTransportOptions_WebsocketOptions extends V2RayTransportOptions {
@@ -3811,6 +3858,12 @@ public class SingBoxOptions {
     public static class V2RayTransportOptions_GRPCOptions extends V2RayTransportOptions {
 
         public String service_name;
+
+        public Long idle_timeout;
+
+        public Long ping_timeout;
+
+        public Boolean permit_without_stream;
 
 
     }
