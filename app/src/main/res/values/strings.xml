@@ -513,6 +513,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="remove_duplicate">Remove duplicate servers</string>
     <string name="mtu_help">Long press the preference to set custom MTU.</string>
     <string name="log_level_help">Long press the preference to set the buffer size.</string>
-    <string name="tls_modify_settings">TLS Modify Settings</string>
+    <string name="tls_camouflage_settings">TLS Camouflage Settings</string>
 
 </resources>

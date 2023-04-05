@@ -94,7 +94,7 @@ object Key {
     const val SERVER_CONFIG = "serverConfig"
 
     const val SERVER_SECURITY_CATEGORY = "serverSecurityCategory"
-    const val SERVER_TLS_MODIFY_CATEGORY = "serverTlsModifyCategory"
+    const val SERVER_TLS_CAMOUFLAGE_CATEGORY = "serverTlsCamouflageCategory"
     const val SERVER_WS_CATEGORY = "serverWsCategory"
     const val SERVER_SS_CATEGORY = "serverSsCategory"
     const val SERVER_HEADERS = "serverHeaders"

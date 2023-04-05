@@ -121,8 +121,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="serverTlsModifyCategory"
-        app:title="@string/tls_modify_settings">
+        app:key="serverTlsCamouflageCategory"
+        app:title="@string/tls_camouflage_settings">
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue=""
             app:entries="@array/utls_fingerprint_entry"
