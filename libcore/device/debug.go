@@ -13,9 +13,9 @@ func GoDebug(any interface{}) {
 	}
 }
 
-func AllDefer(name string, log func(string)) {
+func DeferPanicToError(name string, err func(error)) {
 	if r := recover(); r != nil {
-		s := fmt.Sprintln(name+" panic", r, string(debug.Stack()))
-		log(s)
+		s := fmt.Errorf("%s panic: %s\n%s", name, r, string(debug.Stack()))
+		err(s)
 	}
 }

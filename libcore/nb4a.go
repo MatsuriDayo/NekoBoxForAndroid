@@ -34,15 +34,11 @@ func SetLocalResolver(lr LocalResolver) {
 	underlyingResolver.localResolver = lr
 }
 
-func initCoreDefer() {
-	device.AllDefer("InitCore", func(s string) { log.Println(s) })
-}
-
 func InitCore(process, cachePath, internalAssets, externalAssets string,
 	maxLogSizeKb int32, logEnable bool,
 	iif NB4AInterface,
 ) {
-	defer initCoreDefer()
+	defer device.DeferPanicToError("InitCore", func(err error) { log.Println(err) })
 	isBgProcess := strings.HasSuffix(process, ":bg")
 
 	neko_common.RunMode = neko_common.RunMode_NekoBoxForAndroid
@@ -66,7 +62,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 
 	// Set up some component
 	go func() {
-		defer initCoreDefer()
+		defer device.DeferPanicToError("InitCore-go", func(err error) { log.Println(err) })
 		device.GoDebug(process)
 
 		externalAssetsPath = externalAssets

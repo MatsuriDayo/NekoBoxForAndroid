@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"libcore/device"
 	"log"
 	"net/http"
 	"reflect"
@@ -82,11 +83,7 @@ type BoxInstance struct {
 }
 
 func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
-	defer func() {
-		if v := recover(); v != nil {
-			err = fmt.Errorf("panic: %v", v)
-		}
-	}()
+	defer device.DeferPanicToError("NewSingBoxInstance", func(err_ error) { err = err_ })
 
 	// parse options
 	var options option.Options
@@ -127,10 +124,13 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	return b, nil
 }
 
-func (b *BoxInstance) Start() error {
+func (b *BoxInstance) Start() (err error) {
+	defer device.DeferPanicToError("box.Start", func(err_ error) { err = err_ })
+
 	if outdated != "" {
 		return errors.New(outdated)
 	}
+
 	if b.state == 0 {
 		b.state = 1
 		return b.Box.Start()
@@ -138,7 +138,9 @@ func (b *BoxInstance) Start() error {
 	return errors.New("already started")
 }
 
-func (b *BoxInstance) Close() error {
+func (b *BoxInstance) Close() (err error) {
+	defer device.DeferPanicToError("box.Close", func(err_ error) { err = err_ })
+
 	// no double close
 	if b.state == 2 {
 		return nil
@@ -209,7 +211,8 @@ func (b *BoxInstance) SelectOutbound(tag string) bool {
 	return false
 }
 
-func UrlTest(i *BoxInstance, link string, timeout int32) (int32, error) {
+func UrlTest(i *BoxInstance, link string, timeout int32) (latency int32, err error) {
+	defer device.DeferPanicToError("box.UrlTest", func(err_ error) { err = err_ })
 	if i == nil {
 		// test current
 		return speedtest.UrlTest(neko_common.GetProxyHttpClient(), link, timeout)
