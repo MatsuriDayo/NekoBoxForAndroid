@@ -207,6 +207,13 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
         }
     }
 
+    // maybe from matsuri vmess exoprt
+    if (this is VMessBean && !isVLESS) {
+        url.queryParameter("encryption")?.let {
+            encryption = it
+        }
+    }
+
     url.queryParameter("packetEncoding")?.let {
         when (it) {
             "packet" -> packetEncoding = 1

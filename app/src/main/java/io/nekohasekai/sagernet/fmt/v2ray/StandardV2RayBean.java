@@ -186,7 +186,8 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     public boolean isVLESS() {
         if (this instanceof VMessBean) {
-            return ((VMessBean) this).alterId == -1;
+            Integer aid = ((VMessBean) this).alterId;
+            return aid != null && aid == -1;
         }
         return false;
     }
