@@ -6,9 +6,9 @@ import android.text.InputType
 import android.view.MenuItem
 import android.view.View
 import android.webkit.*
+import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
@@ -55,17 +55,18 @@ class WebviewFragment : ToolbarFragment(R.layout.layout_webview), Toolbar.OnMenu
     override fun onMenuItemClick(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_set_url -> {
-                MaterialDialog(requireContext()).show {
-                    title(R.string.set_panel_url)
-                    input(
-                        prefill = DataStore.yacdURL,
-                        inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
-                    ) { _, str ->
-                        DataStore.yacdURL = str.toString()
+                val view = EditText(context).apply {
+                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
+                    setText(DataStore.yacdURL)
+                }
+                MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.set_panel_url)
+                    .setView(view)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        DataStore.yacdURL = view.text.toString()
                         mWebView.loadUrl(DataStore.yacdURL)
                     }
-                    positiveButton(R.string.save)
-                }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
             }
             R.id.close -> {
                 mWebView.onPause()

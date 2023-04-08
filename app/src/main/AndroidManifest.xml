@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="internalOnly">
 
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android, com.blacksquircle.ui.editorkit" />
 
     <permission
         android:name="${applicationId}.SERVICE"
@@ -144,6 +144,9 @@
             android:excludeFromRecents="true"
             android:taskAffinity="" />
         <activity
+            android:name="io.nekohasekai.sagernet.ui.profile.ConfigEditActivity"
+            android:configChanges="uiMode" />
+        <activity
             android:name="io.nekohasekai.sagernet.ui.profile.SocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
@@ -151,9 +154,6 @@
             android:configChanges="uiMode" />
         <activity
             android:name="io.nekohasekai.sagernet.ui.profile.ShadowsocksSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="io.nekohasekai.sagernet.ui.profile.ShadowsocksRSettingsActivity"
             android:configChanges="uiMode" />
         <activity
             android:name="io.nekohasekai.sagernet.ui.profile.VMessSettingsActivity"

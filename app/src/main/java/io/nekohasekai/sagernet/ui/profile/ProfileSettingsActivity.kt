@@ -6,11 +6,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.component1
+import androidx.activity.result.component2
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -22,8 +24,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
 import com.github.shadowsocks.plugin.Empty
 import com.github.shadowsocks.plugin.fragment.AlertDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -217,10 +217,6 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
             preferenceManager.preferenceDataStore = DataStore.profileCacheStore
             activity.apply {
                 createPreferences(savedInstanceState, rootKey)
-
-                if (isSubscription) {
-//                    findPreference<Preference>(Key.PROFILE_NAME)?.isEnabled = false
-                }
             }
         }
 
@@ -235,6 +231,21 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
 
             DataStore.dirty = false
             DataStore.profileCacheStore.registerChangeListener(activity)
+        }
+
+        var callbackCustom: ((String) -> Unit)? = null
+        var callbackCustomOutbound: ((String) -> Unit)? = null
+
+        val resultCallbackCustom = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { (_, _) ->
+            callbackCustom?.let { it(DataStore.serverCustom) }
+        }
+
+        val resultCallbackCustomOutbound = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { (_, _) ->
+            callbackCustomOutbound?.let { it(DataStore.serverCustomOutbound) }
         }
 
         @SuppressLint("CheckResult")
@@ -263,36 +274,30 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
             R.id.action_custom_outbound_json -> {
                 activity.proxyEntity?.apply {
                     val bean = requireBean()
-                    MaterialDialog(activity).show {
-                        title(R.string.custom_outbound_json)
-                        input(
-                            prefill = bean.customOutboundJson,
-                            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                            allowEmpty = true
-                        ) { _, str ->
-                            bean.customOutboundJson = str.toString()
-                            DataStore.dirty = true
-                        }
-                        positiveButton(R.string.save)
-                    }
+                    DataStore.serverCustomOutbound = bean.customOutboundJson
+                    callbackCustomOutbound = { bean.customOutboundJson = it }
+                    resultCallbackCustomOutbound.launch(
+                        Intent(
+                            requireContext(),
+                            ConfigEditActivity::class.java
+                        ).apply {
+                            putExtra("key", Key.SERVER_CUSTOM_OUTBOUND)
+                        })
                 }
                 true
             }
             R.id.action_custom_config_json -> {
                 activity.proxyEntity?.apply {
                     val bean = requireBean()
-                    MaterialDialog(activity).show {
-                        title(R.string.custom_config_json)
-                        input(
-                            prefill = bean.customConfigJson,
-                            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                            allowEmpty = true
-                        ) { _, str ->
-                            bean.customConfigJson = str.toString()
-                            DataStore.dirty = true
-                        }
-                        positiveButton(R.string.save)
-                    }
+                    DataStore.serverCustom = bean.customConfigJson
+                    callbackCustom = { bean.customConfigJson = it }
+                    resultCallbackCustom.launch(
+                        Intent(
+                            requireContext(),
+                            ConfigEditActivity::class.java
+                        ).apply {
+                            putExtra("key", Key.SERVER_CUSTOM)
+                        })
                 }
                 true
             }

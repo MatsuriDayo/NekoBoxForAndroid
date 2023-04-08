@@ -101,7 +101,7 @@ fun buildConfig(
     val globalOutbounds = HashMap<Long, String>()
     val selectorNames = ArrayList<String>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
-    var optionsToMerge = ""
+    val optionsToMerge = proxy.requireBean().customConfigJson ?: ""
 
     fun ProxyEntity.resolveChainInternal(): MutableList<ProxyEntity> {
         val bean = requireBean()
@@ -423,9 +423,6 @@ fun buildConfig(
                     // custom JSON merge
                     if (bean.customOutboundJson.isNotBlank()) {
                         mergeJSON(bean.customOutboundJson, currentOutbound)
-                    }
-                    if (index == 0 && bean.customConfigJson.isNotBlank()) {
-                        optionsToMerge = bean.customConfigJson
                     }
                 }
 

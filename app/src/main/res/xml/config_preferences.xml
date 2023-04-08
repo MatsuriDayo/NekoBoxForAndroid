@@ -11,7 +11,7 @@
         app:key="isOutboundOnly"
         app:title="@string/is_outbound_only" />
 
-    <EditTextPreference
+    <moe.matsuri.nb4a.ui.EditConfigPreference
         app:icon="@drawable/ic_baseline_layers_24"
         app:key="serverConfig"
         app:title="@string/custom_config"

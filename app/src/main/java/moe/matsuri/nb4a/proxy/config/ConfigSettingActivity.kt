@@ -1,7 +1,6 @@
 package moe.matsuri.nb4a.proxy.config
 
 import android.os.Bundle
-import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -10,14 +9,13 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
 import io.nekohasekai.sagernet.ui.profile.ProfileSettingsActivity
+import moe.matsuri.nb4a.ui.EditConfigPreference
 
 class ConfigSettingActivity :
     ProfileSettingsActivity<ConfigBean>(),
     OnPreferenceDataStoreChangeListener {
 
-    var beanType: Int = 0
-
-    lateinit var configPreference: EditTextPreference
+    private var beanType: Int = 0
 
     override fun createEntity() = ConfigBean()
 
@@ -44,14 +42,12 @@ class ConfigSettingActivity :
         if (key != Key.PROFILE_DIRTY) {
             DataStore.dirty = true
         }
-        if (key == Key.SERVER_CONFIG) {
-            if (::configPreference.isInitialized) {
-                configPreference.text = store.getString(key, "")
-            }
-        } else if (key == "isOutboundOnly") {
+        if (key == "isOutboundOnly") {
             beanType = if (store.getBoolean(key, false)) 1 else 0
         }
     }
+
+    private lateinit var editConfigPreference: EditConfigPreference
 
     override fun PreferenceFragmentCompat.createPreferences(
         savedInstanceState: Bundle?,
@@ -59,9 +55,17 @@ class ConfigSettingActivity :
     ) {
         addPreferencesFromResource(R.xml.config_preferences)
 
-        configPreference = findPreference(Key.SERVER_CONFIG)!!
+        editConfigPreference = findPreference(Key.SERVER_CONFIG)!!
 
         findPreference<SwitchPreference>("isOutboundOnly")!!.isChecked = beanType == 1
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (::editConfigPreference.isInitialized) {
+            editConfigPreference.notifyChanged()
+        }
     }
 
 }
