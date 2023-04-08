@@ -94,7 +94,11 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 
 	// create box
 	ctx, cancel := context.WithCancel(context.Background())
-	instance, err := boxbox.New(ctx, options, boxPlatformInterfaceInstance)
+	instance, err := boxbox.New(boxbox.Options{
+		Options:           options,
+		Context:           ctx,
+		PlatformInterface: boxPlatformInterfaceInstance,
+	})
 	if err != nil {
 		cancel()
 		return nil, fmt.Errorf("create service: %v", err)
