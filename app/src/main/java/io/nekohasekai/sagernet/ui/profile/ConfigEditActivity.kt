@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.addTextChangedListener
 import com.blacksquircle.ui.editorkit.insert
 import com.blacksquircle.ui.language.json.JsonLanguage
 import com.github.shadowsocks.plugin.Empty
@@ -58,16 +59,18 @@ class ConfigEditActivity : ThemedActivity() {
             setHomeAsUpIndicator(R.drawable.ic_navigation_close)
         }
 
-//        binding.editor.colorScheme = mkTheme()
-        binding.editor.language = JsonLanguage()
-//        binding.editor.onChangeListener = OnChangeListener {
-//            config = binding.editor.text.toString()
-//            if (!dirty) {
-//                dirty = true
-//                DataStore.dirty = true
-//            }
-//        }
-        binding.editor.setHorizontallyScrolling(true)
+        binding.editor.apply {
+            language = JsonLanguage()
+            setHorizontallyScrolling(true)
+            setTextContent(DataStore.profileCacheStore.getString(key)!!)
+            addTextChangedListener {
+                if (!dirty) {
+                    dirty = true
+                    DataStore.dirty = true
+                }
+            }
+        }
+
         binding.actionTab.setOnClickListener {
             binding.editor.insert(binding.editor.tab())
         }
@@ -94,8 +97,6 @@ class ConfigEditActivity : ThemedActivity() {
         extendedKeyboard.setHasFixedSize(true)
         extendedKeyboard.submitList("{},:_\"".map { it.toString() })
         extendedKeyboard.setBackgroundColor(getColorAttr(R.attr.primaryOrTextPrimary))
-
-        binding.editor.setTextContent(DataStore.profileCacheStore.getString(key)!!)
     }
 
     fun formatText(): String? {
