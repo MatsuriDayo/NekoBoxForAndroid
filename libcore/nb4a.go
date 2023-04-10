@@ -32,7 +32,7 @@ func ForceGc() {
 }
 
 func SetLocalResolver(lr LocalResolver) {
-	underlyingResolver.localResolver = lr
+	localResolver = lr
 }
 
 func InitCore(process, cachePath, internalAssets, externalAssets string,

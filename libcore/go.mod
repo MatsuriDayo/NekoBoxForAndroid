@@ -5,11 +5,11 @@ go 1.18
 require (
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1
-	github.com/matsuridayo/sing-box-extra v0.0.0-20230407151528-afb3401544d4
+	github.com/matsuridayo/sing-box-extra v0.0.0-20230410030710-72e14149e230
 	github.com/miekg/dns v1.1.53
 	github.com/sagernet/sing v0.2.2-0.20230407053809-308e421e33c2
-	github.com/sagernet/sing-box v1.2.3
-	github.com/sagernet/sing-dns v0.1.5-0.20230407055526-2a27418e7855
+	github.com/sagernet/sing-box v1.2.4-0.20230408011350-68439705360e
+	github.com/sagernet/sing-dns v0.1.5-0.20230408004833-5adaf486d440
 	github.com/sagernet/sing-tun v0.1.4-0.20230326080954-8848c0e4cbab
 	github.com/ulikunitz/xz v0.5.10
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105
@@ -96,4 +96,4 @@ require (
 
 // replace github.com/matsuridayo/sing-box-extra => ../../sing-box-extra
 
-replace github.com/sagernet/sing-dns => github.com/matsuridayo/sing-dns v0.0.0-20230407150154-fb87a0e6d1ec
+replace github.com/sagernet/sing-dns => github.com/matsuridayo/sing-dns v0.0.0-20230410025504-c609bffff165

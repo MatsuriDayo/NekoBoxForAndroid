@@ -1,3 +1,5 @@
+//go:build android
+
 package libcore
 
 import (
@@ -16,24 +18,30 @@ import (
 )
 
 func init() {
-	D.RegisterTransport([]string{"underlying"}, CreateUnderlyingTransport)
+	D.RegisterTransport([]string{"underlying"}, createUnderlyingTransport)
 }
 
 // CreateUnderlyingTransport for Android
-func CreateUnderlyingTransport(ctx context.Context, logger logger.ContextLogger, dialer N.Dialer, link string) (D.Transport, error) {
-	return underlyingResolver, nil
+func createUnderlyingTransport(name string, ctx context.Context, logger logger.ContextLogger, dialer N.Dialer, link string) (D.Transport, error) {
+	return &androidUnderlyingTransportSing{name, underlyingResolver}, nil
 }
+
+//
+
+type androidUnderlyingTransportSing struct {
+	name string
+	*androidUnderlyingTransport
+}
+
+func (t *androidUnderlyingTransportSing) Name() string { return t.name }
+
+//
 
 var systemResolver = &net.Resolver{PreferGo: false}                                  // Using System API, lookup from current network.
 var underlyingResolver = &androidUnderlyingTransport{systemResolver: systemResolver} // Using System API, lookup from non-VPN network.
 
-type LocalResolver interface {
-	LookupIP(network string, domain string) (string, error)
-}
-
 type androidUnderlyingTransport struct {
 	systemResolver *net.Resolver
-	localResolver  LocalResolver // Android: passed from java (only when VPNService)
 }
 
 func (t *androidUnderlyingTransport) Start() error { return nil }
@@ -44,7 +52,7 @@ func (t *androidUnderlyingTransport) Exchange(ctx context.Context, message *dns.
 }
 
 func (t *androidUnderlyingTransport) Lookup(ctx context.Context, domain string, strategy D.DomainStrategy) (ips []netip.Addr, err error) {
-	isSekai := t.localResolver != nil
+	isSekai := localResolver != nil
 
 	var cancel context.CancelFunc
 	ctx, cancel = context.WithTimeout(ctx, time.Second*5)
@@ -71,7 +79,7 @@ func (t *androidUnderlyingTransport) Lookup(ctx context.Context, domain string, 
 		}
 
 		if isSekai {
-			str, err = t.localResolver.LookupIP(network, domain)
+			str, err = localResolver.LookupIP(network, domain)
 			// java -> go
 			if err != nil {
 				rcode, err2 := strconv.Atoi(err.Error())

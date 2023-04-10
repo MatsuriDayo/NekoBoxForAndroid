@@ -9,6 +9,12 @@ type NB4AInterface interface {
 	UseOfficialAssets() bool
 }
 
+type LocalResolver interface {
+	LookupIP(network string, domain string) (string, error)
+}
+
+var localResolver LocalResolver // Android: passed from java (only when VPNService)
+
 type BoxPlatformInterface interface {
 	AutoDetectInterfaceControl(fd int32) error
 	OpenTun(singTunOptionsJson, tunPlatformOptionsJson string) (int, error)
