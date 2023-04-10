@@ -654,6 +654,13 @@ fun buildConfig(
             if (it is HysteriaBean && it.isMultiPort()) {
                 serverAddr = it.serverAddress.substringBeforeLast(":")
             }
+            if (it is ConfigBean) {
+                var config = mutableMapOf<String, Any>()
+                config = gson.fromJson(it.config, config.javaClass)
+                config["server"]?.apply {
+                    serverAddr = toString()
+                }
+            }
 
             if (!serverAddr.isIpAddress()) {
                 domainListDNSDirectForce.add("full:${serverAddr}")

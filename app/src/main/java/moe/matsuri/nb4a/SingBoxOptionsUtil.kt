@@ -34,6 +34,11 @@ fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {
             domain.plusAssign(it.lowercase())
         }
     }
+    geosite?.removeIf { it.isNullOrBlank() }
+    domain?.removeIf { it.isNullOrBlank() }
+    domain_suffix?.removeIf { it.isNullOrBlank() }
+    domain_regex?.removeIf { it.isNullOrBlank() }
+    domain_keyword?.removeIf { it.isNullOrBlank() }
     if (geosite?.isEmpty() == true) geosite = null
     if (domain?.isEmpty() == true) domain = null
     if (domain_suffix?.isEmpty() == true) domain_suffix = null
@@ -86,6 +91,13 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
             domain.plusAssign(it.lowercase())
         }
     }
+    ip_cidr?.removeIf { it.isNullOrBlank() }
+    geoip?.removeIf { it.isNullOrBlank() }
+    geosite?.removeIf { it.isNullOrBlank() }
+    domain?.removeIf { it.isNullOrBlank() }
+    domain_suffix?.removeIf { it.isNullOrBlank() }
+    domain_regex?.removeIf { it.isNullOrBlank() }
+    domain_keyword?.removeIf { it.isNullOrBlank() }
     if (ip_cidr?.isEmpty() == true) ip_cidr = null
     if (geoip?.isEmpty() == true) geoip = null
     if (geosite?.isEmpty() == true) geosite = null
