@@ -673,7 +673,7 @@ fun buildConfig(
             dns.servers.add(DNSServerOptions().apply {
                 address = it ?: throw Exception("No direct DNS, check your settings!")
                 tag = "dns-direct"
-                detour = "direct"
+                detour = TAG_DIRECT
                 address_resolver = "dns-local"
                 applyDNSNetworkSettings(true)
             })
@@ -681,7 +681,7 @@ fun buildConfig(
         dns.servers.add(DNSServerOptions().apply {
             address = LOCAL_DNS_SERVER
             tag = "dns-local"
-            detour = "direct"
+            detour = TAG_DIRECT
         })
         dns.servers.add(DNSServerOptions().apply {
             address = "rcode://success"
@@ -753,7 +753,14 @@ fun buildConfig(
 
         if (forTest) {
             // Disable DNS for test
-            dns.rules.clear()
+            dns.servers = listOf(
+                DNSServerOptions().apply {
+                    address = LOCAL_DNS_SERVER
+                    tag = "dns-local"
+                    detour = TAG_DIRECT
+                }
+            ) // Always use system DNS for urlTest
+            dns.rules = listOf()
         } else {
             // built-in DNS rules
             route.rules.add(0, Rule_DefaultOptions().apply {
