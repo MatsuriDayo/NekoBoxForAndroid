@@ -215,7 +215,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_misc">
-        <EditTextPreference
+        <moe.matsuri.nb4a.ui.UrlTestPreference
             app:defaultValue="http://cp.cloudflare.com/"
             app:icon="@drawable/ic_baseline_cast_connected_24"
             app:key="connectionTestURL"

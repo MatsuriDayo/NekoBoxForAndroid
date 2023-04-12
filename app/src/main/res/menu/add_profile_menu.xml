@@ -94,10 +94,6 @@
                 android:title="@string/connection_test">
                 <menu>
                     <item
-                        android:id="@+id/action_connection_icmp_ping"
-                        android:title="@string/connection_test_icmp_ping"
-                        android:visible="false" />
-                    <item
                         android:id="@+id/action_connection_tcp_ping"
                         android:title="@string/connection_test_tcp_ping" />
                     <item

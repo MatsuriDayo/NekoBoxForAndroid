@@ -514,5 +514,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="mtu_help">Long press the preference to set custom MTU.</string>
     <string name="log_level_help">Long press the preference to set the buffer size.</string>
     <string name="tls_camouflage_settings">TLS Camouflage Settings</string>
+    <string name="test_concurrency">Test concurrency</string>
 
 </resources>
