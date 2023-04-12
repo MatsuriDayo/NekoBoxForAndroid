@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 
 import io.nekohasekai.sagernet.fmt.AbstractBean;
+import io.nekohasekai.sagernet.fmt.trojan.TrojanBean;
 import moe.matsuri.nb4a.utils.JavaUtil;
 
 public abstract class StandardV2RayBean extends AbstractBean {
@@ -63,7 +64,13 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(host)) host = "";
         if (JavaUtil.isNullOrBlank(path)) path = "";
 
-        if (JavaUtil.isNullOrBlank(security)) security = "none";
+        if (JavaUtil.isNullOrBlank(security)) {
+            if (this instanceof TrojanBean || isVLESS()) {
+                security = "tls";
+            } else {
+                security = "none";
+            }
+        }
         if (JavaUtil.isNullOrBlank(sni)) sni = "";
         if (JavaUtil.isNullOrBlank(alpn)) alpn = "";
 

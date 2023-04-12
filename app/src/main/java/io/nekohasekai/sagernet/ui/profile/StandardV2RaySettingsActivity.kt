@@ -45,11 +45,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val realityShortId = pbm.add(PreferenceBinding(Type.Text, "realityShortId"))
 
     override fun StandardV2RayBean.init() {
-        if (this is VMessBean) {
-            if (intent?.getBooleanExtra("vless", false) == true) {
-                alterId = -1
-            }
-        } else if (this is TrojanBean) {
+        if (this is TrojanBean) {
             this@StandardV2RaySettingsActivity.uuid.fieldName = "password"
             this@StandardV2RaySettingsActivity.password.disable = true
         }

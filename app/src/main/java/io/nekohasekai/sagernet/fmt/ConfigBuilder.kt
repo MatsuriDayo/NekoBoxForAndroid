@@ -612,11 +612,7 @@ fun buildConfig(
                 tag = TAG_DNS_IN
                 listen = bind
                 listen_port = DataStore.localDNSPort
-                override_address = if (!remoteDns.first().isIpAddress()) {
-                    "8.8.8.8"
-                } else {
-                    remoteDns.first()
-                }
+                override_address = "8.8.8.8"
                 override_port = 53
             })
 
@@ -629,23 +625,6 @@ fun buildConfig(
         if (DataStore.directDnsUseSystem) {
             // finally able to use "localDns" now...
             directDNS = listOf(LOCAL_DNS_SERVER)
-        }
-
-        // routing for DNS server
-        for (dns in remoteDns) {
-            if (!dns.isIpAddress()) continue
-            route.rules.add(Rule_DefaultOptions().apply {
-                outbound = TAG_PROXY
-                ip_cidr = listOf(dns)
-            })
-        }
-
-        for (dns in directDNS) {
-            if (!dns.isIpAddress()) continue
-            route.rules.add(Rule_DefaultOptions().apply {
-                outbound = TAG_DIRECT
-                ip_cidr = listOf(dns)
-            })
         }
 
         // Bypass Lookup for the first profile
@@ -680,10 +659,9 @@ fun buildConfig(
         }
 
         // remote dns obj
-        remoteDns.firstOrNull()?.apply {
-            val d = this
+        remoteDns.firstOrNull().let {
             dns.servers.add(DNSServerOptions().apply {
-                address = d
+                address = it ?: throw Exception("No remote DNS, check your settings!")
                 tag = "dns-remote"
                 address_resolver = "dns-direct"
                 applyDNSNetworkSettings(false)
@@ -691,10 +669,9 @@ fun buildConfig(
         }
 
         // add directDNS objects here
-        directDNS.firstOrNull()?.apply {
-            val d = this
+        directDNS.firstOrNull().let {
             dns.servers.add(DNSServerOptions().apply {
-                address = d
+                address = it ?: throw Exception("No direct DNS, check your settings!")
                 tag = "dns-direct"
                 detour = "direct"
                 address_resolver = "dns-local"
@@ -774,13 +751,11 @@ fun buildConfig(
             }
         }
 
-        // Disable DNS for test
         if (forTest) {
-            dns.servers.clear()
+            // Disable DNS for test
             dns.rules.clear()
-        }
-
-        if (!forTest) {
+        } else {
+            // built-in DNS rules
             route.rules.add(0, Rule_DefaultOptions().apply {
                 inbound = listOf(TAG_DNS_IN)
                 outbound = TAG_DNS_OUT
@@ -806,6 +781,13 @@ fun buildConfig(
                 server = "dns-block"
                 disable_cache = true
             })
+            // force bypass
+            if (domainListDNSDirectForce.isNotEmpty()) {
+                dns.rules.add(0, DNSRule_DefaultOptions().apply {
+                    makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
+                    server = "dns-direct"
+                })
+            }
         }
 
         // fakedns obj
@@ -823,14 +805,6 @@ fun buildConfig(
                 inbound = listOf("tun-in")
                 server = "dns-fake"
                 disable_cache = true
-            })
-        }
-
-        // force bypass
-        if (domainListDNSDirectForce.isNotEmpty()) {
-            dns.rules.add(0, DNSRule_DefaultOptions().apply {
-                makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
-                server = "dns-direct"
             })
         }
     }.let {
