@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/matsuridayo/libneko v0.0.0-20230315005352-9d7e3f3a79d1
-	github.com/matsuridayo/sing-box-extra v0.0.0-20230410030710-72e14149e230
+	github.com/matsuridayo/sing-box-extra v0.0.0-20230413082224-fd7941c8076b
 	github.com/miekg/dns v1.1.53
 	github.com/sagernet/sing v0.2.2-0.20230407053809-308e421e33c2
 	github.com/sagernet/sing-box v1.2.4-0.20230408011350-68439705360e
