@@ -626,7 +626,7 @@ class ConfigurationFragment @JvmOverloads constructor(
             val profiles = ConcurrentLinkedQueue(profilesUnfiltered)
             val testPool = newFixedThreadPoolContext(
                 DataStore.connectionTestConcurrent,
-                "Connection test pool"
+                "pingTest"
             )
             repeat(DataStore.connectionTestConcurrent) {
                 testJobs.add(launch(testPool) {
@@ -750,6 +750,7 @@ class ConfigurationFragment @JvmOverloads constructor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun urlTest() {
         val test = TestDialog()
         val dialog = test.builder.show()
@@ -764,10 +765,13 @@ class ConfigurationFragment @JvmOverloads constructor(
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
             test.proxyN = profilesUnfiltered.size
             val profiles = ConcurrentLinkedQueue(profilesUnfiltered)
-            val urlTest = UrlTest() // note: this is NOT in bg process
-
+            val testPool = newFixedThreadPoolContext(
+                DataStore.connectionTestConcurrent,
+                "urlTest"
+            )
             repeat(DataStore.connectionTestConcurrent) {
-                testJobs.add(launch {
+                testJobs.add(launch(testPool) {
+                    val urlTest = UrlTest() // note: this is NOT in bg process
                     while (isActive) {
                         val profile = profiles.poll() ?: break
                         profile.status = 0
