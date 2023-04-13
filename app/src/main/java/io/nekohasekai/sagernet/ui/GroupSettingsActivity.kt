@@ -9,6 +9,7 @@ import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
@@ -19,8 +20,10 @@ import com.github.shadowsocks.plugin.fragment.AlertDialogFragment
 import io.nekohasekai.sagernet.GroupType
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
+import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
 import io.nekohasekai.sagernet.ktx.onMainDispatcher
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
@@ -300,8 +303,17 @@ class GroupSettingsActivity(
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.profileCacheStore
-            activity.apply {
-                createPreferences(savedInstanceState, rootKey)
+            try {
+                activity.apply {
+                    createPreferences(savedInstanceState, rootKey)
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    SagerNet.application,
+                    "Error on createPreferences, please try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Logs.e(e)
             }
         }
 

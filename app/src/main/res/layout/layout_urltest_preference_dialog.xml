@@ -31,8 +31,10 @@
                 android:typeface="monospace" />
 
             <LinearLayout
+                android:id="@+id/concurrent_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     style="?android:attr/textAppearanceSmall"
