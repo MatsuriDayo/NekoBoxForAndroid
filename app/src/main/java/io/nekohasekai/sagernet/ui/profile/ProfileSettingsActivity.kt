@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.activity.result.component1
 import androidx.activity.result.component2
@@ -355,7 +356,10 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                             }
                         }
                 }
-                MaterialAlertDialogBuilder(activity).setView(view).show()
+                val scrollView = ScrollView(context).apply {
+                    addView(view)
+                }
+                MaterialAlertDialogBuilder(activity).setView(scrollView).show()
                 true
             }
             else -> false

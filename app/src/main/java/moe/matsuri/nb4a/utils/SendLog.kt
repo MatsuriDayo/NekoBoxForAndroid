@@ -59,15 +59,19 @@ object SendLog {
 
     // Get log bytes from neko.log
     fun getNekoLog(max: Long): ByteArray {
-        val file = File(
-            SagerNet.application.cacheDir,
-            "neko.log"
-        )
-        val len = file.length()
-        val stream = FileInputStream(file)
-        if (max in 1 until len) {
-            stream.skip(len - max) // TODO string?
+        return try {
+            val file = File(
+                SagerNet.application.cacheDir,
+                "neko.log"
+            )
+            val len = file.length()
+            val stream = FileInputStream(file)
+            if (max in 1 until len) {
+                stream.skip(len - max) // TODO string?
+            }
+            stream.use { it.readBytes() }
+        } catch (e: Exception) {
+            e.stackTraceToString().toByteArray()
         }
-        return stream.use { it.readBytes() }
     }
 }
