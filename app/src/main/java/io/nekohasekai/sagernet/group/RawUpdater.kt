@@ -6,6 +6,7 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import io.nekohasekai.sagernet.fmt.http.HttpBean
+import io.nekohasekai.sagernet.fmt.hysteria.HysteriaBean
 import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria
 import io.nekohasekai.sagernet.fmt.shadowsocks.ShadowsocksBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
@@ -151,6 +152,7 @@ object RawUpdater : GroupUpdater() {
 
                         Logs.d("Updated profile: $name")
                     }
+
                     entity.userOrder != userOrder -> {
                         entity.putBean(bean)
                         toUpdate.add(entity)
@@ -158,6 +160,7 @@ object RawUpdater : GroupUpdater() {
 
                         Logs.d("Reordered profile: $name")
                     }
+
                     else -> {
                         Logs.d("Ignored profile: $name")
                     }
@@ -225,6 +228,7 @@ object RawUpdater : GroupUpdater() {
                                 name = proxy["name"]?.toString()
                             })
                         }
+
                         "http" -> {
                             proxies.add(HttpBean().apply {
                                 serverAddress = proxy["server"] as String
@@ -236,6 +240,7 @@ object RawUpdater : GroupUpdater() {
                                 name = proxy["name"]?.toString()
                             })
                         }
+
                         "ss" -> {
                             val ssPlugin = mutableListOf<String>()
                             if (proxy.contains("plugin")) {
@@ -248,6 +253,7 @@ object RawUpdater : GroupUpdater() {
                                             add("obfs-host=" + (opts["host"]?.toString() ?: ""))
                                         }
                                     }
+
                                     "v2ray-plugin" -> {
                                         ssPlugin.apply {
                                             add("v2ray-plugin")
@@ -269,16 +275,24 @@ object RawUpdater : GroupUpdater() {
                                 name = proxy["name"]?.toString()
                             })
                         }
-                        "vmess" -> {
-                            val bean = VMessBean()
+
+                        "vmess", "vless" -> {
+                            val isVLESS = proxy["type"].toString() == "vless"
+                            val bean = VMessBean().apply { if (isVLESS) alterId = -1 }
                             for (opt in proxy) {
                                 when (opt.key) {
                                     "name" -> bean.name = opt.value?.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
                                     "uuid" -> bean.uuid = opt.value as String
-                                    "alterId" -> bean.alterId = opt.value.toString().toInt()
-                                    "cipher" -> bean.encryption = opt.value as String
+
+                                    "alterId" -> if (!isVLESS) bean.alterId =
+                                        opt.value.toString().toInt()
+
+                                    "cipher" -> if (!isVLESS) bean.encryption = opt.value as String
+
+                                    "flow" -> if (isVLESS) bean.encryption = opt.value as String
+
                                     "network" -> {
                                         bean.type = opt.value as String
                                         // Clash "network" fix
@@ -286,18 +300,23 @@ object RawUpdater : GroupUpdater() {
                                             "h2" -> bean.type = "http"
                                         }
                                     }
+
                                     "client-fingerprint" -> bean.utlsFingerprint =
                                         opt.value as String
+
                                     "tls" -> bean.security =
                                         if (opt.value?.toString() == "true") "tls" else ""
+
                                     "skip-cert-verify" -> bean.allowInsecure =
                                         opt.value?.toString() == "true"
+
                                     "ws-path" -> bean.path = opt.value?.toString()
                                     "ws-headers" -> for (wsHeader in (opt.value as Map<String, Any>)) {
                                         when (wsHeader.key.lowercase()) {
                                             "host" -> bean.host = wsHeader.value.toString()
                                         }
                                     }
+
                                     "ws-opts", "ws-opt" -> for (wsOpt in (opt.value as Map<String, Any>)) {
                                         when (wsOpt.key.lowercase()) {
                                             "headers" -> for (wsHeader in (opt.value as Map<String, Any>)) {
@@ -305,30 +324,37 @@ object RawUpdater : GroupUpdater() {
                                                     "host" -> bean.host = wsHeader.value.toString()
                                                 }
                                             }
+
                                             "path" -> {
                                                 bean.path = wsOpt.value.toString()
                                             }
+
                                             "max-early-data" -> {
                                                 bean.wsMaxEarlyData = wsOpt.value.toString().toInt()
                                             }
+
                                             "early-data-header-name" -> {
                                                 bean.earlyDataHeaderName = wsOpt.value.toString()
                                             }
                                         }
                                     }
+
                                     "servername" -> bean.host = opt.value?.toString()
                                     // The format of the VMessBean is wrong, so the `host` `path` has some strange transformations here.
                                     "h2-opts", "h2-opt" -> for (h2Opt in (opt.value as Map<String, Any>)) {
                                         when (h2Opt.key.lowercase()) {
                                             "host" -> bean.host =
                                                 (h2Opt.value as List<String>).first()
+
                                             "path" -> bean.path = h2Opt.value.toString()
                                         }
                                     }
+
                                     "http-opts", "http-opt" -> for (httpOpt in (opt.value as Map<String, Any>)) {
                                         when (httpOpt.key.lowercase()) {
                                             "path" -> bean.path =
                                                 (httpOpt.value as List<String>).first()
+
                                             "headers" -> for (hdr in (httpOpt.value as Map<String, Any>)) {
                                                 when (hdr.key.lowercase()) {
                                                     "host" -> bean.host =
@@ -337,10 +363,21 @@ object RawUpdater : GroupUpdater() {
                                             }
                                         }
                                     }
+
                                     "grpc-opts", "grpc-opt" -> for (grpcOpt in (opt.value as Map<String, Any>)) {
                                         when (grpcOpt.key.lowercase()) {
                                             "grpc-service-name" -> bean.path =
                                                 grpcOpt.value.toString()
+                                        }
+                                    }
+
+                                    "reality-opts" -> for (realityOpt in (opt.value as Map<String, Any>)) {
+                                        when (realityOpt.key.lowercase()) {
+                                            "public-key" -> bean.realityPubKey =
+                                                realityOpt.value.toString()
+
+                                            "short-id" -> bean.realityShortId =
+                                                realityOpt.value.toString()
                                         }
                                     }
                                 }
@@ -350,6 +387,7 @@ object RawUpdater : GroupUpdater() {
                             }
                             proxies.add(bean)
                         }
+
                         "trojan" -> {
                             val bean = TrojanBean()
                             bean.security = "tls"
@@ -361,12 +399,15 @@ object RawUpdater : GroupUpdater() {
                                     "password" -> bean.password = opt.value?.toString()
                                     "client-fingerprint" -> bean.utlsFingerprint =
                                         opt.value as String
+
                                     "sni" -> bean.sni = opt.value?.toString()
                                     "skip-cert-verify" -> bean.allowInsecure =
                                         opt.value?.toString() == "true"
+
                                     "network" -> when (opt.value) {
                                         "ws", "grpc" -> bean.type = opt.value?.toString()
                                     }
+
                                     "ws-opts", "ws-opt" -> for (wsOpt in (opt.value as Map<String, Any>)) {
                                         when (wsOpt.key.lowercase()) {
                                             "headers" -> for (wsHeader in (opt.value as Map<String, Any>)) {
@@ -374,17 +415,55 @@ object RawUpdater : GroupUpdater() {
                                                     "host" -> bean.host = wsHeader.value.toString()
                                                 }
                                             }
+
                                             "path" -> {
                                                 bean.path = wsOpt.value.toString()
                                             }
                                         }
                                     }
+
                                     "grpc-opts", "grpc-opt" -> for (grpcOpt in (opt.value as Map<String, Any>)) {
                                         when (grpcOpt.key.lowercase()) {
                                             "grpc-service-name" -> bean.path =
                                                 grpcOpt.value.toString()
                                         }
                                     }
+                                }
+                            }
+                            proxies.add(bean)
+                        }
+
+                        "hysteria" -> {
+                            val bean = HysteriaBean()
+                            for (opt in proxy) {
+                                when (opt.key) {
+                                    "name" -> bean.name = opt.value?.toString()
+                                    "server" -> bean.serverAddress = opt.value as String
+                                    "port" -> bean.serverPort = opt.value.toString().toInt()
+                                    "auth_str" -> {
+                                        bean.authPayloadType = HysteriaBean.TYPE_STRING
+                                        bean.authPayload = opt.value?.toString()
+                                    }
+
+                                    "sni" -> bean.sni = opt.value?.toString()
+
+                                    "skip-cert-verify" -> bean.allowInsecure =
+                                        opt.value?.toString() == "true"
+
+                                    "up" -> bean.uploadMbps =
+                                        opt.value?.toString()?.toIntOrNull() ?: 100
+
+                                    "down" -> bean.downloadMbps =
+                                        opt.value?.toString()?.toIntOrNull() ?: 100
+
+                                    "disable_mtu_discovery" -> bean.disableMtuDiscovery =
+                                        opt.value?.toString() == "true" || opt.value?.toString() == "1"
+
+                                    "alpn" -> {
+                                        val alpn = (opt.value as? (List<String>))
+                                        bean.alpn = alpn?.joinToString("\n") ?: "h3"
+                                    }
+
                                 }
                             }
                             proxies.add(bean)
@@ -475,17 +554,21 @@ object RawUpdater : GroupUpdater() {
                 json.has("server") && (json.has("up") || json.has("up_mbps")) -> {
                     return listOf(json.parseHysteria())
                 }
+
                 json.has("method") -> {
                     return listOf(json.parseShadowsocks())
                 }
+
                 json.has("remote_addr") -> {
                     return listOf(json.parseTrojanGo())
                 }
+
                 json.has("outbounds") -> {
                     return listOf(ConfigBean().applyDefaultValues().apply {
                         config = json.toStringPretty()
                     })
                 }
+
                 json.has("server") && json.has("server_port") -> {
                     return listOf(ConfigBean().applyDefaultValues().apply {
                         type = 1

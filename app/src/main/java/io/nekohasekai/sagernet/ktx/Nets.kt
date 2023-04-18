@@ -62,4 +62,4 @@ fun mkPort(): Int {
     return port
 }
 
-const val USER_AGENT = "NekoBox/0.5 (Prefer Clash Format)"
+const val USER_AGENT = "NekoBox/Android/1.0 (Prefer ClashMeta Format)"
