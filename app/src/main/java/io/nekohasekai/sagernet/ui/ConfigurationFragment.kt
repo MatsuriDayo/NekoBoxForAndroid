@@ -293,6 +293,7 @@ class ConfigurationFragment @JvmOverloads constructor(
             R.id.action_scan_qr_code -> {
                 startActivity(Intent(context, ScannerActivity::class.java))
             }
+
             R.id.action_import_clipboard -> {
                 val text = SagerNet.getClipboardText()
                 if (text.isBlank()) {
@@ -314,56 +315,73 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+
             R.id.action_import_file -> {
                 startFilesForResult(importFile, "*/*")
             }
+
             R.id.action_new_socks -> {
                 startActivity(Intent(requireActivity(), SocksSettingsActivity::class.java))
             }
+
             R.id.action_new_http -> {
                 startActivity(Intent(requireActivity(), HttpSettingsActivity::class.java))
             }
+
             R.id.action_new_ss -> {
                 startActivity(Intent(requireActivity(), ShadowsocksSettingsActivity::class.java))
             }
+
             R.id.action_new_vmess -> {
                 startActivity(Intent(requireActivity(), VMessSettingsActivity::class.java))
             }
+
             R.id.action_new_vless -> {
                 startActivity(Intent(requireActivity(), VMessSettingsActivity::class.java).apply {
                     putExtra("vless", true)
                 })
             }
+
             R.id.action_new_trojan -> {
                 startActivity(Intent(requireActivity(), TrojanSettingsActivity::class.java))
             }
+
             R.id.action_new_trojan_go -> {
                 startActivity(Intent(requireActivity(), TrojanGoSettingsActivity::class.java))
             }
+
             R.id.action_new_naive -> {
                 startActivity(Intent(requireActivity(), NaiveSettingsActivity::class.java))
             }
+
             R.id.action_new_hysteria -> {
                 startActivity(Intent(requireActivity(), HysteriaSettingsActivity::class.java))
             }
+
             R.id.action_new_tuic -> {
                 startActivity(Intent(requireActivity(), TuicSettingsActivity::class.java))
             }
+
             R.id.action_new_ssh -> {
                 startActivity(Intent(requireActivity(), SSHSettingsActivity::class.java))
             }
+
             R.id.action_new_wg -> {
                 startActivity(Intent(requireActivity(), WireGuardSettingsActivity::class.java))
             }
+
             R.id.action_new_shadowtls -> {
                 startActivity(Intent(requireActivity(), ShadowTLSSettingsActivity::class.java))
             }
+
             R.id.action_new_config -> {
                 startActivity(Intent(requireActivity(), ConfigSettingActivity::class.java))
             }
+
             R.id.action_new_chain -> {
                 startActivity(Intent(requireActivity(), ChainSettingsActivity::class.java))
             }
+
             R.id.action_new_neko -> {
                 val context = requireContext()
                 lateinit var dialog: AlertDialog
@@ -395,6 +413,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                     .setView(linearLayout)
                     .show()
             }
+
             R.id.action_clear_traffic_statistics -> {
                 runOnDefaultDispatcher {
                     val profiles = SagerDatabase.proxyDao.getByGroup(DataStore.currentGroupId())
@@ -411,6 +430,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+
             R.id.action_connection_test_clear_results -> {
                 runOnDefaultDispatcher {
                     val profiles = SagerDatabase.proxyDao.getByGroup(DataStore.currentGroupId())
@@ -428,6 +448,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+
             R.id.action_connection_test_delete_unavailable -> {
                 runOnDefaultDispatcher {
                     val profiles = SagerDatabase.proxyDao.getByGroup(DataStore.currentGroupId())
@@ -466,6 +487,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+
             R.id.action_remove_duplicate -> {
                 runOnDefaultDispatcher {
                     val profiles = SagerDatabase.proxyDao.getByGroup(DataStore.currentGroupId())
@@ -517,9 +539,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
             }
+
             R.id.action_connection_tcp_ping -> {
                 pingTest(false)
             }
+
             R.id.action_connection_url_test -> {
                 urlTest()
             }
@@ -561,18 +585,22 @@ class ConfigurationFragment @JvmOverloads constructor(
                         profileStatusText = profile.error
                         profileStatusColor = context.getColorAttr(android.R.attr.textColorSecondary)
                     }
+
                     0 -> {
                         profileStatusText = getString(R.string.connection_test_testing)
                         profileStatusColor = context.getColorAttr(android.R.attr.textColorSecondary)
                     }
+
                     1 -> {
                         profileStatusText = getString(R.string.available, profile.ping)
                         profileStatusColor = context.getColour(R.color.material_green_500)
                     }
+
                     2 -> {
                         profileStatusText = profile.error
                         profileStatusColor = context.getColour(R.color.material_red_500)
                     }
+
                     3 -> {
                         val err = profile.error ?: ""
                         val msg = Protocols.genFriendlyMsg(err)
@@ -705,15 +733,18 @@ class ConfigurationFragment @JvmOverloads constructor(
                                 when {
                                     !message.contains("failed:") -> profile.error =
                                         getString(R.string.connection_test_timeout)
+
                                     else -> when {
                                         message.contains("ECONNREFUSED") -> {
                                             profile.error =
                                                 getString(R.string.connection_test_refused)
                                         }
+
                                         message.contains("ENETUNREACH") -> {
                                             profile.error =
                                                 getString(R.string.connection_test_unreachable)
                                         }
+
                                         else -> {
                                             profile.status = 3
                                             profile.error = message
@@ -939,7 +970,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 
         override suspend fun onUpdated(data: TrafficData) = Unit
 
-        override suspend fun onUpdated(profile: ProxyEntity) = Unit
+        override suspend fun onUpdated(profile: ProxyEntity, noTraffic: Boolean) = Unit
 
         override suspend fun onRemoved(groupId: Long, profileId: Long) {
             val group = groupList.find { it.id == groupId } ?: return
@@ -1034,9 +1065,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                 GroupOrder.ORIGIN -> {
                     origin.isChecked = true
                 }
+
                 GroupOrder.BY_NAME -> {
                     byName.isChecked = true
                 }
+
                 GroupOrder.BY_DELAY -> {
                     byDelay.isChecked = true
                 }
@@ -1267,7 +1300,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                 }
             }
 
-            override suspend fun onUpdated(profile: ProxyEntity) {
+            override suspend fun onUpdated(profile: ProxyEntity, noTraffic: Boolean) {
                 if (profile.groupId != proxyGroup.id) return
                 val index = configurationIdList.indexOf(profile.id)
                 if (index < 0) return
@@ -1275,9 +1308,21 @@ class ConfigurationFragment @JvmOverloads constructor(
                     if (::undoManager.isInitialized) {
                         undoManager.flush()
                     }
-                    val oldProfile = configurationList[profile.id]
                     configurationList[profile.id] = profile
                     notifyItemChanged(index)
+                    //
+                    val oldProfile = configurationList[profile.id]
+                    if (noTraffic && oldProfile != null) {
+                        runOnDefaultDispatcher {
+                            onUpdated(
+                                TrafficData(
+                                    id = profile.id,
+                                    rx = oldProfile.rx,
+                                    tx = oldProfile.tx
+                                )
+                            )
+                        }
+                    }
                 }
             }
 
@@ -1333,6 +1378,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         newProfiles = newProfiles.sortedBy { it.displayName() }
 
                     }
+
                     GroupOrder.BY_DELAY -> {
                         newProfiles =
                             newProfiles.sortedBy { if (it.status == 1) it.ping else 114514 }
@@ -1538,6 +1584,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                                     R.id.action_standard_clipboard
                                 )
                             }
+
                             !proxyEntity.haveLink() -> {
                                 popup.menu.removeItem(R.id.action_group_qr)
                                 popup.menu.removeItem(R.id.action_group_clipboard)
@@ -1589,6 +1636,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         R.id.action_universal_clipboard -> export(
                             entity.requireBean().toUniversalLink()
                         )
+
                         R.id.action_config_export_clipboard -> export(entity.exportConfig().first)
                         R.id.action_config_export_file -> {
                             val cfg = entity.exportConfig()

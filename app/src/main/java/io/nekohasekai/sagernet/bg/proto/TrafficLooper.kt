@@ -9,6 +9,7 @@ import io.nekohasekai.sagernet.database.ProfileManager
 import io.nekohasekai.sagernet.fmt.TAG_BYPASS
 import io.nekohasekai.sagernet.fmt.TAG_PROXY
 import io.nekohasekai.sagernet.ktx.Logs
+import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import kotlinx.coroutines.*
 
 class TrafficLooper
@@ -55,14 +56,22 @@ class TrafficLooper
     fun selectMain(id: Long) {
         Logs.d("select traffic count $TAG_PROXY to $id, old id is $selectorNowId")
         val oldData = items[selectorNowId]
-        val data = items[id] ?: return
+        val newData = items[id] ?: return
         oldData?.apply {
             tag = selectorNowFakeTag
             ignore = true
+            // post traffic when switch
+            data.proxy?.config?.trafficMap?.get(tag)?.firstOrNull()?.let {
+                it.rx = rx
+                it.tx = tx
+                runOnDefaultDispatcher {
+                    ProfileManager.updateProfile(it) // update DB
+                }
+            }
         }
-        selectorNowFakeTag = data.tag
+        selectorNowFakeTag = newData.tag
         selectorNowId = id
-        data.apply {
+        newData.apply {
             tag = TAG_PROXY
             ignore = false
         }

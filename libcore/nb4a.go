@@ -14,6 +14,7 @@ import (
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/matsuridayo/sing-box-extra/boxmain"
+	"github.com/sagernet/sing-box/nekoutils"
 )
 
 //go:linkname resourcePaths github.com/sagernet/sing-box/constant.resourcePaths
@@ -61,6 +62,9 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	// neko_log.NB4AGuiLogWriter = iif.(io.Writer)
 	neko_log.SetupLog(int(maxLogSizeKb)*1024, filepath.Join(cachePath, "neko.log"))
 	boxmain.DisableColor()
+
+	// nekoutils
+	nekoutils.Selector_OnProxySelected = iif.Selector_OnProxySelected
 
 	// Set up some component
 	go func() {

@@ -20,7 +20,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
+import io.nekohasekai.sagernet.bg.ServiceNotification
 import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ui.MainActivity
@@ -264,6 +266,24 @@ class SagerNet : Application(),
 
     override fun useOfficialAssets(): Boolean {
         return DataStore.rulesProvider == 0
+    }
+
+    override fun selector_OnProxySelected(tag: String) {
+        DataStore.baseService?.apply {
+            runOnDefaultDispatcher {
+                val id = data.proxy!!.config.profileTagMap
+                    .filterValues { it == tag }.keys.firstOrNull() ?: -1
+                val ent = SagerDatabase.proxyDao.getById(id) ?: return@runOnDefaultDispatcher
+                // traffic & title
+                data.proxy!!.looper?.selectMain(id)
+                val title = ServiceNotification.genTitle(ent)
+                data.notification?.postNotificationTitle(title)
+                // post MainActivity animation
+                data.binder.broadcast { b ->
+                    b.cbSelectorUpdate(id)
+                }
+            }
+        }
     }
 
 }

@@ -16,7 +16,10 @@ class SwitchActivity : ThemedActivity(R.layout.layout_empty),
         super.onCreate(savedInstanceState)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_holder, ConfigurationFragment(true, null, R.string.action_switch))
+            .replace(
+                R.id.fragment_holder,
+                ConfigurationFragment(true, null, R.string.action_switch)
+            )
             .commitAllowingStateLoss()
     }
 
@@ -24,8 +27,8 @@ class SwitchActivity : ThemedActivity(R.layout.layout_empty),
         val old = DataStore.selectedProxy
         DataStore.selectedProxy = profileId
         runOnMainDispatcher {
-            ProfileManager.postUpdate(old)
-            ProfileManager.postUpdate(profileId)
+            ProfileManager.postUpdate(old, true)
+            ProfileManager.postUpdate(profileId, true)
         }
         SagerNet.reloadService()
         finish()

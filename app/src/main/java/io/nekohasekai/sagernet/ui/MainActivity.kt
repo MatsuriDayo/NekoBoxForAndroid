@@ -300,6 +300,7 @@ class MainActivity : ThemedActivity(),
             R.id.nav_configuration -> {
                 displayFragment(ConfigurationFragment())
             }
+
             R.id.nav_group -> displayFragment(GroupFragment())
             R.id.nav_route -> displayFragment(RouteFragment())
             R.id.nav_settings -> displayFragment(SettingsFragment())
@@ -310,11 +311,13 @@ class MainActivity : ThemedActivity(),
                 launchCustomTab("https://matsuridayo.github.io/")
                 return false
             }
+
             R.id.nav_about -> displayFragment(AboutFragment())
             R.id.nav_tuiguang -> {
                 launchCustomTab("https://matsuricom.github.io/")
                 return false
             }
+
             else -> return false
         }
         navigation.menu.findItem(id).isChecked = true
@@ -352,6 +355,7 @@ class MainActivity : ThemedActivity(),
                     ProfileManager.postUpdate(DataStore.currentProfile)
                 }
             }
+
             else -> {}
         }
     }
@@ -412,6 +416,16 @@ class MainActivity : ThemedActivity(),
         }
     }
 
+    override fun cbSelectorUpdate(id: Long) {
+        val old = DataStore.selectedProxy
+        DataStore.selectedProxy = id
+        DataStore.currentProfile = id
+        runOnDefaultDispatcher {
+            ProfileManager.postUpdate(old, true)
+            ProfileManager.postUpdate(id, true)
+        }
+    }
+
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
         when (key) {
             Key.SERVICE_MODE -> onBinderDied()
@@ -449,6 +463,7 @@ class MainActivity : ThemedActivity(),
                 binding.drawerLayout.open()
                 navigation.requestFocus()
             }
+
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 if (binding.drawerLayout.isOpen) {
                     binding.drawerLayout.close()

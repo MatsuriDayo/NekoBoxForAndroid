@@ -58,6 +58,7 @@ class BaseService {
                             .show()
                     }
                 }
+
                 else -> service.stopRunner()
             }
         }
@@ -165,12 +166,10 @@ class BaseService {
                 val ent = SagerDatabase.proxyDao.getById(DataStore.selectedProxy)
                 val tag = data.proxy!!.config.profileTagMap[ent?.id] ?: ""
                 if (tag.isNotBlank() && ent != null) {
-                    val success = data.proxy!!.box.selectOutbound(tag)
-                    if (success) runOnDefaultDispatcher {
-                        data.proxy!!.looper?.selectMain(ent.id)
-                        val title = ServiceNotification.genTitle(ent)
-                        data.notification?.postNotificationTitle(title)
-                    }
+                    // select from GUI
+                    data.proxy!!.box.selectOutbound(tag)
+                    // or select from webui
+                    // => selector_OnProxySelected
                 }
                 return
             }
