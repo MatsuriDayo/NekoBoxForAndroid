@@ -280,7 +280,7 @@ object RawUpdater : GroupUpdater() {
                             val isVLESS = proxy["type"].toString() == "vless"
                             val bean = VMessBean().apply { if (isVLESS) alterId = -1 }
                             for (opt in proxy) {
-                                when (opt.key) {
+                                when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value?.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
@@ -392,7 +392,7 @@ object RawUpdater : GroupUpdater() {
                             val bean = TrojanBean()
                             bean.security = "tls"
                             for (opt in proxy) {
-                                when (opt.key) {
+                                when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value?.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
@@ -436,11 +436,11 @@ object RawUpdater : GroupUpdater() {
                         "hysteria" -> {
                             val bean = HysteriaBean()
                             for (opt in proxy) {
-                                when (opt.key) {
+                                when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value?.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
-                                    "auth_str" -> {
+                                    "auth-str" -> {
                                         bean.authPayloadType = HysteriaBean.TYPE_STRING
                                         bean.authPayload = opt.value?.toString()
                                     }
@@ -451,12 +451,20 @@ object RawUpdater : GroupUpdater() {
                                         opt.value?.toString() == "true"
 
                                     "up" -> bean.uploadMbps =
-                                        opt.value?.toString()?.toIntOrNull() ?: 100
+                                        opt.value?.toString()?.substringBefore(" ")?.toIntOrNull()
+                                            ?: 100
 
                                     "down" -> bean.downloadMbps =
-                                        opt.value?.toString()?.toIntOrNull() ?: 100
+                                        opt.value?.toString()?.substringBefore(" ")?.toIntOrNull()
+                                            ?: 100
 
-                                    "disable_mtu_discovery" -> bean.disableMtuDiscovery =
+                                    "recv-window-conn" -> bean.connectionReceiveWindow =
+                                        opt.value?.toString()?.toIntOrNull() ?: 0
+
+                                    "recv-window" -> bean.streamReceiveWindow =
+                                        opt.value?.toString()?.toIntOrNull() ?: 0
+
+                                    "disable-mtu-discovery" -> bean.disableMtuDiscovery =
                                         opt.value?.toString() == "true" || opt.value?.toString() == "1"
 
                                     "alpn" -> {
