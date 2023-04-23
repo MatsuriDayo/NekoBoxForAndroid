@@ -67,7 +67,7 @@ func VersionBox() string {
 func ResetAllConnections(system bool) {
 	if system {
 		conntrack.Close()
-		log.Println("Reset system connections done")
+		log.Println("[Debug] Reset system connections done")
 	}
 }
 
@@ -206,11 +206,7 @@ func (b *BoxInstance) QueryStats(tag, direct string) int64 {
 
 func (b *BoxInstance) SelectOutbound(tag string) bool {
 	if b.selector != nil {
-		var result = b.selector.SelectOutbound(tag)
-		if result {
-			ResetAllConnections(true)
-		}
-		return result
+		return b.selector.SelectOutbound(tag)
 	}
 	return false
 }

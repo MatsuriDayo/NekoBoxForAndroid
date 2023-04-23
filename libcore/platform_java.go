@@ -7,7 +7,7 @@ var useProcfs bool
 
 type NB4AInterface interface {
 	UseOfficialAssets() bool
-	Selector_OnProxySelected(tag string)
+	Selector_OnProxySelected(selectorTag string, tag string)
 }
 
 type LocalResolver interface {

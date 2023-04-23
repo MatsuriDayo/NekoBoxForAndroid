@@ -3,12 +3,14 @@ package libcore
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"libcore/procfs"
 	"log"
 	"net/netip"
 	"syscall"
 
+	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/common/process"
 	"github.com/sagernet/sing-box/experimental/libbox/platform"
 	"github.com/sagernet/sing-box/option"
@@ -22,6 +24,14 @@ var boxPlatformInterfaceInstance platform.Interface = &boxPlatformInterfaceWrapp
 
 type boxPlatformInterfaceWrapper struct{}
 
+func (w *boxPlatformInterfaceWrapper) Initialize(ctx context.Context, router adapter.Router) error {
+	return nil
+}
+
+func (w *boxPlatformInterfaceWrapper) UsePlatformAutoDetectInterfaceControl() bool {
+	return true
+}
+
 func (w *boxPlatformInterfaceWrapper) AutoDetectInterfaceControl() control.Func {
 	// "protect"
 	return func(network, address string, conn syscall.RawConn) error {
@@ -31,7 +41,7 @@ func (w *boxPlatformInterfaceWrapper) AutoDetectInterfaceControl() control.Func 
 	}
 }
 
-func (w *boxPlatformInterfaceWrapper) OpenTun(options tun.Options, platformOptions option.TunPlatformOptions) (tun.Tun, error) {
+func (w *boxPlatformInterfaceWrapper) OpenTun(options *tun.Options, platformOptions option.TunPlatformOptions) (tun.Tun, error) {
 	if len(options.IncludeUID) > 0 || len(options.ExcludeUID) > 0 {
 		return nil, E.New("android: unsupported uid options")
 	}
@@ -51,18 +61,26 @@ func (w *boxPlatformInterfaceWrapper) OpenTun(options tun.Options, platformOptio
 	}
 	//
 	options.FileDescriptor = int(tunFd)
-	return tun.New(options)
+	return tun.New(*options)
 }
 
-var disableSingBoxLog = false
-
-func (w *boxPlatformInterfaceWrapper) Write(p []byte) (n int, err error) {
-	// use neko_log
-	if !disableSingBoxLog {
-		log.Print(string(p))
-	}
-	return len(p), nil
+func (w *boxPlatformInterfaceWrapper) UsePlatformDefaultInterfaceMonitor() bool {
+	return true
 }
+
+func (w *boxPlatformInterfaceWrapper) CreateDefaultInterfaceMonitor(errorHandler E.Handler) tun.DefaultInterfaceMonitor {
+	return &interfaceMonitor{}
+}
+
+func (w *boxPlatformInterfaceWrapper) UsePlatformInterfaceGetter() bool {
+	return false
+}
+
+func (w *boxPlatformInterfaceWrapper) Interfaces() ([]platform.NetworkInterface, error) {
+	return nil, errors.New("wtf")
+}
+
+// process.Searcher
 
 func (w *boxPlatformInterfaceWrapper) FindProcessInfo(ctx context.Context, network string, source netip.AddrPort, destination netip.AddrPort) (*process.Info, error) {
 	var uid int32
@@ -89,4 +107,16 @@ func (w *boxPlatformInterfaceWrapper) FindProcessInfo(ctx context.Context, netwo
 	}
 	packageName, _ := intfBox.PackageNameByUid(uid)
 	return &process.Info{UserId: uid, PackageName: packageName}, nil
+}
+
+// io.Writer
+
+var disableSingBoxLog = false
+
+func (w *boxPlatformInterfaceWrapper) Write(p []byte) (n int, err error) {
+	// use neko_log
+	if !disableSingBoxLog {
+		log.Print(string(p))
+	}
+	return len(p), nil
 }

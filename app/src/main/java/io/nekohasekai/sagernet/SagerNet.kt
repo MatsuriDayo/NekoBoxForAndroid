@@ -268,7 +268,12 @@ class SagerNet : Application(),
         return DataStore.rulesProvider == 0
     }
 
-    override fun selector_OnProxySelected(tag: String) {
+    override fun selector_OnProxySelected(selectorTag: String, tag: String) {
+        if (selectorTag != "proxy") {
+            Logs.d("other selector: $selectorTag")
+            return
+        }
+        Libcore.resetAllConnections(true)
         DataStore.baseService?.apply {
             runOnDefaultDispatcher {
                 val id = data.proxy!!.config.profileTagMap
