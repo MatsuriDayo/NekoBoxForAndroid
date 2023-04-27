@@ -157,6 +157,8 @@ fun HysteriaBean.buildHysteriaConfig(port: Int, cacheFile: (() -> File)?): Strin
             )
         )
         put("retry", 5)
+        put("fast_open", true)
+        put("lazy_start", true)
         put("obfs", obfuscation)
         when (authPayloadType) {
             HysteriaBean.TYPE_BASE64 -> put("auth", authPayload)
