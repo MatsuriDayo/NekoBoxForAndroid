@@ -60,7 +60,7 @@ class TileService : BaseTileService(), SagerConnection.Callback {
     }
 
     override fun onClick() {
-        toggle()
+        if (isLocked) unlockAndRun(this::toggle) else toggle()
     }
 
     private fun updateTile(serviceState: BaseService.State, profileName: () -> String?) {
@@ -72,15 +72,18 @@ class TileService : BaseTileService(), SagerConnection.Callback {
                     icon = iconBusy
                     state = Tile.STATE_ACTIVE
                 }
+
                 BaseService.State.Connected -> {
                     icon = iconConnected
                     label = profileName()
                     state = Tile.STATE_ACTIVE
                 }
+
                 BaseService.State.Stopping -> {
                     icon = iconBusy
                     state = Tile.STATE_UNAVAILABLE
                 }
+
                 BaseService.State.Stopped -> {
                     icon = iconIdle
                     state = Tile.STATE_INACTIVE

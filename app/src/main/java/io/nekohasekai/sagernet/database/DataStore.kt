@@ -151,6 +151,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var individual by configurationStore.string(Key.INDIVIDUAL)
     var showDirectSpeed by configurationStore.boolean(Key.SHOW_DIRECT_SPEED) { true }
 
+    val persistAcrossReboot by configurationStore.boolean(Key.PERSIST_ACROSS_REBOOT) { false }
+
     var appendHttpProxy by configurationStore.boolean(Key.APPEND_HTTP_PROXY)
     var requireTransproxy by configurationStore.boolean(Key.REQUIRE_TRANSPROXY)
     var transproxyMode by configurationStore.stringToInt(Key.TRANSPROXY_MODE)

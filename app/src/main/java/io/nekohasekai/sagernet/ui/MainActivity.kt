@@ -98,6 +98,14 @@ class MainActivity : ThemedActivity(),
                 )
             }
         }
+
+        refreshNavMenu(DataStore.enableClashAPI)
+    }
+
+    fun refreshNavMenu(clashApi: Boolean) {
+        if (::navigation.isInitialized) {
+            navigation.menu.findItem(R.id.nav_traffic)?.isVisible = clashApi
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -347,17 +355,6 @@ class MainActivity : ThemedActivity(),
         binding.fab.changeState(state, DataStore.serviceState, animate)
         binding.stats.changeState(state)
         if (msg != null) snackbar(getString(R.string.vpn_error, msg)).show()
-
-        when (state) {
-            BaseService.State.Stopped -> {
-                runOnDefaultDispatcher {
-                    // refresh view
-                    ProfileManager.postUpdate(DataStore.currentProfile)
-                }
-            }
-
-            else -> {}
-        }
     }
 
     override fun snackbarInternal(text: CharSequence): Snackbar {

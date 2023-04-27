@@ -6,6 +6,12 @@
             app:icon="@drawable/ic_baseline_android_24"
             app:key="nekoPlugins"
             app:title="@string/neko_plugin" />
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_communication_phonelink_ring"
+            app:key="isAutoConnect"
+            app:summary="@string/auto_connect_summary"
+            app:title="@string/auto_connect" />
         <moe.matsuri.nb4a.ui.ColorPickerPreference
             android:title="@string/theme"
             app:icon="@drawable/ic_baseline_color_lens_24"
