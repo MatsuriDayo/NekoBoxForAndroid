@@ -61,11 +61,13 @@ class TrafficLooper
             tag = selectorNowFakeTag
             ignore = true
             // post traffic when switch
-            data.proxy?.config?.trafficMap?.get(tag)?.firstOrNull()?.let {
-                it.rx = rx
-                it.tx = tx
-                runOnDefaultDispatcher {
-                    ProfileManager.updateProfile(it) // update DB
+            if (DataStore.profileTrafficStatistics) {
+                data.proxy?.config?.trafficMap?.get(tag)?.firstOrNull()?.let {
+                    it.rx = rx
+                    it.tx = tx
+                    runOnDefaultDispatcher {
+                        ProfileManager.updateProfile(it) // update DB
+                    }
                 }
             }
         }

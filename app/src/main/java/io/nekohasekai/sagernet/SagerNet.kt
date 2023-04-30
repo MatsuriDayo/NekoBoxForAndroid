@@ -280,10 +280,12 @@ class SagerNet : Application(),
                     .filterValues { it == tag }.keys.firstOrNull() ?: -1
                 val ent = SagerDatabase.proxyDao.getById(id) ?: return@runOnDefaultDispatcher
                 // traffic & title
-                data.proxy!!.looper?.selectMain(id)
-                val title = ServiceNotification.genTitle(ent)
-                data.notification?.postNotificationTitle(title)
-                // post MainActivity animation
+                data.proxy?.apply {
+                    looper?.selectMain(id)
+                    displayProfileName = ServiceNotification.genTitle(ent)
+                    data.notification?.postNotificationTitle(displayProfileName)
+                }
+                // post binder
                 data.binder.broadcast { b ->
                     b.cbSelectorUpdate(id)
                 }

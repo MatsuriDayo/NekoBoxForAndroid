@@ -67,10 +67,12 @@ abstract class BoxInstance(
                         initPlugin("trojan-go-plugin")
                         pluginConfigs[port] = profile.type to bean.buildTrojanGoConfig(port)
                     }
+
                     is NaiveBean -> {
                         initPlugin("naive-plugin")
                         pluginConfigs[port] = profile.type to bean.buildNaiveConfig(port)
                     }
+
                     is HysteriaBean -> {
                         initPlugin("hysteria-plugin")
                         pluginConfigs[port] = profile.type to bean.buildHysteriaConfig(port) {
@@ -82,6 +84,7 @@ abstract class BoxInstance(
                             }
                         }
                     }
+
                     is TuicBean -> {
                         initPlugin("tuic-plugin")
                         pluginConfigs[port] = profile.type to bean.buildTuicConfig(port) {
@@ -94,6 +97,7 @@ abstract class BoxInstance(
                             }
                         }
                     }
+
                     is NekoBean -> {
                         // check if plugin binary can be loaded
                         initPlugin(bean.plgId)
@@ -127,6 +131,7 @@ abstract class BoxInstance(
                     externalInstances.containsKey(port) -> {
                         externalInstances[port]!!.launch()
                     }
+
                     bean is TrojanGoBean -> {
                         val configFile = File(
                             cache, "trojan_go_" + SystemClock.elapsedRealtime() + ".json"
@@ -141,6 +146,7 @@ abstract class BoxInstance(
 
                         processes.start(commands)
                     }
+
                     bean is NaiveBean -> {
                         val configFile = File(
                             cache, "naive_" + SystemClock.elapsedRealtime() + ".json"
@@ -170,6 +176,7 @@ abstract class BoxInstance(
 
                         processes.start(commands, envMap)
                     }
+
                     bean is HysteriaBean -> {
                         val configFile = File(
                             cache, "hysteria_" + SystemClock.elapsedRealtime() + ".json"
@@ -195,6 +202,7 @@ abstract class BoxInstance(
 
                         processes.start(commands)
                     }
+
                     bean is NekoBean -> {
                         // config built from JS
                         val nekoRunConfigs = bean.allConfig.optJSONArray("nekoRunConfigs")
@@ -232,6 +240,7 @@ abstract class BoxInstance(
 
                         processes.start(commands)
                     }
+
                     bean is TuicBean -> {
                         val configFile = File(
                             context.noBackupFilesDir,

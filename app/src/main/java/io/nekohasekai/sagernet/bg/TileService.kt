@@ -1,23 +1,3 @@
-/*******************************************************************************
- *                                                                             *
- *  Copyright (C) 2017 by Max Lv <max.c.lv@gmail.com>                          *
- *  Copyright (C) 2017 by Mygod Studio <contact-shadowsocks-android@mygod.be>  *
- *                                                                             *
- *  This program is free software: you can redistribute it and/or modify       *
- *  it under the terms of the GNU General Public License as published by       *
- *  the Free Software Foundation, either version 3 of the License, or          *
- *  (at your option) any later version.                                        *
- *                                                                             *
- *  This program is distributed in the hope that it will be useful,            *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              *
- *  GNU General Public License for more details.                               *
- *                                                                             *
- *  You should have received a copy of the GNU General Public License          *
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.       *
- *                                                                             *
- *******************************************************************************/
-
 package io.nekohasekai.sagernet.bg
 
 import android.graphics.drawable.Icon
@@ -26,6 +6,7 @@ import androidx.annotation.RequiresApi
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.ISagerNetService
+import io.nekohasekai.sagernet.database.SagerDatabase
 import android.service.quicksettings.TileService as BaseTileService
 
 @RequiresApi(24)
@@ -39,14 +20,19 @@ class TileService : BaseTileService(), SagerConnection.Callback {
 
     private val connection = SagerConnection(SagerConnection.CONNECTION_ID_TILE)
     override fun stateChanged(state: BaseService.State, profileName: String?, msg: String?) =
-        updateTile(state) { profileName }
+        updateTile(state, profileName)
 
     override fun onServiceConnected(service: ISagerNetService) {
-        updateTile(BaseService.State.values()[service.state]) { service.profileName }
+        updateTile(BaseService.State.values()[service.state], service.profileName)
         if (tapPending) {
             tapPending = false
             onClick()
         }
+    }
+
+    override fun cbSelectorUpdate(id: Long) {
+        val profile = SagerDatabase.proxyDao.getById(id) ?: return
+        updateTile(BaseService.State.Connected, profile.displayName())
     }
 
     override fun onStartListening() {
@@ -63,7 +49,7 @@ class TileService : BaseTileService(), SagerConnection.Callback {
         if (isLocked) unlockAndRun(this::toggle) else toggle()
     }
 
-    private fun updateTile(serviceState: BaseService.State, profileName: () -> String?) {
+    private fun updateTile(serviceState: BaseService.State, profileName: String?) {
         qsTile?.apply {
             label = null
             when (serviceState) {
@@ -75,7 +61,7 @@ class TileService : BaseTileService(), SagerConnection.Callback {
 
                 BaseService.State.Connected -> {
                     icon = iconConnected
-                    label = profileName()
+                    label = profileName
                     state = Tile.STATE_ACTIVE
                 }
 

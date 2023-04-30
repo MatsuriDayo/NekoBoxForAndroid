@@ -88,7 +88,7 @@ class BaseService {
         override val coroutineContext = Dispatchers.Main.immediate + Job()
 
         override fun getState(): Int = (data?.state ?: State.Idle).ordinal
-        override fun getProfileName(): String = data?.proxy?.profile?.displayName() ?: "Idle"
+        override fun getProfileName(): String = data?.proxy?.displayProfileName ?: "Idle"
 
         override fun registerCallback(cb: ISagerNetServiceCallback, id: Int) {
             if (!callbackIdMap.contains(cb)) {
@@ -189,7 +189,6 @@ class BaseService {
             tmpBox.buildConfigTmp()
             if (tmpBox.lastSelectorGroupId == data.proxy?.lastSelectorGroupId) {
                 return true
-                // TODO if profile changed?
             }
             return false
         }

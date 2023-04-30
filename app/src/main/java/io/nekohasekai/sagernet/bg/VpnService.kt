@@ -95,9 +95,8 @@ class VpnService : BaseVpnService(),
 //        val tunOptions = JSONObject(tunOptionsJson)
 
         // address & route & MTU ...... use NB4A GUI config
-        val profile = data.proxy!!.profile
         val builder = Builder().setConfigureIntent(SagerNet.configureIntent(this))
-            .setSession(profile.displayName())
+            .setSession(getString(R.string.app_name))
             .setMtu(DataStore.mtu)
         val ipv6Mode = DataStore.ipv6Mode
 
@@ -132,10 +131,10 @@ class VpnService : BaseVpnService(),
 
         // app route
         val packageName = packageName
-        var proxyApps = DataStore.proxyApps
+        val proxyApps = DataStore.proxyApps
         var bypass = DataStore.bypass
-        var workaroundSYSTEM = false /* DataStore.tunImplementation == TunImplementation.SYSTEM */
-        var needBypassRootUid = workaroundSYSTEM || data.proxy!!.config.trafficMap.values.any {
+        val workaroundSYSTEM = false /* DataStore.tunImplementation == TunImplementation.SYSTEM */
+        val needBypassRootUid = workaroundSYSTEM || data.proxy!!.config.trafficMap.values.any {
             it[0].nekoBean?.needBypassRootUid() == true || it[0].hysteriaBean?.protocol == HysteriaBean.PROTOCOL_FAKETCP
         }
 
