@@ -100,6 +100,7 @@ fun parseV2Ray(link: String): StandardV2RayBean {
                     bean.host = it.split("|").joinToString(",")
                 }
             }
+
             "ws" -> {
                 url.queryParameter("path")?.let {
                     bean.path = it
@@ -108,6 +109,7 @@ fun parseV2Ray(link: String): StandardV2RayBean {
                     bean.host = it
                 }
             }
+
             "grpc" -> {
                 url.queryParameter("serviceName")?.let {
                     bean.path = it
@@ -177,6 +179,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
                 }
             }
         }
+
         "http" -> {
             url.queryParameter("host")?.let {
                 host = it
@@ -185,6 +188,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
                 path = it
             }
         }
+
         "ws" -> {
             url.queryParameter("host")?.let {
                 host = it
@@ -200,6 +204,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
                 }
             }
         }
+
         "grpc" -> {
             url.queryParameter("serviceName")?.let {
                 path = it
@@ -443,6 +448,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
                 builder.addQueryParameter("headerType", "http")
             }
         }
+
         "grpc" -> {
             if (path.isNotBlank()) {
                 builder.setQueryParameter("serviceName", path)
@@ -482,6 +488,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
         1 -> {
             builder.addQueryParameter("packetEncoding", "packet")
         }
+
         2 -> {
             builder.addQueryParameter("packetEncoding", "xudp")
         }
@@ -499,6 +506,7 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
         "tcp" -> {
             return null
         }
+
         "ws" -> {
             return V2RayTransportOptions_WebsocketOptions().apply {
                 type = "ws"
@@ -525,20 +533,24 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
                 }
             }
         }
+
         "http" -> {
             return V2RayTransportOptions_HTTPOptions().apply {
                 type = "http"
+                if (!bean.isTLS()) method = "GET" // v2ray tcp header
                 if (bean.host.isNotBlank()) {
                     host = bean.host.split(",")
                 }
                 path = bean.path.takeIf { it.isNotBlank() } ?: "/"
             }
         }
+
         "quic" -> {
             return V2RayTransportOptions().apply {
                 type = "quic"
             }
         }
+
         "grpc" -> {
             return V2RayTransportOptions_GRPCOptions().apply {
                 type = "grpc"
@@ -592,6 +604,7 @@ fun buildSingBoxOutboundStandardV2RayBean(bean: StandardV2RayBean): Outbound {
                 tls = buildSingBoxOutboundTLS(bean)
             }
         }
+
         is VMessBean -> {
             if (bean.isVLESS) return Outbound_VLESSOptions().apply {
                 type = "vless"
@@ -625,6 +638,7 @@ fun buildSingBoxOutboundStandardV2RayBean(bean: StandardV2RayBean): Outbound {
                 transport = buildSingBoxOutboundStreamSettings(bean)
             }
         }
+
         is TrojanBean -> {
             return Outbound_TrojanOptions().apply {
                 type = "trojan"
@@ -635,6 +649,7 @@ fun buildSingBoxOutboundStandardV2RayBean(bean: StandardV2RayBean): Outbound {
                 transport = buildSingBoxOutboundStreamSettings(bean)
             }
         }
+
         else -> throw IllegalStateException("can't reach")
     }
 }
