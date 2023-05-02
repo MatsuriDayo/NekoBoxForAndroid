@@ -5,6 +5,8 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_NEKO
 import io.nekohasekai.sagernet.fmt.AbstractBean
+import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
+import io.nekohasekai.sagernet.fmt.v2ray.isTLS
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.getColorAttr
 import moe.matsuri.nb4a.plugin.NekoPluginManager
@@ -13,13 +15,21 @@ import moe.matsuri.nb4a.plugin.NekoPluginManager
 object Protocols {
     // Mux
 
+    fun isProfileNeedMux(bean: StandardV2RayBean): Boolean {
+        return when (bean.type) {
+            "tcp", "ws" -> true
+            "http" -> !bean.isTLS()
+            else -> false
+        }
+    }
+
     fun shouldEnableMux(protocol: String): Boolean {
         return DataStore.muxProtocols.contains(protocol)
     }
 
     fun getCanMuxList(): List<String> {
         // built-in and support mux
-        // sing-box support ss & vmess & trojan smux
+        // TODO support vless mux in sing-box 1.3.x
         val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks")
 
         NekoPluginManager.getProtocols().forEach {
@@ -73,9 +83,11 @@ object Protocols {
             msgL.contains("timeout") || msgL.contains("deadline") -> {
                 app.getString(R.string.connection_test_timeout)
             }
+
             msgL.contains("refused") || msgL.contains("closed pipe") -> {
                 app.getString(R.string.connection_test_refused)
             }
+
             else -> msg
         }
     }

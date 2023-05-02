@@ -269,14 +269,17 @@ data class ProxyEntity(
                                 append("\n\n")
                                 append(bean.buildTrojanGoConfig(port))
                             }
+
                             is NaiveBean -> {
                                 append("\n\n")
                                 append(bean.buildNaiveConfig(port))
                             }
+
                             is HysteriaBean -> {
                                 append("\n\n")
                                 append(bean.buildHysteriaConfig(port, null))
                             }
+
                             is TuicBean -> {
                                 append("\n\n")
                                 append(bean.buildTuicConfig(port, null))
@@ -299,18 +302,17 @@ data class ProxyEntity(
         }
     }
 
-    fun isV2RayNetworkTcp(): Boolean {
-        val bean = requireBean() as StandardV2RayBean
-        return when (bean.type) {
-            "tcp", "ws", "http" -> true
-            else -> false
-        }
-    }
-
     fun needCoreMux(): Boolean {
         return when (type) {
-            TYPE_VMESS -> isV2RayNetworkTcp() && Protocols.shouldEnableMux("vmess") && !vmessBean!!.isVLESS
-            TYPE_TROJAN -> isV2RayNetworkTcp() && Protocols.shouldEnableMux("trojan")
+            TYPE_VMESS -> if (vmessBean!!.isVLESS) {
+                Protocols.isProfileNeedMux(vmessBean!!) && Protocols.shouldEnableMux("vless")
+            } else {
+                Protocols.isProfileNeedMux(vmessBean!!) && Protocols.shouldEnableMux("vmess")
+            }
+
+            TYPE_TROJAN -> Protocols.isProfileNeedMux(trojanBean!!)
+                    && Protocols.shouldEnableMux("trojan")
+
             TYPE_SS -> !ssBean!!.sUoT && Protocols.shouldEnableMux("shadowsocks")
             else -> false
         }
@@ -338,62 +340,77 @@ data class ProxyEntity(
                 type = TYPE_SOCKS
                 socksBean = bean
             }
+
             is HttpBean -> {
                 type = TYPE_HTTP
                 httpBean = bean
             }
+
             is ShadowsocksBean -> {
                 type = TYPE_SS
                 ssBean = bean
             }
+
             is VMessBean -> {
                 type = TYPE_VMESS
                 vmessBean = bean
             }
+
             is TrojanBean -> {
                 type = TYPE_TROJAN
                 trojanBean = bean
             }
+
             is TrojanGoBean -> {
                 type = TYPE_TROJAN_GO
                 trojanGoBean = bean
             }
+
             is NaiveBean -> {
                 type = TYPE_NAIVE
                 naiveBean = bean
             }
+
             is HysteriaBean -> {
                 type = TYPE_HYSTERIA
                 hysteriaBean = bean
             }
+
             is SSHBean -> {
                 type = TYPE_SSH
                 sshBean = bean
             }
+
             is WireGuardBean -> {
                 type = TYPE_WG
                 wgBean = bean
             }
+
             is TuicBean -> {
                 type = TYPE_TUIC
                 tuicBean = bean
             }
+
             is ShadowTLSBean -> {
                 type = TYPE_SHADOWTLS
                 shadowTLSBean = bean
             }
+
             is ChainBean -> {
                 type = TYPE_CHAIN
                 chainBean = bean
             }
+
             is NekoBean -> {
                 type = TYPE_NEKO
                 nekoBean = bean
             }
+
             is ConfigBean -> {
                 type = TYPE_CONFIG
                 configBean = bean
             }
+
             else -> error("Undefined type $type")
         }
         return this
