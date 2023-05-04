@@ -230,9 +230,7 @@ class RouteSettingsActivity(
 
                 onMainDispatcher {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.settings, MyPreferenceFragmentCompat().apply {
-                            activity = this@RouteSettingsActivity
-                        })
+                        .replace(R.id.settings, MyPreferenceFragmentCompat())
                         .commit()
 
                     DataStore.dirty = false
@@ -309,12 +307,12 @@ class RouteSettingsActivity(
 
     class MyPreferenceFragmentCompat : PreferenceFragmentCompat() {
 
-        lateinit var activity: RouteSettingsActivity
+        var activity: RouteSettingsActivity? = null
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.profileCacheStore
             try {
-                activity.apply {
+                activity = (requireActivity() as RouteSettingsActivity).apply {
                     createPreferences(savedInstanceState, rootKey)
                 }
             } catch (e: Exception) {
@@ -332,7 +330,7 @@ class RouteSettingsActivity(
 
             ViewCompat.setOnApplyWindowInsetsListener(listView, ListListener)
 
-            activity.apply {
+            activity?.apply {
                 viewCreated(view, savedInstanceState)
             }
         }
@@ -349,17 +347,19 @@ class RouteSettingsActivity(
                 }
                 true
             }
+
             R.id.action_apply -> {
                 runOnDefaultDispatcher {
-                    activity.saveAndExit()
+                    activity?.saveAndExit()
                 }
                 true
             }
+
             else -> false
         }
 
         override fun onDisplayPreferenceDialog(preference: Preference) {
-            activity.apply {
+            activity?.apply {
                 if (displayPreferenceDialog(preference)) return
             }
             super.onDisplayPreferenceDialog(preference)

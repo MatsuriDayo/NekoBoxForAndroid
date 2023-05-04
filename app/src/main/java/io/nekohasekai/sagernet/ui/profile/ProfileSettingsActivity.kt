@@ -120,9 +120,8 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
 
                 onMainDispatcher {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.settings, MyPreferenceFragmentCompat().apply {
-                            activity = this@ProfileSettingsActivity
-                        }).commit()
+                        .replace(R.id.settings, MyPreferenceFragmentCompat())
+                        .commit()
                 }
             }
 
@@ -210,12 +209,12 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
 
     class MyPreferenceFragmentCompat : PreferenceFragmentCompat() {
 
-        lateinit var activity: ProfileSettingsActivity<*>
+        var activity: ProfileSettingsActivity<*>? = null
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.profileCacheStore
             try {
-                activity.apply {
+                activity = (requireActivity() as ProfileSettingsActivity<*>).apply {
                     createPreferences(savedInstanceState, rootKey)
                 }
             } catch (e: Exception) {
@@ -233,12 +232,11 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
 
             ViewCompat.setOnApplyWindowInsetsListener(listView, ListListener)
 
-            activity.apply {
+            activity?.apply {
                 viewCreated(view, savedInstanceState)
+                DataStore.dirty = false
+                DataStore.profileCacheStore.registerChangeListener(this)
             }
-
-            DataStore.dirty = false
-            DataStore.profileCacheStore.registerChangeListener(activity)
         }
 
         var callbackCustom: ((String) -> Unit)? = null
@@ -273,14 +271,16 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                 }
                 true
             }
+
             R.id.action_apply -> {
                 runOnDefaultDispatcher {
-                    activity.saveAndExit()
+                    activity?.saveAndExit()
                 }
                 true
             }
+
             R.id.action_custom_outbound_json -> {
-                activity.proxyEntity?.apply {
+                activity?.proxyEntity?.apply {
                     val bean = requireBean()
                     DataStore.serverCustomOutbound = bean.customOutboundJson
                     callbackCustomOutbound = { bean.customOutboundJson = it }
@@ -294,8 +294,9 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                 }
                 true
             }
+
             R.id.action_custom_config_json -> {
-                activity.proxyEntity?.apply {
+                activity?.proxyEntity?.apply {
                     val bean = requireBean()
                     DataStore.serverCustom = bean.customConfigJson
                     callbackCustom = { bean.customConfigJson = it }
@@ -309,7 +310,9 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                 }
                 true
             }
+
             R.id.action_create_shortcut -> {
+                val activity = requireActivity() as ProfileSettingsActivity<*>
                 val ent = activity.proxyEntity!!
                 val shortcut = ShortcutInfoCompat.Builder(activity, "shortcut-profile-${ent.id}")
                     .setShortLabel(ent.displayName())
@@ -326,7 +329,9 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                     }).build()
                 ShortcutManagerCompat.requestPinShortcut(activity, shortcut, null)
             }
+
             R.id.action_move -> {
+                val activity = requireActivity() as ProfileSettingsActivity<*>
                 val view = LinearLayout(context).apply {
                     val ent = activity.proxyEntity!!
                     orientation = LinearLayout.VERTICAL
@@ -362,11 +367,12 @@ abstract class ProfileSettingsActivity<T : AbstractBean>(
                 MaterialAlertDialogBuilder(activity).setView(scrollView).show()
                 true
             }
+
             else -> false
         }
 
         override fun onDisplayPreferenceDialog(preference: Preference) {
-            activity.apply {
+            activity?.apply {
                 if (displayPreferenceDialog(preference)) return
             }
             super.onDisplayPreferenceDialog(preference)
