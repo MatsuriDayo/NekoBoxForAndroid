@@ -534,6 +534,7 @@ object RawUpdater : GroupUpdater() {
         if (localAddresses.isNullOrEmpty()) error("Empty address in 'Interface' selection")
         bean.localAddress = localAddresses.flatMap { it.split(",") }.joinToString("\n")
         bean.privateKey = iface["PrivateKey"]
+        bean.mtu = iface["MTU"]?.toIntOrNull()
         val peers = ini.getAll("Peer")
         if (peers.isNullOrEmpty()) error("Missing 'Peer' selections")
         val beans = mutableListOf<WireGuardBean>()
