@@ -886,16 +886,18 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
 
-                val runFunc = if (now) requireActivity()::runOnUiThread else groupPager::post
-                runFunc {
-                    groupList = newGroupList
-                    notifyDataSetChanged()
-                    if (set) groupPager.setCurrentItem(selectedGroupIndex, false)
-                    val hideTab = groupList.size < 2
-                    tabLayout.isGone = hideTab
-                    toolbar.elevation = if (hideTab) 0F else dp2px(4).toFloat()
-                    if (!select) {
-                        groupPager.registerOnPageChangeCallback(updateSelectedCallback)
+                val runFunc = if (now) activity?.let { it::runOnUiThread } else groupPager::post
+                if (runFunc != null) {
+                    runFunc {
+                        groupList = newGroupList
+                        notifyDataSetChanged()
+                        if (set) groupPager.setCurrentItem(selectedGroupIndex, false)
+                        val hideTab = groupList.size < 2
+                        tabLayout.isGone = hideTab
+                        toolbar.elevation = if (hideTab) 0F else dp2px(4).toFloat()
+                        if (!select) {
+                            groupPager.registerOnPageChangeCallback(updateSelectedCallback)
+                        }
                     }
                 }
             }
