@@ -80,6 +80,10 @@ func (w *boxPlatformInterfaceWrapper) Interfaces() ([]platform.NetworkInterface,
 	return nil, errors.New("wtf")
 }
 
+func (w *boxPlatformInterfaceWrapper) UnderNetworkExtension() bool {
+	return false
+}
+
 // process.Searcher
 
 func (w *boxPlatformInterfaceWrapper) FindProcessInfo(ctx context.Context, network string, source netip.AddrPort, destination netip.AddrPort) (*process.Info, error) {
