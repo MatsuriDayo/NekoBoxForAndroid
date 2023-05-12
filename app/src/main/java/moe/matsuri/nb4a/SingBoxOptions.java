@@ -48,13 +48,21 @@ public class SingBoxOptions {
 
         public String external_ui;
 
+        public String external_ui_download_url;
+
+        public String external_ui_download_detour;
+
         public String secret;
 
         public String default_mode;
 
         public Boolean store_selected;
 
+        public Boolean store_fakeip;
+
         public String cache_file;
+
+        public String cache_id;
 
     }
 
@@ -115,6 +123,8 @@ public class SingBoxOptions {
     }
 
     public static class DebugOptions extends SingBoxOption {
+
+        public String listen;
 
         public Integer gc_percent;
 
@@ -223,6 +233,10 @@ public class SingBoxOptions {
         @SerializedName("final")
         public String final_;
 
+        public Boolean reverse_mapping;
+
+        public DNSFakeIPOptions fakeip;
+
         // Generate note: nested type DNSClientOptions
         public String strategy;
 
@@ -230,17 +244,9 @@ public class SingBoxOptions {
 
         public Boolean disable_expire;
 
+        public Boolean independent_cache;
+
         // End of public DNSClientOptions ;
-
-    }
-
-    public static class DNSClientOptions extends SingBoxOption {
-
-        public String strategy;
-
-        public Boolean disable_cache;
-
-        public Boolean disable_expire;
 
     }
 
@@ -262,107 +268,25 @@ public class SingBoxOptions {
 
     }
 
+    public static class DNSClientOptions extends SingBoxOption {
 
-    public static class DNSRule extends SingBoxOption {
-
-        public String type;
-
-        // Generate note: option type:  public DefaultDNSRule DefaultOptions;
-
-        // Generate note: option type:  public LogicalDNSRule LogicalOptions;
-
-    }
-
-    public static class DefaultDNSRule extends SingBoxOption {
-
-        // Generate note: Listable
-        public List<String> inbound;
-
-        public Integer ip_version;
-
-        // Generate note: Listable
-        public List<String> query_type;
-
-        public String network;
-
-        // Generate note: Listable
-        public List<String> auth_user;
-
-        // Generate note: Listable
-        public List<String> protocol;
-
-        // Generate note: Listable
-        public List<String> domain;
-
-        // Generate note: Listable
-        public List<String> domain_suffix;
-
-        // Generate note: Listable
-        public List<String> domain_keyword;
-
-        // Generate note: Listable
-        public List<String> domain_regex;
-
-        // Generate note: Listable
-        public List<String> geosite;
-
-        // Generate note: Listable
-        public List<String> source_geoip;
-
-        // Generate note: Listable
-        public List<String> source_ip_cidr;
-
-        // Generate note: Listable
-        public List<Integer> source_port;
-
-        // Generate note: Listable
-        public List<String> source_port_range;
-
-        // Generate note: Listable
-        public List<Integer> port;
-
-        // Generate note: Listable
-        public List<String> port_range;
-
-        // Generate note: Listable
-        public List<String> process_name;
-
-        // Generate note: Listable
-        public List<String> process_path;
-
-        // Generate note: Listable
-        public List<String> package_name;
-
-        // Generate note: Listable
-        public List<String> user;
-
-        // Generate note: Listable
-        public List<Integer> user_id;
-
-        // Generate note: Listable
-        public List<String> outbound;
-
-        public String clash_mode;
-
-        public Boolean invert;
-
-        public String server;
+        public String strategy;
 
         public Boolean disable_cache;
 
+        public Boolean disable_expire;
+
+        public Boolean independent_cache;
+
     }
 
-    public static class LogicalDNSRule extends SingBoxOption {
+    public static class DNSFakeIPOptions extends SingBoxOption {
 
-        public String mode;
+        public Boolean enabled;
 
-        public List<DefaultDNSRule> rules;
+        public String inet4_range;
 
-        public Boolean invert;
-
-        public String server;
-
-        public Boolean disable_cache;
+        public String inet6_range;
 
     }
 
@@ -769,6 +693,8 @@ public class SingBoxOptions {
 
         public Integer max_streams;
 
+        public Boolean padding;
+
     }
 
     public static class OnDemandOptions extends SingBoxOption {
@@ -879,6 +805,8 @@ public class SingBoxOptions {
 
         public GeositeOptions geosite;
 
+        public List<IPRule> ip_rules;
+
         public List<Rule> rules;
 
         @SerializedName("final")
@@ -934,7 +862,8 @@ public class SingBoxOptions {
 
         public Integer ip_version;
 
-        public String network;
+        // Generate note: Listable
+        public List<String> network;
 
         // Generate note: Listable
         public List<String> auth_user;
@@ -1011,6 +940,198 @@ public class SingBoxOptions {
         public List<DefaultRule> rules;
 
         public Boolean invert;
+
+        public String outbound;
+
+    }
+
+
+    public static class DNSRule extends SingBoxOption {
+
+        public String type;
+
+        // Generate note: option type:  public DefaultDNSRule DefaultOptions;
+
+        // Generate note: option type:  public LogicalDNSRule LogicalOptions;
+
+    }
+
+    public static class DefaultDNSRule extends SingBoxOption {
+
+        // Generate note: Listable
+        public List<String> inbound;
+
+        public Integer ip_version;
+
+        // Generate note: Listable
+        public List<String> query_type;
+
+        // Generate note: Listable
+        public List<String> network;
+
+        // Generate note: Listable
+        public List<String> auth_user;
+
+        // Generate note: Listable
+        public List<String> protocol;
+
+        // Generate note: Listable
+        public List<String> domain;
+
+        // Generate note: Listable
+        public List<String> domain_suffix;
+
+        // Generate note: Listable
+        public List<String> domain_keyword;
+
+        // Generate note: Listable
+        public List<String> domain_regex;
+
+        // Generate note: Listable
+        public List<String> geosite;
+
+        // Generate note: Listable
+        public List<String> source_geoip;
+
+        // Generate note: Listable
+        public List<String> source_ip_cidr;
+
+        // Generate note: Listable
+        public List<Integer> source_port;
+
+        // Generate note: Listable
+        public List<String> source_port_range;
+
+        // Generate note: Listable
+        public List<Integer> port;
+
+        // Generate note: Listable
+        public List<String> port_range;
+
+        // Generate note: Listable
+        public List<String> process_name;
+
+        // Generate note: Listable
+        public List<String> process_path;
+
+        // Generate note: Listable
+        public List<String> package_name;
+
+        // Generate note: Listable
+        public List<String> user;
+
+        // Generate note: Listable
+        public List<Integer> user_id;
+
+        // Generate note: Listable
+        public List<String> outbound;
+
+        public String clash_mode;
+
+        public Boolean invert;
+
+        public String server;
+
+        public Boolean disable_cache;
+
+        public Integer rewrite_ttl;
+
+    }
+
+    public static class LogicalDNSRule extends SingBoxOption {
+
+        public String mode;
+
+        public List<DefaultDNSRule> rules;
+
+        public Boolean invert;
+
+        public String server;
+
+        public Boolean disable_cache;
+
+        public Integer rewrite_ttl;
+
+    }
+
+
+    public static class IPRule extends SingBoxOption {
+
+        public String type;
+
+        // Generate note: option type:  public DefaultIPRule DefaultOptions;
+
+        // Generate note: option type:  public LogicalIPRule LogicalOptions;
+
+    }
+
+    public static class DefaultIPRule extends SingBoxOption {
+
+        // Generate note: Listable
+        public List<String> inbound;
+
+        public Integer ip_version;
+
+        // Generate note: Listable
+        public List<String> network;
+
+        // Generate note: Listable
+        public List<String> domain;
+
+        // Generate note: Listable
+        public List<String> domain_suffix;
+
+        // Generate note: Listable
+        public List<String> domain_keyword;
+
+        // Generate note: Listable
+        public List<String> domain_regex;
+
+        // Generate note: Listable
+        public List<String> geosite;
+
+        // Generate note: Listable
+        public List<String> source_geoip;
+
+        // Generate note: Listable
+        public List<String> geoip;
+
+        // Generate note: Listable
+        public List<String> source_ip_cidr;
+
+        // Generate note: Listable
+        public List<String> ip_cidr;
+
+        // Generate note: Listable
+        public List<Integer> source_port;
+
+        // Generate note: Listable
+        public List<String> source_port_range;
+
+        // Generate note: Listable
+        public List<Integer> port;
+
+        // Generate note: Listable
+        public List<String> port_range;
+
+        public Boolean invert;
+
+        public String action;
+
+        public String outbound;
+
+    }
+
+
+    public static class LogicalIPRule extends SingBoxOption {
+
+        public String mode;
+
+        public List<DefaultIPRule> rules;
+
+        public Boolean invert;
+
+        public String action;
 
         public String outbound;
 
@@ -1509,6 +1630,10 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public String path;
+
+        public Map<String, String> headers;
+
     }
 
     public static class SSHOutboundOptions extends SingBoxOption {
@@ -1945,6 +2070,8 @@ public class SingBoxOptions {
 
         public String stack;
 
+        public Boolean experimental_fix_windows_firewall;
+
         public TunPlatformOptions platform;
 
         // Generate note: nested type InboundOptions
@@ -2165,6 +2292,8 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public MultiplexOptions multiplex;
+
         public V2RayTransportOptions transport;
 
         public String packet_encoding;
@@ -2314,13 +2443,6 @@ public class SingBoxOptions {
 
         // End of public DialerOptions ;
 
-        // Generate note: nested type ServerOptions
-        public String server;
-
-        public Integer server_port;
-
-        // End of public ServerOptions ;
-
         public Boolean system_interface;
 
         public String interface_name;
@@ -2329,6 +2451,15 @@ public class SingBoxOptions {
         public List<String> local_address;
 
         public String private_key;
+
+        public List<WireGuardPeer> peers;
+
+        // Generate note: nested type ServerOptions
+        public String server;
+
+        public Integer server_port;
+
+        // End of public ServerOptions ;
 
         public String peer_public_key;
 
@@ -2343,98 +2474,28 @@ public class SingBoxOptions {
 
         public String network;
 
-    }
-
-    public static class DNSRule_DefaultOptions extends DNSRule {
-
-        // Generate note: Listable
-        public List<String> inbound;
-
-        public Integer ip_version;
-
-        // Generate note: Listable
-        public List<String> query_type;
-
-        public String network;
-
-        // Generate note: Listable
-        public List<String> auth_user;
-
-        // Generate note: Listable
-        public List<String> protocol;
-
-        // Generate note: Listable
-        public List<String> domain;
-
-        // Generate note: Listable
-        public List<String> domain_suffix;
-
-        // Generate note: Listable
-        public List<String> domain_keyword;
-
-        // Generate note: Listable
-        public List<String> domain_regex;
-
-        // Generate note: Listable
-        public List<String> geosite;
-
-        // Generate note: Listable
-        public List<String> source_geoip;
-
-        // Generate note: Listable
-        public List<String> source_ip_cidr;
-
-        // Generate note: Listable
-        public List<Integer> source_port;
-
-        // Generate note: Listable
-        public List<String> source_port_range;
-
-        // Generate note: Listable
-        public List<Integer> port;
-
-        // Generate note: Listable
-        public List<String> port_range;
-
-        // Generate note: Listable
-        public List<String> process_name;
-
-        // Generate note: Listable
-        public List<String> process_path;
-
-        // Generate note: Listable
-        public List<String> package_name;
-
-        // Generate note: Listable
-        public List<String> user;
-
-        // Generate note: Listable
-        public List<Integer> user_id;
-
-        // Generate note: Listable
-        public List<String> outbound;
-
-        public String clash_mode;
-
-        public Boolean invert;
-
-        public String server;
-
-        public Boolean disable_cache;
+        public Boolean ip_rewrite;
 
     }
 
-    public static class DNSRule_LogicalOptions extends DNSRule {
+    public static class WireGuardPeer extends SingBoxOption {
 
-        public String mode;
-
-        public List<DefaultDNSRule> rules;
-
-        public Boolean invert;
-
+        // Generate note: nested type ServerOptions
         public String server;
 
-        public Boolean disable_cache;
+        public Integer server_port;
+
+        // End of public ServerOptions ;
+
+        public String public_key;
+
+        public String pre_shared_key;
+
+        // Generate note: Listable
+        public List<String> allowed_ips;
+
+        // Generate note: Base64 String
+        public String reserved;
 
     }
 
@@ -2486,6 +2547,8 @@ public class SingBoxOptions {
         public Long udp_timeout;
 
         public String stack;
+
+        public Boolean experimental_fix_windows_firewall;
 
         public TunPlatformOptions platform;
 
@@ -3181,6 +3244,10 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public String path;
+
+        public Map<String, String> headers;
+
     }
 
     public static class Outbound_ShadowsocksOptions extends Outbound {
@@ -3374,13 +3441,6 @@ public class SingBoxOptions {
 
         // End of public DialerOptions ;
 
-        // Generate note: nested type ServerOptions
-        public String server;
-
-        public Integer server_port;
-
-        // End of public ServerOptions ;
-
         public Boolean system_interface;
 
         public String interface_name;
@@ -3389,6 +3449,15 @@ public class SingBoxOptions {
         public List<String> local_address;
 
         public String private_key;
+
+        public List<WireGuardPeer> peers;
+
+        // Generate note: nested type ServerOptions
+        public String server;
+
+        public Integer server_port;
+
+        // End of public ServerOptions ;
 
         public String peer_public_key;
 
@@ -3402,6 +3471,8 @@ public class SingBoxOptions {
         public Integer mtu;
 
         public String network;
+
+        public Boolean ip_rewrite;
 
     }
 
@@ -3709,6 +3780,8 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public MultiplexOptions multiplex;
+
         public V2RayTransportOptions transport;
 
         public String packet_encoding;
@@ -3743,7 +3816,8 @@ public class SingBoxOptions {
 
         public Integer ip_version;
 
-        public String network;
+        // Generate note: Listable
+        public List<String> network;
 
         // Generate note: Listable
         public List<String> auth_user;
@@ -3820,6 +3894,175 @@ public class SingBoxOptions {
         public List<DefaultRule> rules;
 
         public Boolean invert;
+
+        public String outbound;
+
+    }
+
+    public static class DNSRule_DefaultOptions extends DNSRule {
+
+        // Generate note: Listable
+        public List<String> inbound;
+
+        public Integer ip_version;
+
+        // Generate note: Listable
+        public List<String> query_type;
+
+        // Generate note: Listable
+        public List<String> network;
+
+        // Generate note: Listable
+        public List<String> auth_user;
+
+        // Generate note: Listable
+        public List<String> protocol;
+
+        // Generate note: Listable
+        public List<String> domain;
+
+        // Generate note: Listable
+        public List<String> domain_suffix;
+
+        // Generate note: Listable
+        public List<String> domain_keyword;
+
+        // Generate note: Listable
+        public List<String> domain_regex;
+
+        // Generate note: Listable
+        public List<String> geosite;
+
+        // Generate note: Listable
+        public List<String> source_geoip;
+
+        // Generate note: Listable
+        public List<String> source_ip_cidr;
+
+        // Generate note: Listable
+        public List<Integer> source_port;
+
+        // Generate note: Listable
+        public List<String> source_port_range;
+
+        // Generate note: Listable
+        public List<Integer> port;
+
+        // Generate note: Listable
+        public List<String> port_range;
+
+        // Generate note: Listable
+        public List<String> process_name;
+
+        // Generate note: Listable
+        public List<String> process_path;
+
+        // Generate note: Listable
+        public List<String> package_name;
+
+        // Generate note: Listable
+        public List<String> user;
+
+        // Generate note: Listable
+        public List<Integer> user_id;
+
+        // Generate note: Listable
+        public List<String> outbound;
+
+        public String clash_mode;
+
+        public Boolean invert;
+
+        public String server;
+
+        public Boolean disable_cache;
+
+        public Integer rewrite_ttl;
+
+    }
+
+    public static class DNSRule_LogicalOptions extends DNSRule {
+
+        public String mode;
+
+        public List<DefaultDNSRule> rules;
+
+        public Boolean invert;
+
+        public String server;
+
+        public Boolean disable_cache;
+
+        public Integer rewrite_ttl;
+
+    }
+
+    public static class IPRule_DefaultOptions extends IPRule {
+
+        // Generate note: Listable
+        public List<String> inbound;
+
+        public Integer ip_version;
+
+        // Generate note: Listable
+        public List<String> network;
+
+        // Generate note: Listable
+        public List<String> domain;
+
+        // Generate note: Listable
+        public List<String> domain_suffix;
+
+        // Generate note: Listable
+        public List<String> domain_keyword;
+
+        // Generate note: Listable
+        public List<String> domain_regex;
+
+        // Generate note: Listable
+        public List<String> geosite;
+
+        // Generate note: Listable
+        public List<String> source_geoip;
+
+        // Generate note: Listable
+        public List<String> geoip;
+
+        // Generate note: Listable
+        public List<String> source_ip_cidr;
+
+        // Generate note: Listable
+        public List<String> ip_cidr;
+
+        // Generate note: Listable
+        public List<Integer> source_port;
+
+        // Generate note: Listable
+        public List<String> source_port_range;
+
+        // Generate note: Listable
+        public List<Integer> port;
+
+        // Generate note: Listable
+        public List<String> port_range;
+
+        public Boolean invert;
+
+        public String action;
+
+        public String outbound;
+
+    }
+
+    public static class IPRule_LogicalOptions extends IPRule {
+
+        public String mode;
+
+        public List<DefaultIPRule> rules;
+
+        public Boolean invert;
+
+        public String action;
 
         public String outbound;
 

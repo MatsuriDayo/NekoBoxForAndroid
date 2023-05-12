@@ -205,6 +205,7 @@ fun buildConfig(
 
             servers = mutableListOf()
             rules = mutableListOf()
+            independent_cache = true
 
             when (ipv6Mode) {
                 IPv6Mode.DISABLE -> {
@@ -568,7 +569,7 @@ fun buildConfig(
                     }
                 }
                 if (rule.network.isNotBlank()) {
-                    network = rule.network
+                    network = listOf(rule.network)
                 }
                 if (rule.source.isNotBlank()) {
                     source_ip_cidr = rule.source.split("\n")
