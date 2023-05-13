@@ -7,38 +7,24 @@ import (
 	"io"
 	"libcore/device"
 	"log"
-	"net/http"
-	"reflect"
 	"runtime"
 	"runtime/debug"
 	"strings"
 	"time"
-	"unsafe"
 
 	"github.com/matsuridayo/sing-box-extra/boxbox"
 	_ "github.com/matsuridayo/sing-box-extra/distro/all"
 
-	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
 	"github.com/matsuridayo/sing-box-extra/boxapi"
 
 	"github.com/sagernet/sing-box/common/dialer/conntrack"
-	sblog "github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
 )
 
 var mainInstance *BoxInstance
-
-func init() {
-	neko_common.GetProxyHttpClient = func() *http.Client {
-		if mainInstance == nil {
-			return nil
-		}
-		return boxapi.GetProxyHttpClient(mainInstance.Box)
-	}
-}
 
 func VersionBox() string {
 	version := []string{
@@ -110,13 +96,7 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	}
 
 	// fuck your sing-box platformFormatter
-	logFactory_ := reflect.Indirect(reflect.ValueOf(instance)).FieldByName("logFactory")
-	logFactory_ = reflect.NewAt(logFactory_.Type(), unsafe.Pointer(logFactory_.UnsafeAddr())).Elem() // get unexported logFactory
-	logFactory_ = logFactory_.Elem().Elem()                                                          // get struct
-	platformFormatter_ := logFactory_.FieldByName("platformFormatter")
-	platformFormatter_ = reflect.NewAt(platformFormatter_.Type(), unsafe.Pointer(platformFormatter_.UnsafeAddr())) // get unexported Formatter
-	platformFormatter := platformFormatter_.Interface().(*sblog.Formatter)
-	platformFormatter.DisableColors = true
+	instance.GetLogPlatformFormatter().DisableColors = true
 
 	// selector
 	if proxy, ok := b.Router().Outbound("proxy"); ok {
@@ -158,25 +138,8 @@ func (b *BoxInstance) Close() (err error) {
 	}
 
 	// close box
-	t := time.NewTimer(time.Second * 2)
-	c := make(chan struct{}, 1)
-	disableSingBoxLog = true
+	b.CloseWithTimeout(b.cancel, time.Second*2, log.Println)
 
-	go func(cancel context.CancelFunc, closer io.Closer) {
-		cancel()
-		closer.Close()
-		c <- struct{}{}
-		close(c)
-	}(b.cancel, b.Box)
-
-	select {
-	case <-t.C:
-		log.Println("[Warning] sing-box close takes longer than expected.")
-	case <-c:
-	}
-
-	disableSingBoxLog = false
-	t.Stop()
 	return nil
 }
 
@@ -215,9 +178,9 @@ func UrlTest(i *BoxInstance, link string, timeout int32) (latency int32, err err
 	defer device.DeferPanicToError("box.UrlTest", func(err_ error) { err = err_ })
 	if i == nil {
 		// test current
-		return speedtest.UrlTest(neko_common.GetProxyHttpClient(), link, timeout)
+		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(mainInstance.Box), link, timeout)
 	}
-	return speedtest.UrlTest(boxapi.GetProxyHttpClient(i.Box), link, timeout)
+	return speedtest.UrlTest(boxapi.CreateProxyHttpClient(i.Box), link, timeout)
 }
 
 var protectCloser io.Closer
