@@ -11,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import moe.matsuri.nb4a.plugin.Plugins
+import java.util.concurrent.atomic.AtomicBoolean
 
 object PackageCache {
 
@@ -20,9 +21,11 @@ object PackageCache {
     lateinit var packageMap: Map<String, Int>
     val uidMap = HashMap<Int, HashSet<String>>()
     val loaded = Mutex(true)
+    var registerd = AtomicBoolean(false)
 
     // called from init (suspend)
     fun register() {
+        if (registerd.getAndSet(true)) return
         reload()
         app.listenForPackageChanges(false) {
             reload()
@@ -75,6 +78,10 @@ object PackageCache {
 
     fun awaitLoadSync() {
         if (::packageMap.isInitialized) {
+            return
+        }
+        if (!registerd.get()) {
+            register()
             return
         }
         runBlocking {

@@ -187,8 +187,6 @@ public abstract class StandardV2RayBean extends AbstractBean {
         StandardV2RayBean bean = ((StandardV2RayBean) other);
         bean.allowInsecure = allowInsecure;
         bean.utlsFingerprint = utlsFingerprint;
-        bean.realityPubKey = realityPubKey;
-        bean.realityShortId = realityShortId;
     }
 
     public boolean isVLESS() {
