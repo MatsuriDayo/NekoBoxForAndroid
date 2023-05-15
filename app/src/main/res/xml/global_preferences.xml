@@ -140,6 +140,13 @@
             app:key="mux"
             app:summary="@string/mux_sum"
             app:title="@string/enable_mux" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="0"
+            app:entries="@array/mux_type"
+            app:entryValues="@array/int_array_3"
+            app:key="muxType"
+            app:title="@string/mux_type"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:defaultValue="8"
             app:icon="@drawable/ic_baseline_low_priority_24"

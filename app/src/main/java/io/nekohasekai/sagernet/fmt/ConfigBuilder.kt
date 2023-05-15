@@ -424,6 +424,11 @@ fun buildConfig(
                             currentOutbound["multiplex"] = MultiplexOptions().apply {
                                 enabled = true
                                 max_streams = DataStore.muxConcurrency
+                                protocol = when (DataStore.muxType) {
+                                    1 -> "smux"
+                                    2 -> "yamux"
+                                    else -> "h2mux"
+                                }
                             }
                         }
                     }

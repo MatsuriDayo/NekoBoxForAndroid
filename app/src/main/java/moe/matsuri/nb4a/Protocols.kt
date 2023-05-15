@@ -29,8 +29,7 @@ object Protocols {
 
     fun getCanMuxList(): List<String> {
         // built-in and support mux
-        // TODO support vless mux in sing-box 1.3.x
-        val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks")
+        val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks", "vless")
 
         NekoPluginManager.getProtocols().forEach {
             if (it.protocolConfig.optBoolean("canMux")) {

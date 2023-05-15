@@ -433,6 +433,12 @@
 
     <string-array name="mux_select_init" />
 
+    <string-array name="mux_type">
+        <item>h2mux</item>
+        <item>smux</item>
+        <item>yamux</item>
+    </string-array>
+
     <string-array name="dns_network_select">
         <item>NoRemoteIPv4</item>
         <item>NoRemoteIPv6</item>
