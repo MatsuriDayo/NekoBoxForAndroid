@@ -114,8 +114,9 @@ jobs:
           path: artifacts
       - name: Release
         run: |
-          mkdir apks
-          find artifacts -name "*.apk" -exec cp {} apks \;
+          apks=apks
+          mkdir $apks
+          find artifacts -name "*.apk" -exec cp {} $apks \;
 
           function upload() {
             for apk in $@; do
@@ -131,6 +132,9 @@ jobs:
             done
           }
           upload apks/*
+
+          checksums="$(find $apks -name "*.apk" -exec sha256sum {} +)"
+          echo -e "# APKs Checksums\n$checksums" >> $GITHUB_STEP_SUMMARY
   play:
     name: Build Play Bundle
     if: github.event.inputs.play != 'y'
