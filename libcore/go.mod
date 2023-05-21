@@ -7,7 +7,7 @@ require (
 	github.com/matsuridayo/libneko v1.0.0 // replaced
 	github.com/matsuridayo/sing-box-extra v1.0.0 // replaced
 	github.com/miekg/dns v1.1.54
-	github.com/sagernet/sing v0.2.5-0.20230512033628-9be7806bab51
+	github.com/sagernet/sing v0.2.5-0.20230517124404-be6013893626
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	// github.com/sagernet/sing-dns v1.0.0 // replaced
 	github.com/sagernet/sing-tun v0.1.5-0.20230509102026-91df97aee204
@@ -61,7 +61,7 @@ require (
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
 	github.com/sagernet/quic-go v0.0.0-20230202071646-a8c8afb18b32 // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
-	github.com/sagernet/sing-mux v0.0.0-20230425130511-b0a6ffd8406f // indirect
+	github.com/sagernet/sing-mux v0.0.0-20230517134606-1ebe6bb26646 // indirect
 	github.com/sagernet/sing-shadowsocks v0.2.2-0.20230509053848-d83f8fe1194c // indirect
 	github.com/sagernet/sing-shadowsocks2 v0.0.0-20230512030659-23bb92c1eb97 // indirect
 	github.com/sagernet/sing-shadowtls v0.1.2-0.20230417103049-4f682e05f19b // indirect
@@ -86,7 +86,7 @@ require (
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
-	golang.org/x/time v0.0.0-20220210224613-90d013bbcef8 // indirect
+	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6 // indirect
 	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
