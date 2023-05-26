@@ -269,6 +269,7 @@ var isExpert: Boolean
 val isExpertFlavor = ((BuildConfig.FLAVOR == "expert") || BuildConfig.DEBUG)
 const val isOss = BuildConfig.FLAVOR == "oss"
 const val isFdroid = BuildConfig.FLAVOR == "fdroid"
+const val isPlay = BuildConfig.FLAVOR == "play"
 
 fun <T> Continuation<T>.tryResume(value: T) {
     try {

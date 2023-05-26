@@ -94,7 +94,7 @@ class MainActivity : ThemedActivity(),
             if (checkPermission != PackageManager.PERMISSION_GRANTED) {
                 //动态申请
                 ActivityCompat.requestPermissions(
-                    this@MainActivity, arrayOf<String>(POST_NOTIFICATIONS), 0
+                    this@MainActivity, arrayOf(POST_NOTIFICATIONS), 0
                 )
             }
         }
@@ -105,6 +105,7 @@ class MainActivity : ThemedActivity(),
     fun refreshNavMenu(clashApi: Boolean) {
         if (::navigation.isInitialized) {
             navigation.menu.findItem(R.id.nav_traffic)?.isVisible = clashApi
+            navigation.menu.findItem(R.id.nav_tuiguang)?.isVisible = !isPlay
         }
     }
 
@@ -330,19 +331,6 @@ class MainActivity : ThemedActivity(),
         }
         navigation.menu.findItem(id).isChecked = true
         return true
-    }
-
-    @SuppressLint("CommitTransaction")
-    fun ruleCreated() {
-        navigation.menu.findItem(R.id.nav_route).isChecked = true
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_holder, RouteFragment())
-            .commitAllowingStateLoss()
-        if (DataStore.serviceState.started) {
-            snackbar(getString(R.string.need_reload)).setAction(R.string.apply) {
-                SagerNet.reloadService()
-            }.show()
-        }
     }
 
     private fun changeState(
