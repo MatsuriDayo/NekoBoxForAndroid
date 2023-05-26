@@ -48,6 +48,8 @@ class ServiceNotification(
         }
     }
 
+    var listenPostSpeed = true
+
     fun postNotificationSpeedUpdate(stats: SpeedDisplayData) {
         builder.apply {
             if (showDirectSpeed) {
@@ -119,7 +121,6 @@ class ServiceNotification(
         Theme.apply(service)
         builder.color = service.getColorAttr(R.attr.colorPrimary)
 
-        updateCallback(SagerNet.power.isInteractive)
         service.registerReceiver(this, IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_ON)
             addAction(Intent.ACTION_SCREEN_OFF)
@@ -167,23 +168,19 @@ class ServiceNotification(
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (service.data.state == BaseService.State.Connected) updateCallback(intent.action == Intent.ACTION_SCREEN_ON)
+        if (service.data.state == BaseService.State.Connected) {
+            listenPostSpeed = intent.action == Intent.ACTION_SCREEN_ON
+        }
     }
 
-    var listenPostSpeed = false
-
-    private fun updateCallback(screenOn: Boolean) {
-        if (DataStore.speedInterval == 0) return
-        listenPostSpeed = screenOn
-    }
 
     private fun show() = (service as Service).startForeground(notificationId, builder.build())
     private fun update() =
         NotificationManagerCompat.from(service as Service).notify(notificationId, builder.build())
 
     fun destroy() {
+        listenPostSpeed = false
         (service as Service).stopForeground(true)
         service.unregisterReceiver(this)
-        updateCallback(false)
     }
 }

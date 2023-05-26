@@ -89,9 +89,8 @@ class TrafficLooper
         var proxy: ProxyInstance?
 
         // for display
-        var itemMain: TrafficUpdater.TrafficLooperData? = null
-        var itemMainBase: TrafficUpdater.TrafficLooperData? = null
-        var itemBypass: TrafficUpdater.TrafficLooperData? = null
+        val itemBypass = TrafficUpdater.TrafficLooperData(tag = TAG_BYPASS)
+        val itemMainList = mutableListOf<TrafficUpdater.TrafficLooperData>()
 
         while (sc.isActive) {
             delay(delayMs)
@@ -100,7 +99,6 @@ class TrafficLooper
             if (trafficUpdater == null) {
                 if (!proxy.isInitialized()) continue
                 items.clear()
-                itemBypass = TrafficUpdater.TrafficLooperData(tag = "bypass")
                 items[-1] = itemBypass
                 //
                 val tags = hashSetOf(TAG_PROXY, TAG_BYPASS)
@@ -111,25 +109,16 @@ class TrafficLooper
                             tag = tag,
                             rx = ent.rx,
                             tx = ent.tx,
+                            rxBase = ent.rx,
+                            txBase = ent.tx,
                             ignore = proxy.config.selectorGroupId >= 0L,
                         )
-                        if (tag == TAG_PROXY && itemMain == null) {
-                            itemMain = item
-                            itemMainBase = TrafficUpdater.TrafficLooperData(
-                                tag = tag,
-                                rx = ent.rx,
-                                tx = ent.tx,
-                            )
-                            Logs.d("traffic count $tag to main to ${ent.id}")
-                        }
                         items[ent.id] = item
+                        itemMainList += item
                         Logs.d("traffic count $tag to ${ent.id}")
                     }
                 }
                 if (proxy.config.selectorGroupId >= 0L) {
-                    itemMain = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
-                    itemMainBase = TrafficUpdater.TrafficLooperData(tag = TAG_PROXY)
-                    items[-2] = itemMain!!
                     selectMain(proxy.config.mainEntId)
                 }
                 //
@@ -142,14 +131,26 @@ class TrafficLooper
             trafficUpdater.updateAll()
             if (!sc.isActive) return
 
+            // add all non-bypass to "main"
+            var mainTxRate = 0L
+            var mainRxRate = 0L
+            var mainTx = 0L
+            var mainRx = 0L
+            itemMainList.forEach {
+                mainTxRate += it.txRate
+                mainRxRate += it.rxRate
+                mainTx += it.tx - it.txBase
+                mainRx += it.rx - it.rxBase
+            }
+
             // speed
             val speed = SpeedDisplayData(
-                itemMain!!.txRate,
-                itemMain!!.rxRate,
-                if (showDirectSpeed) itemBypass!!.txRate else 0L,
-                if (showDirectSpeed) itemBypass!!.rxRate else 0L,
-                itemMain!!.tx - itemMainBase!!.tx,
-                itemMain!!.rx - itemMainBase!!.rx
+                mainTxRate,
+                mainRxRate,
+                if (showDirectSpeed) itemBypass.txRate else 0L,
+                if (showDirectSpeed) itemBypass.rxRate else 0L,
+                mainTx,
+                mainRx
             )
 
             // broadcast (MainActivity)

@@ -10,6 +10,8 @@ class TrafficUpdater(
         var tag: String,
         var tx: Long = 0,
         var rx: Long = 0,
+        var txBase: Long = 0,
+        var rxBase: Long = 0,
         var txRate: Long = 0,
         var rxRate: Long = 0,
         var lastUpdate: Long = 0,
