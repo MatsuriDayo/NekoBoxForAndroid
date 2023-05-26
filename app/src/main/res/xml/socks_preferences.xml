@@ -38,4 +38,9 @@
             app:title="@string/password_opt" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="sing-box server">
+        <SwitchPreference
+            app:key="sUoT"
+            app:title="UDP over TCP" />
+    </PreferenceCategory>
 </PreferenceScreen>

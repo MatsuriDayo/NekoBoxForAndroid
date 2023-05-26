@@ -21,6 +21,8 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         DataStore.serverProtocolVersion = protocol
         DataStore.serverUsername = username
         DataStore.serverPassword = password
+
+        DataStore.profileCacheStore.putBoolean("sUoT", sUoT)
     }
 
     override fun SOCKSBean.serialize() {
@@ -31,6 +33,8 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         protocol = DataStore.serverProtocolVersion
         username = DataStore.serverUsername
         password = DataStore.serverPassword
+
+        sUoT = DataStore.profileCacheStore.getBoolean("sUoT")
     }
 
     override fun PreferenceFragmentCompat.createPreferences(

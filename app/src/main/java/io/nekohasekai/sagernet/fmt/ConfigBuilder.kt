@@ -372,8 +372,7 @@ fun buildConfig(
                     globalOutbounds[proxyEntity.id] = tagOut
                 }
 
-                // Chain outbound
-                if (proxyEntity.needExternal()) {
+                if (proxyEntity.needExternal()) { // externel outbound
                     val localPort = mkPort()
                     externalChainMap[localPort] = proxyEntity
                     currentOutbound = Outbound_SocksOptions().apply {
@@ -381,9 +380,7 @@ fun buildConfig(
                         server = LOCALHOST
                         server_port = localPort
                     }.asMap()
-                } else {
-                    // internal outbound
-
+                } else { // internal outbound
                     currentOutbound = when (bean) {
                         is ConfigBean ->
                             gson.fromJson(bean.config, currentOutbound.javaClass)
@@ -429,6 +426,18 @@ fun buildConfig(
                                 }
                             }
                         }
+                    }
+                }
+
+                // internal & external
+                currentOutbound.apply {
+                    // udp over tcp
+                    try {
+                        val sUoT = bean.javaClass.getField("sUoT").get(bean)
+                        if (sUoT is Boolean && sUoT == true) {
+                            currentOutbound["udp_over_tcp"] = true
+                        }
+                    } catch (_: Exception) {
                     }
 
                     // custom JSON merge

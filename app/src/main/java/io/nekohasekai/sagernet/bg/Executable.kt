@@ -13,8 +13,8 @@ object Executable {
         "libtrojan.so",
         "libtrojan-go.so",
         "libnaive.so",
-        "libhysteria.so",
-        "libwg.so"
+        "libtuic.so",
+        "libhysteria.so"
     )
 
     fun killAll(alsoKillBg: Boolean = false) {
