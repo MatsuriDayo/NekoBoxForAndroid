@@ -231,7 +231,7 @@ class AssetsActivity : ThemedActivity() {
                         updateAsset(file, versionFile, localVersion)
                     }.onFailure {
                         onMainDispatcher {
-                            alert(it.readableMessage).show()
+                            alert(it.readableMessage).tryToShow()
                         }
                     }
 

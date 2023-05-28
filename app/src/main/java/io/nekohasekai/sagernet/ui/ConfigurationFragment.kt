@@ -91,7 +91,12 @@ class ConfigurationFragment @JvmOverloads constructor(
     val alwaysShowAddress by lazy { DataStore.alwaysShowAddress }
 
     fun getCurrentGroupFragment(): GroupFragment? {
-        return childFragmentManager.findFragmentByTag("f" + DataStore.selectedGroup) as GroupFragment?
+        return try {
+            childFragmentManager.findFragmentByTag("f" + DataStore.selectedGroup) as GroupFragment?
+        } catch (e: Exception) {
+            Logs.e(e)
+            null
+        }
     }
 
     val updateSelectedCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -1534,7 +1539,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                     val msg = Protocols.genFriendlyMsg(err)
                     profileStatus.text = if (msg != err) msg else getString(R.string.unavailable)
                     profileStatus.setOnClickListener {
-                        alert(err).show()
+                        alert(err).tryToShow()
                     }
                 } else {
                     profileStatus.setOnClickListener(null)
