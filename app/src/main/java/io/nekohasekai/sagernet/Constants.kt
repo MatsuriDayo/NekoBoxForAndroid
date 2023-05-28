@@ -30,7 +30,6 @@ object Key {
     const val INDIVIDUAL = "individual"
     const val METERED_NETWORK = "meteredNetwork"
 
-    const val DOMAIN_STRATEGY = "domainStrategy"
     const val TRAFFIC_SNIFFING = "trafficSniffing"
     const val RESOLVE_DESTINATION = "resolveDestination"
 

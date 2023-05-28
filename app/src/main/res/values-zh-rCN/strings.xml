@@ -475,4 +475,6 @@
     <string name="log_level_help">长按设置项以设置缓冲区大小。</string>
     <string name="test_concurrency">测试并发</string>
     <string name="mux_type">Mux 协议</string>
+    <string name="sniff_routing">探测结果用于路由判断</string>
+    <string name="sniff_override">探测结果用于目标地址</string>
 </resources>
