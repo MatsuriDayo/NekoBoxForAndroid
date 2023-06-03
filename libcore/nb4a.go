@@ -78,6 +78,12 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 			outdated = "Your version is too old! Please update!! 版本太旧，请升级！"
 		}
 
+		// certs
+		pem, err := os.ReadFile(externalAssetsPath + "ca.pem")
+		if err == nil {
+			updateRootCACerts(pem)
+		}
+
 		// bg
 		if isBgProcess {
 			extractAssets()
