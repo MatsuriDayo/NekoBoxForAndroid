@@ -155,6 +155,9 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             url.queryParameter("sni")?.let {
                 sni = it
             }
+            url.queryParameter("host")?.let {
+                if (sni.isNullOrBlank()) sni = it
+            }
             url.queryParameter("alpn")?.let {
                 alpn = it.replace(",", "\n")
             }
@@ -169,6 +172,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             }
         }
     }
+
     when (type) {
         "tcp" -> {
             // v2rayNG
@@ -307,6 +311,7 @@ fun parseV2RayN(link: String): VMessBean {
         throw Exception("invalid VmessQRCode")
     }
 
+    bean.name = vmessQRCode.ps
     bean.serverAddress = vmessQRCode.add
     bean.serverPort = vmessQRCode.port.toIntOrNull()
     bean.encryption = vmessQRCode.scy
@@ -325,13 +330,14 @@ fun parseV2RayN(link: String): VMessBean {
         }
     }
     when (vmessQRCode.tls) {
-        "tls", "reality" -> bean.security = "tls"
+        "tls", "reality" -> {
+            bean.security = "tls"
+            bean.sni = vmessQRCode.sni
+            if (bean.sni.isNullOrBlank()) bean.sni = bean.host
+            bean.alpn = vmessQRCode.alpn.replace(",", "\n")
+            bean.utlsFingerprint = vmessQRCode.fp
+        }
     }
-
-    bean.name = vmessQRCode.ps
-    bean.sni = vmessQRCode.sni
-    bean.alpn = vmessQRCode.alpn.replace(",", "\n")
-    bean.utlsFingerprint = vmessQRCode.fp
 
     return bean
 }
