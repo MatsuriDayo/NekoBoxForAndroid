@@ -130,8 +130,9 @@ fun buildConfig(
     }
 
     fun ProxyEntity.resolveChain(): MutableList<ProxyEntity> {
-        val frontProxy = group?.frontProxy?.let { SagerDatabase.proxyDao.getById(it) }
-        val landingProxy = group?.landingProxy?.let { SagerDatabase.proxyDao.getById(it) }
+        val thisGroup = SagerDatabase.groupDao.getById(groupId)
+        val frontProxy = thisGroup?.frontProxy?.let { SagerDatabase.proxyDao.getById(it) }
+        val landingProxy = thisGroup?.landingProxy?.let { SagerDatabase.proxyDao.getById(it) }
         val list = resolveChainInternal()
         if (frontProxy != null) {
             list.add(frontProxy)
