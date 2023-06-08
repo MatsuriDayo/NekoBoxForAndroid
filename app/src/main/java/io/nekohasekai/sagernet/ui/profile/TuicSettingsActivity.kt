@@ -9,6 +9,8 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
+import moe.matsuri.nb4a.ui.EditConfigPreference
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
 class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
 
@@ -27,8 +29,13 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         DataStore.serverSNI = sni
         DataStore.serverReduceRTT = reduceRTT
         DataStore.serverMTU = mtu
+        //
         DataStore.serverFastConnect = fastConnect
         DataStore.serverAllowInsecure = allowInsecure
+        //
+        DataStore.serverConfig = customJSON
+        DataStore.serverProtocolVersion = protocolVersion
+        DataStore.serverUsername = uuid
     }
 
     override fun TuicBean.serialize() {
@@ -44,15 +51,47 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         sni = DataStore.serverSNI
         reduceRTT = DataStore.serverReduceRTT
         mtu = DataStore.serverMTU
+        //
         fastConnect = DataStore.serverFastConnect
         allowInsecure = DataStore.serverAllowInsecure
+        //
+        customJSON = DataStore.serverConfig
+        protocolVersion = DataStore.serverProtocolVersion
+        uuid = DataStore.serverUsername
     }
+
+    private lateinit var editConfigPreference: EditConfigPreference
 
     override fun PreferenceFragmentCompat.createPreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
         addPreferencesFromResource(R.xml.tuic_preferences)
+
+        editConfigPreference = findPreference(Key.SERVER_CONFIG)!!
+
+        val uuid = findPreference<EditTextPreference>(Key.SERVER_USERNAME)!!
+        val mtu = findPreference<EditTextPreference>(Key.SERVER_MTU)!!
+        val fastConnect = findPreference<SwitchPreference>(Key.SERVER_FAST_CONNECT)!!
+        val allowInsecure = findPreference<SwitchPreference>(Key.SERVER_ALLOW_INSECURE)!!
+        fun updateVersion(v: Int) {
+            if (v == 5) {
+                uuid.isVisible = true
+                mtu.isVisible = false
+                fastConnect.isVisible = false
+                allowInsecure.isVisible = false
+            } else {
+                uuid.isVisible = false
+                mtu.isVisible = true
+                fastConnect.isVisible = true
+                allowInsecure.isVisible = true
+            }
+        }
+        findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!.setOnPreferenceChangeListener { _, newValue ->
+            updateVersion(newValue.toString().toIntOrNull() ?: 4)
+            true
+        }
+        updateVersion(DataStore.serverProtocolVersion)
 
         val disableSNI = findPreference<SwitchPreference>(Key.SERVER_DISABLE_SNI)!!
         val sni = findPreference<EditTextPreference>(Key.SERVER_SNI)!!
@@ -64,6 +103,14 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
 
         findPreference<EditTextPreference>(Key.SERVER_PASSWORD)!!.apply {
             summaryProvider = PasswordSummaryProvider
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (::editConfigPreference.isInitialized) {
+            editConfigPreference.notifyChanged()
         }
     }
 

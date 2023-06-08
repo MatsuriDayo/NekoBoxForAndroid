@@ -113,6 +113,21 @@ object Util {
         }
     }
 
+
+    fun mergeJSON(j: String, to: MutableMap<String, Any>) {
+        if (j.isBlank()) return
+        val m = JavaUtil.gson.fromJson(j, to.javaClass)
+        m.forEach { (k, v) ->
+            if (v is Map<*, *> && to[k] is Map<*, *>) {
+                val currentMap = (to[k] as Map<*, *>).toMutableMap()
+                currentMap += v
+                to[k] = currentMap
+            } else {
+                to[k] = v
+            }
+        }
+    }
+
     // Format Time
 
     @SuppressLint("SimpleDateFormat")

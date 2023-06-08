@@ -78,14 +78,11 @@ object Key {
     const val SERVER_USERNAME = "serverUsername"
     const val SERVER_PASSWORD = "serverPassword"
     const val SERVER_METHOD = "serverMethod"
-    const val SERVER_PLUGIN = "serverPlugin"
-    const val SERVER_PLUGIN_CONFIGURE = "serverPluginConfigure"
     const val SERVER_PASSWORD1 = "serverPassword1"
 
     const val SERVER_PROTOCOL = "serverProtocol"
     const val SERVER_OBFS = "serverObfs"
 
-    const val SERVER_SECURITY = "serverSecurity"
     const val SERVER_NETWORK = "serverNetwork"
     const val SERVER_HOST = "serverHost"
     const val SERVER_PATH = "serverPath"

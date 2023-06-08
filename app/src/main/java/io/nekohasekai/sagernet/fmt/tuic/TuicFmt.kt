@@ -1,39 +1,82 @@
 package io.nekohasekai.sagernet.fmt.tuic
 
-import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.LOCALHOST
 import io.nekohasekai.sagernet.ktx.isIpAddress
-import io.nekohasekai.sagernet.ktx.toStringPretty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import moe.matsuri.nb4a.plugin.Plugins
+import io.nekohasekai.sagernet.ktx.wrapIPV6Host
+import moe.matsuri.nb4a.utils.JavaUtil
+import moe.matsuri.nb4a.utils.Util
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
-import java.net.InetAddress
+
+fun TuicBean.pluginId(): String {
+    return when (protocolVersion) {
+        5 -> "tuic-v5-plugin"
+        else -> "tuic-plugin"
+    }
+}
 
 fun TuicBean.buildTuicConfig(port: Int, cacheFile: (() -> File)?): String {
-    if (Plugins.isUsingMatsuriExe("tuic-plugin")) {
-        if (!serverAddress.isIpAddress()) {
-            runBlocking {
-                finalAddress = withContext(Dispatchers.IO) {
-                    InetAddress.getAllByName(serverAddress)
-                }?.firstOrNull()?.hostAddress ?: "127.0.0.1"
-                // TODO network on main thread, tuic don't support "sni"
-            }
-        }
-    }
+    val config = when (protocolVersion) {
+        5 -> buildTuicConfigV5(port, cacheFile)
+        else -> buildTuicConfigV4(port, cacheFile)
+    }.toString()
+    var gsonMap = mutableMapOf<String, Any>()
+    gsonMap = JavaUtil.gson.fromJson(config, gsonMap.javaClass)
+    Util.mergeJSON(customJSON, gsonMap)
+    return JavaUtil.gson.toJson(gsonMap)
+}
+
+fun TuicBean.buildTuicConfigV5(port: Int, cacheFile: (() -> File)?): JSONObject {
     return JSONObject().apply {
         put("relay", JSONObject().apply {
-            if (sni.isNotBlank()) {
-                put("server", sni)
-                put("ip", finalAddress)
-            } else if (serverAddress.isIpAddress()) {
-                put("server", finalAddress)
+            if (sni.isNotBlank() && !disableSNI) {
+                put("server", "$sni:$finalPort")
+                if (finalAddress.isIpAddress()) {
+                    put("ip", finalAddress)
+                } else {
+                    throw Exception("TUIC must use IP address when you need spoof SNI.")
+                }
             } else {
-                put("server", serverAddress)
-                put("ip", finalAddress)
+                put("server", serverAddress.wrapIPV6Host() + ":" + finalPort)
+            }
+
+            put("uuid", uuid)
+            put("password", token)
+
+            if (caText.isNotBlank() && cacheFile != null) {
+                val caFile = cacheFile()
+                caFile.writeText(caText)
+                put("certificates", JSONArray(listOf(caFile.absolutePath)))
+            }
+
+            put("udp_relay_mode", udpRelayMode)
+            if (alpn.isNotBlank()) {
+                put("alpn", JSONArray(alpn.split("\n")))
+            }
+            put("congestion_control", congestionController)
+            put("disable_sni", disableSNI)
+            put("zero_rtt_handshake", disableSNI)
+        })
+        put("local", JSONObject().apply {
+            put("server", "127.0.0.1:$port")
+        })
+        put("log_level", "debug")
+    }
+}
+
+fun TuicBean.buildTuicConfigV4(port: Int, cacheFile: (() -> File)?): JSONObject {
+    return JSONObject().apply {
+        put("relay", JSONObject().apply {
+            if (sni.isNotBlank() && !disableSNI) {
+                put("server", sni)
+                if (finalAddress.isIpAddress()) {
+                    put("ip", finalAddress)
+                } else {
+                    throw Exception("TUIC must use IP address when you need spoof SNI.")
+                }
+            } else {
+                put("server", finalAddress)
             }
             put("port", finalPort)
             put("token", token)
@@ -59,6 +102,6 @@ fun TuicBean.buildTuicConfig(port: Int, cacheFile: (() -> File)?): String {
             put("ip", LOCALHOST)
             put("port", port)
         })
-        put("log_level", if (DataStore.logLevel > 0) "debug" else "info")
-    }.toStringPretty()
+        put("log_level", "debug")
+    }
 }

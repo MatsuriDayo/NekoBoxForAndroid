@@ -19,6 +19,7 @@ import io.nekohasekai.sagernet.fmt.socks.buildSingBoxOutboundSocksBean
 import io.nekohasekai.sagernet.fmt.ssh.SSHBean
 import io.nekohasekai.sagernet.fmt.ssh.buildSingBoxOutboundSSHBean
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
+import io.nekohasekai.sagernet.fmt.tuic.pluginId
 import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
@@ -35,6 +36,7 @@ import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
 import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
+import moe.matsuri.nb4a.utils.Util
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val TAG_MIXED = "mixed-in"
@@ -61,20 +63,6 @@ class ConfigBuildResult(
     val selectorGroupId: Long,
 ) {
     data class IndexEntity(var chain: LinkedHashMap<Int, ProxyEntity>)
-}
-
-fun mergeJSON(j: String, to: MutableMap<String, Any>) {
-    if (j.isBlank()) return
-    val m = gson.fromJson(j, to.javaClass)
-    m.forEach { (k, v) ->
-        if (v is Map<*, *> && to[k] is Map<*, *>) {
-            val currentMap = (to[k] as Map<*, *>).toMutableMap()
-            currentMap += v
-            to[k] = currentMap
-        } else {
-            to[k] = v
-        }
-    }
 }
 
 fun buildConfig(
@@ -439,7 +427,7 @@ fun buildConfig(
 
                     // custom JSON merge
                     if (bean.customOutboundJson.isNotBlank()) {
-                        mergeJSON(bean.customOutboundJson, currentOutbound)
+                        Util.mergeJSON(bean.customOutboundJson, currentOutbound)
                     }
                 }
 
@@ -458,18 +446,19 @@ fun buildConfig(
 
                 // External proxy need a dokodemo-door inbound to forward the traffic
                 // For external proxy software, their traffic must goes to v2ray-core to use protected fd.
+                bean.finalPort = bean.serverPort
                 if (bean.canMapping() && proxyEntity.needExternal()) {
                     // With ss protect, don't use mapping
                     var needExternal = true
                     if (index == profileList.lastIndex) {
                         val pluginId = when (bean) {
                             is HysteriaBean -> "hysteria-plugin"
-                            is TuicBean -> "tuic-plugin"
+                            is TuicBean -> bean.pluginId()
                             else -> ""
                         }
                         if (Plugins.isUsingMatsuriExe(pluginId)) {
                             needExternal = false
-                        } else if (pluginId.isNotBlank()) {
+                        } else if (Plugins.getPlugin(pluginId) != null) {
                             throw Exception("You are using an unsupported $pluginId, please download the correct plugin.")
                         }
                     }
@@ -593,19 +582,25 @@ fun buildConfig(
                     if (uidList.isNotEmpty()) user_id = uidList
                     domainList?.let { makeSingBoxRule(it) }
                 }
-                if (rule.outbound == -1L) {
-                    userDNSRuleList += dnsRuleObj.apply { server = "dns-direct" }
-                } else if (rule.outbound == 0L) {
-                    if (useFakeDns) userDNSRuleList += dnsRuleObj.apply {
-                        server = "dns-fake"
-                        inbound = listOf("tun-in")
+                when (rule.outbound) {
+                    -1L -> {
+                        userDNSRuleList += dnsRuleObj.apply { server = "dns-direct" }
                     }
-                    userDNSRuleList += dnsRuleObj.apply {
-                        server = "dns-remote"
-                        inbound = null
+
+                    0L -> {
+                        if (useFakeDns) userDNSRuleList += dnsRuleObj.apply {
+                            server = "dns-fake"
+                            inbound = listOf("tun-in")
+                        }
+                        userDNSRuleList += dnsRuleObj.apply {
+                            server = "dns-remote"
+                            inbound = null
+                        }
                     }
-                } else if (rule.outbound == -2L) {
-                    userDNSRuleList += dnsRuleObj.apply { server = "dns-block" }
+
+                    -2L -> {
+                        userDNSRuleList += dnsRuleObj.apply { server = "dns-block" }
+                    }
                 }
 
                 outbound = when (val outId = rule.outbound) {
@@ -786,7 +781,7 @@ fun buildConfig(
     }.let {
         ConfigBuildResult(
             gson.toJson(it.asMap().apply {
-                mergeJSON(optionsToMerge, this)
+                Util.mergeJSON(optionsToMerge, this)
             }),
             externalIndexMap,
             proxy.id,

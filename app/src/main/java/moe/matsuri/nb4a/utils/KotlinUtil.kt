@@ -1,5 +1,6 @@
 package moe.matsuri.nb4a.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
@@ -34,6 +35,7 @@ fun File.recreate(dir: Boolean) {
 
 // Context utils
 
+@SuppressLint("DiscouragedApi")
 fun Context.getDrawableByName(name: String?): Drawable? {
     val resourceId: Int = resources.getIdentifier(name, "drawable", packageName)
     return AppCompatResources.getDrawable(this, resourceId)

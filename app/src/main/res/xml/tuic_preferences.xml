@@ -6,6 +6,15 @@
         app:title="@string/profile_name"
         app:useSimpleSummaryProvider="true" />
 
+    <moe.matsuri.nb4a.ui.SimpleMenuPreference
+        app:defaultValue="4"
+        app:entries="@array/tuic_version"
+        app:entryValues="@array/tuic_version_value"
+        app:icon="@drawable/ic_baseline_nfc_24"
+        app:key="serverProtocol"
+        app:title="@string/app_version"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory app:title="@string/proxy_cat">
 
         <EditTextPreference
@@ -19,10 +28,15 @@
             app:title="@string/server_port"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
+            app:icon="@drawable/ic_baseline_person_24"
+            app:key="serverUsername"
+            app:title="@string/uuid"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
             app:dialogLayout="@layout/layout_password_dialog"
             app:icon="@drawable/ic_settings_password"
             app:key="serverPassword"
-            app:title="@string/tuic_token" />
+            app:title="@string/password" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_legend_toggle_24"
             app:key="serverALPN"
@@ -76,6 +90,11 @@
             app:icon="@drawable/baseline_public_24"
             app:key="serverMTU"
             app:title="@string/mtu"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.EditConfigPreference
+            app:icon="@drawable/ic_baseline_layers_24"
+            app:key="serverConfig"
+            app:title="@string/custom_config"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

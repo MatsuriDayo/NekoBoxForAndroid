@@ -22,7 +22,8 @@ enum class PluginEntry(
     Hysteria(
         "hysteria-plugin",
         SagerNet.application.getString(R.string.action_hysteria),
-        "moe.matsuri.exe.hysteria", DownloadSource(
+        "moe.matsuri.exe.hysteria",
+        DownloadSource(
             playStore = false,
             fdroid = false,
             downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=Hysteria"
@@ -30,8 +31,19 @@ enum class PluginEntry(
     ),
     TUIC(
         "tuic-plugin",
-        SagerNet.application.getString(R.string.action_tuic),
-        "moe.matsuri.exe.tuic", DownloadSource(
+        "TUIC(v4)",
+        "moe.matsuri.exe.tuic",
+        DownloadSource(
+            playStore = false,
+            fdroid = false,
+            downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=tuic"
+        )
+    ),
+    TUIC5(
+        "tuic-v5-plugin",
+        "TUIC(v5)",
+        "moe.matsuri.exe.tuic5",
+        DownloadSource(
             playStore = false,
             fdroid = false,
             downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=tuic"
