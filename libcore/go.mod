@@ -10,7 +10,7 @@ require (
 	github.com/sagernet/sing v0.2.5-0.20230517124404-be6013893626
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	// github.com/sagernet/sing-dns v1.0.0 // replaced
-	github.com/sagernet/sing-tun v0.1.5-0.20230509102026-91df97aee204
+	github.com/sagernet/sing-tun v0.1.5-0.20230520041100-b02f2529160e
 	github.com/ulikunitz/xz v0.5.10
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105
 )
@@ -30,6 +30,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-chi/cors v1.2.1 // indirect
 	github.com/go-chi/render v1.0.2 // indirect
+	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
 	github.com/gofrs/uuid/v5 v5.0.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
@@ -63,14 +64,15 @@ require (
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
 	github.com/sagernet/sing-mux v0.0.0-20230517134606-1ebe6bb26646 // indirect
 	github.com/sagernet/sing-shadowsocks v0.2.2-0.20230509053848-d83f8fe1194c // indirect
-	github.com/sagernet/sing-shadowsocks2 v0.0.0-20230512030659-23bb92c1eb97 // indirect
-	github.com/sagernet/sing-shadowtls v0.1.2-0.20230417103049-4f682e05f19b // indirect
+	github.com/sagernet/sing-shadowsocks2 v0.0.0-20230605050515-45409ce8283d // indirect
+	github.com/sagernet/sing-shadowtls v0.1.2-0.20230531025805-ebadc7615da3 // indirect
 	github.com/sagernet/sing-vmess v0.1.5-0.20230417103030-8c3070ae3fb3 // indirect
 	github.com/sagernet/smux v0.0.0-20230312102458-337ec2a5af37 // indirect
 	github.com/sagernet/tfo-go v0.0.0-20230303015439-ffcfd8c41cf9 // indirect
 	github.com/sagernet/utls v0.0.0-20230309024959-6732c2ab36f2 // indirect
 	github.com/sagernet/websocket v0.0.0-20220913015213-615516348b4e // indirect
 	github.com/sagernet/wireguard-go v0.0.0-20230420044414-a7bac1754e77 // indirect
+	github.com/scjalliance/comshim v0.0.0-20230315213746-5e51f40bd3b9 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/u-root/uio v0.0.0-20230220225925-ffce2a382923 // indirect

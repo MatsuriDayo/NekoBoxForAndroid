@@ -113,7 +113,11 @@ class SagerConnection(
 
     fun updateConnectionId(id: Int) {
         connectionId = id
-        service?.registerCallback(serviceCallback, id)
+        try {
+            service?.registerCallback(serviceCallback, id)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onServiceConnected(name: ComponentName?, binder: IBinder) {
