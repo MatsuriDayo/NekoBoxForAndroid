@@ -387,13 +387,8 @@
     </string-array>
 
     <string-array name="tuic_version">
-        <item>v4</item>
-        <item>v5</item>
-    </string-array>
-
-    <string-array name="tuic_version_value">
-        <item>4</item>
         <item>5</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="socks_versions">

@@ -21,6 +21,9 @@ public class TuicBean extends AbstractBean {
     public Boolean reduceRTT;
     public Integer mtu;
     public String sni;
+
+    // TUIC zep
+
     public Boolean fastConnect;
     public Boolean allowInsecure;
 
@@ -45,7 +48,7 @@ public class TuicBean extends AbstractBean {
         if (fastConnect == null) fastConnect = false;
         if (allowInsecure == null) allowInsecure = false;
         if (customJSON == null) customJSON = "";
-        if (protocolVersion == null) protocolVersion = 4;
+        if (protocolVersion == null) protocolVersion = 5;
         if (uuid == null) uuid = "";
     }
 

@@ -56,7 +56,8 @@ fun TuicBean.buildTuicConfigV5(port: Int, cacheFile: (() -> File)?): JSONObject 
             }
             put("congestion_control", congestionController)
             put("disable_sni", disableSNI)
-            put("zero_rtt_handshake", disableSNI)
+            put("zero_rtt_handshake", reduceRTT)
+            if (allowInsecure) put("allow_insecure", true)
         })
         put("local", JSONObject().apply {
             put("server", "127.0.0.1:$port")

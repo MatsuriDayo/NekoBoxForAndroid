@@ -465,7 +465,7 @@
     <string name="use_selector">启用 selector （免重载切换节点）</string>
     <string name="front_proxy">前置代理</string>
     <string name="landing_proxy">落地代理</string>
-    <string name="shadowtls_version">ShadowTLS 版本</string>
+    <string name="protocol_version">协议版本</string>
     <string name="share_subscription">分享订阅</string>
     <string name="show_group_in_notification">在通知中显示组名</string>
     <string name="reset_connections">重置连接</string>

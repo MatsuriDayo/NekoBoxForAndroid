@@ -73,18 +73,15 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         val uuid = findPreference<EditTextPreference>(Key.SERVER_USERNAME)!!
         val mtu = findPreference<EditTextPreference>(Key.SERVER_MTU)!!
         val fastConnect = findPreference<SwitchPreference>(Key.SERVER_FAST_CONNECT)!!
-        val allowInsecure = findPreference<SwitchPreference>(Key.SERVER_ALLOW_INSECURE)!!
         fun updateVersion(v: Int) {
             if (v == 5) {
                 uuid.isVisible = true
                 mtu.isVisible = false
                 fastConnect.isVisible = false
-                allowInsecure.isVisible = false
             } else {
                 uuid.isVisible = false
                 mtu.isVisible = true
                 fastConnect.isVisible = true
-                allowInsecure.isVisible = true
             }
         }
         findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!.setOnPreferenceChangeListener { _, newValue ->
