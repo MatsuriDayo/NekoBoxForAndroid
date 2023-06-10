@@ -1,9 +1,7 @@
 package io.nekohasekai.sagernet.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.ShortcutManager
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -39,12 +37,9 @@ class ScannerActivity : ThemedActivity(),
     lateinit var binding: LayoutScannerBinding
     lateinit var cameraScan: CameraScan
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+
         if (Build.VERSION.SDK_INT >= 25) getSystemService<ShortcutManager>()!!.reportShortcutUsed("scan")
         binding = LayoutScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
