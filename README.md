@@ -37,6 +37,7 @@ https://matsuridayo.github.io
 * Trojan-Go ( trojan-go-plugin )
 * NaïveProxy ( naive-plugin )
 * Hysteria ( hysteria-plugin )
+* TUIC ( tuic-plugin & tuic-v5-plugin )
 
 请到[项目主页](https://matsuridayo.github.io)下载插件。
 

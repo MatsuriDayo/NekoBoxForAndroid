@@ -93,6 +93,8 @@ public class TuicBean extends AbstractBean {
             customJSON = input.readString();
             protocolVersion = input.readInt();
             uuid = input.readString();
+        } else {
+            protocolVersion = 4;
         }
     }
 
