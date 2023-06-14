@@ -748,11 +748,6 @@ fun buildConfig(
                 source_ip_cidr = listOf("224.0.0.0/3", "ff00::/8")
                 outbound = TAG_BLOCK
             })
-            dns.rules.add(DNSRule_DefaultOptions().apply {
-                domain_suffix = listOf(".arpa.", ".arpa")
-                server = "dns-block"
-                disable_cache = true
-            })
             // FakeDNS obj
             if (useFakeDns) {
                 dns.servers.add(DNSServerOptions().apply {

@@ -13,6 +13,8 @@ import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
 import io.nekohasekai.sagernet.fmt.socks.SOCKSBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.fmt.trojan_go.parseTrojanGo
+import io.nekohasekai.sagernet.fmt.tuic.TuicBean
+import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.VMessBean
 import io.nekohasekai.sagernet.fmt.v2ray.isTLS
 import io.nekohasekai.sagernet.fmt.v2ray.setTLS
@@ -208,12 +210,17 @@ object RawUpdater : GroupUpdater() {
 
         if (text.contains("proxies:")) {
 
+            // clash & meta
+
             try {
 
-                // clash
-                for (proxy in (Yaml().apply {
+                val yaml = Yaml().apply {
                     addTypeDescription(TypeDescription(String::class.java, "str"))
-                }.loadAs(text, Map::class.java)["proxies"] as? (List<Map<String, Any?>>) ?: error(
+                }.loadAs(text, Map::class.java)
+
+                val globalClientFingerprint = yaml["global-client-fingerprint"]?.toString() ?: ""
+
+                for (proxy in (yaml["proxies"] as? (List<Map<String, Any?>>) ?: error(
                     app.getString(R.string.no_proxies_found_in_file)
                 ))) {
                     // Note: YAML numbers parsed as "Long"
@@ -476,9 +483,59 @@ object RawUpdater : GroupUpdater() {
                             }
                             proxies.add(bean)
                         }
+
+                        "tuic" -> {
+                            val bean = TuicBean()
+                            for (opt in proxy) {
+                                when (opt.key.replace("_", "-")) {
+                                    "name" -> bean.name = opt.value?.toString()
+                                    "server" -> bean.serverAddress = opt.value as String
+                                    "port" -> bean.serverPort = opt.value.toString().toInt()
+
+                                    "token" -> {
+                                        bean.protocolVersion = 4
+                                        bean.token = opt.value.toString()
+                                    }
+
+                                    "uuid" -> bean.uuid = opt.value.toString()
+
+                                    "password" -> bean.token = opt.value.toString()
+
+                                    "skip-cert-verify" -> bean.allowInsecure =
+                                        opt.value?.toString() == "true"
+
+                                    "disable-sni" -> bean.disableSNI =
+                                        opt.value?.toString() == "true"
+
+                                    "reduce-rtt" -> bean.reduceRTT =
+                                        opt.value?.toString() == "true"
+
+                                    "sni" -> bean.sni = opt.value.toString()
+
+                                    "alpn" -> {
+                                        val alpn = (opt.value as? (List<String>))
+                                        bean.alpn = alpn?.joinToString("\n")
+                                    }
+
+                                    "congestion-controller" -> bean.congestionController =
+                                        opt.value.toString()
+
+                                }
+                            }
+                            proxies.add(bean)
+                        }
                     }
                 }
-                proxies.forEach { it.initializeDefaultValues() }
+
+                // Fix ent
+                proxies.forEach {
+                    it.initializeDefaultValues()
+                    if (it is StandardV2RayBean) {
+                        if (it.realityPubKey.isNotBlank() && it.utlsFingerprint.isBlank()) {
+                            it.utlsFingerprint = globalClientFingerprint
+                        }
+                    }
+                }
                 return proxies
             } catch (e: YAMLException) {
                 Logs.w(e)
