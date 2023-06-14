@@ -285,7 +285,12 @@ object RawUpdater : GroupUpdater() {
 
                         "vmess", "vless" -> {
                             val isVLESS = proxy["type"].toString() == "vless"
-                            val bean = VMessBean().apply { if (isVLESS) alterId = -1 }
+                            val bean = VMessBean().apply {
+                                if (isVLESS) {
+                                    alterId = -1 // make it VLESS
+                                    packetEncoding = 2 // clash meta default XUDP
+                                }
+                            }
                             for (opt in proxy) {
                                 when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value?.toString()
@@ -299,6 +304,14 @@ object RawUpdater : GroupUpdater() {
                                     "cipher" -> if (!isVLESS) bean.encryption = opt.value as String
 
                                     "flow" -> if (isVLESS) bean.encryption = opt.value as String
+
+                                    "xudp" -> if (isVLESS) {
+                                        if (opt.value.toString() == "false") {
+                                            bean.packetEncoding = 0
+                                        } else {
+                                            bean.packetEncoding = 2
+                                        }
+                                    }
 
                                     "network" -> {
                                         bean.type = opt.value as String
