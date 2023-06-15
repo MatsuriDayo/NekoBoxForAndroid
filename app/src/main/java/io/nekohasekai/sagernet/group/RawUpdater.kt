@@ -460,6 +460,9 @@ object RawUpdater : GroupUpdater() {
                                     "name" -> bean.name = opt.value?.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
+
+                                    "obfs" -> bean.obfuscation = opt.value.toString()
+
                                     "auth-str" -> {
                                         bean.authPayloadType = HysteriaBean.TYPE_STRING
                                         bean.authPayload = opt.value?.toString()
