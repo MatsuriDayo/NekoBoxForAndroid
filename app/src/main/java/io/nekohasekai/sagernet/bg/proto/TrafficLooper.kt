@@ -93,8 +93,11 @@ class TrafficLooper
         val itemBypass = TrafficUpdater.TrafficLooperData(tag = TAG_BYPASS)
 
         while (sc.isActive) {
-            delay(delayMs)
-            proxy = data.proxy ?: continue
+            proxy = data.proxy
+            if (proxy == null) {
+                delay(delayMs)
+                continue
+            }
 
             if (trafficUpdater == null) {
                 if (!proxy.isInitialized()) continue
@@ -175,6 +178,8 @@ class TrafficLooper
             data.notification?.apply {
                 if (listenPostSpeed) postNotificationSpeedUpdate(speed)
             }
+
+            delay(delayMs)
         }
     }
 }

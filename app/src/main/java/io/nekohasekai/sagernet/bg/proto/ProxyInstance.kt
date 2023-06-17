@@ -44,7 +44,7 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
 
     override fun launch() {
         box.setAsMain()
-        super.launch()
+        super.launch() // start box
         runOnDefaultDispatcher {
             looper = service?.let { TrafficLooper(it.data, this) }
             looper?.start()
