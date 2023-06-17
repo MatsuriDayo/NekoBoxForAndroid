@@ -116,6 +116,9 @@
             app:key="resolveDestination"
             app:summary="@string/resolve_destination_summary"
             app:title="@string/resolve_destination" />
+        <SwitchPreference
+            app:key="resolveServer"
+            app:title="@string/resolve_server" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="0"
             app:entries="@array/ipv6_mode"

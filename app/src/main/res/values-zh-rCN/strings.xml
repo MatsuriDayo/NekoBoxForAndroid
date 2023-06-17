@@ -477,4 +477,5 @@
     <string name="mux_type">Mux 协议</string>
     <string name="sniff_routing">探测结果用于路由判断</string>
     <string name="sniff_override">探测结果用于目标地址</string>
+    <string name="resolve_server">根据 IPv6 策略解析服务器地址</string>
 </resources>

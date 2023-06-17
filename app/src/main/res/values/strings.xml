@@ -518,5 +518,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="mux_type">Mux protocol</string>
     <string name="sniff_routing">Sniff result for routing</string>
     <string name="sniff_override">Sniff result for destination</string>
+    <string name="resolve_server">Resolve the server address according to the IPv6 policy</string>
 
 </resources>

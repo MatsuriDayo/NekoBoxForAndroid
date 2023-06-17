@@ -32,6 +32,7 @@ object Key {
 
     const val TRAFFIC_SNIFFING = "trafficSniffing"
     const val RESOLVE_DESTINATION = "resolveDestination"
+    const val RESOLVE_SERVER = "resolveServer"
 
     const val BYPASS_LAN = "bypassLan"
     const val BYPASS_LAN_IN_CORE = "bypassLanInCore"

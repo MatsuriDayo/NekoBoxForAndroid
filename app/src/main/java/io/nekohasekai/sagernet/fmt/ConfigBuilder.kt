@@ -153,12 +153,11 @@ fun buildConfig(
     val externalIndexMap = ArrayList<IndexEntity>()
     val requireTransproxy = if (forTest) false else DataStore.requireTransproxy
     val ipv6Mode = if (forTest) IPv6Mode.ENABLE else DataStore.ipv6Mode
-    val resolveDestination = DataStore.resolveDestination
     val alerts = mutableListOf<Pair<Int, String>>()
 
     fun genDomainStrategy(noAsIs: Boolean): String {
         return when {
-            !resolveDestination && !noAsIs -> ""
+            !noAsIs -> ""
             ipv6Mode == IPv6Mode.DISABLE -> "ipv4_only"
             ipv6Mode == IPv6Mode.PREFER -> "prefer_ipv6"
             ipv6Mode == IPv6Mode.ONLY -> "ipv6_only"
@@ -216,7 +215,7 @@ fun buildConfig(
                 tag = "tun-in"
                 stack = if (DataStore.tunImplementation == 1) "system" else "gvisor"
                 endpoint_independent_nat = true
-                domain_strategy = genDomainStrategy(false)
+                domain_strategy = genDomainStrategy(DataStore.resolveDestination)
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
                 when (ipv6Mode) {
@@ -239,7 +238,7 @@ fun buildConfig(
                 tag = TAG_MIXED
                 listen = bind
                 listen_port = DataStore.mixedPort
-                domain_strategy = genDomainStrategy(false)
+                domain_strategy = genDomainStrategy(DataStore.resolveDestination)
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
             })
@@ -252,7 +251,6 @@ fun buildConfig(
                     tag = TAG_TRANS
                     listen = bind
                     listen_port = DataStore.transproxyPort
-                    domain_strategy = genDomainStrategy(false)
                     sniff = needSniff
                     sniff_override_destination = needSniffOverride
                 })
@@ -262,7 +260,6 @@ fun buildConfig(
                     tag = TAG_TRANS
                     listen = bind
                     listen_port = DataStore.transproxyPort
-                    domain_strategy = genDomainStrategy(false)
                     sniff = needSniff
                     sniff_override_destination = needSniffOverride
                 })
@@ -300,7 +297,7 @@ fun buildConfig(
             val chainTag = "c-$chainId"
             var muxApplied = false
 
-            var currentDomainStrategy = genDomainStrategy(false)
+            var currentDomainStrategy = genDomainStrategy(DataStore.resolveServer)
 
             profileList.forEachIndexed { index, proxyEntity ->
                 val bean = proxyEntity.requireBean()
