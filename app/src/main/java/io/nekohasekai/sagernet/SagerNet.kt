@@ -106,11 +106,6 @@ class SagerNet : Application(),
         )
     }
 
-    fun getPackageInfo(packageName: String) = packageManager.getPackageInfo(
-        packageName, if (Build.VERSION.SDK_INT >= 28) PackageManager.GET_SIGNING_CERTIFICATES
-        else @Suppress("DEPRECATION") PackageManager.GET_SIGNATURES
-    )!!
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         updateNotificationChannels()
@@ -161,8 +156,6 @@ class SagerNet : Application(),
         val user by lazy { application.getSystemService<UserManager>()!! }
         val uiMode by lazy { application.getSystemService<UiModeManager>()!! }
         val power by lazy { application.getSystemService<PowerManager>()!! }
-
-        val packageInfo: PackageInfo by lazy { application.getPackageInfo(application.packageName) }
 
         fun getClipboardText(): String {
             return clipboard.primaryClip?.takeIf { it.itemCount > 0 }
