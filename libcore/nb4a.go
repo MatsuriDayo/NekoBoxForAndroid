@@ -59,7 +59,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 		maxLogSizeKb = 50
 	}
 	neko_log.LogWriterDisable = !logEnable
-	// neko_log.NB4AGuiLogWriter = iif.(io.Writer)
+	neko_log.TruncateOnStart = isBgProcess
 	neko_log.SetupLog(int(maxLogSizeKb)*1024, filepath.Join(cachePath, "neko.log"))
 	boxmain.DisableColor()
 
