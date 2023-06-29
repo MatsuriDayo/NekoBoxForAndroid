@@ -363,18 +363,6 @@ class MainActivity : ThemedActivity(),
         changeState(state, msg, true)
     }
 
-    override fun routeAlert(type: Int, routeName: String) {
-        when (type) {
-            0 -> {
-                // need vpn
-
-                Toast.makeText(
-                    this, getString(R.string.route_need_vpn, routeName), Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
     val connection = SagerConnection(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND, true)
     override fun onServiceConnected(service: ISagerNetService) = changeState(
         try {

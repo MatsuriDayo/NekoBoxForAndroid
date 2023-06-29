@@ -345,12 +345,6 @@ class BaseService {
                     startProcesses()
                     data.changeState(State.Connected)
 
-                    for ((type, routeName) in proxy.config.alerts) {
-                        data.binder.broadcast {
-                            it.routeAlert(type, routeName)
-                        }
-                    }
-
                     lateInit()
                 } catch (_: CancellationException) { // if the job was cancelled, it is canceller's responsibility to call stopRunner
                 } catch (_: UnknownHostException) {

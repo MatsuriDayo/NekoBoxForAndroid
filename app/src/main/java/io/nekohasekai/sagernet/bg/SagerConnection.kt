@@ -44,7 +44,6 @@ class SagerConnection(
         fun stateChanged(state: BaseService.State, profileName: String?, msg: String?)
 
         fun missingPlugin(profileName: String, pluginName: String) {}
-        fun routeAlert(type: Int, routeName: String) {}
 
         fun onServiceConnected(service: ISagerNetService)
 
@@ -95,13 +94,6 @@ class SagerConnection(
             val callback = callback ?: return
             runOnMainDispatcher {
                 callback.missingPlugin(profileName, pluginName)
-            }
-        }
-
-        override fun routeAlert(type: Int, routeName: String) {
-            val callback = callback ?: return
-            runOnMainDispatcher {
-                callback.routeAlert(type, routeName)
             }
         }
 

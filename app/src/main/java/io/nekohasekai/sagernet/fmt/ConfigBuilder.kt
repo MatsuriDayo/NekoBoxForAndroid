@@ -1,7 +1,10 @@
 package io.nekohasekai.sagernet.fmt
 
+import android.widget.Toast
 import io.nekohasekai.sagernet.IPv6Mode
 import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
@@ -59,7 +62,6 @@ class ConfigBuildResult(
     var mainEntId: Long,
     var trafficMap: Map<String, List<ProxyEntity>>,
     var profileTagMap: Map<Long, String>,
-    val alerts: List<Pair<Int, String>>,
     val selectorGroupId: Long,
 ) {
     data class IndexEntity(var chain: LinkedHashMap<Int, ProxyEntity>)
@@ -78,7 +80,6 @@ fun buildConfig(
                 proxy.id, //
                 mapOf(TAG_PROXY to listOf(proxy)), //
                 mapOf(proxy.id to TAG_PROXY), //
-                listOf(),
                 -1L
             )
         }
@@ -153,7 +154,6 @@ fun buildConfig(
     val externalIndexMap = ArrayList<IndexEntity>()
     val requireTransproxy = if (forTest) false else DataStore.requireTransproxy
     val ipv6Mode = if (forTest) IPv6Mode.ENABLE else DataStore.ipv6Mode
-    val alerts = mutableListOf<Pair<Int, String>>()
 
     fun genDomainStrategy(noAsIs: Boolean): String {
         return when {
@@ -524,7 +524,11 @@ fun buildConfig(
             }
             val uidList = rule.packages.map {
                 if (!isVPN) {
-                    alerts.add(0 to rule.displayName())
+                    Toast.makeText(
+                        SagerNet.application,
+                        SagerNet.application.getString(R.string.route_need_vpn, rule.displayName()),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 PackageCache[it]?.takeIf { uid -> uid >= 1000 }
             }.toHashSet().filterNotNull()
@@ -605,13 +609,20 @@ fun buildConfig(
                     0L -> TAG_PROXY
                     -1L -> TAG_BYPASS
                     -2L -> TAG_BLOCK
-                    else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId]
-                        ?: throw Exception("invalid rule")
+                    else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
                 }
             }
 
             if (!ruleObj.checkEmpty()) {
-                route.rules.add(ruleObj)
+                if (ruleObj.outbound.isNullOrBlank()) {
+                    Toast.makeText(
+                        SagerNet.application,
+                        "Warning: " + rule.displayName() + ": A non-existent outbound was specified.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    route.rules.add(ruleObj)
+                }
             }
         }
 
@@ -780,7 +791,6 @@ fun buildConfig(
             proxy.id,
             trafficMap,
             tagMap,
-            alerts,
             if (buildSelector) group!!.id else -1L
         )
     }
