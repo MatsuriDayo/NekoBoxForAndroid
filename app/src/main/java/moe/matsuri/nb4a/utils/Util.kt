@@ -72,7 +72,7 @@ object Util {
         for (flag in flags) {
             try {
                 ret = Base64.decode(str, flag)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
             if (ret != null) return ret
         }

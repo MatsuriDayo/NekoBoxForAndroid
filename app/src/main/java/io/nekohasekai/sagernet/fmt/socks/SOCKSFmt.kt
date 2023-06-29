@@ -6,42 +6,32 @@ import io.nekohasekai.sagernet.ktx.unUrlSafe
 import io.nekohasekai.sagernet.ktx.urlSafe
 import moe.matsuri.nb4a.SingBoxOptions
 import moe.matsuri.nb4a.utils.NGUtil
+import moe.matsuri.nb4a.utils.Util
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 fun parseSOCKS(link: String): SOCKSBean {
-    if (!link.substringAfter("://").contains(":")) {
-        // v2rayN shit format
-        var url = link.substringAfter("://")
-        if (url.contains("#")) {
-            url = url.substringBeforeLast("#")
-        }
-        url = url.decodeBase64UrlSafe()
-        val httpUrl = "http://$url".toHttpUrlOrNull() ?: error("Invalid v2rayN link content: $url")
-        return SOCKSBean().apply {
-            serverAddress = httpUrl.host
-            serverPort = httpUrl.port
-            username = httpUrl.username.takeIf { it != "null" } ?: ""
-            password = httpUrl.password.takeIf { it != "null" } ?: ""
-            if (link.contains("#")) {
-                name = link.substringAfter("#").unUrlSafe()
-            }
-        }
-    } else {
-        val url = ("http://" + link.substringAfter("://")).toHttpUrlOrNull()
-            ?: error("Not supported: $link")
+    val url = ("http://" + link.substringAfter("://")).toHttpUrlOrNull()
+        ?: error("Not supported: $link")
 
-        return SOCKSBean().apply {
-            protocol = when {
-                link.startsWith("socks4://") -> SOCKSBean.PROTOCOL_SOCKS4
-                link.startsWith("socks4a://") -> SOCKSBean.PROTOCOL_SOCKS4A
-                else -> SOCKSBean.PROTOCOL_SOCKS5
+    return SOCKSBean().apply {
+        protocol = when {
+            link.startsWith("socks4://") -> SOCKSBean.PROTOCOL_SOCKS4
+            link.startsWith("socks4a://") -> SOCKSBean.PROTOCOL_SOCKS4A
+            else -> SOCKSBean.PROTOCOL_SOCKS5
+        }
+        serverAddress = url.host
+        serverPort = url.port
+        username = url.username
+        password = url.password
+        // v2rayN fmt
+        if (password.isNullOrBlank() && !username.isNullOrBlank()) {
+            try {
+                val n = username.decodeBase64UrlSafe()
+                username = n.substringBefore(":")
+                password = n.substringAfter(":")
+            } catch (_: Exception) {
             }
-            serverAddress = url.host
-            serverPort = url.port
-            username = url.username
-            password = url.password
-            name = url.fragment
         }
     }
 }
