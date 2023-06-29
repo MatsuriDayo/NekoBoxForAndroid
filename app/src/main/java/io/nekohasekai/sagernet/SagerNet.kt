@@ -33,6 +33,7 @@ import libcore.BoxPlatformInterface
 import libcore.Libcore
 import libcore.NB4AInterface
 import moe.matsuri.nb4a.utils.JavaUtil
+import moe.matsuri.nb4a.utils.LibcoreUtil
 import moe.matsuri.nb4a.utils.cleanWebview
 import java.net.InetSocketAddress
 import androidx.work.Configuration as WorkConfiguration
@@ -266,7 +267,7 @@ class SagerNet : Application(),
             Logs.d("other selector: $selectorTag")
             return
         }
-        Libcore.resetAllConnections(true)
+        LibcoreUtil.resetAllConnections(true)
         DataStore.baseService?.apply {
             runOnDefaultDispatcher {
                 val id = data.proxy!!.config.profileTagMap

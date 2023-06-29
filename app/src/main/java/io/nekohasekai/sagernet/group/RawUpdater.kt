@@ -502,10 +502,12 @@ object RawUpdater : GroupUpdater() {
 
                         "tuic" -> {
                             val bean = TuicBean()
+                            var ip = ""
                             for (opt in proxy) {
                                 when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value?.toString()
-                                    "server" -> bean.serverAddress = opt.value as String
+                                    "server" -> bean.serverAddress = opt.value.toString()
+                                    "ip" -> ip = opt.value.toString()
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
 
                                     "token" -> {
@@ -536,6 +538,14 @@ object RawUpdater : GroupUpdater() {
                                     "congestion-controller" -> bean.congestionController =
                                         opt.value.toString()
 
+                                    "udp-relay-mode" -> bean.udpRelayMode = opt.value.toString()
+
+                                }
+                            }
+                            if (ip.isNotBlank()) {
+                                bean.serverAddress = ip
+                                if (bean.sni.isNullOrBlank() && !bean.serverAddress.isNullOrBlank() && !bean.serverAddress.isIpAddress()) {
+                                    bean.sni = bean.serverAddress
                                 }
                             }
                             proxies.add(bean)

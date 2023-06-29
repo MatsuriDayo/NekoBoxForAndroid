@@ -443,6 +443,7 @@ fun buildConfig(
 
                 // External proxy need a dokodemo-door inbound to forward the traffic
                 // For external proxy software, their traffic must goes to v2ray-core to use protected fd.
+                bean.finalAddress = bean.serverAddress
                 bean.finalPort = bean.serverPort
                 if (bean.canMapping() && proxyEntity.needExternal()) {
                     // With ss protect, don't use mapping
