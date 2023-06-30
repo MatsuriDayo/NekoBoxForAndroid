@@ -77,13 +77,28 @@
 
                         </com.google.android.material.chip.ChipGroup>
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/show_system_apps"
-                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:text="@string/show_system_apps" />
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/show_system_apps"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/show_system_apps" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/autoSelectProxyApps"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="false"
+                                android:text="@string/auto_select_proxy_apps" />
+
+                        </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"

@@ -65,9 +65,6 @@ dependencies {
         exclude(group = "androidx.recyclerview")
         exclude(group = "androidx.appcompat")
     }
-    implementation("org.smali:dexlib2:2.5.2") {
-        exclude(group = "com.google.guava", module = "guava")
-    }
 
     implementation("androidx.room:room-runtime:2.5.1")
     kapt("androidx.room:room-compiler:2.5.1")

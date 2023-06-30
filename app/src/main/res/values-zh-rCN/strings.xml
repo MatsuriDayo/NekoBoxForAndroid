@@ -478,4 +478,6 @@
     <string name="sniff_routing">探测结果用于路由判断</string>
     <string name="sniff_override">探测结果用于目标地址</string>
     <string name="resolve_server">根据 IPv6 策略解析服务器地址</string>
+    <string name="auto_select_proxy_apps">自动选择需要代理的应用</string>
+    <string name="auto_select_proxy_apps_message">自动选择需要代理的应用，这将清除您当前的选择。</string>
 </resources>
