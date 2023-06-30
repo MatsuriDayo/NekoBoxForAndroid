@@ -81,19 +81,19 @@ fun TuicBean.buildTuicConfigV4(port: Int, cacheFile: (() -> File)?): JSONObject 
             var disableSNI2 = disableSNI
 
             if (sni.isNotBlank()) { // domain + SNI
-                put("server", "$sni:$finalPort")
+                put("server", sni)
                 if (finalAddress.isIpAddress()) {
                     put("ip", finalAddress)
                 } else {
                     throw Exception("TUIC must use IP address when you need spoof SNI.")
                 }
             } else if (!serverAddress.isIpAddress()) { // domain
-                put("server", "$serverAddress:$finalPort")
+                put("server", serverAddress)
                 if (finalAddress.isIpAddress()) {
                     put("ip", finalAddress)
                 }
             } else { // prue IP server
-                put("server", "example.com:$finalPort")
+                put("server", "example.com")
                 put("ip", finalAddress)
                 disableSNI2 = true
             }
