@@ -21,12 +21,9 @@ func init() {
 	D.RegisterTransport([]string{"underlying"}, createUnderlyingTransport)
 }
 
-// CreateUnderlyingTransport for Android
 func createUnderlyingTransport(name string, ctx context.Context, logger logger.ContextLogger, dialer N.Dialer, link string) (D.Transport, error) {
 	return &androidUnderlyingTransportSing{name, underlyingResolver}, nil
 }
-
-//
 
 type androidUnderlyingTransportSing struct {
 	name string
@@ -37,12 +34,10 @@ func (t *androidUnderlyingTransportSing) Name() string { return t.name }
 
 //
 
-var systemResolver = &net.Resolver{PreferGo: false}                                  // Using System API, lookup from current network.
-var underlyingResolver = &androidUnderlyingTransport{systemResolver: systemResolver} // Using System API, lookup from non-VPN network.
+var systemResolver = &net.Resolver{PreferGo: false}    // Using System API, lookup from current network.
+var underlyingResolver = &androidUnderlyingTransport{} // Using System API, lookup from non-VPN network.
 
-type androidUnderlyingTransport struct {
-	systemResolver *net.Resolver
-}
+type androidUnderlyingTransport struct{}
 
 func (t *androidUnderlyingTransport) Start() error { return nil }
 func (t *androidUnderlyingTransport) Close() error { return nil }
@@ -96,7 +91,7 @@ func (t *androidUnderlyingTransport) Lookup(ctx context.Context, domain string, 
 				ips = append(ips, netip.MustParseAddr(ip))
 			}
 		} else {
-			ips2, err2 := t.systemResolver.LookupIP(context.Background(), network, domain)
+			ips2, err2 := systemResolver.LookupIP(context.Background(), network, domain)
 			if err2 != nil {
 				err = err2
 				return

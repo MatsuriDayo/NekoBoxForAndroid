@@ -16,6 +16,10 @@ type LocalResolver interface {
 
 var localResolver LocalResolver // Android: passed from java (only when VPNService)
 
+func SetLocalResolver(lr LocalResolver) {
+	localResolver = lr
+}
+
 type BoxPlatformInterface interface {
 	AutoDetectInterfaceControl(fd int32) error
 	OpenTun(singTunOptionsJson, tunPlatformOptionsJson string) (int, error)
@@ -23,9 +27,4 @@ type BoxPlatformInterface interface {
 	FindConnectionOwner(ipProtocol int32, sourceAddress string, sourcePort int32, destinationAddress string, destinationPort int32) (int32, error)
 	PackageNameByUid(uid int32) (string, error)
 	UIDByPackageName(packageName string) (int32, error)
-}
-
-func SetBoxPlatformInterface(iif BoxPlatformInterface) {
-	intfBox = iif
-	useProcfs = intfBox.UseProcFS()
 }

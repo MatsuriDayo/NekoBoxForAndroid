@@ -6,8 +6,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.Network
@@ -20,33 +18,29 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
-import io.nekohasekai.sagernet.bg.ServiceNotification
 import io.nekohasekai.sagernet.database.DataStore
-import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ui.MainActivity
 import io.nekohasekai.sagernet.utils.*
 import kotlinx.coroutines.DEBUG_PROPERTY_NAME
 import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
-import libcore.BoxPlatformInterface
 import libcore.Libcore
-import libcore.NB4AInterface
+import moe.matsuri.nb4a.NativeInterface
 import moe.matsuri.nb4a.utils.JavaUtil
-import moe.matsuri.nb4a.utils.LibcoreUtil
 import moe.matsuri.nb4a.utils.cleanWebview
-import java.net.InetSocketAddress
 import androidx.work.Configuration as WorkConfiguration
 
 class SagerNet : Application(),
-    BoxPlatformInterface,
-    WorkConfiguration.Provider, NB4AInterface {
+    WorkConfiguration.Provider {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
 
         application = this
     }
+
+    val nativeInterface = NativeInterface()
 
     val externalAssets by lazy { getExternalFilesDir(null) ?: filesDir }
     val process = JavaUtil.getProcessName()
@@ -81,11 +75,8 @@ class SagerNet : Application(),
             externalAssets.absolutePath + "/",
             DataStore.logBufSize,
             DataStore.logLevel > 0,
-            this
+            nativeInterface, nativeInterface
         )
-
-        // libbox: platform interface
-        Libcore.setBoxPlatformInterface(this)
 
         if (isMainProcess) {
             Theme.apply(this)
@@ -131,11 +122,6 @@ class SagerNet : Application(),
 
         val isTv by lazy {
             uiMode.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
-        }
-
-        // /data/user_de available when not unlocked
-        val deviceStorage by lazy {
-            if (Build.VERSION.SDK_INT < 24) application else DeviceStorageApp(application)
         }
 
         val configureIntent: (Context) -> PendingIntent by lazy {
@@ -207,84 +193,6 @@ class SagerNet : Application(),
 
         var underlyingNetwork: Network? = null
 
-    }
-
-
-    //  libbox interface
-
-    override fun autoDetectInterfaceControl(fd: Int) {
-        DataStore.vpnService?.protect(fd)
-    }
-
-    override fun openTun(singTunOptionsJson: String, tunPlatformOptionsJson: String): Long {
-        if (DataStore.vpnService == null) {
-            throw Exception("no VpnService")
-        }
-        return DataStore.vpnService!!.startVpn(singTunOptionsJson, tunPlatformOptionsJson).toLong()
-    }
-
-    override fun useProcFS(): Boolean {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-    }
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    override fun findConnectionOwner(
-        ipProto: Int, srcIp: String, srcPort: Int, destIp: String, destPort: Int
-    ): Int {
-        return connectivity.getConnectionOwnerUid(
-            ipProto, InetSocketAddress(srcIp, srcPort), InetSocketAddress(destIp, destPort)
-        )
-    }
-
-    override fun packageNameByUid(uid: Int): String {
-        PackageCache.awaitLoadSync()
-
-        if (uid <= 1000L) {
-            return "android"
-        }
-
-        val packageNames = PackageCache.uidMap[uid]
-        if (!packageNames.isNullOrEmpty()) for (packageName in packageNames) {
-            return packageName
-        }
-
-        error("unknown uid $uid")
-    }
-
-    override fun uidByPackageName(packageName: String): Int {
-        PackageCache.awaitLoadSync()
-        return PackageCache[packageName] ?: 0
-    }
-
-    // nb4a interface
-
-    override fun useOfficialAssets(): Boolean {
-        return DataStore.rulesProvider == 0
-    }
-
-    override fun selector_OnProxySelected(selectorTag: String, tag: String) {
-        if (selectorTag != "proxy") {
-            Logs.d("other selector: $selectorTag")
-            return
-        }
-        LibcoreUtil.resetAllConnections(true)
-        DataStore.baseService?.apply {
-            runOnDefaultDispatcher {
-                val id = data.proxy!!.config.profileTagMap
-                    .filterValues { it == tag }.keys.firstOrNull() ?: -1
-                val ent = SagerDatabase.proxyDao.getById(id) ?: return@runOnDefaultDispatcher
-                // traffic & title
-                data.proxy?.apply {
-                    looper?.selectMain(id)
-                    displayProfileName = ServiceNotification.genTitle(ent)
-                    data.notification?.postNotificationTitle(displayProfileName)
-                }
-                // post binder
-                data.binder.broadcast { b ->
-                    b.cbSelectorUpdate(id)
-                }
-            }
-        }
     }
 
 }

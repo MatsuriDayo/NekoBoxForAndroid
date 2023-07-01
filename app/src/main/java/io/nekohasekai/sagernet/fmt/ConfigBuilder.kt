@@ -422,24 +422,22 @@ fun buildConfig(
                     } catch (_: Exception) {
                     }
 
+                    // domain_strategy
+                    pastEntity?.requireBean()?.apply {
+                        // don't loopback
+                        if (currentDomainStrategy != "" && !serverAddress.isIpAddress()) {
+                            domainListDNSDirectForce.add("full:$serverAddress")
+                        }
+                    }
+                    currentOutbound["domain_strategy"] = if (forTest) "" else currentDomainStrategy
+
                     // custom JSON merge
                     if (bean.customOutboundJson.isNotBlank()) {
                         Util.mergeJSON(bean.customOutboundJson, currentOutbound)
                     }
                 }
 
-                pastEntity?.requireBean()?.apply {
-                    // don't loopback
-                    if (currentDomainStrategy != "" && !serverAddress.isIpAddress()) {
-                        domainListDNSDirectForce.add("full:$serverAddress")
-                    }
-                }
-                if (forTest) {
-                    currentDomainStrategy = ""
-                }
-
                 currentOutbound["tag"] = tagOut
-                currentOutbound["domain_strategy"] = currentDomainStrategy
 
                 // External proxy need a dokodemo-door inbound to forward the traffic
                 // For external proxy software, their traffic must goes to v2ray-core to use protected fd.
