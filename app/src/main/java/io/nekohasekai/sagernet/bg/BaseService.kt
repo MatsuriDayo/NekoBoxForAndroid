@@ -71,8 +71,9 @@ class BaseService {
 
         fun changeState(s: State, msg: String? = null) {
             if (state == s && msg == null) return
-            binder.stateChanged(s, msg)
             state = s
+            DataStore.serviceState = s
+            binder.stateChanged(s, msg)
         }
     }
 

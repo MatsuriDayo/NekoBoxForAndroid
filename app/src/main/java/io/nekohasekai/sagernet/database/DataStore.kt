@@ -13,7 +13,7 @@ import moe.matsuri.nb4a.TempDatabase
 
 object DataStore : OnPreferenceDataStoreChangeListener {
 
-    // share service state in main process
+    // share service state in main & bg process
     @Volatile
     var serviceState = BaseService.State.Idle
 
