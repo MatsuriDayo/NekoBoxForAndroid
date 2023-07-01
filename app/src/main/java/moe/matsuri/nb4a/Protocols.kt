@@ -29,7 +29,7 @@ object Protocols {
 
     fun getCanMuxList(): List<String> {
         // built-in and support mux
-        val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks", "vless")
+        val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks", "vless", "padding")
 
         NekoPluginManager.getProtocols().forEach {
             if (it.protocolConfig.optBoolean("canMux")) {

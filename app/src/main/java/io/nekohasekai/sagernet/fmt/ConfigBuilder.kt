@@ -30,6 +30,7 @@ import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
+import moe.matsuri.nb4a.Protocols
 import moe.matsuri.nb4a.SingBoxOptions.*
 import moe.matsuri.nb4a.applyDNSNetworkSettings
 import moe.matsuri.nb4a.checkEmpty
@@ -400,6 +401,7 @@ fun buildConfig(
                             muxApplied = true
                             currentOutbound["multiplex"] = MultiplexOptions().apply {
                                 enabled = true
+                                padding = Protocols.shouldEnableMux("padding")
                                 max_streams = DataStore.muxConcurrency
                                 protocol = when (DataStore.muxType) {
                                     1 -> "smux"
