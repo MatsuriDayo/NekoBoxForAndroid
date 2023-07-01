@@ -94,17 +94,17 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val enableDnsRouting = findPreference<SwitchPreference>(Key.ENABLE_DNS_ROUTING)!!
         val enableFakeDns = findPreference<SwitchPreference>(Key.ENABLE_FAKEDNS)!!
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            DataStore.directDnsUseSystem = false
-            directDnsUseSystem.remove()
-        } else {
+        // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        //     DataStore.directDnsUseSystem = false
+        //     directDnsUseSystem.remove()
+        // } else {
             directDns.isEnabled = !directDnsUseSystem.isChecked
             directDnsUseSystem.setOnPreferenceChangeListener { _, newValue ->
                 directDns.isEnabled = !(newValue as Boolean)
                 needReload()
                 true
             }
-        }
+        // }
 
         val requireTransproxy = findPreference<SwitchPreference>(Key.REQUIRE_TRANSPROXY)!!
         val transproxyPort = findPreference<EditTextPreference>(Key.TRANSPROXY_PORT)!!

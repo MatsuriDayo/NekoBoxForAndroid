@@ -17,7 +17,7 @@ type LocalResolver interface {
 var localResolver LocalResolver // Android: passed from java (only when VPNService)
 
 func SetLocalResolver(lr LocalResolver) {
-	localResolver = lr
+	localResolver = lr // old "underlyig://0.0.0.0"
 }
 
 type BoxPlatformInterface interface {

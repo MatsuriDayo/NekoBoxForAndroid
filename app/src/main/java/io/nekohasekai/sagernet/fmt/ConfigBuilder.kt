@@ -54,7 +54,7 @@ const val TAG_DNS_IN = "dns-in"
 const val TAG_DNS_OUT = "dns-out"
 
 const val LOCALHOST = "127.0.0.1"
-const val LOCAL_DNS_SERVER = "underlying://0.0.0.0"
+const val LOCAL_DNS_SERVER = "local"
 
 class ConfigBuildResult(
     var config: String,
