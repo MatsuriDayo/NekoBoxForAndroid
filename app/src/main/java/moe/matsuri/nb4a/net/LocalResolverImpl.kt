@@ -104,11 +104,8 @@ object LocalResolverImpl : LocalResolver, LocalDNSTransport {
                 ctx.onCancel(signal::cancel)
                 val callback = object : DnsResolver.Callback<ByteArray> {
                     override fun onAnswer(answer: ByteArray, rcode: Int) {
-                        if (rcode == 0) {
-                            ctx.rawSuccess(answer)
-                        } else {
-                            ctx.errorCode(rcode)
-                        }
+                        // exchange don't generate rcode error
+                        ctx.rawSuccess(answer)
                         continuation.resume(Unit)
                     }
 
@@ -191,10 +188,13 @@ object LocalResolverImpl : LocalResolver, LocalDNSTransport {
                 }
             }
         } else {
-            val underlyingNetwork =
-                SagerNet.underlyingNetwork ?: error("upstream network not found")
             val answer = try {
-                underlyingNetwork.getAllByName(domain)
+                val u = SagerNet.underlyingNetwork
+                if (u != null) {
+                    u.getAllByName(domain)
+                } else {
+                    InetAddress.getAllByName(domain)
+                }
             } catch (e: UnknownHostException) {
                 ctx.errorCode(RCODE_NXDOMAIN)
                 return
