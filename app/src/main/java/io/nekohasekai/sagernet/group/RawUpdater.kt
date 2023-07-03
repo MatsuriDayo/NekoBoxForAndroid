@@ -557,7 +557,7 @@ object RawUpdater : GroupUpdater() {
                 proxies.forEach {
                     it.initializeDefaultValues()
                     if (it is StandardV2RayBean) {
-                        if (it.realityPubKey.isNotBlank() && it.utlsFingerprint.isBlank()) {
+                        if (!it.realityPubKey.isNullOrBlank() && it.utlsFingerprint.isNullOrBlank()) {
                             it.utlsFingerprint = globalClientFingerprint
                         }
                     }

@@ -140,8 +140,10 @@ class TrafficLooper
             var mainTx = 0L
             var mainRx = 0L
             tagMap.forEach { (_, it) ->
-                mainTxRate += it.txRate
-                mainRxRate += it.rxRate
+                if (!it.ignore) {
+                    mainTxRate += it.txRate
+                    mainRxRate += it.rxRate
+                }
                 mainTx += it.tx - it.txBase
                 mainRx += it.rx - it.rxBase
             }
