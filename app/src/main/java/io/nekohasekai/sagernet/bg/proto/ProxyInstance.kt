@@ -7,6 +7,8 @@ import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import kotlinx.coroutines.runBlocking
+import libcore.Libcore
+import moe.matsuri.nb4a.net.LocalResolverImpl
 import moe.matsuri.nb4a.utils.JavaUtil
 
 class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = null) :
@@ -42,6 +44,11 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
         }
     }
 
+    override suspend fun loadConfig() {
+        Libcore.registerLocalDNSTransport(LocalResolverImpl)
+        super.loadConfig()
+    }
+
     override fun launch() {
         box.setAsMain()
         super.launch() // start box
@@ -52,6 +59,7 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
     }
 
     override fun close() {
+        Libcore.registerLocalDNSTransport(null)
         super.close()
         runBlocking {
             looper?.stop()

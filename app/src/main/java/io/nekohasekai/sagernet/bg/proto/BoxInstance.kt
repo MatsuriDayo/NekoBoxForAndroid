@@ -22,7 +22,6 @@ import io.nekohasekai.sagernet.plugin.PluginManager
 import kotlinx.coroutines.*
 import libcore.BoxInstance
 import libcore.Libcore
-import moe.matsuri.nb4a.net.LocalResolverImpl
 import moe.matsuri.nb4a.plugin.NekoPluginManager
 import moe.matsuri.nb4a.proxy.neko.NekoBean
 import moe.matsuri.nb4a.proxy.neko.NekoJSInterface
@@ -112,7 +111,6 @@ abstract class BoxInstance(
                 }
             }
         }
-        Libcore.registerLocalDNSTransport(LocalResolverImpl)
         loadConfig()
     }
 
@@ -279,8 +277,6 @@ abstract class BoxInstance(
         if (::box.isInitialized) {
             box.close()
         }
-
-        Libcore.registerLocalDNSTransport(null)
     }
 
 }
