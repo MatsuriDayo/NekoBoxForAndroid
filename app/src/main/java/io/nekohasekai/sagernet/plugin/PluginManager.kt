@@ -32,7 +32,8 @@ object PluginManager {
             val result = initNative(pluginId)
             if (result != null) return result
         } catch (t: Throwable) {
-            if (throwable == null) throwable = t else Logs.w(t)
+            throwable = t
+            Logs.w(t)
         }
 
         throw throwable ?: PluginNotFoundException(pluginId)
@@ -41,14 +42,39 @@ object PluginManager {
     private fun initNative(pluginId: String): InitResult? {
         val info = Plugins.getPlugin(pluginId) ?: return null
 
+        // internal so
+        if (info.applicationInfo == null) {
+            try {
+                initNativeInternal(pluginId)!!.let { return InitResult(it, info) }
+            } catch (t: Throwable) {
+                Logs.w("initNativeInternal failed", t)
+            }
+            return null
+        }
+
         try {
-            initNativeFaster(info)?.also { return InitResult(it, info) }
+            initNativeFaster(info)!!.let { return InitResult(it, info) }
         } catch (t: Throwable) {
-            Logs.w("Initializing native plugin faster mode failed", t)
+            Logs.w("initNativeFaster failed", t)
         }
 
         Logs.w("Init native returns empty result")
         return null
+    }
+
+    private fun initNativeInternal(pluginId: String): String? {
+        fun soIfExist(soName: String): String? {
+            val f = File(SagerNet.application.applicationInfo.nativeLibraryDir, soName)
+            if (f.canExecute()) {
+                return f.absolutePath
+            }
+            return null
+        }
+        return when (pluginId) {
+            "tuic-v5-plugin" -> soIfExist("libtuic.so")
+            "hysteria-plugin" -> soIfExist("libhysteria.so")
+            else -> null
+        }
     }
 
     private fun initNativeFaster(provider: ProviderInfo): String? {
@@ -64,6 +90,7 @@ object PluginManager {
         is String -> value
         is Int -> SagerNet.application.packageManager.getResourcesForApplication(applicationInfo)
             .getString(value)
+
         null -> null
         else -> error("meta-data $key has invalid type ${value.javaClass}")
     }

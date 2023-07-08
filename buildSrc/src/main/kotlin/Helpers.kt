@@ -31,10 +31,12 @@ fun Project.requireFlavor(): String {
                 flavor = taskName.substringAfter("assemble")
                 return flavor
             }
+
             taskName.contains("install") -> {
                 flavor = taskName.substringAfter("install")
                 return flavor
             }
+
             taskName.contains("bundle") -> {
                 flavor = taskName.substringAfter("bundle")
                 return flavor
@@ -252,5 +254,8 @@ fun Project.setupApp() {
             }
         }
 
+        sourceSets.getByName("main").apply {
+            jniLibs.srcDir("executableSo")
+        }
     }
 }
