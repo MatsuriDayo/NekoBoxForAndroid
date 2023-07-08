@@ -246,8 +246,9 @@ class AppManagerActivity : ThemedActivity() {
         when (item.itemId) {
             R.id.action_invert_selections -> {
                 runOnDefaultDispatcher {
+                    val proxiedUidsOld = proxiedUids.clone()
                     for (app in apps) {
-                        if (proxiedUids.contains(app.uid)) {
+                        if (proxiedUidsOld.contains(app.uid)) {
                             proxiedUids.delete(app.uid)
                         } else {
                             proxiedUids[app.uid] = true

@@ -29,6 +29,7 @@ import io.nekohasekai.sagernet.widget.UndoSnackbarManager
 import kotlinx.coroutines.delay
 import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.toBytesString
+import java.lang.NumberFormatException
 import java.util.*
 
 class GroupFragment : ToolbarFragment(R.layout.layout_group),
@@ -465,27 +466,31 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                     }.firstOrNull()
                 }
 
-                var used: Long = 0
-                get("upload=([0-9]+)")?.apply {
-                    used += toLong()
-                }
-                get("download=([0-9]+)")?.apply {
-                    used += toLong()
-                }
-                val total = get("total=([0-9]+)")?.toLong() ?: 0
-                if (used > 0 || total > 0) {
-                    text += getString(
-                        R.string.subscription_traffic,
-                        used.toBytesString(),
-                        (total - used).toBytesString()
-                    )
-                }
-                get("expire=([0-9]+)")?.apply {
-                    text += "\n"
-                    text += getString(
-                        R.string.subscription_expire,
-                        Util.timeStamp2Text(this.toLong() * 1000)
-                    )
+                try {
+                    var used: Long = 0
+                    get("upload=([0-9]+)")?.apply {
+                        used += toLong()
+                    }
+                    get("download=([0-9]+)")?.apply {
+                        used += toLong()
+                    }
+                    val total = get("total=([0-9]+)")?.toLong() ?: 0
+                    if (used > 0 || total > 0) {
+                        text += getString(
+                            R.string.subscription_traffic,
+                            used.toBytesString(),
+                            (total - used).toBytesString()
+                        )
+                    }
+                    get("expire=([0-9]+)")?.apply {
+                        text += "\n"
+                        text += getString(
+                            R.string.subscription_expire,
+                            Util.timeStamp2Text(this.toLong() * 1000)
+                        )
+                    }
+                } catch (_: NumberFormatException) {
+                    // ignore
                 }
 
                 if (text.isNotEmpty()) {

@@ -292,8 +292,9 @@ object RawUpdater : GroupUpdater() {
                                 }
                             }
                             for (opt in proxy) {
+                                if (opt.value == null) continue
                                 when (opt.key.replace("_", "-")) {
-                                    "name" -> bean.name = opt.value?.toString()
+                                    "name" -> bean.name = opt.value.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
                                     "uuid" -> bean.uuid = opt.value as String
@@ -325,12 +326,12 @@ object RawUpdater : GroupUpdater() {
                                         opt.value as String
 
                                     "tls" -> bean.security =
-                                        if (opt.value?.toString() == "true") "tls" else ""
+                                        if (opt.value.toString() == "true") "tls" else ""
 
                                     "skip-cert-verify" -> bean.allowInsecure =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
-                                    "ws-path" -> bean.path = opt.value?.toString()
+                                    "ws-path" -> bean.path = opt.value.toString()
                                     "ws-headers" -> for (wsHeader in (opt.value as Map<String, Any>)) {
                                         when (wsHeader.key.lowercase()) {
                                             "host" -> bean.host = wsHeader.value.toString()
@@ -359,7 +360,7 @@ object RawUpdater : GroupUpdater() {
                                         }
                                     }
 
-                                    "servername" -> bean.host = opt.value?.toString()
+                                    "servername" -> bean.host = opt.value.toString()
                                     // The format of the VMessBean is wrong, so the `host` `path` has some strange transformations here.
                                     "h2-opts", "h2-opt" -> for (h2Opt in (opt.value as Map<String, Any>)) {
                                         when (h2Opt.key.lowercase()) {
@@ -412,20 +413,21 @@ object RawUpdater : GroupUpdater() {
                             val bean = TrojanBean()
                             bean.security = "tls"
                             for (opt in proxy) {
+                                if (opt.value == null) continue
                                 when (opt.key.replace("_", "-")) {
-                                    "name" -> bean.name = opt.value?.toString()
+                                    "name" -> bean.name = opt.value.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
-                                    "password" -> bean.password = opt.value?.toString()
+                                    "password" -> bean.password = opt.value.toString()
                                     "client-fingerprint" -> bean.utlsFingerprint =
                                         opt.value as String
 
-                                    "sni" -> bean.sni = opt.value?.toString()
+                                    "sni" -> bean.sni = opt.value.toString()
                                     "skip-cert-verify" -> bean.allowInsecure =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
                                     "network" -> when (opt.value) {
-                                        "ws", "grpc" -> bean.type = opt.value?.toString()
+                                        "ws", "grpc" -> bean.type = opt.value.toString()
                                     }
 
                                     "ws-opts", "ws-opt" -> for (wsOpt in (opt.value as Map<String, Any>)) {
@@ -456,8 +458,9 @@ object RawUpdater : GroupUpdater() {
                         "hysteria" -> {
                             val bean = HysteriaBean()
                             for (opt in proxy) {
+                                if (opt.value == null) continue
                                 when (opt.key.replace("_", "-")) {
-                                    "name" -> bean.name = opt.value?.toString()
+                                    "name" -> bean.name = opt.value.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
 
@@ -465,30 +468,30 @@ object RawUpdater : GroupUpdater() {
 
                                     "auth-str" -> {
                                         bean.authPayloadType = HysteriaBean.TYPE_STRING
-                                        bean.authPayload = opt.value?.toString()
+                                        bean.authPayload = opt.value.toString()
                                     }
 
-                                    "sni" -> bean.sni = opt.value?.toString()
+                                    "sni" -> bean.sni = opt.value.toString()
 
                                     "skip-cert-verify" -> bean.allowInsecure =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
                                     "up" -> bean.uploadMbps =
-                                        opt.value?.toString()?.substringBefore(" ")?.toIntOrNull()
+                                        opt.value.toString().substringBefore(" ").toIntOrNull()
                                             ?: 100
 
                                     "down" -> bean.downloadMbps =
-                                        opt.value?.toString()?.substringBefore(" ")?.toIntOrNull()
+                                        opt.value.toString().substringBefore(" ").toIntOrNull()
                                             ?: 100
 
                                     "recv-window-conn" -> bean.connectionReceiveWindow =
-                                        opt.value?.toString()?.toIntOrNull() ?: 0
+                                        opt.value.toString().toIntOrNull() ?: 0
 
                                     "recv-window" -> bean.streamReceiveWindow =
-                                        opt.value?.toString()?.toIntOrNull() ?: 0
+                                        opt.value.toString().toIntOrNull() ?: 0
 
                                     "disable-mtu-discovery" -> bean.disableMtuDiscovery =
-                                        opt.value?.toString() == "true" || opt.value?.toString() == "1"
+                                        opt.value.toString() == "true" || opt.value.toString() == "1"
 
                                     "alpn" -> {
                                         val alpn = (opt.value as? (List<String>))
@@ -504,8 +507,9 @@ object RawUpdater : GroupUpdater() {
                             val bean = TuicBean()
                             var ip = ""
                             for (opt in proxy) {
+                                if (opt.value == null) continue
                                 when (opt.key.replace("_", "-")) {
-                                    "name" -> bean.name = opt.value?.toString()
+                                    "name" -> bean.name = opt.value.toString()
                                     "server" -> bean.serverAddress = opt.value.toString()
                                     "ip" -> ip = opt.value.toString()
                                     "port" -> bean.serverPort = opt.value.toString().toInt()
@@ -520,13 +524,13 @@ object RawUpdater : GroupUpdater() {
                                     "password" -> bean.token = opt.value.toString()
 
                                     "skip-cert-verify" -> bean.allowInsecure =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
                                     "disable-sni" -> bean.disableSNI =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
                                     "reduce-rtt" -> bean.reduceRTT =
-                                        opt.value?.toString() == "true"
+                                        opt.value.toString() == "true"
 
                                     "sni" -> bean.sni = opt.value.toString()
 

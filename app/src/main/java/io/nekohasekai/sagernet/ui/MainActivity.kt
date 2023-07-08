@@ -328,7 +328,7 @@ class MainActivity : ThemedActivity(),
 
             R.id.nav_about -> displayFragment(AboutFragment())
             R.id.nav_tuiguang -> {
-                launchCustomTab("https://matsuricom.github.io/")
+                launchCustomTab("https://matsuricom.pages.dev/")
                 return false
             }
 
