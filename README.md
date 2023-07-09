@@ -6,6 +6,8 @@
 
 sing-box / universal proxy toolchain for Android.
 
+一款使用 sing-box 的 Android 通用代理软件。
+
 ## 下载 / Downloads
 
 ### GitHub Releases
@@ -39,9 +41,9 @@ https://matsuridayo.github.io
 * Hysteria ( hysteria-plugin )
 * TUIC ( tuic-plugin & tuic-v5-plugin )
 
-请到[项目主页](https://matsuridayo.github.io)下载插件。
+请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件。
 
-Please go to the [project homepage](https://matsuridayo.github.io) to download plugins.
+Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins.
 
 ## 订阅 / Subscription
 
@@ -52,7 +54,8 @@ Please go to the [project homepage](https://matsuridayo.github.io) to download p
 
 欢迎捐赠以支持项目开发。
 
-您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠
+* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠，另有支付宝微信购买方式，见 TG 频道置顶。
+* Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
 
 USDT TRC20
 

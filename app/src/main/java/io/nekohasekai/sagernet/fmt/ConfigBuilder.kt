@@ -578,30 +578,31 @@ fun buildConfig(
                     protocol = rule.protocol.split("\n")
                 }
 
-                // also bypass lookup
-                // cannot use other outbound profile to lookup...
-                val dnsRuleObj = DNSRule_DefaultOptions().apply {
-                    if (uidList.isNotEmpty()) user_id = uidList
-                    domainList?.let { makeSingBoxRule(it) }
+                fun makeDnsRuleObj(): DNSRule_DefaultOptions {
+                    return DNSRule_DefaultOptions().apply {
+                        if (uidList.isNotEmpty()) user_id = uidList
+                        domainList?.let { makeSingBoxRule(it) }
+                    }
                 }
+
                 when (rule.outbound) {
                     -1L -> {
-                        userDNSRuleList += dnsRuleObj.apply { server = "dns-direct" }
+                        userDNSRuleList += makeDnsRuleObj().apply { server = "dns-direct" }
                     }
 
                     0L -> {
-                        if (useFakeDns) userDNSRuleList += dnsRuleObj.apply {
+                        if (useFakeDns) userDNSRuleList += makeDnsRuleObj().apply {
                             server = "dns-fake"
                             inbound = listOf("tun-in")
                         }
-                        userDNSRuleList += dnsRuleObj.apply {
+                        userDNSRuleList += makeDnsRuleObj().apply {
                             server = "dns-remote"
                             inbound = null
                         }
                     }
 
                     -2L -> {
-                        userDNSRuleList += dnsRuleObj.apply { server = "dns-block" }
+                        userDNSRuleList += makeDnsRuleObj().apply { server = "dns-block" }
                     }
                 }
 
