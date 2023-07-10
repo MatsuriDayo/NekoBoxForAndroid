@@ -96,7 +96,9 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	}
 
 	// fuck your sing-box platformFormatter
-	instance.GetLogPlatformFormatter().DisableColors = true
+	pf := instance.GetLogPlatformFormatter()
+	pf.DisableColors = true
+	pf.DisableLineBreak = false
 
 	// selector
 	if proxy, ok := b.Router().Outbound("proxy"); ok {
