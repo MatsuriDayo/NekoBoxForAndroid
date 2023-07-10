@@ -54,6 +54,7 @@ object Plugins {
     }
 
     fun getPlugin(pluginId: String): ProviderInfo? {
+        if (pluginId.isBlank()) return null
         getPluginExternal(pluginId)?.let { return it }
         // internal so
         return ProviderInfo().apply { authority = AUTHORITIES_PREFIX_NEKO_EXE }
