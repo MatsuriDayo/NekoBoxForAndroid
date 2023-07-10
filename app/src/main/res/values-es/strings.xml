@@ -80,8 +80,7 @@
     <string name="cag_dns">Ajustes de DNS</string> 
     <string name="remote_dns">DNS remoto</string> 
     <string name="direct_dns">DNS directo</string> 
-    <string name="direct_dns_use_system">Utilizar DNS del sistema como DNS directo</string> 
-    <string name="enable_dns_routing">Activar enrutamiento DNS</string> 
+    <string name="enable_dns_routing">Activar enrutamiento DNS</string>
     <string name="dns_routing_message">Resuelve dominios en rutas de omisión con el DNS directo. Tenga en cuenta las posibles fugas de DNS</string> 
     <string name="enable_fakedns">Activar DNS falso</string> 
     <string name="fakedns_message">Puede hacer que sea necesario reiniciar otras aplicaciones para volver a conectarse a la red después de detener el proxy</string> 

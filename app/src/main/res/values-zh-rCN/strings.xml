@@ -334,7 +334,6 @@
     <string name="clear_profiles_message">您确定要清空该分组吗\?</string>
     <string name="remote_dns">远程 DNS</string>
     <string name="direct_dns">直连 DNS</string>
-    <string name="direct_dns_use_system">使用系统 DNS 作为直连 DNS</string>
     <string name="enable_dns_routing">启用 DNS 路由</string>
     <string name="dns_routing_message">使用直连 DNS 解析绕过路由中的 domains. 注意潜在的 DNS 泄漏</string>
     <string name="enable_fakedns">启用 FakeDNS</string>
@@ -442,7 +441,9 @@
     <string name="create_shortcut">创建快捷方式</string>
     <string name="app_tls_version">订阅最低 TLS 版本</string>
     <string name="hop_interval">端口跳跃间隔(秒)</string>
-    <string name="dns_network">DNS 查询类型</string>
+    <string name="domain_strategy_for_remote">域名策略（远程）</string>
+    <string name="domain_strategy_for_direct">域名策略（直连）</string>
+    <string name="domain_strategy_for_server">域名策略（服务器地址）</string>
     <string name="tuic_disable_sni">禁用 SNI</string>
     <string name="tuic_reduce_rtt">启用 0-RTT QUIC 握手</string>
     <string name="tuic_fast_connect">TCP 快速打开</string>

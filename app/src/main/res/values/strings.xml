@@ -84,7 +84,6 @@
     <string name="cag_dns">DNS Settings</string>
     <string name="remote_dns">Remote DNS</string>
     <string name="direct_dns">Direct DNS</string>
-    <string name="direct_dns_use_system">Use system DNS as Direct DNS</string>
     <string name="enable_dns_routing">Enable DNS Routing</string>
     <string name="dns_routing_message">Resolve domains in bypass routes with Direct DNS. Be aware of potential DNS leaks</string>
     <string name="enable_fakedns">Enable FakeDNS</string>
@@ -487,7 +486,9 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="create_shortcut">Create Shortcut</string>
     <string name="app_tls_version">Subscription Min TLS Version</string>
     <string name="hop_interval">Port Hopping Interval(second)</string>
-    <string name="dns_network">DNS query type</string>
+    <string name="domain_strategy_for_remote">Domain strategy for Remote</string>
+    <string name="domain_strategy_for_direct">Domain strategy for Direct</string>
+    <string name="domain_strategy_for_server">Domain strategy for Server address</string>
     <string name="show_bottom_bar">Show bottom bar like SagerNet</string>
     <string name="utls_fingerprint">uTLS fingerprint</string>
     <string name="custom_outbound_json">Custom outbound JSON</string>

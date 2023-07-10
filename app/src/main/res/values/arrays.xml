@@ -445,10 +445,11 @@
     </string-array>
 
     <string-array name="dns_network_select">
-        <item>NoRemoteIPv4</item>
-        <item>NoRemoteIPv6</item>
-        <item>NoDirectIPv4</item>
-        <item>NoDirectIPv6</item>
+        <item>auto</item>
+        <item>prefer_ipv6</item>
+        <item>prefer_ipv4</item>
+        <item>ipv4_only</item>
+        <item>ipv6_only</item>
     </string-array>
 
     <string-array name="exe_prefer_provider">

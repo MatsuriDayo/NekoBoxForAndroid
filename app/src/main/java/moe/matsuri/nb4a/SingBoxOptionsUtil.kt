@@ -2,14 +2,28 @@ package moe.matsuri.nb4a
 
 import io.nekohasekai.sagernet.database.DataStore
 
-fun SingBoxOptions.DNSServerOptions.applyDNSNetworkSettings(isDirect: Boolean) {
-    if (isDirect) {
-        if (DataStore.dnsNetwork.contains("NoDirectIPv4")) this.strategy = "ipv6_only"
-        if (DataStore.dnsNetwork.contains("NoDirectIPv6")) this.strategy = "ipv4_only"
-    } else {
-        if (DataStore.dnsNetwork.contains("NoRemoteIPv4")) this.strategy = "ipv6_only"
-        if (DataStore.dnsNetwork.contains("NoRemoteIPv6")) this.strategy = "ipv4_only"
+object SingBoxOptionsUtil {
+
+    fun domainStrategy(tag: String): String {
+        fun auto2AsIs(key: String): String {
+            return (DataStore.configurationStore.getString(key) ?: "").replace("auto", "")
+        }
+        return when (tag) {
+            "dns-remote" -> {
+                auto2AsIs("domain_strategy_for_remote")
+            }
+
+            "dns-direct" -> {
+                auto2AsIs("domain_strategy_for_direct")
+            }
+
+            // server
+            else -> {
+                auto2AsIs("domain_strategy_for_server")
+            }
+        }
     }
+
 }
 
 fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {

@@ -116,9 +116,6 @@
             app:key="resolveDestination"
             app:summary="@string/resolve_destination_summary"
             app:title="@string/resolve_destination" />
-        <SwitchPreference
-            app:key="resolveServer"
-            app:title="@string/resolve_server" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="0"
             app:entries="@array/ipv6_mode"
@@ -168,20 +165,32 @@
             app:key="remoteDns"
             app:title="@string/remote_dns"
             app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="auto"
+            app:entries="@array/dns_network_select"
+            app:entryValues="@array/dns_network_select"
+            app:key="domain_strategy_for_remote"
+            app:title="@string/domain_strategy_for_remote"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:defaultValue="https://223.5.5.5/dns-query"
+            app:icon="@drawable/ic_action_dns"
             app:key="directDns"
             app:title="@string/direct_dns"
             app:useSimpleSummaryProvider="true" />
-        <SwitchPreference
-            app:key="directDnsUseSystem"
-            app:title="@string/direct_dns_use_system" />
-        <MultiSelectListPreference
-            app:defaultValue="@array/mux_select_init"
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="auto"
             app:entries="@array/dns_network_select"
             app:entryValues="@array/dns_network_select"
-            app:key="dnsNetwork"
-            app:title="@string/dns_network"
+            app:key="domain_strategy_for_direct"
+            app:title="@string/domain_strategy_for_direct"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="auto"
+            app:entries="@array/dns_network_select"
+            app:entryValues="@array/dns_network_select"
+            app:key="domain_strategy_for_server"
+            app:title="@string/domain_strategy_for_server"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
             app:defaultValue="true"

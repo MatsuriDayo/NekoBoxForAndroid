@@ -78,7 +78,6 @@
     <string name="cag_dns">تنظیمات DNS</string>
     <string name="remote_dns">DNS از راه دور</string>
     <string name="direct_dns">DNS مستقیم</string>
-    <string name="direct_dns_use_system">از DNS سیستم به عنوان Direct DNS استفاده کنید</string>
     <string name="enable_dns_routing">مسیریابی DNS را فعال کنید</string>
     <string name="dns_routing_message">حل دامنه ها در مسیرهای بای پس با Direct DNS. از نشت های احتمالی DNS آگاه باشید</string>
     <string name="enable_fakedns">FakeDNS را فعال کنید</string>
