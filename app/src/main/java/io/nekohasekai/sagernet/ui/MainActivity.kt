@@ -11,7 +11,7 @@ import android.os.Bundle
 import android.os.RemoteException
 import android.view.KeyEvent
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -72,6 +72,13 @@ class MainActivity : ThemedActivity(),
 
         if (savedInstanceState == null) {
             displayFragmentWithId(R.id.nav_configuration)
+        }
+        onBackPressedDispatcher.addCallback {
+            if (supportFragmentManager.findFragmentById(R.id.fragment_holder) is ConfigurationFragment) {
+                moveTaskToBack(true)
+            } else {
+                displayFragmentWithId(R.id.nav_configuration)
+            }
         }
 
         binding.fab.setOnClickListener {
