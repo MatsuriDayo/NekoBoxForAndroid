@@ -24,10 +24,9 @@
                 android:id="@android:id/edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textUri"
+                android:inputType="textUri|textMultiLine"
                 android:minHeight="48dp"
                 android:paddingTop="12dp"
-                android:singleLine="true"
                 android:typeface="monospace" />
 
             <LinearLayout
