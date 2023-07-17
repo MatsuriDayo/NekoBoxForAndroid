@@ -64,6 +64,7 @@ class GuardedProcessPool(private val onFatal: suspend (IOException) -> Unit) : C
                         SystemClock.elapsedRealtime() - startTime < 1000 -> throw IOException(
                             "$cmdName exits too fast (exit code: $exitCode)"
                         )
+
                         exitCode == 128 + OsConstants.SIGKILL -> Logs.w("$cmdName was killed")
                         else -> Logs.w(IOException("$cmdName unexpectedly exits with code $exitCode"))
                     }
@@ -99,6 +100,7 @@ class GuardedProcessPool(private val onFatal: suspend (IOException) -> Unit) : C
     }
 
     override val coroutineContext = Dispatchers.Main.immediate + Job()
+    var processCount = 0
 
     @MainThread
     fun start(
@@ -111,6 +113,7 @@ class GuardedProcessPool(private val onFatal: suspend (IOException) -> Unit) : C
             start() // if start fails, IOException will be thrown directly
             launch { looper(onRestartCallback) }
         }
+        processCount += 1
     }
 
     @MainThread

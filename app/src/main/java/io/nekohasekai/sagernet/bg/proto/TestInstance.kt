@@ -8,6 +8,7 @@ import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ktx.tryResume
 import io.nekohasekai.sagernet.ktx.tryResumeWithException
+import kotlinx.coroutines.delay
 import libcore.Libcore
 import kotlin.coroutines.suspendCoroutine
 
@@ -25,6 +26,10 @@ class TestInstance(profile: ProxyEntity, val link: String, val timeout: Int) :
                     try {
                         init()
                         launch()
+                        if (processes.processCount > 0) {
+                            // wait for plugin start
+                            delay(500)
+                        }
                         c.tryResume(Libcore.urlTest(box, link, timeout))
                     } catch (e: Exception) {
                         c.tryResumeWithException(e)
