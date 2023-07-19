@@ -20,6 +20,7 @@ fun parseSOCKS(link: String): SOCKSBean {
             link.startsWith("socks4a://") -> SOCKSBean.PROTOCOL_SOCKS4A
             else -> SOCKSBean.PROTOCOL_SOCKS5
         }
+        name = url.fragment
         serverAddress = url.host
         serverPort = url.port
         username = url.username
