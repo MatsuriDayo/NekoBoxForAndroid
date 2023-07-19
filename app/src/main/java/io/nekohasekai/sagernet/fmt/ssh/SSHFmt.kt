@@ -1,6 +1,7 @@
 package io.nekohasekai.sagernet.fmt.ssh
 
 import moe.matsuri.nb4a.SingBoxOptions
+import moe.matsuri.nb4a.utils.listByLineOrComma
 
 fun buildSingBoxOutboundSSHBean(bean: SSHBean): SingBoxOptions.Outbound_SSHOptions {
     return SingBoxOptions.Outbound_SSHOptions().apply {
@@ -9,7 +10,7 @@ fun buildSingBoxOutboundSSHBean(bean: SSHBean): SingBoxOptions.Outbound_SSHOptio
         server_port = bean.serverPort
         user = bean.username
         if (bean.publicKey.isNotBlank()) {
-            host_key = bean.publicKey.split("\n")
+            host_key = bean.publicKey.listByLineOrComma()
         }
         when (bean.authType) {
             SSHBean.AUTH_TYPE_PRIVATE_KEY -> {

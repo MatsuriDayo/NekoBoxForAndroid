@@ -7,6 +7,7 @@ import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.ktx.*
 import moe.matsuri.nb4a.SingBoxOptions.*
 import moe.matsuri.nb4a.utils.NGUtil
+import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.json.JSONObject
@@ -580,7 +581,7 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
         enabled = true
         insecure = bean.allowInsecure
         if (bean.sni.isNotBlank()) server_name = bean.sni
-        if (bean.alpn.isNotBlank()) alpn = bean.alpn.split("\n")
+        if (bean.alpn.isNotBlank()) alpn = bean.alpn.listByLineOrComma()
         if (bean.certificates.isNotBlank()) certificate = bean.certificates
         if (bean.utlsFingerprint.isNotBlank()) {
             utls = OutboundUTLSOptions().apply {

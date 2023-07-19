@@ -4,6 +4,7 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.LOCALHOST
 import io.nekohasekai.sagernet.ktx.*
 import moe.matsuri.nb4a.SingBoxOptions
+import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONObject
 import java.io.File
@@ -226,7 +227,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): SingBoxOptions.Outboun
                 server_name = bean.sni
             }
             if (bean.alpn.isNotBlank()) {
-                alpn = bean.alpn.split("\n")
+                alpn = bean.alpn.listByLineOrComma()
             }
             if (bean.caText.isNotBlank()) {
                 certificate = bean.caText

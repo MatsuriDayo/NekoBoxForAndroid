@@ -41,6 +41,7 @@ import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
 import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
 import moe.matsuri.nb4a.utils.Util
+import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val TAG_MIXED = "mixed-in"
@@ -544,16 +545,16 @@ fun buildConfig(
                 }
                 var domainList: List<String>? = null
                 if (rule.domains.isNotBlank()) {
-                    domainList = rule.domains.split("\n")
+                    domainList = rule.domains.listByLineOrComma()
                     makeSingBoxRule(domainList, false)
                 }
                 if (rule.ip.isNotBlank()) {
-                    makeSingBoxRule(rule.ip.split("\n"), true)
+                    makeSingBoxRule(rule.ip.listByLineOrComma(), true)
                 }
                 if (rule.port.isNotBlank()) {
                     port = mutableListOf<Int>()
                     port_range = mutableListOf<String>()
-                    rule.port.split(",").map {
+                    rule.port.listByLineOrComma().map {
                         if (it.contains(":")) {
                             port_range.add(it)
                         } else {
@@ -564,7 +565,7 @@ fun buildConfig(
                 if (rule.sourcePort.isNotBlank()) {
                     source_port = mutableListOf<Int>()
                     source_port_range = mutableListOf<String>()
-                    rule.sourcePort.split(",").map {
+                    rule.sourcePort.listByLineOrComma().map {
                         if (it.contains(":")) {
                             source_port_range.add(it)
                         } else {
@@ -576,10 +577,10 @@ fun buildConfig(
                     network = listOf(rule.network)
                 }
                 if (rule.source.isNotBlank()) {
-                    source_ip_cidr = rule.source.split("\n")
+                    source_ip_cidr = rule.source.listByLineOrComma()
                 }
                 if (rule.protocol.isNotBlank()) {
-                    protocol = rule.protocol.split("\n")
+                    protocol = rule.protocol.listByLineOrComma()
                 }
 
                 fun makeDnsRuleObj(): DNSRule_DefaultOptions {

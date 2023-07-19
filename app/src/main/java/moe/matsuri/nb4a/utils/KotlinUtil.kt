@@ -48,8 +48,15 @@ fun Long.toBytesString(): String {
         this > 1024 * 1024 * 1024 -> String.format(
             "%.2f GiB", (this.toDouble() / 1024 / 1024 / 1024)
         )
+
         this > 1024 * 1024 -> String.format("%.2f MiB", (this.toDouble() / 1024 / 1024))
         this > 1024 -> String.format("%.2f KiB", (this.toDouble() / 1024))
         else -> "$this Bytes"
     }
+}
+
+// List
+
+fun String.listByLineOrComma(): List<String> {
+    return this.replace(",", "\n").split("\n")
 }

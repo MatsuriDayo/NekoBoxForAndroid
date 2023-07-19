@@ -2,9 +2,9 @@ package io.nekohasekai.sagernet.fmt.tuic
 
 import io.nekohasekai.sagernet.fmt.LOCALHOST
 import io.nekohasekai.sagernet.ktx.isIpAddress
-import io.nekohasekai.sagernet.ktx.wrapIPV6Host
 import moe.matsuri.nb4a.utils.JavaUtil
 import moe.matsuri.nb4a.utils.Util
+import moe.matsuri.nb4a.utils.listByLineOrComma
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -61,7 +61,7 @@ fun TuicBean.buildTuicConfigV5(port: Int, cacheFile: (() -> File)?): JSONObject 
 
             put("udp_relay_mode", udpRelayMode)
             if (alpn.isNotBlank()) {
-                put("alpn", JSONArray(alpn.split("\n")))
+                put("alpn", JSONArray(alpn.listByLineOrComma()))
             }
             put("congestion_control", congestionController)
             put("disable_sni", disableSNI2)
@@ -109,7 +109,7 @@ fun TuicBean.buildTuicConfigV4(port: Int, cacheFile: (() -> File)?): JSONObject 
 
             put("udp_relay_mode", udpRelayMode)
             if (alpn.isNotBlank()) {
-                put("alpn", JSONArray(alpn.split("\n")))
+                put("alpn", JSONArray(alpn.listByLineOrComma()))
             }
             put("congestion_controller", congestionController)
             put("disable_sni", disableSNI2)
