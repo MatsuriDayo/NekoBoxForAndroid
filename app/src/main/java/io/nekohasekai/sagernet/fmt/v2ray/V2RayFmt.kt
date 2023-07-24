@@ -160,7 +160,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
                 if (sni.isNullOrBlank()) sni = it
             }
             url.queryParameter("alpn")?.let {
-                alpn = it.replace(",", "\n")
+                alpn = it
             }
             url.queryParameter("cert")?.let {
                 certificates = it
@@ -335,7 +335,7 @@ fun parseV2RayN(link: String): VMessBean {
             bean.security = "tls"
             bean.sni = vmessQRCode.sni
             if (bean.sni.isNullOrBlank()) bean.sni = bean.host
-            bean.alpn = vmessQRCode.alpn.replace(",", "\n")
+            bean.alpn = vmessQRCode.alpn
             bean.utlsFingerprint = vmessQRCode.fp
         }
     }

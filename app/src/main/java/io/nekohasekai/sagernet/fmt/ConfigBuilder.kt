@@ -220,6 +220,7 @@ fun buildConfig(
                 tag = "tun-in"
                 stack = if (DataStore.tunImplementation == 1) "system" else "gvisor"
                 endpoint_independent_nat = true
+                mtu = DataStore.mtu
                 domain_strategy = genDomainStrategy(DataStore.resolveDestination)
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
