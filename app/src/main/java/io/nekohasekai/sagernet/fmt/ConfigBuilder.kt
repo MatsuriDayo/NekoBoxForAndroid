@@ -150,7 +150,7 @@ fun buildConfig(
     val directDNS = DataStore.directDns.split("\n")
         .mapNotNull { dns -> dns.trim().takeIf { it.isNotBlank() && !it.startsWith("#") } }
     val enableDnsRouting = DataStore.enableDnsRouting
-    val useFakeDns = DataStore.enableFakeDns && !forTest && DataStore.ipv6Mode != IPv6Mode.ONLY
+    val useFakeDns = DataStore.enableFakeDns && !forTest
     val needSniff = DataStore.trafficSniffing > 0
     val needSniffOverride = DataStore.trafficSniffing == 2
     val externalIndexMap = ArrayList<IndexEntity>()
@@ -763,14 +763,15 @@ fun buildConfig(
             })
             // FakeDNS obj
             if (useFakeDns) {
+                dns.fakeip = DNSFakeIPOptions().apply {
+                    enabled = true
+                    inet4_range = "198.18.0.0/15"
+                    inet6_range = "fc00::/18"
+                }
                 dns.servers.add(DNSServerOptions().apply {
-                    address = "fakedns://" + VpnService.FAKEDNS_VLAN4_CLIENT + "/15"
+                    address = "fakeip"
                     tag = "dns-fake"
                     strategy = "ipv4_only"
-                })
-                dns.rules.add(0, DNSRule_DefaultOptions().apply {
-                    auth_user = listOf("fakedns")
-                    server = "dns-remote"
                 })
                 dns.rules.add(DNSRule_DefaultOptions().apply {
                     inbound = listOf("tun-in")

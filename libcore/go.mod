@@ -7,10 +7,10 @@ require (
 	github.com/matsuridayo/libneko v1.0.0 // replaced
 	github.com/matsuridayo/sing-box-extra v1.0.0 // replaced
 	github.com/miekg/dns v1.1.55
-	github.com/sagernet/sing v0.2.8-0.20230715064216-8807070904b2
+	github.com/sagernet/sing v0.2.9
 	github.com/sagernet/sing-box v1.0.0 // replaced
-	github.com/sagernet/sing-dns v0.1.7-0.20230703131656-fd65b6178bf9
-	github.com/sagernet/sing-tun v0.1.9-0.20230703134424-fd850d00e5cd
+	github.com/sagernet/sing-dns v0.1.8
+	github.com/sagernet/sing-tun v0.1.11
 	github.com/ulikunitz/xz v0.5.10
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105
 )
@@ -21,14 +21,14 @@ require (
 	github.com/Dreamacro/protobytes v0.0.0-20230617041236-6500a9f4f158 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/caddyserver/certmagic v0.18.2 // indirect
+	github.com/caddyserver/certmagic v0.19.0 // indirect
 	github.com/cloudflare/circl v1.2.1-0.20221019164342-6ab4dfed8f3c // indirect
 	github.com/cretz/bine v0.2.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/go-chi/chi/v5 v5.0.8 // indirect
+	github.com/go-chi/chi/v5 v5.0.10 // indirect
 	github.com/go-chi/cors v1.2.1 // indirect
-	github.com/go-chi/render v1.0.2 // indirect
+	github.com/go-chi/render v1.0.3 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
 	github.com/gofrs/uuid/v5 v5.0.0 // indirect
@@ -61,11 +61,11 @@ require (
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
 	github.com/sagernet/quic-go v0.0.0-20230615020047-10f05c797c02 // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
-	github.com/sagernet/sing-mux v0.1.1-0.20230703132253-2cedde0fbc90 // indirect
-	github.com/sagernet/sing-shadowsocks v0.2.3-0.20230703131347-b044960bd355 // indirect
-	github.com/sagernet/sing-shadowsocks2 v0.1.2-0.20230703131506-ca0c6adde968 // indirect
-	github.com/sagernet/sing-shadowtls v0.1.3-0.20230703132509-93bbad3057e4 // indirect
-	github.com/sagernet/sing-vmess v0.1.7-0.20230711074224-7d2a9a318162 // indirect
+	github.com/sagernet/sing-mux v0.1.2 // indirect
+	github.com/sagernet/sing-shadowsocks v0.2.4 // indirect
+	github.com/sagernet/sing-shadowsocks2 v0.1.3 // indirect
+	github.com/sagernet/sing-shadowtls v0.1.4 // indirect
+	github.com/sagernet/sing-vmess v0.1.7 // indirect
 	github.com/sagernet/smux v0.0.0-20230312102458-337ec2a5af37 // indirect
 	github.com/sagernet/tfo-go v0.0.0-20230303015439-ffcfd8c41cf9 // indirect
 	github.com/sagernet/utls v0.0.0-20230309024959-6732c2ab36f2 // indirect
@@ -76,6 +76,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/u-root/uio v0.0.0-20230220225925-ffce2a382923 // indirect
 	github.com/vishvananda/netns v0.0.0-20211101163701-50045581ed74 // indirect
+	github.com/zeebo/blake3 v0.2.3 // indirect
 	go.etcd.io/bbolt v1.3.7 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
