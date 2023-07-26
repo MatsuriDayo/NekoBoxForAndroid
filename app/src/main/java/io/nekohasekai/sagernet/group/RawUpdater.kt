@@ -328,7 +328,7 @@ object RawUpdater : GroupUpdater() {
                                     "tls" -> bean.security =
                                         if (opt.value.toString() == "true") "tls" else ""
 
-                                    "servername" -> bean.host = opt.value.toString()
+                                    "servername" -> bean.sni = opt.value.toString()
 
                                     "skip-cert-verify" -> bean.allowInsecure =
                                         opt.value.toString() == "true"
@@ -408,9 +408,6 @@ object RawUpdater : GroupUpdater() {
                                         }
                                     }
                                 }
-                            }
-                            if (bean.isTLS() && bean.sni.isNullOrBlank() && !bean.host.isNullOrBlank()) {
-                                bean.sni = bean.host
                             }
                             proxies.add(bean)
                         }
@@ -578,8 +575,14 @@ object RawUpdater : GroupUpdater() {
                 proxies.forEach {
                     it.initializeDefaultValues()
                     if (it is StandardV2RayBean) {
+                        // 1. SNI
+                        if (it.isTLS() && it.sni.isNullOrBlank() && !it.host.isNullOrBlank() && !it.host.isIpAddress()) {
+                            it.sni = it.host
+                        }
+                        // 2. globalClientFingerprint
                         if (!it.realityPubKey.isNullOrBlank() && it.utlsFingerprint.isNullOrBlank()) {
                             it.utlsFingerprint = globalClientFingerprint
+                            if (it.utlsFingerprint.isNullOrBlank()) it.utlsFingerprint = "chrome"
                         }
                     }
                 }

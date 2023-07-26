@@ -45,7 +45,7 @@ object PluginManager {
         // internal so
         if (info.applicationInfo == null) {
             try {
-                initNativeInternal(pluginId)!!.let { return InitResult(it, info) }
+                initNativeInternal(pluginId)?.let { return InitResult(it, info) }
             } catch (t: Throwable) {
                 Logs.w("initNativeInternal failed", t)
             }
@@ -53,7 +53,7 @@ object PluginManager {
         }
 
         try {
-            initNativeFaster(info)!!.let { return InitResult(it, info) }
+            initNativeFaster(info)?.let { return InitResult(it, info) }
         } catch (t: Throwable) {
             Logs.w("initNativeFaster failed", t)
         }
