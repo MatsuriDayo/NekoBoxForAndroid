@@ -493,7 +493,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
 
     when (packetEncoding) {
         1 -> {
-            builder.addQueryParameter("packetEncoding", "packet")
+            builder.addQueryParameter("packetEncoding", "packetaddr")
         }
 
         2 -> {

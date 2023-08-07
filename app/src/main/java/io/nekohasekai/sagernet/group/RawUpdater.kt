@@ -306,13 +306,13 @@ object RawUpdater : GroupUpdater() {
 
                                     "flow" -> if (isVLESS) bean.encryption = opt.value as String
 
-                                    "xudp" -> if (isVLESS) {
-                                        if (opt.value.toString() == "false") {
-                                            bean.packetEncoding = 0
-                                        } else {
+                                    "packet-addr" -> if (opt.value.toString() == "true") {
+                                        bean.packetEncoding = 1
+                                    }
+
+                                    "xudp" -> if (opt.value.toString() == "true") {
                                             bean.packetEncoding = 2
                                         }
-                                    }
 
                                     "network" -> {
                                         bean.type = opt.value as String
