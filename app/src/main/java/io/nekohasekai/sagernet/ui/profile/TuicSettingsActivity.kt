@@ -60,15 +60,11 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         uuid = DataStore.serverUsername
     }
 
-    private lateinit var editConfigPreference: EditConfigPreference
-
     override fun PreferenceFragmentCompat.createPreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
         addPreferencesFromResource(R.xml.tuic_preferences)
-
-        editConfigPreference = findPreference(Key.SERVER_CONFIG)!!
 
         val uuid = findPreference<EditTextPreference>(Key.SERVER_USERNAME)!!
         val mtu = findPreference<EditTextPreference>(Key.SERVER_MTU)!!
@@ -100,14 +96,6 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
 
         findPreference<EditTextPreference>(Key.SERVER_PASSWORD)!!.apply {
             summaryProvider = PasswordSummaryProvider
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (::editConfigPreference.isInitialized) {
-            editConfigPreference.notifyChanged()
         }
     }
 

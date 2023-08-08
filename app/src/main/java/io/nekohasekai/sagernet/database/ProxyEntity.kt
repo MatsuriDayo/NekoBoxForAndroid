@@ -296,7 +296,7 @@ data class ProxyEntity(
             TYPE_TROJAN_GO -> true
             TYPE_NAIVE -> true
             TYPE_HYSTERIA -> !hysteriaBean!!.canUseSingBox()
-            TYPE_TUIC -> true
+            TYPE_TUIC -> tuicBean!!.protocolVersion == 4
             TYPE_NEKO -> true
             else -> false
         }

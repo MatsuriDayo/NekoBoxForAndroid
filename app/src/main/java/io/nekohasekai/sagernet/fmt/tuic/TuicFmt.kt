@@ -2,12 +2,39 @@ package io.nekohasekai.sagernet.fmt.tuic
 
 import io.nekohasekai.sagernet.fmt.LOCALHOST
 import io.nekohasekai.sagernet.ktx.isIpAddress
+import moe.matsuri.nb4a.SingBoxOptions
 import moe.matsuri.nb4a.utils.JavaUtil
 import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.listByLineOrComma
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+
+fun buildSingBoxOutboundTuicBean(bean: TuicBean): SingBoxOptions.Outbound_TUICOptions {
+    return SingBoxOptions.Outbound_TUICOptions().apply {
+        type = "tuic"
+        server = bean.serverAddress
+        server_port = bean.serverPort
+        uuid = bean.uuid
+        password = bean.token
+        congestion_control = bean.congestionController
+        udp_relay_mode = bean.udpRelayMode
+        zero_rtt_handshake = bean.reduceRTT
+        tls = SingBoxOptions.OutboundTLSOptions().apply {
+            if (bean.sni.isNotBlank()) {
+                server_name = bean.sni
+            }
+            if (bean.alpn.isNotBlank()) {
+                alpn = bean.alpn.listByLineOrComma()
+            }
+            if (bean.caText.isNotBlank()) {
+                certificate = bean.caText
+            }
+            insecure = bean.allowInsecure
+            enabled = true
+        }
+    }
+}
 
 fun TuicBean.pluginId(): String {
     return when (protocolVersion) {

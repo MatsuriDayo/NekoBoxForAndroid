@@ -432,6 +432,10 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public String hop_ports;
+
+        public Integer hop_interval;
+
     }
 
 
@@ -468,6 +472,8 @@ public class SingBoxOptions {
         // Generate note: option type:  public ShadowTLSInboundOptions ShadowTLSOptions;
 
         // Generate note: option type:  public VLESSInboundOptions VLESSOptions;
+
+        // Generate note: option type:  public TUICInboundOptions TUICOptions;
 
     }
 
@@ -636,6 +642,8 @@ public class SingBoxOptions {
         // Generate note: option type:  public ShadowsocksROutboundOptions ShadowsocksROptions;
 
         // Generate note: option type:  public VLESSOutboundOptions VLESSOptions;
+
+        // Generate note: option type:  public TUICOutboundOptions TUICOptions;
 
         // Generate note: option type:  public SelectorOutboundOptions SelectorOptions;
 
@@ -1936,6 +1944,120 @@ public class SingBoxOptions {
 
     }
 
+    public static class TUICInboundOptions extends SingBoxOption {
+
+        // Generate note: nested type ListenOptions
+        public String listen;
+
+        public Integer listen_port;
+
+        public Boolean tcp_fast_open;
+
+        public Boolean udp_fragment;
+
+        // Generate note: option type:  public Boolean UDPFragmentDefault;
+
+        public Long udp_timeout;
+
+        public Boolean proxy_protocol;
+
+        public Boolean proxy_protocol_accept_no_header;
+
+        public String detour;
+
+        // Generate note: nested type InboundOptions
+        public Boolean sniff;
+
+        public Boolean sniff_override_destination;
+
+        public Long sniff_timeout;
+
+        public String domain_strategy;
+
+        // End of public InboundOptions ;
+
+        // End of public ListenOptions ;
+
+        public List<TUICUser> users;
+
+        public String congestion_control;
+
+        public Long auth_timeout;
+
+        public Boolean zero_rtt_handshake;
+
+        public Long heartbeat;
+
+        public InboundTLSOptions tls;
+
+    }
+
+    public static class TUICUser extends SingBoxOption {
+
+        public String name;
+
+        public String uuid;
+
+        public String password;
+
+    }
+
+    public static class TUICOutboundOptions extends SingBoxOption {
+
+        // Generate note: nested type DialerOptions
+        public String detour;
+
+        public String bind_interface;
+
+        public String inet4_bind_address;
+
+        public String inet6_bind_address;
+
+        public String protect_path;
+
+        public Integer routing_mark;
+
+        public Boolean reuse_addr;
+
+        public Long connect_timeout;
+
+        public Boolean tcp_fast_open;
+
+        public Boolean udp_fragment;
+
+        // Generate note: option type:  public Boolean UDPFragmentDefault;
+
+        public String domain_strategy;
+
+        public Long fallback_delay;
+
+        // End of public DialerOptions ;
+
+        // Generate note: nested type ServerOptions
+        public String server;
+
+        public Integer server_port;
+
+        // End of public ServerOptions ;
+
+        public String uuid;
+
+        public String password;
+
+        public String congestion_control;
+
+        public String udp_relay_mode;
+
+        public Boolean zero_rtt_handshake;
+
+        public Long heartbeat;
+
+        public String network;
+
+        public OutboundTLSOptions tls;
+
+    }
+
     public static class TunInboundOptions extends SingBoxOption {
 
         public String interface_name;
@@ -3023,6 +3145,53 @@ public class SingBoxOptions {
 
     }
 
+    public static class Inbound_TUICOptions extends Inbound {
+
+        // Generate note: nested type ListenOptions
+        public String listen;
+
+        public Integer listen_port;
+
+        public Boolean tcp_fast_open;
+
+        public Boolean udp_fragment;
+
+
+        public Long udp_timeout;
+
+        public Boolean proxy_protocol;
+
+        public Boolean proxy_protocol_accept_no_header;
+
+        public String detour;
+
+        // Generate note: nested type InboundOptions
+        public Boolean sniff;
+
+        public Boolean sniff_override_destination;
+
+        public Long sniff_timeout;
+
+        public String domain_strategy;
+
+        // End of public InboundOptions ;
+
+        // End of public ListenOptions ;
+
+        public List<TUICUser> users;
+
+        public String congestion_control;
+
+        public Long auth_timeout;
+
+        public Boolean zero_rtt_handshake;
+
+        public Long heartbeat;
+
+        public InboundTLSOptions tls;
+
+    }
+
     public static class Outbound_DirectOptions extends Outbound {
 
         // Generate note: nested type DialerOptions
@@ -3445,6 +3614,10 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public String hop_ports;
+
+        public Integer hop_interval;
+
     }
 
     public static class Outbound_TorOptions extends Outbound {
@@ -3692,6 +3865,61 @@ public class SingBoxOptions {
         public V2RayTransportOptions transport;
 
         public String packet_encoding;
+
+    }
+
+    public static class Outbound_TUICOptions extends Outbound {
+
+        // Generate note: nested type DialerOptions
+        public String detour;
+
+        public String bind_interface;
+
+        public String inet4_bind_address;
+
+        public String inet6_bind_address;
+
+        public String protect_path;
+
+        public Integer routing_mark;
+
+        public Boolean reuse_addr;
+
+        public Long connect_timeout;
+
+        public Boolean tcp_fast_open;
+
+        public Boolean udp_fragment;
+
+
+        public String domain_strategy;
+
+        public Long fallback_delay;
+
+        // End of public DialerOptions ;
+
+        // Generate note: nested type ServerOptions
+        public String server;
+
+        public Integer server_port;
+
+        // End of public ServerOptions ;
+
+        public String uuid;
+
+        public String password;
+
+        public String congestion_control;
+
+        public String udp_relay_mode;
+
+        public Boolean zero_rtt_handshake;
+
+        public Long heartbeat;
+
+        public String network;
+
+        public OutboundTLSOptions tls;
 
     }
 

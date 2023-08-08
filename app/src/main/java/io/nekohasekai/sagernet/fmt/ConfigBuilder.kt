@@ -13,7 +13,6 @@ import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.fmt.ConfigBuildResult.IndexEntity
 import io.nekohasekai.sagernet.fmt.hysteria.HysteriaBean
 import io.nekohasekai.sagernet.fmt.hysteria.buildSingBoxOutboundHysteriaBean
-import io.nekohasekai.sagernet.fmt.hysteria.isMultiPort
 import io.nekohasekai.sagernet.fmt.internal.ChainBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.ShadowsocksBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.buildSingBoxOutboundShadowsocksBean
@@ -22,6 +21,7 @@ import io.nekohasekai.sagernet.fmt.socks.buildSingBoxOutboundSocksBean
 import io.nekohasekai.sagernet.fmt.ssh.SSHBean
 import io.nekohasekai.sagernet.fmt.ssh.buildSingBoxOutboundSSHBean
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
+import io.nekohasekai.sagernet.fmt.tuic.buildSingBoxOutboundTuicBean
 import io.nekohasekai.sagernet.fmt.tuic.pluginId
 import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
@@ -382,6 +382,9 @@ fun buildConfig(
                         is HysteriaBean ->
                             buildSingBoxOutboundHysteriaBean(bean).asMap()
 
+                        is TuicBean ->
+                            buildSingBoxOutboundTuicBean(bean).asMap()
+
                         is SOCKSBean ->
                             buildSingBoxOutboundSocksBean(bean).asMap()
 
@@ -664,9 +667,7 @@ fun buildConfig(
         // Bypass Lookup for the first profile
         bypassDNSBeans.forEach {
             var serverAddr = it.serverAddress
-            if (it is HysteriaBean && it.isMultiPort()) {
-                serverAddr = it.serverAddress.substringBeforeLast(":")
-            }
+
             if (it is ConfigBean) {
                 var config = mutableMapOf<String, Any>()
                 config = gson.fromJson(it.config, config.javaClass)

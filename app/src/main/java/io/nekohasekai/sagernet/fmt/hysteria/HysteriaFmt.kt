@@ -18,11 +18,11 @@ fun parseHysteria(url: String): HysteriaBean {
     )
     return HysteriaBean().apply {
         serverAddress = link.host
-        serverPort = link.port
+        serverPorts = link.port.toString()
         name = link.fragment
 
         link.queryParameter("mport")?.also {
-            serverAddress = serverAddress.wrapIPV6Host() + ":" + it
+            serverPorts = it
         }
         link.queryParameter("peer")?.also {
             sni = it
@@ -51,6 +51,7 @@ fun parseHysteria(url: String): HysteriaBean {
                 "faketcp" -> {
                     protocol = HysteriaBean.PROTOCOL_FAKETCP
                 }
+
                 "wechat-video" -> {
                     protocol = HysteriaBean.PROTOCOL_WECHAT_VIDEO
                 }
@@ -60,9 +61,11 @@ fun parseHysteria(url: String): HysteriaBean {
 }
 
 fun HysteriaBean.toUri(): String {
-    val builder = linkBuilder().host(serverAddress.substringBeforeLast(":")).port(serverPort)
-    if (isMultiPort()) {
-        builder.addQueryParameter("mport", serverAddress.substringAfterLast(":"))
+    val builder = linkBuilder()
+        .host(serverAddress)
+        .port(getFirstPort(serverPorts))
+    if (isMultiPort(displayAddress())) {
+        builder.addQueryParameter("mport", serverPorts)
     }
     if (allowInsecure) {
         builder.addQueryParameter("insecure", "1")
@@ -86,6 +89,7 @@ fun HysteriaBean.toUri(): String {
         HysteriaBean.PROTOCOL_FAKETCP -> {
             builder.addQueryParameter("protocol", "faketcp")
         }
+
         HysteriaBean.PROTOCOL_WECHAT_VIDEO -> {
             builder.addQueryParameter("protocol", "wechat-video")
         }
@@ -101,11 +105,8 @@ fun HysteriaBean.toUri(): String {
 
 fun JSONObject.parseHysteria(): HysteriaBean {
     return HysteriaBean().apply {
-        serverAddress = optString("server")
-        if (!isMultiPort()) {
-            serverAddress = optString("server").substringBeforeLast(":")
-            serverPort = optString("server").substringAfterLast(":").toIntOrNull() ?: 443
-        }
+        serverAddress = optString("server").substringBeforeLast(":")
+        serverPorts = optString("server").substringAfterLast(":")
         uploadMbps = getIntNya("up_mbps")
         downloadMbps = getIntNya("down_mbps")
         obfuscation = getStr("obfs")
@@ -122,6 +123,7 @@ fun JSONObject.parseHysteria(): HysteriaBean {
                 "faketcp" -> {
                     protocol = HysteriaBean.PROTOCOL_FAKETCP
                 }
+
                 "wechat-video" -> {
                     protocol = HysteriaBean.PROTOCOL_WECHAT_VIDEO
                 }
@@ -139,11 +141,12 @@ fun JSONObject.parseHysteria(): HysteriaBean {
 
 fun HysteriaBean.buildHysteriaConfig(port: Int, cacheFile: (() -> File)?): String {
     return JSONObject().apply {
-        put("server", if (isMultiPort()) serverAddress else wrapUri())
+        put("server", displayAddress())
         when (protocol) {
             HysteriaBean.PROTOCOL_FAKETCP -> {
                 put("protocol", "faketcp")
             }
+
             HysteriaBean.PROTOCOL_WECHAT_VIDEO -> {
                 put("protocol", "wechat-video")
             }
@@ -190,24 +193,33 @@ fun HysteriaBean.buildHysteriaConfig(port: Int, cacheFile: (() -> File)?): Strin
     }.toStringPretty()
 }
 
-fun HysteriaBean.isMultiPort(): Boolean {
-    if (!serverAddress.contains(":")) return false
-    val p = serverAddress.substringAfterLast(":")
+fun isMultiPort(hyAddr: String): Boolean {
+    if (!hyAddr.contains(":")) return false
+    val p = hyAddr.substringAfterLast(":")
     if (p.contains("-") || p.contains(",")) return true
     return false
 }
 
+fun getFirstPort(portStr: String): Int {
+    return portStr.substringBefore(":").substringBefore(",").toIntOrNull() ?: 443
+}
+
 fun HysteriaBean.canUseSingBox(): Boolean {
-    if (isMultiPort() || protocol != HysteriaBean.PROTOCOL_UDP) return false
+    if (protocol != HysteriaBean.PROTOCOL_UDP) return false
     return true
 }
 
 fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): SingBoxOptions.Outbound_HysteriaOptions {
-    // No multi-port
     return SingBoxOptions.Outbound_HysteriaOptions().apply {
         type = "hysteria"
         server = bean.serverAddress
-        server_port = bean.serverPort
+        val port = bean.serverPorts.toIntOrNull()
+        if (port != null) {
+            server_port = port
+        } else {
+            hop_ports = bean.serverPorts
+        }
+        hop_interval = bean.hopInterval
         up_mbps = bean.uploadMbps
         down_mbps = bean.downloadMbps
         obfs = bean.obfuscation

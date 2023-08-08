@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import io.nekohasekai.sagernet.fmt.AbstractBean;
 import io.nekohasekai.sagernet.fmt.KryoConverters;
+import io.nekohasekai.sagernet.ktx.NetsKt;
+import kotlin.text.StringsKt;
 
 public class HysteriaBean extends AbstractBean {
 
@@ -38,6 +40,8 @@ public class HysteriaBean extends AbstractBean {
     public Boolean disableMtuDiscovery;
     public Integer hopInterval;
 
+    public String serverPorts;
+
     @Override
     public boolean canMapping() {
         return protocol != PROTOCOL_FAKETCP;
@@ -62,11 +66,12 @@ public class HysteriaBean extends AbstractBean {
         if (connectionReceiveWindow == null) connectionReceiveWindow = 0;
         if (disableMtuDiscovery == null) disableMtuDiscovery = false;
         if (hopInterval == null) hopInterval = 10;
+        if (serverPorts == null) serverPorts = "443";
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(5);
+        output.writeInt(6);
         super.serialize(output);
         output.writeInt(authPayloadType);
         output.writeString(authPayload);
@@ -84,6 +89,7 @@ public class HysteriaBean extends AbstractBean {
         output.writeInt(connectionReceiveWindow);
         output.writeBoolean(disableMtuDiscovery);
         output.writeInt(hopInterval);
+        output.writeString(serverPorts);
 
     }
 
@@ -113,6 +119,17 @@ public class HysteriaBean extends AbstractBean {
         if (version >= 5) {
             hopInterval = input.readInt();
         }
+        if (version >= 6) {
+            serverPorts = input.readString();
+        } else {
+            // old update to new
+            if (HysteriaFmtKt.isMultiPort(serverAddress)) {
+                serverPorts = StringsKt.substringAfterLast(serverAddress, ":", serverAddress);
+                serverAddress = StringsKt.substringBeforeLast(serverAddress, ":", serverAddress);
+            } else {
+                serverPorts = serverPort.toString();
+            }
+        }
     }
 
     @Override
@@ -128,10 +145,7 @@ public class HysteriaBean extends AbstractBean {
 
     @Override
     public String displayAddress() {
-        if (HysteriaFmtKt.isMultiPort(this)) {
-            return serverAddress;
-        }
-        return super.displayAddress();
+        return NetsKt.wrapIPV6Host(serverAddress) + ":" + serverPorts;
     }
 
     @Override
@@ -157,4 +171,4 @@ public class HysteriaBean extends AbstractBean {
             return new HysteriaBean[size];
         }
     };
-} 
+}

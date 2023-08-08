@@ -18,7 +18,7 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
     override fun HysteriaBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
-        DataStore.serverPort = serverPort
+        DataStore.serverPorts = serverPorts
         DataStore.serverObfs = obfuscation
         DataStore.serverAuthType = authPayloadType
         DataStore.serverProtocolVersion = protocol
@@ -38,7 +38,7 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
     override fun HysteriaBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
-        serverPort = DataStore.serverPort
+        serverPorts = DataStore.serverPorts
         obfuscation = DataStore.serverObfs
         authPayloadType = DataStore.serverAuthType
         authPayload = DataStore.serverPassword
@@ -80,10 +80,6 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
         }
         findPreference<EditTextPreference>(Key.SERVER_CONNECTION_RECEIVE_WINDOW)!!.apply {
             setOnBindEditTextListener(EditTextPreferenceModifiers.Number)
-        }
-
-        findPreference<EditTextPreference>(Key.SERVER_PORT)!!.apply {
-            setOnBindEditTextListener(EditTextPreferenceModifiers.Port)
         }
 
         findPreference<EditTextPreference>(Key.SERVER_PASSWORD)!!.apply {

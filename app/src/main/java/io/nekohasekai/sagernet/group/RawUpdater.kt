@@ -311,8 +311,8 @@ object RawUpdater : GroupUpdater() {
                                     }
 
                                     "xudp" -> if (opt.value.toString() == "true") {
-                                            bean.packetEncoding = 2
-                                        }
+                                        bean.packetEncoding = 2
+                                    }
 
                                     "network" -> {
                                         bean.type = opt.value as String
@@ -511,8 +511,7 @@ object RawUpdater : GroupUpdater() {
                                 }
                             }
                             if (hopPorts.isNotBlank()) {
-                                bean.serverAddress =
-                                    bean.serverAddress.wrapIPV6Host() + ":" + hopPorts
+                                bean.serverPorts = hopPorts
                             }
                             proxies.add(bean)
                         }
