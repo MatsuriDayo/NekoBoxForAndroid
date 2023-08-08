@@ -22,6 +22,7 @@ import (
 	"github.com/sagernet/sing-box/common/dialer/conntrack"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
+	"github.com/sagernet/sing/service/pause"
 )
 
 var mainInstance *BoxInstance
@@ -62,8 +63,9 @@ type BoxInstance struct {
 	cancel context.CancelFunc
 	state  int
 
-	v2api    *boxapi.SbV2rayServer
-	selector *outbound.Selector
+	v2api        *boxapi.SbV2rayServer
+	selector     *outbound.Selector
+	pauseManager pause.Manager
 
 	ForTest bool
 }
@@ -80,6 +82,8 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 
 	// create box
 	ctx, cancel := context.WithCancel(context.Background())
+	sleepManager := pause.NewDefaultManager(ctx)
+	ctx = pause.ContextWithManager(ctx, sleepManager)
 	instance, err := boxbox.New(boxbox.Options{
 		Options:           options,
 		Context:           ctx,
@@ -91,8 +95,9 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	}
 
 	b = &BoxInstance{
-		Box:    instance,
-		cancel: cancel,
+		Box:          instance,
+		cancel:       cancel,
+		pauseManager: sleepManager,
 	}
 
 	// fuck your sing-box platformFormatter
@@ -143,6 +148,15 @@ func (b *BoxInstance) Close() (err error) {
 	b.CloseWithTimeout(b.cancel, time.Second*2, log.Println)
 
 	return nil
+}
+
+func (b *BoxInstance) Sleep() {
+	b.pauseManager.DevicePause()
+	_ = b.Box.Router().ResetNetwork()
+}
+
+func (b *BoxInstance) Wake() {
+	b.pauseManager.DeviceWake()
 }
 
 func (b *BoxInstance) SetAsMain() {
