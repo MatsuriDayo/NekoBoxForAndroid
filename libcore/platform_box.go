@@ -17,6 +17,7 @@ import (
 	tun "github.com/sagernet/sing-tun"
 	"github.com/sagernet/sing/common/control"
 	E "github.com/sagernet/sing/common/exceptions"
+	"github.com/sagernet/sing/common/logger"
 	N "github.com/sagernet/sing/common/network"
 )
 
@@ -68,7 +69,7 @@ func (w *boxPlatformInterfaceWrapper) UsePlatformDefaultInterfaceMonitor() bool 
 	return true
 }
 
-func (w *boxPlatformInterfaceWrapper) CreateDefaultInterfaceMonitor(errorHandler E.Handler) tun.DefaultInterfaceMonitor {
+func (w *boxPlatformInterfaceWrapper) CreateDefaultInterfaceMonitor(l logger.Logger) tun.DefaultInterfaceMonitor {
 	return &interfaceMonitor{}
 }
 
