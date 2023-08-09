@@ -417,6 +417,7 @@
     <string-array name="tun_implementation">
         <item>gVisor</item>
         <item>System</item>
+        <item>Mixed</item>
     </string-array>
 
     <string-array name="hysteria_protocol">

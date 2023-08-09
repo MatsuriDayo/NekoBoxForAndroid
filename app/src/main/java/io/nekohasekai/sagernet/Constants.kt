@@ -157,6 +157,7 @@ object Key {
 object TunImplementation {
     const val GVISOR = 0
     const val SYSTEM = 1
+    const val MIXED = 1
 }
 
 object IPv6Mode {

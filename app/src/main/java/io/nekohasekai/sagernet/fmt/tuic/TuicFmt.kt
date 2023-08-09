@@ -30,6 +30,7 @@ fun buildSingBoxOutboundTuicBean(bean: TuicBean): SingBoxOptions.Outbound_TUICOp
             if (bean.caText.isNotBlank()) {
                 certificate = bean.caText
             }
+            disable_sni = bean.disableSNI
             insecure = bean.allowInsecure
             enabled = true
         }
