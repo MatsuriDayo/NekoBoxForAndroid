@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -204,6 +203,9 @@ func (h *httpResponse) errorString() string {
 	if err != nil {
 		return fmt.Sprint("HTTP ", h.Status)
 	}
+	if len(content) > 100 {
+		content = content[:100] + " ..."
+	}
 	return fmt.Sprint("HTTP ", h.Status, ": ", content)
 }
 
@@ -214,7 +216,7 @@ func (h *httpResponse) GetHeader(key string) string {
 func (h *httpResponse) GetContent() ([]byte, error) {
 	h.getContentOnce.Do(func() {
 		defer h.Body.Close()
-		h.content, h.contentError = ioutil.ReadAll(h.Body)
+		h.content, h.contentError = io.ReadAll(h.Body)
 	})
 	return h.content, h.contentError
 }

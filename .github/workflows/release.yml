@@ -32,15 +32,14 @@ jobs:
           path: |
             app/libs/libcore.aar
           key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
-      - name: Golang Cache
+      - name: Install Golang
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
+        uses: actions/setup-go@v3
         with:
-          path: build/golang
-          key: go-${{ hashFiles('.github/workflows/*', 'golang_status') }}
+          go-version: ^1.20
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
-        run: ./run init action go && ./run lib core
+        run: ./run lib core
   build:
     name: Build OSS APK
     runs-on: ubuntu-latest

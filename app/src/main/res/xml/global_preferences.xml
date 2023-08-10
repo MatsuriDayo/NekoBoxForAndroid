@@ -35,7 +35,7 @@
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="2"
             app:entries="@array/tun_implementation"
-            app:entryValues="@array/int_array_2"
+            app:entryValues="@array/int_array_3"
             app:icon="@drawable/ic_baseline_flip_camera_android_24"
             app:key="tunImplementation"
             app:title="@string/tun_implementation"
