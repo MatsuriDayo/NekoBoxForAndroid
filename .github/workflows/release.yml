@@ -36,7 +36,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/setup-go@v3
         with:
-          go-version: ^1.20
+          go-version: ^1.21
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
