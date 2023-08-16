@@ -10,7 +10,7 @@ require (
 	github.com/sagernet/sing v0.2.10-0.20230807080248-4db0062caa0a
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	github.com/sagernet/sing-dns v0.1.9-0.20230731012726-ad50da89b659
-	github.com/sagernet/sing-tun v0.1.12-0.20230808120247-47ab78d303db
+	github.com/sagernet/sing-tun v0.1.12-0.20230812113806-10d98f26797a
 	github.com/ulikunitz/xz v0.5.10
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105
 )
@@ -58,9 +58,9 @@ require (
 	github.com/sagernet/go-tun2socks v1.16.12-0.20220818015926-16cb67876a61 // indirect
 	github.com/sagernet/gvisor v0.0.0-20230627031050-1ab0276e0dd2 // indirect
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
-	github.com/sagernet/quic-go v0.0.0-20230809023643-d720ed35ac2b // indirect
+	github.com/sagernet/quic-go v0.0.0-20230811130919-d6f54a117913 // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
-	github.com/sagernet/sing-mux v0.1.3-0.20230803070305-ea4a972acd21 // indirect
+	github.com/sagernet/sing-mux v0.1.3-0.20230811111955-dc1639b5204c // indirect
 	github.com/sagernet/sing-shadowsocks v0.2.4 // indirect
 	github.com/sagernet/sing-shadowsocks2 v0.1.3 // indirect
 	github.com/sagernet/sing-shadowtls v0.1.4 // indirect
