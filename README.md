@@ -39,7 +39,7 @@ https://matsuridayo.github.io
 * Trojan-Go ( trojan-go-plugin )
 * NaïveProxy ( naive-plugin )
 * Hysteria ( hysteria-plugin )
-* TUIC ( tuic-plugin & tuic-v5-plugin )
+* TUIC
 
 请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件。
 
@@ -75,3 +75,7 @@ Android GUI:
 - [shadowsocks/shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
 - [SagerNet/SagerNet](https://github.com/SagerNet/SagerNet)
 - [Matsuridayo/Matsuri](https://github.com/MatsuriDayo/Matsuri)
+
+Web Dashboard:
+
+- [Yacd-meta](https://github.com/MetaCubeX/Yacd-meta)
