@@ -146,7 +146,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     if (type == "h2") type = "http"
 
     security = url.queryParameter("security")
-    if (security == null) {
+    if (security.isNullOrBlank()) {
         security = if (this is TrojanBean) "tls" else "none"
     }
 
