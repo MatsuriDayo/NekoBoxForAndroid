@@ -212,23 +212,16 @@ object ProfileManager {
                     outbound = -2,
                 )
             )
-            var country = Locale.getDefault().country.lowercase()
-            var displayCountry = Locale.getDefault().displayCountry
-            if (country in arrayOf(
-                    "ir"
-                )
-            ) {
-                createRule(
-                    RuleEntity(
-                        name = app.getString(R.string.route_bypass_domain, displayCountry),
-                        domains = "domain:$country",
-                        outbound = -1
-                    ), false
-                )
-            } else {
-                country = Locale.CHINA.country.lowercase()
-                displayCountry = Locale.CHINA.displayCountry
-                createRule(
+            val fuckedCountry = mutableListOf("cn:中国")
+            if (Locale.getDefault().country != Locale.CHINA.country) {
+                // 非中文用户
+                fuckedCountry += "ir:Iran"
+            }
+            for (c in fuckedCountry) {
+                val country = c.substringBefore(":")
+                val displayCountry = c.substringAfter(":")
+                //
+                if (country == "cn") createRule(
                     RuleEntity(
                         name = app.getString(R.string.route_play_store, displayCountry),
                         domains = "domain:googleapis.cn",
@@ -241,14 +234,14 @@ object ProfileManager {
                         outbound = -1
                     ), false
                 )
+                createRule(
+                    RuleEntity(
+                        name = app.getString(R.string.route_bypass_ip, displayCountry),
+                        ip = "geoip:$country",
+                        outbound = -1
+                    ), false
+                )
             }
-            createRule(
-                RuleEntity(
-                    name = app.getString(R.string.route_bypass_ip, displayCountry),
-                    ip = "geoip:$country",
-                    outbound = -1
-                ), false
-            )
             rules = SagerDatabase.rulesDao.allRules()
         }
         return rules

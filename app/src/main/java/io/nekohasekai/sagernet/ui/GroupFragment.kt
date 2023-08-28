@@ -421,9 +421,10 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                     subscriptionUpdateProgress.isIndeterminate = true
                 } else {
                     subscriptionUpdateProgress.isIndeterminate = false
-                    val progress = GroupUpdater.progress[proxyGroup.id]!!
-                    subscriptionUpdateProgress.max = progress.max
-                    subscriptionUpdateProgress.progress = progress.progress
+                    GroupUpdater.progress[proxyGroup.id]?.let {
+                        subscriptionUpdateProgress.max = it.max
+                        subscriptionUpdateProgress.progress = it.progress
+                    }
                 }
 
                 updateButton.isInvisible = true
