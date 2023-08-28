@@ -477,22 +477,10 @@
         <item>randomized</item>
     </string-array>
 
-    <string-array name="tuic_udp_relay_mode_entry">
-        <item>NATIVE</item>
-        <item>QUIC</item>
-    </string-array>
-
     <string-array name="tuic_udp_relay_mode_value">
         <item>native</item>
         <item>quic</item>
     </string-array>
-
-    <string-array name="tuic_congestion_controller_entry">
-        <item>CUBIC</item>
-        <item>NEW RENO</item>
-        <item>BBR</item>
-    </string-array>
-
 
     <string-array name="tuic_congestion_controller_value">
         <item>cubic</item>

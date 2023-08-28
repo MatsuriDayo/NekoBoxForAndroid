@@ -49,7 +49,7 @@
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="https"
-            app:entries="@array/tuic_udp_relay_mode_entry"
+            app:entries="@array/tuic_udp_relay_mode_value"
             app:entryValues="@array/tuic_udp_relay_mode_value"
             app:icon="@drawable/ic_baseline_add_road_24"
             app:key="serverUDPRelayMode"
@@ -57,7 +57,7 @@
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="https"
-            app:entries="@array/tuic_congestion_controller_entry"
+            app:entries="@array/tuic_congestion_controller_value"
             app:entryValues="@array/tuic_congestion_controller_value"
             app:icon="@drawable/ic_baseline_compare_arrows_24"
             app:key="serverCongestionController"
