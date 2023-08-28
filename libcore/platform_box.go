@@ -65,6 +65,10 @@ func (w *boxPlatformInterfaceWrapper) OpenTun(options *tun.Options, platformOpti
 	return tun.New(*options)
 }
 
+func (w *boxPlatformInterfaceWrapper) CloseTun() error {
+	return nil
+}
+
 func (w *boxPlatformInterfaceWrapper) UsePlatformDefaultInterfaceMonitor() bool {
 	return true
 }
@@ -81,8 +85,13 @@ func (w *boxPlatformInterfaceWrapper) Interfaces() ([]platform.NetworkInterface,
 	return nil, errors.New("wtf")
 }
 
+// Android not using
+
 func (w *boxPlatformInterfaceWrapper) UnderNetworkExtension() bool {
 	return false
+}
+
+func (w *boxPlatformInterfaceWrapper) ClearDNSCache() {
 }
 
 // process.Searcher

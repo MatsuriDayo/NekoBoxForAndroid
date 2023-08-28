@@ -51,6 +51,9 @@ func (p *platformLocalDNSTransport) Start() error {
 	return nil
 }
 
+func (p *platformLocalDNSTransport) Reset() {
+}
+
 func (p *platformLocalDNSTransport) Close() error {
 	return nil
 }
