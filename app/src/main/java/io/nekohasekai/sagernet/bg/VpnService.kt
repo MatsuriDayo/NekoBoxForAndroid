@@ -199,9 +199,6 @@ class VpnService : BaseVpnService(),
         if (Build.VERSION.SDK_INT >= 29) builder.setMetered(metered)
         conn = builder.establish() ?: throw NullConnectionException()
 
-        // post setup
-        Libcore.setLocalResolver(LocalResolverImpl)
-
         return conn!!.fd
     }
 
@@ -217,7 +214,6 @@ class VpnService : BaseVpnService(),
     override fun onRevoke() = stopRunner()
 
     override fun onDestroy() {
-        Libcore.setLocalResolver(null)
         DataStore.vpnService = null
         super.onDestroy()
         data.binder.close()

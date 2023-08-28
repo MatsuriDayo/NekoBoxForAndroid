@@ -10,16 +10,6 @@ type NB4AInterface interface {
 	Selector_OnProxySelected(selectorTag string, tag string)
 }
 
-type LocalResolver interface {
-	LookupIP(network string, domain string) (string, error)
-}
-
-var localResolver LocalResolver // Android: passed from java (only when VPNService)
-
-func SetLocalResolver(lr LocalResolver) {
-	localResolver = lr // old "underlyig://0.0.0.0"
-}
-
 type BoxPlatformInterface interface {
 	AutoDetectInterfaceControl(fd int32) error
 	OpenTun(singTunOptionsJson, tunPlatformOptionsJson string) (int, error)
