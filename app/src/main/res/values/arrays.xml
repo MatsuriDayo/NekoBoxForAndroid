@@ -386,6 +386,11 @@
         <item>BASE64</item>
     </string-array>
 
+    <string-array name="hysteria_version">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="tuic_version">
         <item>5</item>
         <item>4</item>

@@ -13,25 +13,17 @@ import io.nekohasekai.sagernet.ktx.NetsKt;
 import kotlin.text.StringsKt;
 
 public class HysteriaBean extends AbstractBean {
+    public Integer protocolVersion;
 
-    public static final int TYPE_NONE = 0;
-    public static final int TYPE_STRING = 1;
-    public static final int TYPE_BASE64 = 2;
+    // Use serverPorts instead of serverPort
+    public String serverPorts;
 
-    public Integer authPayloadType;
+    // HY1 & 2
+
     public String authPayload;
-
-    public static final int PROTOCOL_UDP = 0;
-    public static final int PROTOCOL_FAKETCP = 1;
-    public static final int PROTOCOL_WECHAT_VIDEO = 2;
-
-    public Integer protocol;
-
     public String obfuscation;
     public String sni;
-    public String alpn;
     public String caText;
-
     public Integer uploadMbps;
     public Integer downloadMbps;
     public Boolean allowInsecure;
@@ -40,7 +32,19 @@ public class HysteriaBean extends AbstractBean {
     public Boolean disableMtuDiscovery;
     public Integer hopInterval;
 
-    public String serverPorts;
+    // HY1
+
+    public String alpn;
+
+    public static final int TYPE_NONE = 0;
+    public static final int TYPE_STRING = 1;
+    public static final int TYPE_BASE64 = 2;
+    public Integer authPayloadType;
+
+    public static final int PROTOCOL_UDP = 0;
+    public static final int PROTOCOL_FAKETCP = 1;
+    public static final int PROTOCOL_WECHAT_VIDEO = 2;
+    public Integer protocol;
 
     @Override
     public boolean canMapping() {
@@ -50,6 +54,8 @@ public class HysteriaBean extends AbstractBean {
     @Override
     public void initializeDefaultValues() {
         super.initializeDefaultValues();
+        if (protocolVersion == null) protocolVersion = 2;
+
         if (authPayloadType == null) authPayloadType = TYPE_NONE;
         if (authPayload == null) authPayload = "";
         if (protocol == null) protocol = PROTOCOL_UDP;
@@ -57,10 +63,15 @@ public class HysteriaBean extends AbstractBean {
         if (sni == null) sni = "";
         if (alpn == null) alpn = "";
         if (caText == null) caText = "";
-
-        if (uploadMbps == null) uploadMbps = 10;
-        if (downloadMbps == null) downloadMbps = 50;
         if (allowInsecure == null) allowInsecure = false;
+
+        if (protocolVersion == 1) {
+            if (uploadMbps == null) uploadMbps = 10;
+            if (downloadMbps == null) downloadMbps = 50;
+        } else {
+            if (uploadMbps == null) uploadMbps = 0;
+            if (downloadMbps == null) downloadMbps = 0;
+        }
 
         if (streamReceiveWindow == null) streamReceiveWindow = 0;
         if (connectionReceiveWindow == null) connectionReceiveWindow = 0;
@@ -71,8 +82,11 @@ public class HysteriaBean extends AbstractBean {
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(6);
+        output.writeInt(7);
         super.serialize(output);
+
+        output.writeInt(protocolVersion);
+
         output.writeInt(authPayloadType);
         output.writeString(authPayload);
         output.writeInt(protocol);
@@ -90,13 +104,17 @@ public class HysteriaBean extends AbstractBean {
         output.writeBoolean(disableMtuDiscovery);
         output.writeInt(hopInterval);
         output.writeString(serverPorts);
-
     }
 
     @Override
     public void deserialize(ByteBufferInput input) {
         int version = input.readInt();
         super.deserialize(input);
+        if (version >= 7) {
+            protocolVersion = input.readInt();
+        } else {
+            protocolVersion = 1;
+        }
         authPayloadType = input.readInt();
         authPayload = input.readString();
         if (version >= 3) {

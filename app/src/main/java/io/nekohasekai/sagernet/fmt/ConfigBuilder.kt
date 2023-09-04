@@ -385,7 +385,7 @@ fun buildConfig(
                             buildSingBoxOutboundStandardV2RayBean(bean).asMap()
 
                         is HysteriaBean ->
-                            buildSingBoxOutboundHysteriaBean(bean).asMap()
+                            buildSingBoxOutboundHysteriaBean(bean)
 
                         is TuicBean ->
                             buildSingBoxOutboundTuicBean(bean).asMap()

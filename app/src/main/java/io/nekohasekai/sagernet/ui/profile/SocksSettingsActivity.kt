@@ -18,7 +18,7 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
 
-        DataStore.serverProtocolVersion = protocol
+        DataStore.serverProtocolInt = protocol
         DataStore.serverUsername = username
         DataStore.serverPassword = password
 
@@ -30,7 +30,7 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort
 
-        protocol = DataStore.serverProtocolVersion
+        protocol = DataStore.serverProtocolInt
         username = DataStore.serverUsername
         password = DataStore.serverPassword
 
@@ -54,7 +54,7 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
             password.isVisible = version == SOCKSBean.PROTOCOL_SOCKS5
         }
 
-        updateProtocol(DataStore.serverProtocolVersion)
+        updateProtocol(DataStore.protocolVersion)
         protocol.setOnPreferenceChangeListener { _, newValue ->
             updateProtocol((newValue as String).toInt())
             true

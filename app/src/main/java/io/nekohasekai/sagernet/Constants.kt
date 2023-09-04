@@ -78,6 +78,8 @@ object Key {
     const val SERVER_METHOD = "serverMethod"
     const val SERVER_PASSWORD1 = "serverPassword1"
 
+    const val PROTOCOL_VERSION = "protocolVersion"
+
     const val SERVER_PROTOCOL = "serverProtocol"
     const val SERVER_OBFS = "serverObfs"
 

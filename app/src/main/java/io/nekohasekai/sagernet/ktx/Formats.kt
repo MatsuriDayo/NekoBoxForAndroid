@@ -181,7 +181,7 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             }.onFailure {
                 Logs.w(it)
             }
-        } else if (startsWith("hysteria://")) {
+        } else if (startsWith("hysteria://") || startsWith("hysteria2://") || startsWith("hy2://")) {
             Logs.d("Try parse hysteria link: $this")
             runCatching {
                 entities.add(parseHysteria(this))

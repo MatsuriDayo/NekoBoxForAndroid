@@ -6,6 +6,15 @@
         app:title="@string/profile_name"
         app:useSimpleSummaryProvider="true" />
 
+    <moe.matsuri.nb4a.ui.SimpleMenuPreference
+        app:defaultValue="2"
+        app:entries="@array/hysteria_version"
+        app:entryValues="@array/hysteria_version"
+        app:icon="@drawable/ic_baseline_update_24"
+        app:key="protocolVersion"
+        app:title="@string/protocol_version"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory app:title="@string/proxy_cat">
 
         <EditTextPreference

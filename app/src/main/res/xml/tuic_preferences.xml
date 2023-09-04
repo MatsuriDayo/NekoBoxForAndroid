@@ -11,7 +11,7 @@
         app:entries="@array/tuic_version"
         app:entryValues="@array/tuic_version"
         app:icon="@drawable/ic_baseline_update_24"
-        app:key="serverProtocol"
+        app:key="protocolVersion"
         app:title="@string/protocol_version"
         app:useSimpleSummaryProvider="true" />
 

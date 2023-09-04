@@ -3,6 +3,7 @@ package io.nekohasekai.sagernet.ui.profile
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
@@ -17,11 +18,12 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
 
     override fun HysteriaBean.init() {
         DataStore.profileName = name
+        DataStore.protocolVersion = protocolVersion
         DataStore.serverAddress = serverAddress
         DataStore.serverPorts = serverPorts
         DataStore.serverObfs = obfuscation
         DataStore.serverAuthType = authPayloadType
-        DataStore.serverProtocolVersion = protocol
+        DataStore.serverProtocolInt = protocol
         DataStore.serverPassword = authPayload
         DataStore.serverSNI = sni
         DataStore.serverALPN = alpn
@@ -37,12 +39,13 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
 
     override fun HysteriaBean.serialize() {
         name = DataStore.profileName
+        protocolVersion = DataStore.protocolVersion
         serverAddress = DataStore.serverAddress
         serverPorts = DataStore.serverPorts
         obfuscation = DataStore.serverObfs
         authPayloadType = DataStore.serverAuthType
         authPayload = DataStore.serverPassword
-        protocol = DataStore.serverProtocolVersion
+        protocol = DataStore.serverProtocolInt
         sni = DataStore.serverSNI
         alpn = DataStore.serverALPN
         caText = DataStore.serverCertificates
@@ -69,6 +72,44 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
             true
         }
 
+        val protocol = findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!
+        val alpn = findPreference<EditTextPreference>(Key.SERVER_ALPN)!!
+
+        fun updateVersion(v: Int) {
+            if (v == 2) {
+                authPayload.isVisible = true
+                //
+                authType.isVisible = false
+                protocol.isVisible = false
+                alpn.isVisible = false
+                //
+                findPreference<EditTextPreference>(Key.SERVER_HOP_INTERVAL)!!.isVisible = false
+                findPreference<EditTextPreference>(Key.SERVER_STREAM_RECEIVE_WINDOW)!!.isVisible =
+                    false
+                findPreference<EditTextPreference>(Key.SERVER_CONNECTION_RECEIVE_WINDOW)!!.isVisible =
+                    false
+                findPreference<SwitchPreference>(Key.SERVER_DISABLE_MTU_DISCOVERY)!!.isVisible =
+                    false
+            } else {
+                authType.isVisible = true
+                protocol.isVisible = true
+                alpn.isVisible = true
+                //
+                findPreference<EditTextPreference>(Key.SERVER_HOP_INTERVAL)!!.isVisible = true
+                findPreference<EditTextPreference>(Key.SERVER_STREAM_RECEIVE_WINDOW)!!.isVisible =
+                    true
+                findPreference<EditTextPreference>(Key.SERVER_CONNECTION_RECEIVE_WINDOW)!!.isVisible =
+                    true
+                findPreference<SwitchPreference>(Key.SERVER_DISABLE_MTU_DISCOVERY)!!.isVisible =
+                    true
+            }
+        }
+        findPreference<SimpleMenuPreference>(Key.PROTOCOL_VERSION)!!.setOnPreferenceChangeListener { _, newValue ->
+            updateVersion(newValue.toString().toIntOrNull() ?: 1)
+            true
+        }
+        updateVersion(DataStore.protocolVersion)
+
         findPreference<EditTextPreference>(Key.SERVER_UPLOAD_SPEED)!!.apply {
             setOnBindEditTextListener(EditTextPreferenceModifiers.Number)
         }
@@ -83,6 +124,9 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
         }
 
         findPreference<EditTextPreference>(Key.SERVER_PASSWORD)!!.apply {
+            summaryProvider = PasswordSummaryProvider
+        }
+        findPreference<EditTextPreference>(Key.SERVER_OBFS)!!.apply {
             summaryProvider = PasswordSummaryProvider
         }
 

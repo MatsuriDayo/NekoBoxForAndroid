@@ -9,7 +9,6 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
-import moe.matsuri.nb4a.ui.EditConfigPreference
 import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
 class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
@@ -34,7 +33,7 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         DataStore.serverAllowInsecure = allowInsecure
         //
         DataStore.serverConfig = customJSON
-        DataStore.serverProtocolVersion = protocolVersion
+        DataStore.protocolVersion = protocolVersion
         DataStore.serverUsername = uuid
     }
 
@@ -56,7 +55,7 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         allowInsecure = DataStore.serverAllowInsecure
         //
         customJSON = DataStore.serverConfig
-        protocolVersion = DataStore.serverProtocolVersion
+        protocolVersion = DataStore.protocolVersion
         uuid = DataStore.serverUsername
     }
 
@@ -80,11 +79,11 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
                 fastConnect.isVisible = true
             }
         }
-        findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!.setOnPreferenceChangeListener { _, newValue ->
+        findPreference<SimpleMenuPreference>(Key.PROTOCOL_VERSION)!!.setOnPreferenceChangeListener { _, newValue ->
             updateVersion(newValue.toString().toIntOrNull() ?: 4)
             true
         }
-        updateVersion(DataStore.serverProtocolVersion)
+        updateVersion(DataStore.protocolVersion)
 
         val disableSNI = findPreference<SwitchPreference>(Key.SERVER_DISABLE_SNI)!!
         val sni = findPreference<EditTextPreference>(Key.SERVER_SNI)!!
