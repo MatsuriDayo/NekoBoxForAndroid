@@ -35,7 +35,7 @@ fun parseHysteria(url: String): HysteriaBean {
             authPayload = it
         }
         link.queryParameter("insecure")?.also {
-            allowInsecure = it == "1"
+            allowInsecure = it == "1" || it == "true"
         }
         link.queryParameter("upmbps")?.also {
             uploadMbps = it.toIntOrNull() ?: uploadMbps
@@ -87,7 +87,7 @@ fun parseHysteria2(url: String): HysteriaBean {
             sni = it
         }
         link.queryParameter("insecure")?.also {
-            allowInsecure = it == "1"
+            allowInsecure = it == "1" || it == "true"
         }
 //        link.queryParameter("upmbps")?.also {
 //            uploadMbps = it.toIntOrNull() ?: uploadMbps

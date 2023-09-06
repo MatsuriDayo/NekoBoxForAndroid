@@ -92,6 +92,7 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
                     false
             } else {
                 authType.isVisible = true
+                authPayload.isVisible = true
                 protocol.isVisible = true
                 alpn.isVisible = true
                 //
