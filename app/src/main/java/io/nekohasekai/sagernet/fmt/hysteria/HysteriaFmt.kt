@@ -11,10 +11,7 @@ import java.io.File
 
 
 // hysteria://host:port?auth=123456&peer=sni.domain&insecure=1|0&upmbps=100&downmbps=100&alpn=hysteria&obfs=xplus&obfsParam=123456#remarks
-fun parseHysteria(url: String): HysteriaBean {
-    if (url.startsWith("hysteria2:") || url.startsWith("hy2:")) {
-        return parseHysteria2(url)
-    }
+fun parseHysteria1(url: String): HysteriaBean {
     val link = url.replace("hysteria://", "https://").toHttpUrlOrNull() ?: error(
         "invalid hysteria link $url"
     )
@@ -167,7 +164,7 @@ fun HysteriaBean.toUri(): String {
     return builder.toLink(if (protocolVersion == 2) "hy2" else "hysteria")
 }
 
-fun JSONObject.parseHysteria(): HysteriaBean {
+fun JSONObject.parseHysteria1Json(): HysteriaBean {
     // TODO parse HY2 JSON+YAML
     return HysteriaBean().apply {
         protocolVersion = 1
@@ -205,7 +202,7 @@ fun JSONObject.parseHysteria(): HysteriaBean {
     }
 }
 
-fun HysteriaBean.buildHysteriaConfig(port: Int, cacheFile: (() -> File)?): String {
+fun HysteriaBean.buildHysteria1Config(port: Int, cacheFile: (() -> File)?): String {
     if (protocolVersion != 1) {
         throw Exception("error version: $protocolVersion")
     }

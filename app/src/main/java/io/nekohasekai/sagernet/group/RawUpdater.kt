@@ -7,7 +7,7 @@ import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.hysteria.HysteriaBean
-import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria
+import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria1Json
 import io.nekohasekai.sagernet.fmt.shadowsocks.ShadowsocksBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
 import io.nekohasekai.sagernet.fmt.socks.SOCKSBean
@@ -465,6 +465,7 @@ object RawUpdater : GroupUpdater() {
 
                         "hysteria" -> {
                             val bean = HysteriaBean()
+                            bean.protocolVersion = 1
                             var hopPorts = ""
                             for (opt in proxy) {
                                 if (opt.value == null) continue
@@ -666,7 +667,7 @@ object RawUpdater : GroupUpdater() {
         if (json is JSONObject) {
             when {
                 json.has("server") && (json.has("up") || json.has("up_mbps")) -> {
-                    return listOf(json.parseHysteria())
+                    return listOf(json.parseHysteria1Json())
                 }
 
                 json.has("method") -> {

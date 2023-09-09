@@ -4,7 +4,8 @@ import com.google.gson.JsonParser
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import io.nekohasekai.sagernet.fmt.Serializable
 import io.nekohasekai.sagernet.fmt.http.parseHttp
-import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria
+import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria1
+import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria2
 import io.nekohasekai.sagernet.fmt.naive.parseNaive
 import io.nekohasekai.sagernet.fmt.parseUniversal
 import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
@@ -181,10 +182,17 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             }.onFailure {
                 Logs.w(it)
             }
-        } else if (startsWith("hysteria://") || startsWith("hysteria2://") || startsWith("hy2://")) {
-            Logs.d("Try parse hysteria link: $this")
+        } else if (startsWith("hysteria://")) {
+            Logs.d("Try parse hysteria1 link: $this")
             runCatching {
-                entities.add(parseHysteria(this))
+                entities.add(parseHysteria1(this))
+            }.onFailure {
+                Logs.w(it)
+            }
+        } else if (startsWith("hysteria2://") || startsWith("hy2://")) {
+            Logs.d("Try parse hysteria2 link: $this")
+            runCatching {
+                entities.add(parseHysteria2(this))
             }.onFailure {
                 Logs.w(it)
             }

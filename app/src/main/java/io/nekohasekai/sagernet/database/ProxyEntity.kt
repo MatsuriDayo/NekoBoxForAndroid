@@ -278,7 +278,7 @@ data class ProxyEntity(
 
                             is HysteriaBean -> {
                                 append("\n\n")
-                                append(bean.buildHysteriaConfig(port, null))
+                                append(bean.buildHysteria1Config(port, null))
                             }
 
                             is TuicBean -> {
