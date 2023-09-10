@@ -7,7 +7,7 @@ require (
 	github.com/matsuridayo/libneko v1.0.0 // replaced
 	github.com/matsuridayo/sing-box-extra v1.0.0 // replaced
 	github.com/miekg/dns v1.1.55
-	github.com/sagernet/sing v0.2.10-0.20230830132630-30bf19f2833c
+	github.com/sagernet/sing v0.2.10-0.20230908032232-b0849c43a600
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	github.com/sagernet/sing-dns v0.1.9-0.20230824120133-4d5cbceb40c1
 	github.com/sagernet/sing-tun v0.1.12-0.20230821065522-7545dc2d5641
@@ -38,7 +38,7 @@ require (
 	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/insomniacslk/dhcp v0.0.0-20230816195147-b3ca2534940d // indirect
+	github.com/insomniacslk/dhcp v0.0.0-20230906122924-c71a6be05968 // indirect
 	github.com/josharian/native v1.1.0 // indirect
 	github.com/juju/errors v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
@@ -59,11 +59,11 @@ require (
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
 	github.com/sagernet/quic-go v0.0.0-20230831052420-45809eee2e86 // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
-	github.com/sagernet/sing-mux v0.1.3-0.20230830095209-2a10ebd53ba8 // indirect
-	github.com/sagernet/sing-shadowsocks v0.2.4 // indirect
-	github.com/sagernet/sing-shadowsocks2 v0.1.3 // indirect
+	github.com/sagernet/sing-mux v0.1.3-0.20230908032617-759a1886a400 // indirect
+	github.com/sagernet/sing-shadowsocks v0.2.5-0.20230907005610-126234728ca0 // indirect
+	github.com/sagernet/sing-shadowsocks2 v0.1.4-0.20230907005906-5d2917b29248 // indirect
 	github.com/sagernet/sing-shadowtls v0.1.4 // indirect
-	github.com/sagernet/sing-vmess v0.1.7 // indirect
+	github.com/sagernet/sing-vmess v0.1.8-0.20230907010359-161fb0ac716b // indirect
 	github.com/sagernet/smux v0.0.0-20230312102458-337ec2a5af37 // indirect
 	github.com/sagernet/tfo-go v0.0.0-20230816093905-5a5c285d44a6 // indirect
 	github.com/sagernet/utls v0.0.0-20230309024959-6732c2ab36f2 // indirect
@@ -79,17 +79,17 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.25.0 // indirect
 	go4.org/netipx v0.0.0-20230824141953-6213f710f925 // indirect
-	golang.org/x/crypto v0.12.0 // indirect
-	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63 // indirect
+	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.14.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/text v0.12.0 // indirect
+	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
-	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846 // indirect
+	golang.org/x/tools v0.13.0 // indirect
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
-	google.golang.org/grpc v1.57.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
+	google.golang.org/grpc v1.58.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	lukechampine.com/blake3 v1.2.1 // indirect
 )
