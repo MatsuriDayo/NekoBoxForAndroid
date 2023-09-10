@@ -52,10 +52,11 @@ Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins
 
 ## 捐助 / Donate
 
-欢迎捐赠以支持项目开发。
+如果这个项目对您有帮助，可以通过捐赠的方式帮助我们维持这个项目。
 
-* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠，另有支付宝微信购买方式，见 TG 频道置顶。
-* Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
+捐赠满等额 50 USD 可以在「[捐赠榜](https://mtrdnt.pages.dev/donation_list)」显示头像，如果您未被添加到这里，欢迎联系我们补充。
+
+Donations of 50 USD or more can display your avatar on the [Donation List](https://mtrdnt.pages.dev/donation_list). If you are not added here, please contact us to add it.
 
 USDT TRC20
 
@@ -64,6 +65,9 @@ USDT TRC20
 XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
+
+* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠，另有支付宝微信购买方式，见 TG 频道置顶。
+* Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
 
 ## Credits
 
