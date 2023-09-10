@@ -14,9 +14,6 @@ import io.nekohasekai.sagernet.fmt.naive.NaiveBean
 import io.nekohasekai.sagernet.fmt.naive.buildNaiveConfig
 import io.nekohasekai.sagernet.fmt.trojan_go.TrojanGoBean
 import io.nekohasekai.sagernet.fmt.trojan_go.buildTrojanGoConfig
-import io.nekohasekai.sagernet.fmt.tuic.TuicBean
-import io.nekohasekai.sagernet.fmt.tuic.buildTuicConfig
-import io.nekohasekai.sagernet.fmt.tuic.pluginId
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.plugin.PluginManager
 import kotlinx.coroutines.*
@@ -78,19 +75,6 @@ abstract class BoxInstance(
                         pluginConfigs[port] = profile.type to bean.buildHysteria1Config(port) {
                             File(
                                 app.cacheDir, "hysteria_" + SystemClock.elapsedRealtime() + ".ca"
-                            ).apply {
-                                parentFile?.mkdirs()
-                                cacheFiles.add(this)
-                            }
-                        }
-                    }
-
-                    is TuicBean -> {
-                        initPlugin(bean.pluginId())
-                        pluginConfigs[port] = profile.type to bean.buildTuicConfig(port) {
-                            File(
-                                app.noBackupFilesDir,
-                                "tuic_" + SystemClock.elapsedRealtime() + ".ca"
                             ).apply {
                                 parentFile?.mkdirs()
                                 cacheFiles.add(this)
@@ -235,23 +219,6 @@ abstract class BoxInstance(
                                 }
                             }
                         }
-
-                        processes.start(commands)
-                    }
-
-                    bean is TuicBean -> {
-                        val configFile =
-                            File(cacheDir, "tuic_" + SystemClock.elapsedRealtime() + ".json")
-
-                        configFile.parentFile?.mkdirs()
-                        configFile.writeText(config)
-                        cacheFiles.add(configFile)
-
-                        val commands = mutableListOf(
-                            initPlugin(bean.pluginId()).path,
-                            "-c",
-                            configFile.absolutePath,
-                        )
 
                         processes.start(commands)
                     }

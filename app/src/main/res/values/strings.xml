@@ -466,13 +466,10 @@
     <string name="acquire_wake_lock_summary">Keep the CPU on</string>
     <string name="action_switch">Switch</string>
 
-    <string name="tuic_token">Token</string>
     <string name="tuic_udp_relay_mode">UDP Relay Mode</string>
     <string name="tuic_congestion_controller">Congestion Controller</string>
     <string name="tuic_disable_sni">Disable SNI</string>
     <string name="tuic_reduce_rtt">Enable 0-RTT QUIC handshake</string>
-    <string name="tuic_fast_connect">TCP Fast Connect</string>
-    <string name="tuic_fast_connect_summary">Requires plugin and server support</string>
 
     <string name="please_update">Your APP is too old (%s). And will stop working at %s. Please update!</string>
     <string name="please_update_force">Your APP is too old (%s). And has been stopped working at %s. Please update!</string>

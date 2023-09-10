@@ -29,26 +29,6 @@ enum class PluginEntry(
             downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=Hysteria"
         )
     ),
-    TUIC(
-        "tuic-plugin",
-        "TUIC(v4)",
-        "moe.matsuri.exe.tuic",
-        DownloadSource(
-            playStore = false,
-            fdroid = false,
-            downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=tuic"
-        )
-    ),
-    TUIC5(
-        "tuic-v5-plugin",
-        "TUIC(v5)",
-        "moe.matsuri.exe.tuic5",
-        DownloadSource(
-            playStore = false,
-            fdroid = false,
-            downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=tuic"
-        )
-    ),
     ;
 
     data class DownloadSource(

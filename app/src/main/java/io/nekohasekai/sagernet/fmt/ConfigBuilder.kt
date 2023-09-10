@@ -23,7 +23,6 @@ import io.nekohasekai.sagernet.fmt.ssh.SSHBean
 import io.nekohasekai.sagernet.fmt.ssh.buildSingBoxOutboundSSHBean
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.fmt.tuic.buildSingBoxOutboundTuicBean
-import io.nekohasekai.sagernet.fmt.tuic.pluginId
 import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
@@ -464,8 +463,7 @@ fun buildConfig(
                     var needExternal = true
                     if (index == profileList.lastIndex) {
                         val pluginId = when (bean) {
-                            is HysteriaBean -> "hysteria-plugin"
-                            is TuicBean -> bean.pluginId()
+                            is HysteriaBean -> if (bean.protocolVersion == 1) "hysteria-plugin" else "hysteria2-plugin"
                             else -> ""
                         }
                         if (Plugins.isUsingMatsuriExe(pluginId)) {

@@ -446,11 +446,8 @@
     <string name="domain_strategy_for_server">域名策略（服务器地址）</string>
     <string name="tuic_disable_sni">禁用 SNI</string>
     <string name="tuic_reduce_rtt">启用 0-RTT QUIC 握手</string>
-    <string name="tuic_fast_connect">TCP 快速打开</string>
-    <string name="tuic_fast_connect_summary">要求插件和服务器支持</string>
     <string name="tuic_congestion_controller">拥塞控制</string>
     <string name="tuic_udp_relay_mode">UDP 转发模式</string>
-    <string name="tuic_token">令牌</string>
     <string name="menu_dashboard">sing-box 仪表板</string>
     <string name="custom_outbound_json">自定义出站 JSON</string>
     <string name="custom_config_json">自定义配置 JSON</string>

@@ -9,7 +9,6 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
-import moe.matsuri.nb4a.ui.SimpleMenuPreference
 
 class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
 
@@ -19,6 +18,7 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
+        DataStore.serverUsername = uuid
         DataStore.serverPassword = token
         DataStore.serverALPN = alpn
         DataStore.serverCertificates = caText
@@ -27,20 +27,14 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         DataStore.serverDisableSNI = disableSNI
         DataStore.serverSNI = sni
         DataStore.serverReduceRTT = reduceRTT
-        DataStore.serverMTU = mtu
-        //
-        DataStore.serverFastConnect = fastConnect
         DataStore.serverAllowInsecure = allowInsecure
-        //
-        DataStore.serverConfig = customJSON
-        DataStore.protocolVersion = protocolVersion
-        DataStore.serverUsername = uuid
     }
 
     override fun TuicBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort
+        uuid = DataStore.serverUsername
         token = DataStore.serverPassword
         alpn = DataStore.serverALPN
         caText = DataStore.serverCertificates
@@ -49,14 +43,7 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         disableSNI = DataStore.serverDisableSNI
         sni = DataStore.serverSNI
         reduceRTT = DataStore.serverReduceRTT
-        mtu = DataStore.serverMTU
-        //
-        fastConnect = DataStore.serverFastConnect
         allowInsecure = DataStore.serverAllowInsecure
-        //
-        customJSON = DataStore.serverConfig
-        protocolVersion = DataStore.protocolVersion
-        uuid = DataStore.serverUsername
     }
 
     override fun PreferenceFragmentCompat.createPreferences(
@@ -64,26 +51,6 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         rootKey: String?,
     ) {
         addPreferencesFromResource(R.xml.tuic_preferences)
-
-        val uuid = findPreference<EditTextPreference>(Key.SERVER_USERNAME)!!
-        val mtu = findPreference<EditTextPreference>(Key.SERVER_MTU)!!
-        val fastConnect = findPreference<SwitchPreference>(Key.SERVER_FAST_CONNECT)!!
-        fun updateVersion(v: Int) {
-            if (v == 5) {
-                uuid.isVisible = true
-                mtu.isVisible = false
-                fastConnect.isVisible = false
-            } else {
-                uuid.isVisible = false
-                mtu.isVisible = true
-                fastConnect.isVisible = true
-            }
-        }
-        findPreference<SimpleMenuPreference>(Key.PROTOCOL_VERSION)!!.setOnPreferenceChangeListener { _, newValue ->
-            updateVersion(newValue.toString().toIntOrNull() ?: 4)
-            true
-        }
-        updateVersion(DataStore.protocolVersion)
 
         val disableSNI = findPreference<SwitchPreference>(Key.SERVER_DISABLE_SNI)!!
         val sni = findPreference<EditTextPreference>(Key.SERVER_SNI)!!

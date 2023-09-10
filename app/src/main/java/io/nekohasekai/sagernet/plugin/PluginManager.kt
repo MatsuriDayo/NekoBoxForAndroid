@@ -71,8 +71,8 @@ object PluginManager {
             return null
         }
         return when (pluginId) {
-            "tuic-v5-plugin" -> soIfExist("libtuic.so")
             "hysteria-plugin" -> soIfExist("libhysteria.so")
+            "hysteria2-plugin" -> soIfExist("libhysteria2.so")
             else -> null
         }
     }
