@@ -259,12 +259,14 @@ class AssetsActivity : ThemedActivity() {
             } else {
                 repo = "SagerNet/sing-geosite"
             }
-        } else {
+        } else if (DataStore.rulesProvider == 1) {
             if (file.name == assetNames[0]) {
                 repo = "soffchen/sing-geoip"
             } else {
                 repo = "soffchen/sing-geosite"
             }
+        } else {
+                repo = "Chocolate4U/Iran-sing-box-rules"
         }
 
         val client = Libcore.newHttpClient().apply {

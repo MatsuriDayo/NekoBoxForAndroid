@@ -4,6 +4,7 @@
     <string-array name="int_array_2">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="int_array_3">
@@ -358,6 +359,7 @@
     <string-array name="rules_dat_provider">
         <item>@string/route_rules_official</item>
         <item>Loyalsoldier (soffchen/sing-geosite)</item>
+        <item>Chocolate4U/Iran-sing-box-rules</item>
     </string-array>
 
     <string-array name="balancer_type">
