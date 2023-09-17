@@ -506,7 +506,7 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="action_shadowtls" translatable="false">ShadowTLS</string>
     <string name="protocol_version">Protocol Version</string>
     <string name="share_subscription">Share Subscription</string>
-    <string name="show_group_in_notification">Show group name in in notification</string>
+    <string name="show_group_in_notification">Show group name in notification</string>
     <string name="reset_connections">Reset Connections</string>
     <string name="remove_duplicate">Remove duplicate servers</string>
     <string name="mtu_help">Long press the preference to set custom MTU.</string>
