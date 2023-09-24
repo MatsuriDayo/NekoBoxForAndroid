@@ -516,6 +516,36 @@ object RawUpdater : GroupUpdater() {
                             proxies.add(bean)
                         }
 
+                        "hysteria2" -> {
+                            val bean = HysteriaBean()
+                            bean.protocolVersion = 2
+                            for (opt in proxy) {
+                                if (opt.value == null) continue
+                                when (opt.key.replace("_", "-")) {
+                                    "name" -> bean.name = opt.value.toString()
+                                    "server" -> bean.serverAddress = opt.value as String
+                                    "port" -> bean.serverPorts = opt.value.toString()
+                                    // "ports" -> hopPorts = opt.value.toString()
+
+                                    "obfs-password" -> bean.obfuscation = opt.value.toString()
+
+                                    "password" -> bean.authPayload = opt.value.toString()
+
+                                    "sni" -> bean.sni = opt.value.toString()
+
+                                    "skip-cert-verify" -> bean.allowInsecure =
+                                        opt.value.toString() == "true"
+
+                                    "up" -> bean.uploadMbps =
+                                        opt.value.toString().substringBefore(" ").toIntOrNull() ?: 0
+
+                                    "down" -> bean.downloadMbps =
+                                        opt.value.toString().substringBefore(" ").toIntOrNull() ?: 0
+                                }
+                            }
+                            proxies.add(bean)
+                        }
+
                         "tuic" -> {
                             val bean = TuicBean()
                             var ip = ""
