@@ -19,7 +19,7 @@ import (
 	"github.com/matsuridayo/libneko/speedtest"
 	"github.com/matsuridayo/sing-box-extra/boxapi"
 
-	"github.com/sagernet/sing-box/common/dialer/conntrack"
+	"github.com/sagernet/sing-box/common/conntrack"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
 	"github.com/sagernet/sing/service/pause"
