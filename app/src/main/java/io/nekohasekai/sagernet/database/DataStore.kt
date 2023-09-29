@@ -115,9 +115,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
         set(value) {
             saveLocalPort(Key.LOCAL_DNS_PORT, value)
         }
-    var transproxyPort: Int
-        get() = getLocalPort(Key.TRANSPROXY_PORT, 9200)
-        set(value) = saveLocalPort(Key.TRANSPROXY_PORT, value)
 
     fun initGlobal() {
         if (configurationStore.getString(Key.MIXED_PORT) == null) {
@@ -125,9 +122,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
         }
         if (configurationStore.getString(Key.LOCAL_DNS_PORT) == null) {
             localDNSPort = localDNSPort
-        }
-        if (configurationStore.getString(Key.TRANSPROXY_PORT) == null) {
-            transproxyPort = transproxyPort
         }
     }
 
@@ -151,8 +145,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     val persistAcrossReboot by configurationStore.boolean(Key.PERSIST_ACROSS_REBOOT) { false }
 
     var appendHttpProxy by configurationStore.boolean(Key.APPEND_HTTP_PROXY)
-    var requireTransproxy by configurationStore.boolean(Key.REQUIRE_TRANSPROXY)
-    var transproxyMode by configurationStore.stringToInt(Key.TRANSPROXY_MODE)
     var connectionTestURL by configurationStore.string(Key.CONNECTION_TEST_URL) { CONNECTION_TEST_URL }
     var connectionTestConcurrent by configurationStore.int("connectionTestConcurrent") { 5 }
     var alwaysShowAddress by configurationStore.boolean(Key.ALWAYS_SHOW_ADDRESS)

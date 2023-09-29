@@ -221,21 +221,6 @@
             app:summary="@string/append_http_proxy_sum"
             app:title="@string/append_http_proxy" />
         <SwitchPreference
-            app:icon="@drawable/ic_baseline_transgender_24"
-            app:key="requireTransproxy"
-            app:title="@string/require_transproxy" />
-        <EditTextPreference
-            app:key="transproxyPort"
-            app:title="@string/port_transproxy"
-            app:useSimpleSummaryProvider="true" />
-        <moe.matsuri.nb4a.ui.SimpleMenuPreference
-            app:defaultValue="0"
-            app:entries="@array/transproxy_mode"
-            app:entryValues="@array/int_array_2"
-            app:key="transproxyMode"
-            app:title="@string/transproxy_mode"
-            app:useSimpleSummaryProvider="true" />
-        <SwitchPreference
             app:icon="@drawable/ic_baseline_nat_24"
             app:key="allowAccess"
             app:summary="@string/allow_access_sum"

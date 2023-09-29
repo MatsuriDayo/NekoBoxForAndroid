@@ -93,9 +93,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val enableDnsRouting = findPreference<SwitchPreference>(Key.ENABLE_DNS_ROUTING)!!
         val enableFakeDns = findPreference<SwitchPreference>(Key.ENABLE_FAKEDNS)!!
 
-        val requireTransproxy = findPreference<SwitchPreference>(Key.REQUIRE_TRANSPROXY)!!
-        val transproxyPort = findPreference<EditTextPreference>(Key.TRANSPROXY_PORT)!!
-        val transproxyMode = findPreference<SimpleMenuPreference>(Key.TRANSPROXY_MODE)!!
         val logLevel = findPreference<LongClickListPreference>(Key.LOG_LEVEL)!!
         val mtu = findPreference<MTUPreference>(Key.MTU)!!
 
@@ -123,16 +120,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
-            true
-        }
-
-        transproxyPort.isEnabled = requireTransproxy.isChecked
-        transproxyMode.isEnabled = requireTransproxy.isChecked
-
-        requireTransproxy.setOnPreferenceChangeListener { _, newValue ->
-            transproxyPort.isEnabled = newValue as Boolean
-            transproxyMode.isEnabled = newValue
-            needReload()
             true
         }
 
@@ -202,9 +189,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         portLocalDns.onPreferenceChangeListener = reloadListener
         ipv6Mode.onPreferenceChangeListener = reloadListener
         allowAccess.onPreferenceChangeListener = reloadListener
-
-        transproxyPort.onPreferenceChangeListener = reloadListener
-        transproxyMode.onPreferenceChangeListener = reloadListener
 
         resolveDestination.onPreferenceChangeListener = reloadListener
         tunImplementation.onPreferenceChangeListener = reloadListener

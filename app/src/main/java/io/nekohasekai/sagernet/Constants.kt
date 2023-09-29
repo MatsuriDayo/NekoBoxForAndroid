@@ -42,9 +42,6 @@ object Key {
 
     const val APPEND_HTTP_PROXY = "appendHttpProxy"
 
-    const val REQUIRE_TRANSPROXY = "requireTransproxy"
-    const val TRANSPROXY_MODE = "transproxyMode"
-    const val TRANSPROXY_PORT = "transproxyPort"
     const val CONNECTION_TEST_URL = "connectionTestURL"
 
     const val TCP_KEEP_ALIVE_INTERVAL = "tcpKeepAliveInterval"

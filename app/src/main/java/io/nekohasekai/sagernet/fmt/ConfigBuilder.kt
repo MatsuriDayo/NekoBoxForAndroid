@@ -45,7 +45,6 @@ import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val TAG_MIXED = "mixed-in"
-const val TAG_TRANS = "trans-in"
 
 const val TAG_PROXY = "proxy"
 const val TAG_DIRECT = "direct"
@@ -154,7 +153,6 @@ fun buildConfig(
     val needSniff = DataStore.trafficSniffing > 0
     val needSniffOverride = DataStore.trafficSniffing == 2
     val externalIndexMap = ArrayList<IndexEntity>()
-    val requireTransproxy = if (forTest) false else DataStore.requireTransproxy
     val ipv6Mode = if (forTest) IPv6Mode.ENABLE else DataStore.ipv6Mode
 
     fun genDomainStrategy(noAsIs: Boolean): String {
@@ -252,28 +250,6 @@ fun buildConfig(
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
             })
-        }
-
-        if (requireTransproxy) {
-            if (DataStore.transproxyMode == 1) {
-                inbounds.add(Inbound_TProxyOptions().apply {
-                    type = "tproxy"
-                    tag = TAG_TRANS
-                    listen = bind
-                    listen_port = DataStore.transproxyPort
-                    sniff = needSniff
-                    sniff_override_destination = needSniffOverride
-                })
-            } else {
-                inbounds.add(Inbound_RedirectOptions().apply {
-                    type = "redirect"
-                    tag = TAG_TRANS
-                    listen = bind
-                    listen_port = DataStore.transproxyPort
-                    sniff = needSniff
-                    sniff_override_destination = needSniffOverride
-                })
-            }
         }
 
         outbounds = mutableListOf()
