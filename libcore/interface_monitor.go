@@ -28,6 +28,10 @@ func (i *interfaceMonitor) DefaultInterfaceIndex(destination netip.Addr) int {
 	return 0
 }
 
+func (i *interfaceMonitor) DefaultInterface(destination netip.Addr) (string, int) {
+	return "", 0
+}
+
 func (i *interfaceMonitor) OverrideAndroidVPN() bool {
 	return false
 }

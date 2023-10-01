@@ -7,18 +7,16 @@ require (
 	github.com/matsuridayo/libneko v1.0.0 // replaced
 	github.com/matsuridayo/sing-box-extra v1.0.0 // replaced
 	github.com/miekg/dns v1.1.56
-	github.com/sagernet/sing v0.2.12-0.20230925124400-0531fd63eaba
+	github.com/sagernet/sing v0.2.13-0.20231001070509-81a98bf16263
 	github.com/sagernet/sing-box v1.0.0 // replaced
-	github.com/sagernet/sing-dns v0.1.10-0.20230921024525-fc3e4c051ccd
-	github.com/sagernet/sing-tun v0.1.13-0.20230925091515-8adce0ea02a9
+	github.com/sagernet/sing-dns v0.1.10
+	github.com/sagernet/sing-tun v0.1.15-0.20230930170051-6cfee41a5684
 	github.com/ulikunitz/xz v0.5.10
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105
 )
 
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
-	github.com/Dreamacro/clash v1.17.0 // indirect
-	github.com/Dreamacro/protobytes v0.0.0-20230617041236-6500a9f4f158 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/caddyserver/certmagic v0.19.2 // indirect
@@ -52,17 +50,16 @@ require (
 	github.com/ooni/go-libtor v1.1.8 // indirect
 	github.com/oschwald/maxminddb-golang v1.12.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.14 // indirect
-	github.com/pires/go-proxyproto v0.7.0 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
 	github.com/quic-go/qtls-go1-20 v0.3.4 // indirect
 	github.com/sagernet/cloudflare-tls v0.0.0-20230829051644-4a68352d0c4a // indirect
 	github.com/sagernet/go-tun2socks v1.16.12-0.20220818015926-16cb67876a61 // indirect
-	github.com/sagernet/gvisor v0.0.0-20230627031050-1ab0276e0dd2 // indirect
+	github.com/sagernet/gvisor v0.0.0-20230930141345-5fef6f2e17ab // indirect
 	github.com/sagernet/netlink v0.0.0-20220905062125-8043b4a9aa97 // indirect
-	github.com/sagernet/quic-go v0.0.0-20230919101909-0cc6c5dcecee // indirect
+	github.com/sagernet/quic-go v0.0.0-20231001051131-0fc736a289bb // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
 	github.com/sagernet/sing-mux v0.1.3 // indirect
-	github.com/sagernet/sing-quic v0.1.1-0.20230922040527-541e66a4a16d // indirect
+	github.com/sagernet/sing-quic v0.1.2-0.20231001061659-f0ec0e24dd4d // indirect
 	github.com/sagernet/sing-shadowsocks v0.2.5 // indirect
 	github.com/sagernet/sing-shadowsocks2 v0.1.4 // indirect
 	github.com/sagernet/sing-shadowtls v0.1.4 // indirect
@@ -92,7 +89,7 @@ require (
 	golang.org/x/tools v0.13.0 // indirect
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
-	google.golang.org/grpc v1.58.1 // indirect
+	google.golang.org/grpc v1.58.2 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	lukechampine.com/blake3 v1.2.1 // indirect
 )
