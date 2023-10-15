@@ -2,6 +2,7 @@
 
 package io.nekohasekai.sagernet.ktx
 
+import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import moe.matsuri.nb4a.utils.NGUtil
 import okhttp3.HttpUrl
@@ -62,4 +63,4 @@ fun mkPort(): Int {
     return port
 }
 
-const val USER_AGENT = "NekoBox/Android/1.0 (Prefer ClashMeta Format)"
+const val USER_AGENT = "NekoBox/Android/" + BuildConfig.VERSION_NAME + " (Prefer ClashMeta Format)"

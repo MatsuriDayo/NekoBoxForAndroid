@@ -583,17 +583,19 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
         if (bean.sni.isNotBlank()) server_name = bean.sni
         if (bean.alpn.isNotBlank()) alpn = bean.alpn.listByLineOrComma()
         if (bean.certificates.isNotBlank()) certificate = bean.certificates
-        if (bean.utlsFingerprint.isNotBlank()) {
-            utls = OutboundUTLSOptions().apply {
-                enabled = true
-                fingerprint = bean.utlsFingerprint
-            }
-        }
+        var fp = bean.utlsFingerprint
         if (bean.realityPubKey.isNotBlank()) {
             reality = OutboundRealityOptions().apply {
                 enabled = true
                 public_key = bean.realityPubKey
                 short_id = bean.realityShortId
+            }
+            if (fp.isNullOrBlank()) fp = "chrome"
+        }
+        if (fp.isNotBlank()) {
+            utls = OutboundUTLSOptions().apply {
+                enabled = true
+                fingerprint = fp
             }
         }
     }

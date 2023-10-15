@@ -173,7 +173,7 @@ data class ProxyEntity(
         }
     }
 
-    fun displayType() = when (type) {
+    fun displayType(): String = when (type) {
         TYPE_SOCKS -> socksBean!!.protocolName()
         TYPE_HTTP -> if (httpBean!!.isTLS()) "HTTPS" else "HTTP"
         TYPE_SS -> "Shadowsocks"
@@ -181,7 +181,7 @@ data class ProxyEntity(
         TYPE_TROJAN -> "Trojan"
         TYPE_TROJAN_GO -> "Trojan-Go"
         TYPE_NAIVE -> "Naïve"
-        TYPE_HYSTERIA -> "Hysteria"
+        TYPE_HYSTERIA -> "Hysteria" + hysteriaBean!!.protocolVersion
         TYPE_SSH -> "SSH"
         TYPE_WG -> "WireGuard"
         TYPE_TUIC -> "TUIC"
