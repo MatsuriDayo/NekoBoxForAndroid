@@ -160,7 +160,7 @@
 
     <PreferenceCategory app:title="@string/cag_dns">
         <EditTextPreference
-            app:defaultValue="https://8.8.8.8/dns-query"
+            app:defaultValue="https://dns.google/dns-query"
             app:icon="@drawable/ic_action_dns"
             app:key="remoteDns"
             app:title="@string/remote_dns"
