@@ -83,7 +83,6 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
                 protocol.isVisible = false
                 alpn.isVisible = false
                 //
-                findPreference<EditTextPreference>(Key.SERVER_HOP_INTERVAL)!!.isVisible = false
                 findPreference<EditTextPreference>(Key.SERVER_STREAM_RECEIVE_WINDOW)!!.isVisible =
                     false
                 findPreference<EditTextPreference>(Key.SERVER_CONNECTION_RECEIVE_WINDOW)!!.isVisible =
@@ -98,7 +97,6 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
                 protocol.isVisible = true
                 alpn.isVisible = true
                 //
-                findPreference<EditTextPreference>(Key.SERVER_HOP_INTERVAL)!!.isVisible = true
                 findPreference<EditTextPreference>(Key.SERVER_STREAM_RECEIVE_WINDOW)!!.isVisible =
                     true
                 findPreference<EditTextPreference>(Key.SERVER_CONNECTION_RECEIVE_WINDOW)!!.isVisible =

@@ -570,6 +570,10 @@ public class SingBoxOptions {
 
         public OutboundTLSOptions tls;
 
+        public String hop_ports;
+
+        public Integer hop_interval;
+
     }
 
 
@@ -4312,6 +4316,10 @@ public class SingBoxOptions {
         public String network;
 
         public OutboundTLSOptions tls;
+
+        public String hop_ports;
+
+        public Integer hop_interval;
 
     }
 
