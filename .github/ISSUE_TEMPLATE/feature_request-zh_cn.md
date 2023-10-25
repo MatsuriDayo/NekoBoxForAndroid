@@ -1,6 +1,6 @@
 ---
-name: 'Feature Request zh_CN'
-about: '功能请求，提出建议。'
+name: '功能请求'
+about: '对软件的新功能提出建议。'
 title: ''
 labels: ''
 assignees: ''
