@@ -519,13 +519,14 @@ object RawUpdater : GroupUpdater() {
                         "hysteria2" -> {
                             val bean = HysteriaBean()
                             bean.protocolVersion = 2
+                            var hopPorts = ""
                             for (opt in proxy) {
                                 if (opt.value == null) continue
                                 when (opt.key.replace("_", "-")) {
                                     "name" -> bean.name = opt.value.toString()
                                     "server" -> bean.serverAddress = opt.value as String
                                     "port" -> bean.serverPorts = opt.value.toString()
-                                    // "ports" -> hopPorts = opt.value.toString()
+                                    "ports" -> hopPorts = opt.value.toString()
 
                                     "obfs-password" -> bean.obfuscation = opt.value.toString()
 
@@ -542,6 +543,9 @@ object RawUpdater : GroupUpdater() {
                                     "down" -> bean.downloadMbps =
                                         opt.value.toString().substringBefore(" ").toIntOrNull() ?: 0
                                 }
+                            }
+                            if (hopPorts.isNotBlank()) {
+                                bean.serverPorts = hopPorts
                             }
                             proxies.add(bean)
                         }
