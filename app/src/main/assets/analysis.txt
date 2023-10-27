@@ -1,5 +1,3 @@
 domain:appcenter.ms
-domain:app-measurement.com
 domain:firebase.io
 domain:crashlytics.com
-domain:google-analytics.com
