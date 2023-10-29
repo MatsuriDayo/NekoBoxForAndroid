@@ -10,6 +10,10 @@ import java.io.File
 
 // SagerNet Class
 
+const val KB = 1024L
+const val MB = KB * 1024
+const val GB = MB * 1024
+
 fun SagerNet.cleanWebview() {
     var pathToClean = "app_webview"
     if (isBgProcess) pathToClean += "_$process"
@@ -44,13 +48,11 @@ fun Context.getDrawableByName(name: String?): Drawable? {
 // Traffic display
 
 fun Long.toBytesString(): String {
+    val size = this.toDouble()
     return when {
-        this > 1024 * 1024 * 1024 -> String.format(
-            "%.2f GiB", (this.toDouble() / 1024 / 1024 / 1024)
-        )
-
-        this > 1024 * 1024 -> String.format("%.2f MiB", (this.toDouble() / 1024 / 1024))
-        this > 1024 -> String.format("%.2f KiB", (this.toDouble() / 1024))
+        this >= GB -> String.format("%.2f GiB", size / GB)
+        this >= MB -> String.format("%.2f MiB", size / MB)
+        this >= KB -> String.format("%.2f KiB", size / KB)
         else -> "$this Bytes"
     }
 }
@@ -58,5 +60,5 @@ fun Long.toBytesString(): String {
 // List
 
 fun String.listByLineOrComma(): List<String> {
-    return this.replace(",", "\n").split("\n")
+    return this.split(",","\n").map { it.trim() }.filter { it.isNotEmpty() }
 }
