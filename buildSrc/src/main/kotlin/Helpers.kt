@@ -1,4 +1,8 @@
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.Lint
 import com.android.build.gradle.AbstractAppExtension
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.gradle.api.JavaVersion
@@ -16,7 +20,7 @@ fun sha256Hex(bytes: ByteArray): String {
     return digest.fold("") { str, it -> str + "%02x".format(it) }
 }
 
-private val Project.android get() = extensions.getByName<BaseExtension>("android")
+private val Project.android get() = extensions.getByName<ApplicationExtension>("android")
 
 private lateinit var metadata: Properties
 private lateinit var localProperties: Properties
@@ -90,8 +94,8 @@ fun Project.requireTargetAbi(): String {
 
 fun Project.setupCommon() {
     android.apply {
-        buildToolsVersion("30.0.3")
-        compileSdkVersion(33)
+        buildToolsVersion = "30.0.3"
+        compileSdk = 33
         defaultConfig {
             minSdk = 21
             targetSdk = 33
@@ -108,16 +112,16 @@ fun Project.setupCommon() {
         (android as ExtensionAware).extensions.getByName<KotlinJvmOptions>("kotlinOptions").apply {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
-        lintOptions {
-            isShowAll = true
-            isCheckAllWarnings = true
-            isCheckReleaseBuilds = false
-            isWarningsAsErrors = true
+        lint {
+            showAll = true
+            checkAllWarnings = true
+            checkReleaseBuilds = true
+            warningsAsErrors = true
             textOutput = project.file("build/lint.txt")
             htmlOutput = project.file("build/lint.html")
         }
         packagingOptions {
-            excludes.addAll(
+            resources.excludes.addAll(
                 listOf(
                     "**/*.kotlin_*",
                     "/META-INF/*.version",
@@ -175,10 +179,10 @@ fun Project.setupAppCommon() {
         if (keystorePwd != null) {
             signingConfigs {
                 create("release") {
-                    storeFile(rootProject.file("release.keystore"))
-                    storePassword(keystorePwd)
-                    keyAlias(alias)
-                    keyPassword(pwd)
+                    storeFile = rootProject.file("release.keystore")
+                    storePassword = keystorePwd
+                    keyAlias = alias
+                    keyPassword = pwd
                 }
             }
         } else if (requireFlavor().contains("(Oss|Expert|Play)Release".toRegex())) {
@@ -232,7 +236,7 @@ fun Project.setupApp() {
             }
         }
 
-        flavorDimensions("vendor")
+        flavorDimensions += "vendor"
         productFlavors {
             create("oss")
             create("fdroid")
