@@ -197,7 +197,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var serverDisableMtuDiscovery by profileCacheStore.boolean(Key.SERVER_DISABLE_MTU_DISCOVERY)
     var serverHopInterval by profileCacheStore.stringToInt(Key.SERVER_HOP_INTERVAL) { 10 }
 
-    var protocolVersion by profileCacheStore.stringToInt(Key.PROTOCOL_VERSION)
+    var protocolVersion by profileCacheStore.stringToInt(Key.PROTOCOL_VERSION) { 2 } // default is SOCKS5
 
     var serverProtocolInt by profileCacheStore.stringToInt(Key.SERVER_PROTOCOL)
     var serverPrivateKey by profileCacheStore.string(Key.SERVER_PRIVATE_KEY)
