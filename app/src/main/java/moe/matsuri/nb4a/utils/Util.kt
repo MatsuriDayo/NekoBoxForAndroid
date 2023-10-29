@@ -21,7 +21,7 @@ object Util {
      */
     fun getSubString(text: String, left: String?, right: String?): String {
         var zLen: Int
-        if (left == null || left.isEmpty()) {
+        if (left.isNullOrEmpty()) {
             zLen = 0
         } else {
             zLen = text.indexOf(left)
@@ -32,7 +32,7 @@ object Util {
             }
         }
         var yLen = if (right == null) -1 else text.indexOf(right, zLen)
-        if (yLen < 0 || right == null || right.isEmpty()) {
+        if (yLen < 0 || right.isNullOrEmpty()) {
             yLen = text.length
         }
         return text.substring(zLen, yLen)
