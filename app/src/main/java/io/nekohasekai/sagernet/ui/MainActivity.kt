@@ -36,9 +36,7 @@ import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
 import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListHolderListener
-import libcore.Libcore
 import moe.matsuri.nb4a.utils.Util
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : ThemedActivity(),
@@ -463,44 +461,6 @@ class MainActivity : ThemedActivity(),
         val fragment =
             supportFragmentManager.findFragmentById(R.id.fragment_holder) as? ToolbarFragment
         return fragment != null && fragment.onKeyDown(keyCode, event)
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    override fun onResume() {
-        super.onResume()
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
-        val now = System.currentTimeMillis()
-        val expire = Libcore.getExpireTime() * 1000
-        val dateExpire = Date(expire)
-        val build = Libcore.getBuildTime() * 1000
-        val dateBuild = Date(build)
-
-        var text: String? = null
-        if (now > expire) {
-            text = getString(
-                R.string.please_update_force, sdf.format(dateBuild), sdf.format(dateExpire)
-            )
-        } else if (now > (expire - 2592000000)) {
-            // 30 days remind :D
-            text = getString(
-                R.string.please_update, sdf.format(dateBuild), sdf.format(dateExpire)
-            )
-        }
-
-
-        if (text != null) {
-            MaterialAlertDialogBuilder(this@MainActivity).setTitle(R.string.insecure)
-                .setMessage(text)
-                .setPositiveButton(R.string.action_download) { _, _ ->
-                    launchCustomTab(
-                        "https://github.com/MatsuriDayo/NekoBoxForAndroid/releases"
-                    )
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .setCancelable(false)
-                .show()
-        }
     }
 
 }
