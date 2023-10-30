@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"time"
 	_ "unsafe"
 
 	"log"
@@ -71,10 +70,6 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 
 		externalAssetsPath = externalAssets
 		internalAssetsPath = internalAssets
-
-		if time.Now().Unix() >= GetExpireTime() {
-			outdated = "Your version is too old! Please update!! 版本太旧，请升级！"
-		}
 
 		// certs
 		pem, err := os.ReadFile(externalAssetsPath + "ca.pem")
