@@ -367,7 +367,7 @@
     <string name="experimental_settings">實驗性</string>
     <string name="hysteria_download_mbps">最大下載速度（Mbps）</string>
     <string name="hysteria_upload_mbps">最大上傳速度（Mbps）</string>
-    <string name="hysteria_auth_payload">認證承載</string>
+    <string name="hysteria_auth_payload">認證密碼</string>
     <string name="hysteria_auth_type">認證類型</string>
     <string name="hysteria_obfs">混淆密碼</string>
     <string name="menu_tools">工具</string>
