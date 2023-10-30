@@ -598,6 +598,12 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
                 fingerprint = fp
             }
         }
+        if (bean.enableECH) {
+            ech.enabled = true
+            ech.pq_signature_schemes_enabled = bean.enablePqSignature
+            ech.dynamic_record_sizing_disabled = bean.disabledDRS
+            ech.config = bean.echConfig.lines()
+        }
     }
 }
 

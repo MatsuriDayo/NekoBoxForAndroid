@@ -519,5 +519,12 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="resolve_server">Resolve the server address according to the IPv6 policy</string>
     <string name="auto_select_proxy_apps">Auto select proxy apps</string>
     <string name="auto_select_proxy_apps_message">Auto select proxy apps, this will clear your current selection.</string>
+    <string name="enable_ech">Enable ECH</string>
+    <string name="enable_ech_sum">Enable Encrypted Client Hello</string>
+    <string name="ech_settings">ECH Settings</string>
+    <string name="pq_signature_schemes_enabled">Enable post-quantum peer certificate signature supports</string>
+    <string name="dynamic_record_sizing_disabled">Disables adaptive sizing of TLS records</string>
+    <string name="ech_config">ECH Config</string>
+    <string name="dynamic_record_sizing_sum">If enable, the largest possible TLS record size is always used. When disable, the size of TLS records may be adjusted in an attempt to improve latency.</string>
 
 </resources>
