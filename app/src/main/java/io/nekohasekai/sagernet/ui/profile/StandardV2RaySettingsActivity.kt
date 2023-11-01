@@ -143,7 +143,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         }
     }
 
-    fun updateView(network: String) {
+    private fun updateView(network: String) {
         host.preference.isVisible = false
         path.preference.isVisible = false
         wsCategory.isVisible = false
@@ -153,6 +153,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
                 host.preference.setTitle(R.string.http_host)
                 path.preference.setTitle(R.string.http_path)
             }
+
             "http" -> {
                 host.preference.setTitle(R.string.http_host)
                 path.preference.setTitle(R.string.http_path)

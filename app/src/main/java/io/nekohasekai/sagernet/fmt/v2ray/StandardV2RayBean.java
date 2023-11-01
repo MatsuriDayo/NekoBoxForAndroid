@@ -71,6 +71,8 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(type)) type = "tcp";
         else if ("h2".equals(type)) type = "http";
 
+        type = type.toLowerCase();
+
         if (JavaUtil.isNullOrBlank(host)) host = "";
         if (JavaUtil.isNullOrBlank(path)) path = "";
 
@@ -133,7 +135,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
             case "grpc": {
                 output.writeString(path);
             }
-            case "httpUpgrade": {
+            case "httpupgrade": {
                 output.writeString(host);
                 output.writeString(path);
 
@@ -185,7 +187,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
             case "grpc": {
                 path = input.readString();
             }
-            case "httpUpgrade": {
+            case "httpupgrade": {
                 host = input.readString();
                 path = input.readString();
             }

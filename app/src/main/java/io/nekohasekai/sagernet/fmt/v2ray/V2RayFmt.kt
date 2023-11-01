@@ -117,7 +117,7 @@ fun parseV2Ray(link: String): StandardV2RayBean {
                 }
             }
 
-            "httpUpgrade" -> {
+            "httpupgrade" -> {
                 url.queryParameter("path")?.let {
                     bean.path = it
                 }
@@ -225,7 +225,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             }
         }
 
-        "httpUpgrade" -> {
+        "httpupgrade" -> {
             url.queryParameter("host")?.let {
                 host = it
             }
@@ -454,7 +454,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
 
     when (type) {
         "tcp" -> {}
-        "ws", "http", "httpUpgrade" -> {
+        "ws", "http", "httpupgrade" -> {
             if (host.isNotBlank()) {
                 builder.addQueryParameter("host", host)
             }
@@ -583,9 +583,9 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
             }
         }
 
-        "httpUpgrade" -> {
+        "httpupgrade" -> {
             return V2RayTransportOptions_HTTPUpgradeOptions().apply {
-                type = "httpUpgrade"
+                type = "httpupgrade"
                 host = bean.host
                 path = bean.path
             }
