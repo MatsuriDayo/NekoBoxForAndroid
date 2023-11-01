@@ -526,5 +526,7 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="dynamic_record_sizing_disabled">Disables adaptive sizing of TLS records</string>
     <string name="ech_config">ECH Config</string>
     <string name="dynamic_record_sizing_sum">If enable, the largest possible TLS record size is always used. When disable, the size of TLS records may be adjusted in an attempt to improve latency.</string>
+    <string name="http_upgrade_host">HTTPUpgrade Host</string>
+    <string name="http_upgrade_path">HTTPUpgrade Path</string>
 
 </resources>

@@ -5,7 +5,19 @@ import com.google.gson.Gson
 import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.ktx.*
-import moe.matsuri.nb4a.SingBoxOptions.*
+import moe.matsuri.nb4a.SingBoxOptions.Outbound
+import moe.matsuri.nb4a.SingBoxOptions.OutboundRealityOptions
+import moe.matsuri.nb4a.SingBoxOptions.OutboundTLSOptions
+import moe.matsuri.nb4a.SingBoxOptions.OutboundUTLSOptions
+import moe.matsuri.nb4a.SingBoxOptions.Outbound_HTTPOptions
+import moe.matsuri.nb4a.SingBoxOptions.Outbound_TrojanOptions
+import moe.matsuri.nb4a.SingBoxOptions.Outbound_VLESSOptions
+import moe.matsuri.nb4a.SingBoxOptions.Outbound_VMessOptions
+import moe.matsuri.nb4a.SingBoxOptions.V2RayTransportOptions
+import moe.matsuri.nb4a.SingBoxOptions.V2RayTransportOptions_GRPCOptions
+import moe.matsuri.nb4a.SingBoxOptions.V2RayTransportOptions_HTTPOptions
+import moe.matsuri.nb4a.SingBoxOptions.V2RayTransportOptions_HTTPUpgradeOptions
+import moe.matsuri.nb4a.SingBoxOptions.V2RayTransportOptions_WebsocketOptions
 import moe.matsuri.nb4a.utils.NGUtil
 import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl
@@ -117,7 +129,7 @@ fun parseV2Ray(link: String): StandardV2RayBean {
                 }
             }
 
-            "httpupgrade" -> {
+            "httpUpgrade" -> {
                 url.queryParameter("path")?.let {
                     bean.path = it
                 }
@@ -225,7 +237,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             }
         }
 
-        "httpupgrade" -> {
+        "httpUpgrade" -> {
             url.queryParameter("host")?.let {
                 host = it
             }
@@ -454,7 +466,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
 
     when (type) {
         "tcp" -> {}
-        "ws", "http", "httpupgrade" -> {
+        "ws", "http", "httpUpgrade" -> {
             if (host.isNotBlank()) {
                 builder.addQueryParameter("host", host)
             }
@@ -583,9 +595,9 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
             }
         }
 
-        "httpupgrade" -> {
+        "httpUpgrade" -> {
             return V2RayTransportOptions_HTTPUpgradeOptions().apply {
-                type = "httpupgrade"
+                type = "httpUpgrade"
                 host = bean.host
                 path = bean.path
             }

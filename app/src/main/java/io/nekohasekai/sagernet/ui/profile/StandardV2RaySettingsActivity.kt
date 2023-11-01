@@ -166,13 +166,15 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
                 path.preference.isVisible = true
                 wsCategory.isVisible = true
             }
+
             "grpc" -> {
                 path.preference.setTitle(R.string.grpc_service_name)
                 path.preference.isVisible = true
             }
-            "httpupgrade" -> {
-                host.preference.setTitle("HTTPUpgrade Host")
-                path.preference.setTitle("HTTPUpgrade Path")
+
+            "httpUpgrade" -> {
+                host.preference.setTitle(R.string.http_upgrade_host)
+                path.preference.setTitle(R.string.http_upgrade_path)
                 host.preference.isVisible = true
                 path.preference.isVisible = true
             }
