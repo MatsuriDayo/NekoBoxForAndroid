@@ -454,7 +454,7 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
 
     when (type) {
         "tcp" -> {}
-        "ws", "http" -> {
+        "ws", "http", "httpupgrade" -> {
             if (host.isNotBlank()) {
                 builder.addQueryParameter("host", host)
             }
@@ -580,6 +580,14 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
             return V2RayTransportOptions_GRPCOptions().apply {
                 type = "grpc"
                 service_name = bean.path
+            }
+        }
+
+        "httpupgrade" -> {
+            return V2RayTransportOptions_HTTPUpgradeOptions().apply {
+                type = "httpupgrade"
+                host = bean.host
+                path = bean.path
             }
         }
     }

@@ -4585,4 +4585,13 @@ public class SingBoxOptions {
 
     }
 
+    public static class V2RayTransportOptions_HTTPUpgradeOptions extends V2RayTransportOptions {
+
+        public String host;
+
+        public String path;
+
+
+    }
+
 }
