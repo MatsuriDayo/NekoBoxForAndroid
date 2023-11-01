@@ -12,7 +12,7 @@ sing-box / universal proxy toolchain for Android.
 
 [![GitHub All Releases](https://img.shields.io/github/downloads/Matsuridayo/NekoBoxForAndroid/total?label=downloads-total&logo=github&style=flat-square)](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
-[GitHub Releases](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
+[GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a)
 
