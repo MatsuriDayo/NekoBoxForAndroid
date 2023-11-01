@@ -14,7 +14,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     //////// End of VMess & VLESS ////////
 
-    // "V2Ray Transport" tcp/http/ws/quic/grpc
+    // "V2Ray Transport" tcp/http/ws/quic/grpc/httpupgrade
     public String type;
 
     public String host;
@@ -133,6 +133,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
             case "grpc": {
                 output.writeString(path);
             }
+            case "httpupgrade": {
+                output.writeString(host);
+                output.writeString(path);
+
+            }
         }
 
         output.writeString(security);
@@ -178,6 +183,10 @@ public abstract class StandardV2RayBean extends AbstractBean {
                 break;
             }
             case "grpc": {
+                path = input.readString();
+            }
+            case "httpupgrade": {
+                host = input.readString();
                 path = input.readString();
             }
         }

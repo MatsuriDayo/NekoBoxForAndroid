@@ -2447,6 +2447,16 @@ public class SingBoxOptions {
 
     }
 
+    public static class V2RayHTTPUpgradeOptions extends SingBoxOption {
+
+        public String host;
+
+        public String path;
+
+        public Map<String, String> headers;
+
+    }
+
     public static class VLESSInboundOptions extends SingBoxOption {
 
         // Generate note: nested type ListenOptions

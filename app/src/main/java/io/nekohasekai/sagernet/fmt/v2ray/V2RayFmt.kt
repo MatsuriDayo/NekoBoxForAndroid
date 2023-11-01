@@ -116,6 +116,15 @@ fun parseV2Ray(link: String): StandardV2RayBean {
                     bean.path = it
                 }
             }
+
+            "httpupgrade" -> {
+                url.queryParameter("path")?.let {
+                    bean.path = it
+                }
+                url.queryParameter("host")?.let {
+                    bean.host = it
+                }
+            }
         }
     } else {
         // also vless format
@@ -212,6 +221,15 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
 
         "grpc" -> {
             url.queryParameter("serviceName")?.let {
+                path = it
+            }
+        }
+
+        "httpupgrade" -> {
+            url.queryParameter("host")?.let {
+                host = it
+            }
+            url.queryParameter("path")?.let {
                 path = it
             }
         }
