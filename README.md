@@ -10,23 +10,21 @@ sing-box / universal proxy toolchain for Android.
 
 ## 下载 / Downloads
 
-### GitHub Releases
-
 [![GitHub All Releases](https://img.shields.io/github/downloads/Matsuridayo/NekoBoxForAndroid/total?label=downloads-total&logo=github&style=flat-square)](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
-[下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
+[GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a)
 
-## 更改记录 & 发布频道 / Changelog & Telegram channel
+## 更新日志 & Telegram 发布频道 / Changelog & Telegram Channel
 
 https://t.me/Matsuridayo
 
-## 项目主页 & 文档 / Homepage & Documents
+## 项目主页 & 文档 / Homepage & Documentation
 
 https://matsuridayo.github.io
 
-## 代理 / Proxy
+## 支持的代理协议 / Supported Proxy Protocols
 
 * SOCKS (4/4a/5)
 * HTTP(S)
@@ -41,20 +39,20 @@ https://matsuridayo.github.io
 * Hysteria ( hysteria-plugin )
 * TUIC
 
-请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件。
+请到[这里](https://matsuridayo.github.io/m-plugin/)下载部分插件以获得完整的代理支持.
 
-Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins.
+Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins for full proxy supports.
 
-## 订阅 / Subscription
+## 支持的订阅格式 / Supported Subscription Format
 
+* 原始格式: 一些广泛使用的格式 (如 shadowsocks, clash 和 v2rayN)
 * Raw: some widely used formats (like shadowsocks, clash and v2rayN)
-* 原始格式：一些广泛使用的格式（如 shadowsocks、clash 和 v2rayN）
 
 ## 捐助 / Donate
 
-如果这个项目对您有帮助，可以通过捐赠的方式帮助我们维持这个项目。
+如果这个项目对您有帮助, 可以通过捐赠的方式帮助我们维持这个项目.
 
-捐赠满等额 50 USD 可以在「[捐赠榜](https://mtrdnt.pages.dev/donation_list)」显示头像，如果您未被添加到这里，欢迎联系我们补充。
+捐赠满等额 50 USD 可以在「[捐赠榜](https://mtrdnt.pages.dev/donation_list)」显示头像, 如果您未被添加到这里, 欢迎联系我们补充.
 
 Donations of 50 USD or more can display your avatar on the [Donation List](https://mtrdnt.pages.dev/donation_list). If you are not added here, please contact us to add it.
 
@@ -66,7 +64,7 @@ XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
 
-* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠，另有支付宝微信购买方式，见 TG 频道置顶。
+* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠, 另有支付宝微信购买方式, 见 Telegram 频道置顶.
 * Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
 
 ## Credits
@@ -81,5 +79,4 @@ Android GUI:
 - [Matsuridayo/Matsuri](https://github.com/MatsuriDayo/Matsuri)
 
 Web Dashboard:
-
 - [Yacd-meta](https://github.com/MetaCubeX/Yacd-meta)
