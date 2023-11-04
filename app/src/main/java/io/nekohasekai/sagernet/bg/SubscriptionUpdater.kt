@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingPeriodicWorkPolicy.UPDATE
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkerParameters
 import androidx.work.multiprocess.RemoteWorkManager
@@ -39,7 +39,7 @@ object SubscriptionUpdater {
         // main process
         RemoteWorkManager.getInstance(app).enqueueUniquePeriodicWork(
             WORK_NAME,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            UPDATE,
             PeriodicWorkRequest.Builder(UpdateTask::class.java, minDelay, TimeUnit.MINUTES)
                 .apply {
                     if (minInitDelay > 0) setInitialDelay(minInitDelay, TimeUnit.SECONDS)

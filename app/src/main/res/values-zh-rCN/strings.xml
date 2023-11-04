@@ -487,4 +487,6 @@
     <string name="ech_config">ECH 配置</string>
     <string name="http_upgrade_host">HTTPUpgrade 主机</string>
     <string name="http_upgrade_path">HTTPUpgrade 路径</string>
+    <string name="update_current_subscription">更新当前组订阅</string>
+    <string name="group_not_subscription">组类型不是订阅</string>
 </resources>
