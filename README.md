@@ -6,7 +6,7 @@
 
 sing-box / universal proxy toolchain for Android.
 
-一款使用 sing-box 的 Android 通用代理软件。
+一款使用 sing-box 的 Android 通用代理软件.
 
 ## 下载 / Downloads
 
@@ -20,7 +20,7 @@ sing-box / universal proxy toolchain for Android.
 
 https://t.me/Matsuridayo
 
-## 项目主页 & 文档 / Homepage & Documentation
+## 项目主页 & 文档 / Homepage & Documents
 
 https://matsuridayo.github.io
 
@@ -34,19 +34,19 @@ https://matsuridayo.github.io
 * VLESS
 * WireGuard
 * Trojan
-* Trojan-Go ( trojan-go-plugin )
-* NaïveProxy ( naive-plugin )
-* Hysteria ( hysteria-plugin )
+* Trojan-Go (trojan-go-plugin)
+* NaïveProxy (naive-plugin)
+* Hysteria (hysteria-plugin)
 * TUIC
 
-请到[这里](https://matsuridayo.github.io/m-plugin/)下载部分插件以获得完整的代理支持.
+请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件以获得完整的代理支持.
 
 Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins for full proxy supports.
 
 ## 支持的订阅格式 / Supported Subscription Format
 
-* 原始格式: 一些广泛使用的格式 (如 shadowsocks, clash 和 v2rayN)
-* Raw: some widely used formats (like shadowsocks, clash and v2rayN)
+* 原始格式: 一些广泛使用的格式 (如 Shadowsocks, Clash 和 v2rayN)
+* Raw: some widely used formats (like Shadowsocks, Clash and v2rayN)
 
 ## 捐助 / Donate
 
