@@ -530,5 +530,6 @@ Anyone can write advanced plugins, which can control NekoBox. please download an
     <string name="http_upgrade_path">HTTPUpgrade Path</string>
     <string name="update_current_subscription">Update current Group\'s subscription</string>
     <string name="group_not_subscription">Group type is not subscription</string>
+    <string name="allow_insecure_on_request_sum">Disable certificate checking when updating subscriptions</string>
 
 </resources>

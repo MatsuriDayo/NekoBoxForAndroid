@@ -60,10 +60,12 @@ object RawUpdater : GroupUpdater() {
                     "1.3" -> restrictedTLS()
                 }
             }.newRequest().apply {
+                if (DataStore.allowInsecureOnRequest) {
+                    allowInsecure()
+                }
                 setURL(subscription.link)
                 setUserAgent(subscription.customUserAgent.takeIf { it.isNotBlank() } ?: USER_AGENT)
             }.execute()
-
             proxies = parseRaw(response.contentString)
                 ?: error(app.getString(R.string.no_proxies_found))
 

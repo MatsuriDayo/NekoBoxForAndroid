@@ -260,5 +260,8 @@
         <SwitchPreference
             app:key="showBottomBar"
             app:title="@string/show_bottom_bar" />
+        <SwitchPreference
+            app:key="allowInsecureOnRequest"
+            app:title="@string/allow_insecure_on_request_sum" />
     </PreferenceCategory>
 </PreferenceScreen>

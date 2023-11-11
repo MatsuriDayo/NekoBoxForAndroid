@@ -40,6 +40,7 @@ type HTTPRequest interface {
 	SetContent(content []byte)
 	SetContentString(content string)
 	SetUserAgent(userAgent string)
+	AllowInsecure()
 	Execute() (HTTPResponse, error)
 }
 
@@ -140,6 +141,10 @@ func (c *httpClient) Close() {
 type httpRequest struct {
 	*httpClient
 	request http.Request
+}
+
+func (r *httpRequest) AllowInsecure() {
+	r.tls.InsecureSkipVerify = true
 }
 
 func (r *httpRequest) SetURL(link string) (err error) {

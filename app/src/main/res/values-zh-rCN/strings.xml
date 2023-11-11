@@ -489,4 +489,5 @@
     <string name="http_upgrade_path">HTTPUpgrade 路径</string>
     <string name="update_current_subscription">更新当前组订阅</string>
     <string name="group_not_subscription">组类型不是订阅</string>
+    <string name="allow_insecure_on_request_sum">更新订阅的时候允许不安全的连接</string>
 </resources>

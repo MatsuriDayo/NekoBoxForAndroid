@@ -75,6 +75,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var enableClashAPI by configurationStore.boolean(Key.ENABLE_CLASH_API)
     var showBottomBar by configurationStore.boolean(Key.SHOW_BOTTOM_BAR)
 
+    var allowInsecureOnRequest by configurationStore.boolean(Key.ALLOW_INSECURE_ON_REQUEST)
+
     //
 
     var isExpert by configurationStore.boolean(Key.APP_EXPERT)
