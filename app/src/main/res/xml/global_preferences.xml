@@ -156,6 +156,10 @@
             app:key="muxConcurrency"
             app:title="@string/mux_concurrency"
             app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:key="globalAllowInsecure"
+            app:icon="@drawable/ic_action_lock_open"
+            app:title="@string/global_allow_insecure" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_dns">
