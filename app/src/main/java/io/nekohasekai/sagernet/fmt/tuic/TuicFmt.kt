@@ -1,5 +1,6 @@
 package io.nekohasekai.sagernet.fmt.tuic
 
+import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
 import io.nekohasekai.sagernet.ktx.urlSafe
@@ -81,7 +82,7 @@ fun buildSingBoxOutboundTuicBean(bean: TuicBean): SingBoxOptions.Outbound_TUICOp
                 certificate = bean.caText
             }
             disable_sni = bean.disableSNI
-            insecure = bean.allowInsecure
+            insecure = bean.allowInsecure || DataStore.globalAllowInsecure
             enabled = true
         }
     }

@@ -30,11 +30,11 @@
     <string name="group_show_diff">变化</string>
     <string name="group_delete_confirm_prompt">您确定要删除这个分组吗\?</string>
     <string name="group_added">新增:
-\n%s</string>
+        \n%s</string>
     <string name="group_changed">更新:
-\n%s</string>
+        \n%s</string>
     <string name="group_deleted">删除:
-\n%s</string>
+        \n%s</string>
     <!-- misc -->
     <string name="service_mode">运行模式</string>
     <string name="service_mode_proxy">仅代理</string>
@@ -54,7 +54,7 @@
     <string name="speed_interval">速度通知更新间隔</string>
     <string name="traffic">%1$s↑ %2$s↓</string>
     <string name="speed_detail">代理： %1$s↑ %2$s↓
-\n直连： %3$s↑ %4$s↓</string>
+        \n直连： %3$s↑ %4$s↓</string>
     <string name="speed">%s/s</string>
     <string name="connection_test_testing">测试中…</string>
     <string name="connection_test_available">连接成功: HTTPS 握手耗时 %dms</string>
@@ -190,7 +190,7 @@
     <string name="grpc_service_name">gRPC 服务名称</string>
     <string name="alpn">应用层协议协商</string>
     <string name="group_duplicate">重复:
-\n%s</string>
+        \n%s</string>
     <string name="deduplication">去重</string>
     <string name="version_x">版本 (%s)</string>
     <string name="show_stop">显示停止按钮</string>
@@ -355,7 +355,8 @@
     <string name="group_order_origin">原始</string>
     <string name="group_order_by_name">以名称</string>
     <string name="group_order_by_delay">以延时</string>
-    <string name="plugin_exists_but_on_shit_system">配置 %s 需要插件 %s，但你的专有设备供应商（通常也是监视资本主义巨头和恶意软件制造商）篡改了你的安卓系统，使该插件无法使用。</string>
+    <string name="plugin_exists_but_on_shit_system">配置 %s 需要插件
+        %s，但你的专有设备供应商（通常也是监视资本主义巨头和恶意软件制造商）篡改了你的安卓系统，使该插件无法使用。</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray （Shadowsocks Android 插件）</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs （Shadowsocks Android 插件）</string>
     <string name="menu_traffic">流量</string>
@@ -404,8 +405,8 @@
     <string name="route_opt_block_analysis">屏蔽跟踪器</string>
     <string name="naive_insecure_concurrency">不安全并发</string>
     <string name="naive_insecure_concurrency_summary">使用N个并发的隧道连接，在恶劣的网络条件下更加强大。更多的连接使隧道更容易被发现，安全性更低。这个项目力求对流量分析有最强的安全性。以不安全的方式使用它就违背了它的目的。
-\n
-\n如果你必须使用它，先试试N=2，看看是否能解决你的问题。强烈建议不要在这里使用超过4个连接。</string>
+        \n
+        \n如果你必须使用它，先试试N=2，看看是否能解决你的问题。强烈建议不要在这里使用超过4个连接。</string>
     <string name="tools_network">网络</string>
     <string name="backup">备份</string>
     <string name="backup_groups_and_configurations">分组和配置</string>
@@ -426,8 +427,8 @@
     <string name="connection_test_delete_unavailable">清理不可用配置</string>
     <string name="neko_plugin">高级插件</string>
     <string name="neko_plugin_summary">高级插件可以提供原本不支持的协议。\n\n
-任何人都可以编写高级插件，开启相当于给予其控制 NekoBox 的权限，请从信任的来源下载安装。\n\n
-普通插件在关于页面显示，无需手动开启。</string>
+        任何人都可以编写高级插件，开启相当于给予其控制 NekoBox 的权限，请从信任的来源下载安装。\n\n
+        普通插件在关于页面显示，无需手动开启。</string>
     <string name="packet_encoding">包编码</string>
     <string name="action_switch">切换</string>
     <string name="acquire_wake_lock">获取唤醒锁</string>
@@ -490,4 +491,5 @@
     <string name="update_current_subscription">更新当前组订阅</string>
     <string name="group_not_subscription">组类型不是订阅</string>
     <string name="allow_insecure_on_request_sum">更新订阅的时候允许不安全的连接</string>
+    <string name="global_allow_insecure">总是跳过 TLS 证书验证</string>
 </resources>

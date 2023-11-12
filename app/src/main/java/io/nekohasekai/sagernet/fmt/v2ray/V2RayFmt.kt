@@ -2,6 +2,7 @@ package io.nekohasekai.sagernet.fmt.v2ray
 
 import android.text.TextUtils
 import com.google.gson.Gson
+import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.ktx.*
@@ -605,7 +606,7 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
     if (bean.security != "tls") return null
     return OutboundTLSOptions().apply {
         enabled = true
-        insecure = bean.allowInsecure
+        insecure = bean.allowInsecure || DataStore.globalAllowInsecure
         if (bean.sni.isNotBlank()) server_name = bean.sni
         if (bean.alpn.isNotBlank()) alpn = bean.alpn.listByLineOrComma()
         if (bean.certificates.isNotBlank()) certificate = bean.certificates

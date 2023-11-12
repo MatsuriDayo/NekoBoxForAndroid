@@ -55,6 +55,7 @@ object Key {
     const val MUX_TYPE = "muxType"
     const val MUX_PROTOCOLS = "mux"
     const val MUX_CONCURRENCY = "muxConcurrency"
+    const val GLOBAL_ALLOW_INSECURE = "globalAllowInsecure"
 
     const val ACQUIRE_WAKE_LOCK = "acquireWakeLock"
     const val SHOW_BOTTOM_BAR = "showBottomBar"

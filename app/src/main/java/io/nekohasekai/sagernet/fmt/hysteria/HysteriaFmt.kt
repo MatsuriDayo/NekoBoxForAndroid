@@ -311,7 +311,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
                 if (bean.caText.isNotBlank()) {
                     certificate = bean.caText
                 }
-                insecure = bean.allowInsecure
+                insecure = bean.allowInsecure || DataStore.globalAllowInsecure
                 enabled = true
             }
         }.asMap()
@@ -350,7 +350,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
                 if (bean.caText.isNotBlank()) {
                     certificate = bean.caText
                 }
-                insecure = bean.allowInsecure
+                insecure = bean.allowInsecure || DataStore.globalAllowInsecure
                 enabled = true
             }
         }.asMap()
