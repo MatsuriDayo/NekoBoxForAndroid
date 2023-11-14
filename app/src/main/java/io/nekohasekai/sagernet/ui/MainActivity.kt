@@ -37,7 +37,6 @@ import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListHolderListener
 import moe.matsuri.nb4a.utils.Util
-import java.io.File
 import java.util.*
 
 class MainActivity : ThemedActivity(),
@@ -110,25 +109,6 @@ class MainActivity : ThemedActivity(),
                     this@MainActivity, arrayOf(POST_NOTIFICATIONS), 0
                 )
             }
-        }
-
-        // consent
-        try {
-            val f = File(application.filesDir, "consent")
-            if (!f.exists()) {
-                MaterialAlertDialogBuilder(this@MainActivity)
-                    .setTitle("VpnService policy")
-                    .setMessage("Since the main function of this application is VPN, it must use VpnService.")
-                    .setPositiveButton(R.string.yes) { _, _ ->
-                        f.createNewFile()
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _, _ ->
-                        finish()
-                    }
-                    .show()
-            }
-        } catch (e: Exception) {
-            Logs.w(e)
         }
     }
 
