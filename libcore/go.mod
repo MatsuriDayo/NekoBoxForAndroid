@@ -10,7 +10,7 @@ require (
 	github.com/sagernet/sing v0.2.17
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	github.com/sagernet/sing-dns v0.1.10
-	github.com/sagernet/sing-tun v0.1.20-0.20231113060257-901de2a92b17
+	github.com/sagernet/sing-tun v0.1.20-0.20231116102114-958d6a25a41d
 	github.com/ulikunitz/xz v0.5.11
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
 )
