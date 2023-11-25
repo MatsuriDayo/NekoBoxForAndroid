@@ -251,8 +251,8 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     }
 
     url.queryParameter("flow")?.let {
-        if (isVLESS && it.contains("vision")) {
-            encryption = it
+        if (isVLESS) {
+            encryption = it.removeSuffix("-udp443")
         }
     }
 
