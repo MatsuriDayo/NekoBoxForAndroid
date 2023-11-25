@@ -39,7 +39,7 @@ class ShadowsocksSettingsActivity : ProfileSettingsActivity<ShadowsocksBean>() {
 
         val pn = pluginName.readStringFromCache()
         val pc = pluginConfig.readStringFromCache()
-        plugin = if (pn.isNotBlank() && pc.isNotBlank()) "$pn;$pc" else ""
+        plugin = if (pn.isNotBlank()) "$pn;$pc" else ""
     }
 
     override fun PreferenceFragmentCompat.createPreferences(
