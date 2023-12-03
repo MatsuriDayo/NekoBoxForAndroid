@@ -147,6 +147,12 @@ class ConfigurationFragment @JvmOverloads constructor(
         if (searchView != null) {
             searchView.setOnQueryTextListener(this)
             searchView.maxWidth = Int.MAX_VALUE
+
+	    searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    cancelSearch(searchView)
+                }
+            }
         }
 
         groupPager = view.findViewById(R.id.group_pager)
@@ -1699,6 +1705,11 @@ class ConfigurationFragment @JvmOverloads constructor(
 
                 }
             }
+        }
+
+	private fun cancelSearch(searchView: SearchView) {
+            searchView.onActionViewCollapsed()
+            searchView.clearFocus()
         }
 
 }
