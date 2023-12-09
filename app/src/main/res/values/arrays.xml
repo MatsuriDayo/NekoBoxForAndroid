@@ -332,6 +332,10 @@
         <item>TPROXY</item>
     </string-array>
 
+    <string-array name="mieru_protocol">
+        <item>TCP</item>
+        <item>UDP</item>
+    </string-array>
 
     <string-array name="naive_proto_entry">
         <item>HTTPS</item>
