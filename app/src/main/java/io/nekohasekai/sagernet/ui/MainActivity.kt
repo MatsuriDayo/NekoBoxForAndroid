@@ -476,7 +476,7 @@ class MainActivity : ThemedActivity(),
             text = getString(
                 R.string.please_update_force, sdf.format(dateBuild), sdf.format(dateExpire)
             )
-        } else if (now > (expire - 2592000000)) {
+        } else if (now > (expire - 2592000000000000)) {
             // 30 days remind :D
             text = getString(
                 R.string.please_update, sdf.format(dateBuild), sdf.format(dateExpire)
