@@ -469,6 +469,8 @@ class MainActivity : ThemedActivity(),
         val build = Libcore.getBuildTime() * 1000
         val dateBuild = Date(build)
 
+        // Commenting out the update alert logic
+        /*  
         var text: String? = null
         if (now > expire) {
             text = getString(
@@ -480,6 +482,7 @@ class MainActivity : ThemedActivity(),
                 R.string.please_update, sdf.format(dateBuild), sdf.format(dateExpire)
             )
         }
+        */
 
 
         if (text != null) {
