@@ -5,7 +5,6 @@ package libcore
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -66,7 +65,7 @@ func extractAssetName(name string, useOfficialAssets bool) error {
 		if err != nil {
 			return fmt.Errorf("open version in assets: %v", err)
 		}
-		b, err := ioutil.ReadAll(av)
+		b, err := io.ReadAll(av)
 		av.Close()
 		if err != nil {
 			return fmt.Errorf("read internal version: %v", err)
@@ -85,7 +84,7 @@ func extractAssetName(name string, useOfficialAssets bool) error {
 		doExtract = true
 	} else if useOfficialAssets || !replaceable {
 		// 官方源升级
-		b, err := ioutil.ReadFile(dir + version)
+		b, err := os.ReadFile(dir + version)
 		if err != nil {
 			// versionFileMissing
 			doExtract = true
