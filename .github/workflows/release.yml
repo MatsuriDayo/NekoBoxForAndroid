@@ -40,4 +40,9 @@ jobs:
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
+      - name: 'Upload Artifact'
+        uses: actions/actions/checkout@v3
+        with:
+          name: libcore.aar
+          path: app/libs/libcore.aar
   
