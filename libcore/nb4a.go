@@ -36,7 +36,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	if1 NB4AInterface, if2 BoxPlatformInterface,
 ) {
 	defer device.DeferPanicToError("InitCore", func(err error) { log.Println(err) })
-	isBgProcess := strings.HasSuffix(process, ":bg")
+	isBgProcess := true//strings.HasSuffix(process, ":bg")
 
 	neko_common.RunMode = neko_common.RunMode_NekoBoxForAndroid
 	intfNB4A = if1
