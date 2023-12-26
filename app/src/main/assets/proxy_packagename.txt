@@ -375,3 +375,4 @@ com.instagram.barcelona
 com.deniscerri.ytdl
 jp.pokemon.pokemonsleep
 com.github.android
+com.openai.chatgpt
