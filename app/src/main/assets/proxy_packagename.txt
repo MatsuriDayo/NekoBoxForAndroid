@@ -382,3 +382,4 @@ com.openai.chatgpt
 mega.privacy.android.app
 com.taptap.global
 tw.com.gamer.android.animad
+com.microsoft.copilot
