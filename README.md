@@ -37,6 +37,7 @@ https://matsuridayo.github.io
 * Trojan-Go (trojan-go-plugin)
 * NaïveProxy (naive-plugin)
 * Hysteria (hysteria-plugin)
+* Mieru (mieru-plugin)
 * TUIC
 
 请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件以获得完整的代理支持.
