@@ -165,6 +165,9 @@
             android:name="io.nekohasekai.sagernet.ui.profile.TrojanGoSettingsActivity"
             android:configChanges="uiMode" />
         <activity
+            android:name="io.nekohasekai.sagernet.ui.profile.MieruSettingsActivity"
+            android:configChanges="uiMode" />
+        <activity
             android:name="io.nekohasekai.sagernet.ui.profile.NaiveSettingsActivity"
             android:configChanges="uiMode" />
         <activity

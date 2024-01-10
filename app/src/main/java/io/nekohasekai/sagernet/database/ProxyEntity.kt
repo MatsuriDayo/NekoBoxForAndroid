@@ -11,6 +11,8 @@ import io.nekohasekai.sagernet.fmt.http.HttpBean
 import io.nekohasekai.sagernet.fmt.http.toUri
 import io.nekohasekai.sagernet.fmt.hysteria.*
 import io.nekohasekai.sagernet.fmt.internal.ChainBean
+import io.nekohasekai.sagernet.fmt.mieru.MieruBean
+import io.nekohasekai.sagernet.fmt.mieru.buildMieruConfig
 import io.nekohasekai.sagernet.fmt.naive.NaiveBean
 import io.nekohasekai.sagernet.fmt.naive.buildNaiveConfig
 import io.nekohasekai.sagernet.fmt.naive.toUri
@@ -56,6 +58,7 @@ data class ProxyEntity(
     var vmessBean: VMessBean? = null,
     var trojanBean: TrojanBean? = null,
     var trojanGoBean: TrojanGoBean? = null,
+    var mieruBean: MieruBean? = null,
     var naiveBean: NaiveBean? = null,
     var hysteriaBean: HysteriaBean? = null,
     var tuicBean: TuicBean? = null,
@@ -75,6 +78,7 @@ data class ProxyEntity(
         const val TYPE_TROJAN = 6
 
         const val TYPE_TROJAN_GO = 7
+        const val TYPE_MIERU = 21
         const val TYPE_NAIVE = 9
         const val TYPE_HYSTERIA = 15
         const val TYPE_TUIC = 20
@@ -161,6 +165,7 @@ data class ProxyEntity(
             TYPE_VMESS -> vmessBean = KryoConverters.vmessDeserialize(byteArray)
             TYPE_TROJAN -> trojanBean = KryoConverters.trojanDeserialize(byteArray)
             TYPE_TROJAN_GO -> trojanGoBean = KryoConverters.trojanGoDeserialize(byteArray)
+            TYPE_MIERU -> mieruBean = KryoConverters.mieruDeserialize(byteArray)
             TYPE_NAIVE -> naiveBean = KryoConverters.naiveDeserialize(byteArray)
             TYPE_HYSTERIA -> hysteriaBean = KryoConverters.hysteriaDeserialize(byteArray)
             TYPE_SSH -> sshBean = KryoConverters.sshDeserialize(byteArray)
@@ -180,6 +185,7 @@ data class ProxyEntity(
         TYPE_VMESS -> if (vmessBean!!.isVLESS) "VLESS" else "VMess"
         TYPE_TROJAN -> "Trojan"
         TYPE_TROJAN_GO -> "Trojan-Go"
+        TYPE_MIERU -> "Mieru"
         TYPE_NAIVE -> "Naïve"
         TYPE_HYSTERIA -> "Hysteria" + hysteriaBean!!.protocolVersion
         TYPE_SSH -> "SSH"
@@ -203,6 +209,7 @@ data class ProxyEntity(
             TYPE_VMESS -> vmessBean
             TYPE_TROJAN -> trojanBean
             TYPE_TROJAN_GO -> trojanGoBean
+            TYPE_MIERU -> mieruBean
             TYPE_NAIVE -> naiveBean
             TYPE_HYSTERIA -> hysteriaBean
             TYPE_SSH -> sshBean
@@ -270,6 +277,11 @@ data class ProxyEntity(
                                 append(bean.buildTrojanGoConfig(port))
                             }
 
+                            is MieruBean -> {
+                                append("\n\n")
+                                append(bean.buildMieruConfig(port))
+                            }
+
                             is NaiveBean -> {
                                 append("\n\n")
                                 append(bean.buildNaiveConfig(port))
@@ -289,6 +301,7 @@ data class ProxyEntity(
     fun needExternal(): Boolean {
         return when (type) {
             TYPE_TROJAN_GO -> true
+            TYPE_MIERU -> true
             TYPE_NAIVE -> true
             TYPE_HYSTERIA -> !hysteriaBean!!.canUseSingBox()
             TYPE_NEKO -> true
@@ -319,6 +332,7 @@ data class ProxyEntity(
         vmessBean = null
         trojanBean = null
         trojanGoBean = null
+        mieruBean = null
         naiveBean = null
         hysteriaBean = null
         sshBean = null
@@ -358,6 +372,11 @@ data class ProxyEntity(
             is TrojanGoBean -> {
                 type = TYPE_TROJAN_GO
                 trojanGoBean = bean
+            }
+
+            is MieruBean -> {
+                type = TYPE_MIERU
+                mieruBean = bean
             }
 
             is NaiveBean -> {
@@ -419,6 +438,7 @@ data class ProxyEntity(
                 TYPE_VMESS -> VMessSettingsActivity::class.java
                 TYPE_TROJAN -> TrojanSettingsActivity::class.java
                 TYPE_TROJAN_GO -> TrojanGoSettingsActivity::class.java
+                TYPE_MIERU -> MieruSettingsActivity::class.java
                 TYPE_NAIVE -> NaiveSettingsActivity::class.java
                 TYPE_HYSTERIA -> HysteriaSettingsActivity::class.java
                 TYPE_SSH -> SSHSettingsActivity::class.java
