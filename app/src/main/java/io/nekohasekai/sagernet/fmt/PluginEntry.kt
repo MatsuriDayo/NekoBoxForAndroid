@@ -14,6 +14,16 @@ enum class PluginEntry(
         SagerNet.application.getString(R.string.action_trojan_go),
         "io.nekohasekai.sagernet.plugin.trojan_go"
     ),
+    MieruProxy(
+        "mieru-plugin",
+        SagerNet.application.getString(R.string.action_mieru),
+        "moe.matsuri.exe.mieru",
+        DownloadSource(
+            playStore = false,
+            fdroid = false,
+            downloadLink = "https://github.com/MatsuriDayo/plugins/releases?q=mieru"
+        )
+    ),
     NaiveProxy(
         "naive-plugin",
         SagerNet.application.getString(R.string.action_naive),

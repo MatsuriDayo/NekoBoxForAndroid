@@ -23,6 +23,17 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 fun MieruBean.buildMieruConfig(port: Int): String {
+    val serverInfo = JSONArray().apply {
+        put(JSONObject().apply {
+            put("ipAddress", finalAddress)
+            put("portBindings", JSONArray().apply {
+                put(JSONObject().apply {
+                    put("port", finalPort)
+                    put("protocol", protocol)
+                })
+            })
+        })
+    }
     return JSONObject().apply {
         put("activeProfile", "default")
         put("socks5Port", port)
@@ -35,17 +46,7 @@ fun MieruBean.buildMieruConfig(port: Int): String {
                     put("name", username)
                     put("password", password)
                 })
-                put("servers", JSONArray().apply {
-                    put(JSONObject().apply {
-                        put("ipAddress", finalAddress)
-                        put("portBindings", JSONArray().apply {
-                            put(JSONObject().apply {
-                                put("port", finalPort)
-                                put("protocol", protocol)
-                            })
-                        })
-                    })
-                })
+                put("servers", serverInfo)
             })
         })
     }.toStringPretty()
