@@ -82,7 +82,8 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 
 	// create box
 	ctx, cancel := context.WithCancel(context.Background())
-	sleepManager := pause.NewDefaultManager(ctx)
+	sleepManager := pause.ManagerFromContext(ctx)
+	//sleepManager := pause.NewDefaultManager(ctx)
 	ctx = pause.ContextWithManager(ctx, sleepManager)
 	instance, err := boxbox.New(boxbox.Options{
 		Options:           options,
