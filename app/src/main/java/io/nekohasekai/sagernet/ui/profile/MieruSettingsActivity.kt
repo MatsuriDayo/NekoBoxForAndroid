@@ -41,7 +41,7 @@ class MieruSettingsActivity : ProfileSettingsActivity<MieruBean>() {
         DataStore.serverProtocol = protocol
         DataStore.serverUsername = username
         DataStore.serverPassword = password
-        DataStore.mtu = mtu
+        DataStore.serverMTU = mtu
     }
 
     override fun MieruBean.serialize() {
@@ -51,7 +51,7 @@ class MieruSettingsActivity : ProfileSettingsActivity<MieruBean>() {
         protocol = DataStore.serverProtocol
         username = DataStore.serverUsername
         password = DataStore.serverPassword
-        mtu = DataStore.mtu
+        mtu = DataStore.serverMTU
     }
 
     override fun PreferenceFragmentCompat.createPreferences(
@@ -66,7 +66,7 @@ class MieruSettingsActivity : ProfileSettingsActivity<MieruBean>() {
             summaryProvider = PasswordSummaryProvider
         }
         val protocol = findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!
-        val mtu = findPreference<EditTextPreference>(Key.MTU)!!
+        val mtu = findPreference<EditTextPreference>(Key.SERVER_MTU)!!
         mtu.isVisible = protocol.value.equals("UDP")
         protocol.setOnPreferenceChangeListener { _, newValue ->
             mtu.isVisible = newValue.equals("UDP")

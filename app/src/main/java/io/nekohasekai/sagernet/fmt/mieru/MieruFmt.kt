@@ -47,6 +47,7 @@ fun MieruBean.buildMieruConfig(port: Int): String {
                     put("password", password)
                 })
                 put("servers", serverInfo)
+                put("mtu", mtu)
             })
         })
     }.toStringPretty()
