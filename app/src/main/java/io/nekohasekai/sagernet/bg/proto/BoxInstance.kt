@@ -147,6 +147,7 @@ abstract class BoxInstance(
 
                         val envMap = mutableMapOf<String, String>()
                         envMap["MIERU_CONFIG_JSON_FILE"] = configFile.absolutePath
+                        envMap["MIERU_PROTECT_PATH"] = "protect_path"
 
                         val commands = mutableListOf(
                             initPlugin("mieru-plugin").path, "run",
