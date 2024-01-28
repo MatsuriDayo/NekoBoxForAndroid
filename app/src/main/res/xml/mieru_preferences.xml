@@ -38,7 +38,7 @@
             app:title="@string/password" />
         <EditTextPreference
             app:icon="@drawable/baseline_public_24"
-            app:key="mtu"
+            app:key="serverMTU"
             app:title="@string/mtu"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
