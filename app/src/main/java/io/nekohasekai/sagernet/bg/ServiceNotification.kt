@@ -191,7 +191,11 @@ class ServiceNotification(
 
     fun destroy() {
         listenPostSpeed = false
-        (service as Service).stopForeground(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            (service as Service).stopForeground(Service.STOP_FOREGROUND_REMOVE)
+        } else {
+            (service as Service).stopForeground(true)
+        }
         service.unregisterReceiver(this)
     }
 }
