@@ -153,6 +153,13 @@ public abstract class StandardV2RayBean extends AbstractBean {
             output.writeString(realityShortId);
         }
 
+        output.writeBoolean(enableECH);
+        if (enableECH) {
+            output.writeBoolean(enablePqSignature);
+            output.writeBoolean(disabledDRS);
+            output.writeString(echConfig);
+        }
+
         output.writeInt(packetEncoding);
     }
 
@@ -204,6 +211,13 @@ public abstract class StandardV2RayBean extends AbstractBean {
             realityShortId = input.readString();
         }
 
+        enableECH = input.readBoolean();
+        if (enableECH) {
+            enablePqSignature = input.readBoolean();
+            disabledDRS = input.readBoolean();
+            echConfig = input.readString();
+        }
+
         packetEncoding = input.readInt();
     }
 
@@ -214,6 +228,9 @@ public abstract class StandardV2RayBean extends AbstractBean {
         bean.allowInsecure = allowInsecure;
         bean.utlsFingerprint = utlsFingerprint;
         bean.packetEncoding = packetEncoding;
+        bean.enableECH = enableECH;
+        bean.disabledDRS = disabledDRS;
+        bean.echConfig = echConfig;
     }
 
     public boolean isVLESS() {
