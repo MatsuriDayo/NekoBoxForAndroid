@@ -1,11 +1,7 @@
 package io.nekohasekai.sagernet.fmt
 
 import android.widget.Toast
-import io.nekohasekai.sagernet.IPv6Mode
-import io.nekohasekai.sagernet.Key
-import io.nekohasekai.sagernet.R
-import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.TunImplementation
+import io.nekohasekai.sagernet.*
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
@@ -170,7 +166,12 @@ fun buildConfig(
             clash_api = ClashAPIOptions().apply {
                 external_controller = "127.0.0.1:9090"
                 external_ui = "../files/yacd"
-                cache_file = "../cache/clash.db"
+            }
+
+            cache_file = CacheFile().apply {
+                enabled = true
+                store_fakeip = true
+                path = "../cache/clash.db"
             }
         }
 

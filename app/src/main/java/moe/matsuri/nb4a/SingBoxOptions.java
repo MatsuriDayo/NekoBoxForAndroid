@@ -38,6 +38,7 @@ public class SingBoxOptions {
         public RouteOptions route;
 
         public ExperimentalOptions experimental;
+
     }
 
     // paste generate output here
@@ -55,16 +56,6 @@ public class SingBoxOptions {
         public String secret;
 
         public String default_mode;
-
-        public Boolean store_mode;
-
-        public Boolean store_selected;
-
-        public Boolean store_fakeip;
-
-        public String cache_file;
-
-        public String cache_id;
 
         // Generate note: option type:  public List<String> ModeList;
 
@@ -304,7 +295,21 @@ public class SingBoxOptions {
 
         public V2RayAPIOptions v2ray_api;
 
+        public CacheFile cache_file;
+
         public DebugOptions debug;
+
+    }
+
+    public static class CacheFile extends SingBoxOption {
+
+        public Boolean enabled;
+
+        public Boolean store_fakeip;
+
+        public String path;
+
+        public String cache_id;
 
     }
 
