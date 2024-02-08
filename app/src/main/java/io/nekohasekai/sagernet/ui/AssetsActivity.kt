@@ -261,6 +261,9 @@ class AssetsActivity : ThemedActivity() {
         RuleAssetsProvider(
             "Chocolate4U/Iran-sing-box-rules"
         ),
+        RuleAssetsProvider(
+            "L11R/antizapret-sing-box-geo"
+        ),
     )
 
     suspend fun updateAsset(file: File, versionFile: File, localVersion: String) {
