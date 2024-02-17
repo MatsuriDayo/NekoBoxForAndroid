@@ -14,6 +14,8 @@ require (
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
 )
 
+require github.com/oschwald/maxminddb-golang v1.12.0
+
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
 	github.com/ajg/form v1.5.1 // indirect
@@ -48,7 +50,6 @@ require (
 	github.com/mholt/acmez v1.2.0 // indirect
 	github.com/onsi/ginkgo/v2 v2.9.7 // indirect
 	github.com/ooni/go-libtor v1.1.8 // indirect
-	github.com/oschwald/maxminddb-golang v1.12.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.14 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
 	github.com/quic-go/qtls-go1-20 v0.4.1 // indirect

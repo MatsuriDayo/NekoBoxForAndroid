@@ -968,11 +968,9 @@ public class SingBoxOptions {
 
     public static class RouteOptions extends SingBoxOption {
 
-        public GeoIPOptions geoip;
-
-        public GeositeOptions geosite;
-
         public List<Rule> rules;
+
+        public List<RuleSet> rule_set;
 
         @SerializedName("final")
         public String final_;
@@ -989,26 +987,6 @@ public class SingBoxOptions {
 
     }
 
-    public static class GeoIPOptions extends SingBoxOption {
-
-        public String path;
-
-        public String download_url;
-
-        public String download_detour;
-
-    }
-
-    public static class GeositeOptions extends SingBoxOption {
-
-        public String path;
-
-        public String download_url;
-
-        public String download_detour;
-
-    }
-
 
     public static class Rule extends SingBoxOption {
 
@@ -1017,6 +995,20 @@ public class SingBoxOptions {
         // Generate note: option type:  public DefaultRule DefaultOptions;
 
         // Generate note: option type:  public LogicalRule LogicalOptions;
+
+    }
+
+    public static class RuleSet extends SingBoxOption {
+
+        public String type;
+
+        public String tag;
+
+        public String format;
+
+        public String path;
+
+        public String url;
 
     }
 
@@ -1047,15 +1039,6 @@ public class SingBoxOptions {
 
         // Generate note: Listable
         public List<String> domain_regex;
-
-        // Generate note: Listable
-        public List<String> geosite;
-
-        // Generate note: Listable
-        public List<String> source_geoip;
-
-        // Generate note: Listable
-        public List<String> geoip;
 
         // Generate note: Listable
         public List<String> source_ip_cidr;
@@ -1091,18 +1074,6 @@ public class SingBoxOptions {
         public List<Integer> user_id;
 
         public String clash_mode;
-
-        public Boolean invert;
-
-        public String outbound;
-
-    }
-
-    public static class LogicalRule extends SingBoxOption {
-
-        public String mode;
-
-        public List<DefaultRule> rules;
 
         public Boolean invert;
 
@@ -1156,9 +1127,6 @@ public class SingBoxOptions {
         public List<String> geosite;
 
         // Generate note: Listable
-        public List<String> source_geoip;
-
-        // Generate note: Listable
         public List<String> source_ip_cidr;
 
         // Generate note: Listable
@@ -1192,22 +1160,6 @@ public class SingBoxOptions {
         public List<String> outbound;
 
         public String clash_mode;
-
-        public Boolean invert;
-
-        public String server;
-
-        public Boolean disable_cache;
-
-        public Integer rewrite_ttl;
-
-    }
-
-    public static class LogicalDNSRule extends SingBoxOption {
-
-        public String mode;
-
-        public List<DefaultDNSRule> rules;
 
         public Boolean invert;
 
@@ -4387,14 +4339,12 @@ public class SingBoxOptions {
         // Generate note: Listable
         public List<String> domain_regex;
 
-        // Generate note: Listable
-        public List<String> geosite;
+        public List<String> rule_set;
 
-        // Generate note: Listable
-        public List<String> source_geoip;
+        public Boolean source_ip_is_private;
 
-        // Generate note: Listable
-        public List<String> geoip;
+        public Boolean rule_set_ipcidr_match_source;
+        public Boolean ip_is_private;
 
         // Generate note: Listable
         public List<String> source_ip_cidr;
@@ -4437,18 +4387,6 @@ public class SingBoxOptions {
 
     }
 
-    public static class Rule_LogicalOptions extends Rule {
-
-        public String mode;
-
-        public List<DefaultRule> rules;
-
-        public Boolean invert;
-
-        public String outbound;
-
-    }
-
     public static class DNSRule_DefaultOptions extends DNSRule {
 
         // Generate note: Listable
@@ -4484,9 +4422,6 @@ public class SingBoxOptions {
         public List<String> geosite;
 
         // Generate note: Listable
-        public List<String> source_geoip;
-
-        // Generate note: Listable
         public List<String> source_ip_cidr;
 
         // Generate note: Listable
@@ -4520,22 +4455,6 @@ public class SingBoxOptions {
         public List<String> outbound;
 
         public String clash_mode;
-
-        public Boolean invert;
-
-        public String server;
-
-        public Boolean disable_cache;
-
-        public Integer rewrite_ttl;
-
-    }
-
-    public static class DNSRule_LogicalOptions extends DNSRule {
-
-        public String mode;
-
-        public List<DefaultDNSRule> rules;
 
         public Boolean invert;
 

@@ -26,11 +26,8 @@ import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
-import moe.matsuri.nb4a.Protocols
+import moe.matsuri.nb4a.*
 import moe.matsuri.nb4a.SingBoxOptions.*
-import moe.matsuri.nb4a.SingBoxOptionsUtil
-import moe.matsuri.nb4a.checkEmpty
-import moe.matsuri.nb4a.makeSingBoxRule
 import moe.matsuri.nb4a.plugin.Plugins
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
@@ -535,6 +532,9 @@ fun buildConfig(
                 if (rule.ip.isNotBlank()) {
                     makeSingBoxRule(rule.ip.listByLineOrComma(), true)
                 }
+
+                generateRuleSet()
+
                 if (rule.port.isNotBlank()) {
                     port = mutableListOf<Int>()
                     port_range = mutableListOf<String>()
@@ -733,7 +733,7 @@ fun buildConfig(
             if (DataStore.bypassLanInCore) {
                 route.rules.add(Rule_DefaultOptions().apply {
                     outbound = TAG_BYPASS
-                    geoip = listOf("private")
+                    ip_is_private = true
                 })
             }
             // block mcast
