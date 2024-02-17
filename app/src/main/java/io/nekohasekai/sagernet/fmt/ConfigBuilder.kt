@@ -256,6 +256,7 @@ fun buildConfig(
         route = RouteOptions().apply {
             auto_detect_interface = true
             rules = mutableListOf()
+            rule_set = mutableListOf()
         }
 
         // returns outbound tag
@@ -518,6 +519,7 @@ fun buildConfig(
                 }
                 PackageCache[it]?.takeIf { uid -> uid >= 1000 }
             }.toHashSet().filterNotNull()
+            val ruleSets = mutableListOf<RuleSet>()
 
             val ruleObj = Rule_DefaultOptions().apply {
                 if (uidList.isNotEmpty()) {
@@ -533,7 +535,7 @@ fun buildConfig(
                     makeSingBoxRule(rule.ip.listByLineOrComma(), true)
                 }
 
-                generateRuleSet()
+                generateRuleSet(ruleSets)
 
                 if (rule.port.isNotBlank()) {
                     port = mutableListOf<Int>()
@@ -614,6 +616,7 @@ fun buildConfig(
                     ).show()
                 } else {
                     route.rules.add(ruleObj)
+                    route.rule_set.addAll(ruleSets)
                 }
             }
         }

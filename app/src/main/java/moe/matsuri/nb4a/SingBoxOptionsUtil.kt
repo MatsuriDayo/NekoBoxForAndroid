@@ -3,6 +3,7 @@ package moe.matsuri.nb4a
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.utils.GeoipUtils
 import io.nekohasekai.sagernet.utils.GeositeUtils
+import moe.matsuri.nb4a.SingBoxOptions.RuleSet
 
 object SingBoxOptionsUtil {
 
@@ -72,15 +73,27 @@ fun SingBoxOptions.DNSRule_DefaultOptions.checkEmpty(): Boolean {
     return true
 }
 
-fun SingBoxOptions.Rule_DefaultOptions.generateRuleSet() {
+fun SingBoxOptions.Rule_DefaultOptions.generateRuleSet(ruleSet: MutableList<RuleSet>) {
     rule_set.forEach {
         when {
             it.startsWith("geoip") -> {
-                GeoipUtils.generateRuleSet(country = it.removePrefix("geoip:"))
+                val geoipPath = GeoipUtils.generateRuleSet(country = it.removePrefix("geoip:"))
+                ruleSet.add(RuleSet().apply {
+                    type = "local"
+                    tag = it
+                    format = "binary"
+                    path = geoipPath
+                })
             }
 
             it.startsWith("geosite") -> {
-                GeositeUtils.generateRuleSet(code = it.removePrefix("geosite:"))
+                val geositePath = GeositeUtils.generateRuleSet(code = it.removePrefix("geosite:"))
+                ruleSet.add(RuleSet().apply {
+                    type = "local"
+                    tag = it
+                    format = "binary"
+                    path = geositePath
+                })
             }
         }
     }
