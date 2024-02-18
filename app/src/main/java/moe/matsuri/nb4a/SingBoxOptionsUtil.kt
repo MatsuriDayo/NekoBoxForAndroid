@@ -74,7 +74,7 @@ fun SingBoxOptions.DNSRule_DefaultOptions.checkEmpty(): Boolean {
 }
 
 fun SingBoxOptions.Rule_DefaultOptions.generateRuleSet(ruleSet: MutableList<RuleSet>) {
-    rule_set.forEach {
+    rule_set?.forEach {
         when {
             it.startsWith("geoip") -> {
                 val geoipPath = GeoipUtils.generateRuleSet(country = it.removePrefix("geoip:"))
