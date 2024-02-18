@@ -72,33 +72,3 @@ jobs:
         with:
           name: APKs
           path: ${{ env.APK }}
-  upload:
-    name: Upload APK
-    if: ${{ github.event_name != 'pull_request'}}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: APKs
-          path: artifacts
-      - name: Push APKs to Telegram Group
-        run: |
-          mkdir apks
-          find artifacts -name "*.apk" -exec cp {} apks \;
-
-          function upload() {
-            for apk in $@; do
-              echo ">> Uploading $apk"
-              curl https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument \
-                -X POST \
-                -F chat_id="${{ secrets.TELEGRAM_GROUP }}" \
-                -F document="@$apk" \
-                --silent --show-error --fail >/dev/null &
-            done
-            for job in $(jobs -p); do
-              wait $job || exit 1
-            done
-          }
-          upload apks/*
