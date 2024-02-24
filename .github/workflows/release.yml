@@ -75,7 +75,7 @@ jobs:
           APK=$(find app/build/outputs/apk -name '*arm64-v8a*.apk')
           APK=$(dirname $APK)
           echo "APK=$APK" >> $GITHUB_ENV
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: APKs
           path: ${{ env.APK }}
