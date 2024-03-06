@@ -65,9 +65,6 @@ XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
 
-* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠, 另有支付宝微信购买方式, 见 Telegram 频道置顶.
-* Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
-
 ## Credits
 
 Core:
