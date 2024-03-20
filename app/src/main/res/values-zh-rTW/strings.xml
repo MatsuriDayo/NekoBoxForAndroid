@@ -151,7 +151,7 @@
     <string name="subscriptions">訂閱</string>
     <string name="cleartext_http_warning">純文字 HTTP 流量並不安全</string>
     <string name="error_title">錯誤</string>
-    <string name="no_proxies_found">此連接不包含任何代理</string>
+    <string name="no_proxies_found">此連結不包含任何代理</string>
     <!-- plugin -->
     <string name="plugin">外掛程式</string>
     <string name="plugin_configure">設定…</string>
