@@ -136,10 +136,10 @@
     <string name="add_profile_methods_scan_qr_code">掃描 QR 碼</string>
     <string name="add_profile_methods_manual_settings">手動設定</string>
     <plurals name="removed">
-        <item quantity="other">已刪除 %d 項</item>
+        <item quantity="other">已移除 %d 個項目</item>
     </plurals>
     <plurals name="added">
-        <item quantity="other">已新增 %d 個設定檔</item>
+        <item quantity="other">已新增 %d 個代理</item>
     </plurals>
     <string name="undo">復原</string>
     <!-- tasker -->
