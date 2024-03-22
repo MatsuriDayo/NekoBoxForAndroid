@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_desc">適用於 Android 的通用代理工具鏈，由 Kotlin 編寫。</string>
-    <string name="project">專案</string>
+    <string name="project">計畫</string>
     <string name="github">原始碼</string>
     <string name="telegram">Telegram 更新頻道</string>
-    <string name="oss_licenses">開放原始碼授權協定</string>
+    <string name="oss_licenses">開放原始碼授權條款</string>
     <string name="app_version">版本</string>
     <string name="logcat">匯出 debug 所需資訊</string>
     <string name="menu_configuration">設定檔</string>
-    <string name="menu_group">組</string>
+    <string name="menu_group">群組</string>
     <string name="menu_about">關於</string>
     <string name="quick_toggle">切換</string>
     <!-- group -->
     <string name="group_name">群組名稱</string>
     <string name="group_update">更新</string>
-    <string name="group_subscription_link">訂閱連接</string>
+    <string name="group_subscription_link">訂閱連結</string>
     <string name="group_name_required">需要群組名稱</string>
     <string name="group_create">建立新組</string>
     <string name="group_create_subscription">建立新訂閱</string>
     <string name="group_edit">編輯</string>
     <string name="group_edit_subscription">編輯訂閱</string>
-    <string name="group_status_empty">空組</string>
+    <string name="group_status_empty">空白群組</string>
     <string name="group_status_empty_subscription">尚未更新</string>
     <string name="group_status_proxies">%d 個代理</string>
     <string name="group_status_proxies_subscription">%d 個代理 | 更新於 %s</string>
@@ -55,7 +55,7 @@
     <string name="speed_detail">代理： %1$s↑ %2$s↓
 \n直連： %3$s↑ %4$s↓</string>
     <string name="speed">%s/s</string>
-    <string name="connection_test_testing">測試中……</string>
+    <string name="connection_test_testing">正在測試…</string>
     <string name="connection_test_available">成功：HTTPS 握手花費 %dms</string>
     <string name="connection_test_error">失敗：%s</string>
     <string name="connection_test_fail">網路不可用</string>
@@ -69,7 +69,7 @@
     <string name="password">密碼</string>
     <string name="enc_method">加密方式</string>
     <string name="protocol">設定</string>
-    <string name="protocol_param">協定參數</string>
+    <string name="protocol_param">通訊協定參數</string>
     <string name="obfs">混淆</string>
     <string name="obfs_param">混淆參數</string>
     <string name="uuid">使用者 ID</string>
@@ -88,29 +88,29 @@
     <string name="on">啟用</string>
     <string name="off">停用</string>
     <string name="search_apps">搜尋…</string>
-    <string name="scanning">掃描中……</string>
+    <string name="scanning">正在掃描…</string>
     <string name="invert_selections">反向選取</string>
     <string name="clear_selections">清除選取</string>
     <string name="bypass_apps">略過</string>
-    <string name="show_system_apps">顯示系統應用</string>
+    <string name="show_system_apps">顯示系統應用程式</string>
     <string name="auto_connect">自動連線</string>
-    <string name="auto_connect_summary">如果代理在開機或應用更新前正在運行則自動啓動</string>
-    <string name="direct_boot_aware">允許與解鎖前啓動</string>
-    <string name="direct_boot_aware_summary">您選取的設定檔將受到較少的保護</string>
+    <string name="auto_connect_summary">如果代理在開機或應用更新前正在執行則自動啟動</string>
+    <string name="direct_boot_aware">允許螢幕鎖定時切換</string>
+    <string name="direct_boot_aware_summary">您選取的設定檔資訊將受到較少保護</string>
     <!-- notification category -->
     <string name="service_vpn">VPN 服務</string>
     <string name="service_proxy">代理服務</string>
     <string name="forward_success">SagerNet 已啟動。</string>
     <string name="invalid_server">伺服器名稱無效</string>
     <string name="stop">停止</string>
-    <string name="stopping">關閉中……</string>
+    <string name="stopping">正在關閉…</string>
     <string name="vpn_error">%s</string>
     <string name="vpn_permission_denied">建立 VPN 服務的權限被拒</string>
     <string name="reboot_required">無法啟動 VPN 服務，您可能需要重新啟動您的裝置。</string>
     <!-- alert category -->
-    <string name="profile_empty">請選擇一個設定檔</string>
+    <string name="profile_empty">請選取一個設定檔</string>
     <string name="connect">連線</string>
-    <string name="clipboard_empty">剪貼簿為空</string>
+    <string name="clipboard_empty">剪貼簿為空白</string>
     <!-- menu category -->
     <string name="settings">設定</string>
     <string name="edit">編輯</string>
@@ -136,25 +136,25 @@
     <string name="add_profile_methods_scan_qr_code">掃描 QR 碼</string>
     <string name="add_profile_methods_manual_settings">手動設定</string>
     <plurals name="removed">
-        <item quantity="other">已刪除 %d 項</item>
+        <item quantity="other">已移除 %d 個項目</item>
     </plurals>
     <plurals name="added">
-        <item quantity="other">已新增 %d 個配置</item>
+        <item quantity="other">已新增 %d 個代理</item>
     </plurals>
     <string name="undo">復原</string>
     <!-- tasker -->
     <!-- status -->
-    <string name="connecting">連線中……</string>
+    <string name="connecting">正在連線…</string>
     <string name="vpn_connected">已連線，輕觸以檢查連線能力</string>
     <string name="not_connected">未連線</string>
     <!-- subscriptions -->
     <string name="subscriptions">訂閱</string>
     <string name="cleartext_http_warning">純文字 HTTP 流量並不安全</string>
     <string name="error_title">錯誤</string>
-    <string name="no_proxies_found">此連接不包含任何代理</string>
+    <string name="no_proxies_found">此連結不包含任何代理</string>
     <!-- plugin -->
     <string name="plugin">外掛程式</string>
-    <string name="plugin_configure">設定……</string>
+    <string name="plugin_configure">設定…</string>
     <string name="plugin_disabled">已停用</string>
     <string name="plugin_unknown">未知外掛程式 %s</string>
     <string name="plugin_untrusted">警告：此外掛程式並非來自可靠的可信來源。</string>
@@ -164,11 +164,11 @@
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="apply">套用</string>
-    <string name="license">授權協定</string>
-    <string name="document">文檔</string>
+    <string name="license">授權條款</string>
+    <string name="document">文件</string>
     <string name="early_data_header_name">前置資料標頭</string>
-    <string name="certificates">憑證（鏈結）</string>
-    <string name="alpn">應用層協定協商</string>
+    <string name="certificates">憑證</string>
+    <string name="alpn">應用層通訊協定協商</string>
     <string name="grpc_service_name">gRPC 服務名稱</string>
     <string name="http_path">HTTP 路徑</string>
     <string name="http_host">HTTP 主機</string>
@@ -214,7 +214,7 @@
     <string name="route_proxy">代理</string>
     <string name="route_bypass">繞過</string>
     <string name="route_block">封鎖</string>
-    <string name="route_profile">選擇設定檔…</string>
+    <string name="route_profile">選取設定檔…</string>
     <string name="empty_route">空白路由規則</string>
     <string name="empty_route_notice">在儲存前設定一些規則</string>
     <string name="route_bypass_domain">%s 網域規則</string>
@@ -236,7 +236,7 @@
     <string name="mux_concurrency">多工器同時連線數目</string>
     <string name="tcp_keep_alive_interval">TCP 保持連線傳送間隔</string>
     <string name="service_failed">失敗：</string>
-    <string name="select_profile">選擇設定檔</string>
+    <string name="select_profile">選取設定檔</string>
     <string name="proxy_chain">代理鏈結</string>
     <string name="custom_config">客製化設定檔</string>
     <string name="balancer">負載平衡器</string>
@@ -269,7 +269,7 @@
     <string name="auto">自動</string>
     <string name="enable_log">啟用記錄檔</string>
     <string name="enable_log_sum">用於除錯用途</string>
-    <string name="list">列表</string>
+    <string name="list">清單</string>
     <string name="random">隨機</string>
     <string name="api_port">API 連接埠</string>
     <string name="probe_interval">負載平衡器觀測間隔</string>
@@ -319,10 +319,10 @@
     <string name="ooc_subscription_token_invalid">無效的 OOCv1 權杖</string>
     <string name="update_subscription_warning">代理尚未連線，您真的希望繼續更新嗎？</string>
     <string name="ooc_warning">警告</string>
-    <string name="ooc_missing_protocol">此訂閱需要 %s 協定支援，但其未被安裝，不支援的設定檔將被忽略。</string>
+    <string name="ooc_missing_protocol">此訂閱需支援 %s 通訊協定，但其未被安裝，不支援的設定檔將被忽略。</string>
     <string name="service_subscription">訂閱更新服務</string>
     <string name="subscription_update">訂閱更新</string>
-    <string name="subscription_update_message">更新 %s 中…</string>
+    <string name="subscription_update_message">正在更新 %s …</string>
     <string name="group_filter">篩選</string>
     <string name="subscription_used">已用 %s</string>
     <string name="subscription_traffic">已用 %s / 剩餘 %s</string>
@@ -350,10 +350,10 @@
     <string name="copy_failed">複製失敗。</string>
     <string name="copy_success">成功複製！</string>
     <string name="create_rule">建立規則</string>
-    <string name="open_market">打開應用商店</string>
-    <string name="open_settings">打開設定</string>
-    <string name="open_app">打開應用程式</string>
-    <string name="copy_package_name">複製軟體包名稱</string>
+    <string name="open_market">開啟應用商店</string>
+    <string name="open_settings">開啟設定</string>
+    <string name="open_app">開啟應用程式</string>
+    <string name="copy_package_name">複製應用程式套件名稱</string>
     <string name="copy_label">複製名稱</string>
     <string name="udp_connections">%d 個 UDP 連線</string>
     <string name="tcp_connections">%d 個 TCP 連線</string>
@@ -384,31 +384,31 @@
     <string name="wireguard_psk">節點預先共用金鑰</string>
     <string name="warp_license">CloudFlare Warp 是一個免費的 WireGuard VPN 提供者。使用此服務表示您同意其服務條款。</string>
     <string name="warp_generate">產生設定檔</string>
-    <string name="generating">正在產生……</string>
+    <string name="generating">正在產生…</string>
     <string name="pcap_notice">Pcap 檔案將被儲存至 %s</string>
     <string name="profile_traffic_statistics">設定檔流量統計資料</string>
     <string name="resolve_destination_summary">如果目的地位址是一個網域，則基於 IPv6 策略傳出。</string>
     <string name="destination_override_summary">使用被偵測到的網域複寫目的地位址，而不是僅用於路由</string>
     <string name="route_opt_block_analysis">封鎖分析</string>
-    <string name="route_play_store">%s 谷歌Play商店規則</string>
+    <string name="route_play_store">%s Google Play商店規則</string>
     <string name="naive_insecure_concurrency">不安全並發</string>
     <string name="stun_test">NAT 行為尋找</string>
     <string name="naive_insecure_concurrency_summary">使用N個並發的隧道能使網路條件較差时更加可用。但數量越多，越易被偵測，安全性越低。由於本項目致力於面對流量分析的安全性，以不安全的方式使用違背了其初忠。
 \n
 \n如一定要使用，請先嘗試 N=2，觀察其是否解決了您的問題。強烈反對於此使用多於4個隧道。</string>
     <string name="stun_attest_loading">這可能需要數分鐘…</string>
-    <string name="stun_test_summary">使用 STUN 確定客戶端的 NAT 映射行為和 RFC 5780 中定義的 NAT 過濾行為。</string>
+    <string name="stun_test_summary">使用 STUN 確定用戶端的 NAT 映射行為和 RFC 5780 中定義的 NAT 篩選行為。</string>
     <string name="start">開始</string>
     <string name="backup">備份</string>
     <string name="backup_rules">路由規則</string>
-    <string name="invalid_backup_file">無效的備份文件</string>
+    <string name="invalid_backup_file">無效的備份檔</string>
     <string name="tools_network">網路</string>
-    <string name="backup_settings">設置</string>
-    <string name="backup_import">導入</string>
-    <string name="backup_import_summary">導入將覆蓋現有數據。</string>
-    <string name="backup_importing">正在導入…</string>
-    <string name="backup_groups_and_configurations">分組和配置</string>
-    <string name="backup_summary">如果路由規則不與配置一起備份，則自定義出站將丟失。</string>
-    <string name="backup_not_file">不是一個備份文件，預計 .json，但 %s</string>
-    <string name="packet_encoding">包編碼</string>
+    <string name="backup_settings">設定</string>
+    <string name="backup_import">匯入</string>
+    <string name="backup_import_summary">匯入將覆蓋現有資料。</string>
+    <string name="backup_importing">正在匯入…</string>
+    <string name="backup_groups_and_configurations">分組和設定檔</string>
+    <string name="backup_summary">如果路由規則不與設定檔一起備份，則自訂出站將丟失。</string>
+    <string name="backup_not_file">不是一個備份檔案，預計 .json，但 %s</string>
+    <string name="packet_encoding">封包編碼</string>
 </resources>
