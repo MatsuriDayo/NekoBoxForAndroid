@@ -14,7 +14,9 @@ sing-box / universal proxy toolchain for Android.
 
 [GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
-[Google Play](https://play.google.com/store/apps/details?id=moe.nb4a)
+**Google Play 版本自 2024 年 5 月起已被第三方控制，为非开源版本，请不要下载。**
+
+**The Google Play version has been controlled by a third party since May 2024 and is a non-open source version. Please do not download it.**
 
 ## 更新日志 & Telegram 发布频道 / Changelog & Telegram Channel
 
@@ -51,6 +53,8 @@ Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins
 
 ## 捐助 / Donate
 
+<details>
+
 如果这个项目对您有帮助, 可以通过捐赠的方式帮助我们维持这个项目.
 
 捐赠满等额 50 USD 可以在「[捐赠榜](https://mtrdnt.pages.dev/donation_list)」显示头像, 如果您未被添加到这里, 欢迎联系我们补充.
@@ -64,6 +68,8 @@ USDT TRC20
 XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
+
+</details>
 
 ## Credits
 
