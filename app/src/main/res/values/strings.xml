@@ -214,6 +214,7 @@
     <string name="action_vmess" translatable="false">VMess</string>
     <string name="action_trojan" translatable="false">Trojan</string>
     <string name="action_trojan_go" translatable="false">Trojan Go</string>
+    <string name="action_mieru" translatable="false">Mieru</string>
     <string name="action_naive" translatable="false">Naïve</string>
     <string name="action_ping_tunnel" translatable="false">Ping Tunnel</string>
     <string name="action_hysteria" translatable="false">Hysteria</string>

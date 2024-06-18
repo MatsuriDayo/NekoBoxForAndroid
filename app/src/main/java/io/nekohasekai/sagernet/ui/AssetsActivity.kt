@@ -249,25 +249,28 @@ class AssetsActivity : ThemedActivity() {
 
     }
 
+    private val rulesProviders = listOf(
+        RuleAssetsProvider(
+            "SagerNet/sing-geoip",
+            "SagerNet/sing-geosite",
+        ),
+        RuleAssetsProvider(
+            "soffchen/sing-geoip",
+            "soffchen/sing-geosite",
+        ),
+        RuleAssetsProvider(
+            "Chocolate4U/Iran-sing-box-rules"
+        ),
+        RuleAssetsProvider(
+            "L11R/antizapret-sing-box-geo"
+        ),
+    )
+
     suspend fun updateAsset(file: File, versionFile: File, localVersion: String) {
-        val repo: String
         var fileName = file.name
 
-        if (DataStore.rulesProvider == 0) {
-            if (file.name == assetNames[0]) {
-                repo = "SagerNet/sing-geoip"
-            } else {
-                repo = "SagerNet/sing-geosite"
-            }
-        } else if (DataStore.rulesProvider == 1) {
-            if (file.name == assetNames[0]) {
-                repo = "soffchen/sing-geoip"
-            } else {
-                repo = "soffchen/sing-geosite"
-            }
-        } else {
-                repo = "Chocolate4U/Iran-sing-box-rules"
-        }
+        val ruleProvider = rulesProviders[DataStore.rulesProvider]
+        val repo = ruleProvider.repoByFileName[fileName]
 
         val client = Libcore.newHttpClient().apply {
             modernTLS()
@@ -340,5 +343,17 @@ class AssetsActivity : ThemedActivity() {
         }
     }
 
-
+    private data class RuleAssetsProvider(
+        val repoByFileName: Map<String, String>
+    ) {
+        constructor(
+            geoipRepo: String,
+            geositeRepo: String = geoipRepo,
+        ) : this(
+            mapOf(
+                "geoip.db" to geoipRepo,
+                "geosite.db" to geositeRepo,
+            )
+        )
+    }
 }

@@ -484,7 +484,7 @@
     <string name="ech_settings">ECH 设置</string>
     <string name="pq_signature_schemes_enabled">启用对后量子对等证书签名方案支持</string>
     <string name="dynamic_record_sizing_disabled">禁用TLS记录的自适应调整大小</string>
-    <string name="dynamic_record_sizing_sum">如果启用，将始终使用最大可能的TLS记录大小。当禁用时，TLS记录的大小可能会进行调整以尝试提高延迟。</string>
+    <string name="dynamic_record_sizing_sum">如果启用，将始终使用最大可能的TLS记录大小。当禁用时，TLS记录的大小可能会进行调整以尝试改善延迟。</string>
     <string name="ech_config">ECH 配置</string>
     <string name="http_upgrade_host">HTTPUpgrade 主机</string>
     <string name="http_upgrade_path">HTTPUpgrade 路径</string>

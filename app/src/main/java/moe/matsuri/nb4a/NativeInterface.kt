@@ -1,12 +1,17 @@
 package moe.matsuri.nb4a
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.wifi.WifiManager
 import android.os.Build
+import android.os.Build.VERSION_CODES
 import androidx.annotation.RequiresApi
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.ServiceNotification
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.Logs
+import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.utils.PackageCache
 import libcore.BoxPlatformInterface
@@ -60,6 +65,14 @@ class NativeInterface : BoxPlatformInterface, NB4AInterface {
     override fun uidByPackageName(packageName: String): Int {
         PackageCache.awaitLoadSync()
         return PackageCache[packageName] ?: 0
+    }
+
+    // TODO: 'getter for connectionInfo: WifiInfo!' is deprecated
+    override fun wifiState(): String {
+        val wifiManager =
+            app.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val connectionInfo = wifiManager.connectionInfo
+        return "${connectionInfo.ssid},${connectionInfo.bssid}"
     }
 
     // nb4a interface

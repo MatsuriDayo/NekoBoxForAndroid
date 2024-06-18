@@ -29,6 +29,7 @@ import libcore.Libcore
 import moe.matsuri.nb4a.NativeInterface
 import moe.matsuri.nb4a.utils.JavaUtil
 import moe.matsuri.nb4a.utils.cleanWebview
+import java.io.File
 import androidx.work.Configuration as WorkConfiguration
 
 class SagerNet : Application(),
@@ -40,11 +41,11 @@ class SagerNet : Application(),
         application = this
     }
 
-    val nativeInterface = NativeInterface()
+    private val nativeInterface = NativeInterface()
 
-    val externalAssets by lazy { getExternalFilesDir(null) ?: filesDir }
-    val process = JavaUtil.getProcessName()
-    val isMainProcess = process == BuildConfig.APPLICATION_ID
+    val externalAssets: File by lazy { getExternalFilesDir(null) ?: filesDir }
+    val process: String = JavaUtil.getProcessName()
+    private val isMainProcess = process == BuildConfig.APPLICATION_ID
     val isBgProcess = process.endsWith(":bg")
 
     override fun onCreate() {

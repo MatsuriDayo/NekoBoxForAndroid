@@ -14,7 +14,9 @@ sing-box / universal proxy toolchain for Android.
 
 [GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
-[Google Play](https://play.google.com/store/apps/details?id=moe.nb4a)
+**Google Play 版本自 2024 年 5 月起已被第三方控制，为非开源版本，请不要下载。**
+
+**The Google Play version has been controlled by a third party since May 2024 and is a non-open source version. Please do not download it.**
 
 ## 更新日志 & Telegram 发布频道 / Changelog & Telegram Channel
 
@@ -37,6 +39,7 @@ https://matsuridayo.github.io
 * Trojan-Go (trojan-go-plugin)
 * NaïveProxy (naive-plugin)
 * Hysteria (hysteria-plugin)
+* Mieru (mieru-plugin)
 * TUIC
 
 请到[这里](https://matsuridayo.github.io/m-plugin/)下载插件以获得完整的代理支持.
@@ -49,6 +52,8 @@ Please visit [here](https://matsuridayo.github.io/m-plugin/) to download plugins
 * Raw: some widely used formats (like Shadowsocks, Clash and v2rayN)
 
 ## 捐助 / Donate
+
+<details>
 
 如果这个项目对您有帮助, 可以通过捐赠的方式帮助我们维持这个项目.
 
@@ -64,8 +69,7 @@ XMR
 
 `49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
 
-* 您也可以通过 [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a) 购买捐赠, 另有支付宝微信购买方式, 见 Telegram 频道置顶.
-* Donating via [Google Play](https://play.google.com/store/apps/details?id=moe.nb4a), using credit cards.
+</details>
 
 ## Credits
 

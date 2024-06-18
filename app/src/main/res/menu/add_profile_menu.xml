@@ -46,6 +46,9 @@
                         android:id="@+id/action_new_trojan_go"
                         android:title="@string/action_trojan_go" />
                     <item
+                        android:id="@+id/action_new_mieru"
+                        android:title="@string/action_mieru" />
+                    <item
                         android:id="@+id/action_new_naive"
                         android:title="@string/action_naive" />
                     <item

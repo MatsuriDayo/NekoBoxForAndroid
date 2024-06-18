@@ -71,6 +71,8 @@ com.google.android.apps.adm
 com.google.android.apps.books
 com.google.android.apps.docs
 com.google.android.apps.docs.editors.sheets
+com.google.android.apps.docs.editors.docs
+com.google.android.apps.docs.editors.slides
 com.google.android.apps.fitness
 com.google.android.apps.googleassistant
 com.google.android.apps.googlevoice
@@ -106,6 +108,7 @@ com.google.android.tts
 com.google.android.videos
 com.google.android.youtube
 com.google.ar.lens
+com.google.android.apps.authenticator2
 com.hochan.coldsoup
 com.ifttt.ifttt
 com.imgur.mobile
@@ -166,6 +169,7 @@ com.sololearn
 com.sonelli.juicessh
 com.sparkslab.dcardreader
 com.spotify.music
+com.spotify.lite
 com.tencent.huatuo
 com.termux
 com.teslacoilsw.launcher
@@ -286,6 +290,8 @@ jp.naver.line.android
 com.xmflsct.app.tooot
 com.forem.android
 app.revanced.android.youtube
+app.rvx.android.youtube
+app.rvx.android.apps.youtube.music
 com.mgoogle.android.gms
 com.pionex.client
 vip.mytokenpocket
@@ -368,3 +374,12 @@ com.thomsonretuers.reuters
 com.guardian
 com.ttxapps.onesyncv2
 org.fcitx.fcitx5.android.updater
+com.instagram.barcelona
+com.deniscerri.ytdl
+jp.pokemon.pokemonsleep
+com.github.android
+com.openai.chatgpt
+mega.privacy.android.app
+com.taptap.global
+tw.com.gamer.android.animad
+com.microsoft.copilot

@@ -91,7 +91,6 @@ class ColorPickerPreference
 
             for (color in colors) {
                 i++ //Theme.kt
-                if (!isExpertFlavor && i in listOf(21)) continue
 
                 val themeId = i
                 val view = getNekoImageViewAtColor(color, 64, 0).apply {

@@ -1,6 +1,9 @@
 package moe.matsuri.nb4a
 
 import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.utils.GeoipUtils
+import io.nekohasekai.sagernet.utils.GeositeUtils
+import moe.matsuri.nb4a.SingBoxOptions.RuleSet
 
 object SingBoxOptionsUtil {
 
@@ -27,14 +30,14 @@ object SingBoxOptionsUtil {
 }
 
 fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {
-    geosite = mutableListOf<String>()
+    rule_set = mutableListOf<String>()
     domain = mutableListOf<String>()
     domain_suffix = mutableListOf<String>()
     domain_regex = mutableListOf<String>()
     domain_keyword = mutableListOf<String>()
     list.forEach {
         if (it.startsWith("geosite:")) {
-            geosite.plusAssign(it.removePrefix("geosite:"))
+            rule_set.plusAssign(it)
         } else if (it.startsWith("full:")) {
             domain.plusAssign(it.removePrefix("full:").lowercase())
         } else if (it.startsWith("domain:")) {
@@ -48,12 +51,12 @@ fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {
             domain.plusAssign(it.lowercase())
         }
     }
-    geosite?.removeIf { it.isNullOrBlank() }
+    rule_set?.removeIf { it.isNullOrBlank() }
     domain?.removeIf { it.isNullOrBlank() }
     domain_suffix?.removeIf { it.isNullOrBlank() }
     domain_regex?.removeIf { it.isNullOrBlank() }
     domain_keyword?.removeIf { it.isNullOrBlank() }
-    if (geosite?.isEmpty() == true) geosite = null
+    if (rule_set?.isEmpty() == true) rule_set = null
     if (domain?.isEmpty() == true) domain = null
     if (domain_suffix?.isEmpty() == true) domain_suffix = null
     if (domain_regex?.isEmpty() == true) domain_regex = null
@@ -61,7 +64,7 @@ fun SingBoxOptions.DNSRule_DefaultOptions.makeSingBoxRule(list: List<String>) {
 }
 
 fun SingBoxOptions.DNSRule_DefaultOptions.checkEmpty(): Boolean {
-    if (geosite?.isNotEmpty() == true) return false
+    if (rule_set?.isNotEmpty() == true) return false
     if (domain?.isNotEmpty() == true) return false
     if (domain_suffix?.isNotEmpty() == true) return false
     if (domain_regex?.isNotEmpty() == true) return false
@@ -70,12 +73,38 @@ fun SingBoxOptions.DNSRule_DefaultOptions.checkEmpty(): Boolean {
     return true
 }
 
+fun generateRuleSet(ruleSetString: List<String>, ruleSet: MutableList<RuleSet>) {
+    ruleSetString.forEach {
+        when {
+            it.startsWith("geoip") -> {
+                val geoipPath = GeoipUtils.generateRuleSet(country = it.removePrefix("geoip:"))
+                ruleSet.add(RuleSet().apply {
+                    type = "local"
+                    tag = it
+                    format = "binary"
+                    path = geoipPath
+                })
+            }
+
+            it.startsWith("geosite") -> {
+                val geositePath = GeositeUtils.generateRuleSet(code = it.removePrefix("geosite:"))
+                ruleSet.add(RuleSet().apply {
+                    type = "local"
+                    tag = it
+                    format = "binary"
+                    path = geositePath
+                })
+            }
+        }
+    }
+}
+
 fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP: Boolean) {
     if (isIP) {
         ip_cidr = mutableListOf<String>()
-        geoip = mutableListOf<String>()
+        rule_set = mutableListOf<String>()
     } else {
-        geosite = mutableListOf<String>()
+        rule_set = mutableListOf<String>()
         domain = mutableListOf<String>()
         domain_suffix = mutableListOf<String>()
         domain_regex = mutableListOf<String>()
@@ -84,14 +113,15 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
     list.forEach {
         if (isIP) {
             if (it.startsWith("geoip:")) {
-                geoip.plusAssign(it.removePrefix("geoip:"))
+                rule_set.plusAssign(it)
+                rule_set_ipcidr_match_source = false
             } else {
                 ip_cidr.plusAssign(it)
             }
             return@forEach
         }
         if (it.startsWith("geosite:")) {
-            geosite.plusAssign(it.removePrefix("geosite:"))
+            rule_set.plusAssign(it)
         } else if (it.startsWith("full:")) {
             domain.plusAssign(it.removePrefix("full:").lowercase())
         } else if (it.startsWith("domain:")) {
@@ -106,15 +136,12 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
         }
     }
     ip_cidr?.removeIf { it.isNullOrBlank() }
-    geoip?.removeIf { it.isNullOrBlank() }
-    geosite?.removeIf { it.isNullOrBlank() }
+    rule_set?.removeIf { it.isNullOrBlank() }
     domain?.removeIf { it.isNullOrBlank() }
     domain_suffix?.removeIf { it.isNullOrBlank() }
     domain_regex?.removeIf { it.isNullOrBlank() }
     domain_keyword?.removeIf { it.isNullOrBlank() }
     if (ip_cidr?.isEmpty() == true) ip_cidr = null
-    if (geoip?.isEmpty() == true) geoip = null
-    if (geosite?.isEmpty() == true) geosite = null
     if (domain?.isEmpty() == true) domain = null
     if (domain_suffix?.isEmpty() == true) domain_suffix = null
     if (domain_regex?.isEmpty() == true) domain_regex = null
@@ -123,9 +150,8 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
 
 fun SingBoxOptions.Rule_DefaultOptions.checkEmpty(): Boolean {
     if (ip_cidr?.isNotEmpty() == true) return false
-    if (geoip?.isNotEmpty() == true) return false
-    if (geosite?.isNotEmpty() == true) return false
     if (domain?.isNotEmpty() == true) return false
+    if (rule_set?.isNotEmpty() == true) return false
     if (domain_suffix?.isNotEmpty() == true) return false
     if (domain_regex?.isNotEmpty() == true) return false
     if (domain_keyword?.isNotEmpty() == true) return false

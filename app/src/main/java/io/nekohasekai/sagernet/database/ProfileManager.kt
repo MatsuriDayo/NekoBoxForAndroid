@@ -216,6 +216,7 @@ object ProfileManager {
             if (Locale.getDefault().country != Locale.CHINA.country) {
                 // 非中文用户
                 fuckedCountry += "ir:Iran"
+                fuckedCountry += "ru:Russia"
             }
             for (c in fuckedCountry) {
                 val country = c.substringBefore(":")

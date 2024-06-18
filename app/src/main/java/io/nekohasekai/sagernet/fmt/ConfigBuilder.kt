@@ -1,11 +1,7 @@
 package io.nekohasekai.sagernet.fmt
 
 import android.widget.Toast
-import io.nekohasekai.sagernet.IPv6Mode
-import io.nekohasekai.sagernet.Key
-import io.nekohasekai.sagernet.R
-import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.TunImplementation
+import io.nekohasekai.sagernet.*
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
@@ -30,11 +26,8 @@ import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
-import moe.matsuri.nb4a.Protocols
+import moe.matsuri.nb4a.*
 import moe.matsuri.nb4a.SingBoxOptions.*
-import moe.matsuri.nb4a.SingBoxOptionsUtil
-import moe.matsuri.nb4a.checkEmpty
-import moe.matsuri.nb4a.makeSingBoxRule
 import moe.matsuri.nb4a.plugin.Plugins
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
@@ -170,7 +163,12 @@ fun buildConfig(
             clash_api = ClashAPIOptions().apply {
                 external_controller = "127.0.0.1:9090"
                 external_ui = "../files/yacd"
-                cache_file = "../cache/clash.db"
+            }
+
+            cache_file = CacheFile().apply {
+                enabled = true
+                store_fakeip = true
+                path = "../cache/clash.db"
             }
         }
 
@@ -258,6 +256,7 @@ fun buildConfig(
         route = RouteOptions().apply {
             auto_detect_interface = true
             rules = mutableListOf()
+            rule_set = mutableListOf()
         }
 
         // returns outbound tag
@@ -520,6 +519,7 @@ fun buildConfig(
                 }
                 PackageCache[it]?.takeIf { uid -> uid >= 1000 }
             }.toHashSet().filterNotNull()
+            val ruleSets = mutableListOf<RuleSet>()
 
             val ruleObj = Rule_DefaultOptions().apply {
                 if (uidList.isNotEmpty()) {
@@ -534,6 +534,9 @@ fun buildConfig(
                 if (rule.ip.isNotBlank()) {
                     makeSingBoxRule(rule.ip.listByLineOrComma(), true)
                 }
+
+                if (rule_set != null) generateRuleSet(rule_set, ruleSets)
+
                 if (rule.port.isNotBlank()) {
                     port = mutableListOf<Int>()
                     port_range = mutableListOf<String>()
@@ -613,6 +616,7 @@ fun buildConfig(
                     ).show()
                 } else {
                     route.rules.add(ruleObj)
+                    route.rule_set.addAll(ruleSets)
                 }
             }
         }
@@ -732,7 +736,7 @@ fun buildConfig(
             if (DataStore.bypassLanInCore) {
                 route.rules.add(Rule_DefaultOptions().apply {
                     outbound = TAG_BYPASS
-                    geoip = listOf("private")
+                    ip_is_private = true
                 })
             }
             // block mcast
