@@ -90,8 +90,12 @@ func (w *boxPlatformInterfaceWrapper) UsePlatformInterfaceGetter() bool {
 	return false
 }
 
-func (w *boxPlatformInterfaceWrapper) Interfaces() ([]platform.NetworkInterface, error) {
+func (w *boxPlatformInterfaceWrapper) Interfaces() ([]control.Interface, error) {
 	return nil, errors.New("wtf")
+}
+
+func (w *boxPlatformInterfaceWrapper) IncludeAllNetworks() bool {
+	return false
 }
 
 // Android not using

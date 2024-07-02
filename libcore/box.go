@@ -10,16 +10,15 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
-	"time"
 
-	"github.com/matsuridayo/sing-box-extra/boxbox"
-	_ "github.com/matsuridayo/sing-box-extra/distro/all"
-
+	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
-	"github.com/matsuridayo/sing-box-extra/boxapi"
+	"github.com/sagernet/sing-box/boxapi"
 
+	box "github.com/sagernet/sing-box"
 	"github.com/sagernet/sing-box/common/conntrack"
+	"github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
 	"github.com/sagernet/sing/service/pause"
@@ -29,7 +28,7 @@ var mainInstance *BoxInstance
 
 func VersionBox() string {
 	version := []string{
-		"sing-box-extra: " + boxbox.Version,
+		"sing-box: " + constant.Version,
 		runtime.Version() + "@" + runtime.GOOS + "/" + runtime.GOARCH,
 	}
 
@@ -59,7 +58,7 @@ func ResetAllConnections(system bool) {
 }
 
 type BoxInstance struct {
-	*boxbox.Box
+	*box.Box
 	cancel context.CancelFunc
 	state  int
 
@@ -85,7 +84,7 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	sleepManager := pause.ManagerFromContext(ctx)
 	//sleepManager := pause.NewDefaultManager(ctx)
 	ctx = pause.ContextWithManager(ctx, sleepManager)
-	instance, err := boxbox.New(boxbox.Options{
+	instance, err := box.New(box.Options{
 		Options:           options,
 		Context:           ctx,
 		PlatformInterface: boxPlatformInterfaceInstance,
@@ -100,6 +99,8 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 		cancel:       cancel,
 		pauseManager: sleepManager,
 	}
+
+	b.SetLogWritter(neko_log.LogWriter)
 
 	// fuck your sing-box platformFormatter
 	pf := instance.GetLogPlatformFormatter()
@@ -142,7 +143,7 @@ func (b *BoxInstance) Close() (err error) {
 	}
 
 	// close box
-	b.CloseWithTimeout(b.cancel, time.Second*2, log.Println)
+	b.Close()
 
 	return nil
 }
@@ -191,9 +192,9 @@ func UrlTest(i *BoxInstance, link string, timeout int32) (latency int32, err err
 	defer device.DeferPanicToError("box.UrlTest", func(err_ error) { err = err_ })
 	if i == nil {
 		// test current
-		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(mainInstance.Box), link, timeout)
+		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(mainInstance.Box), link, timeout, speedtest.UrlTestStandard_RTT)
 	}
-	return speedtest.UrlTest(boxapi.CreateProxyHttpClient(i.Box), link, timeout)
+	return speedtest.UrlTest(boxapi.CreateProxyHttpClient(i.Box), link, timeout, speedtest.UrlTestStandard_RTT)
 }
 
 var protectCloser io.Closer
