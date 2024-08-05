@@ -144,6 +144,8 @@ func (b *BoxInstance) Close() (err error) {
 
 	// close box
 	b.Close()
+	// close box.Box
+	b.Box.Close()
 
 	return nil
 }
