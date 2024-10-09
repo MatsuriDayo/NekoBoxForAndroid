@@ -14,7 +14,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     //////// End of VMess & VLESS ////////
 
-    // "V2Ray Transport" tcp/http/ws/quic/grpc/httpUpgrade
+    // "V2Ray Transport" tcp/http/ws/quic/grpc/httpupgrade
     public String type;
 
     public String host;

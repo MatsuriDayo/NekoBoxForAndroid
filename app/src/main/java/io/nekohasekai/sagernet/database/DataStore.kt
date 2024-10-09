@@ -98,7 +98,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var showGroupInNotification by configurationStore.boolean("showGroupInNotification")
 
     var remoteDns by configurationStore.string(Key.REMOTE_DNS) { "https://dns.google/dns-query" }
-    var directDns by configurationStore.string(Key.DIRECT_DNS) { "local" }
+    var directDns by configurationStore.string(Key.DIRECT_DNS) { "https://120.53.53.53/dns-query" }
     var enableDnsRouting by configurationStore.boolean(Key.ENABLE_DNS_ROUTING) { true }
     var enableFakeDns by configurationStore.boolean(Key.ENABLE_FAKEDNS)
 

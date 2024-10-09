@@ -177,7 +177,7 @@
             app:title="@string/domain_strategy_for_remote"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            app:defaultValue="local"
+            app:defaultValue="https://120.53.53.53/dns-query"
             app:icon="@drawable/ic_action_dns"
             app:key="directDns"
             app:title="@string/direct_dns"

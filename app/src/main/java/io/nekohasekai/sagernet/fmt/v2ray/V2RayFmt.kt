@@ -593,12 +593,6 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
         }
     }
 
-//    if (needKeepAliveInterval) {
-//        sockopt = StreamSettingsObject.SockoptObject().apply {
-//            tcpKeepAliveInterval = keepAliveInterval
-//        }
-//    }
-
     return null
 }
 

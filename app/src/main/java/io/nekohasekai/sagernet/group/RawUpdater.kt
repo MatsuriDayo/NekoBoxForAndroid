@@ -286,6 +286,7 @@ object RawUpdater : GroupUpdater() {
                         }
 
                         "vmess", "vless" -> {
+                            var isHttpUpgrade = false
                             val isVLESS = proxy["type"].toString() == "vless"
                             val bean = VMessBean().apply {
                                 if (isVLESS) {
@@ -366,6 +367,10 @@ object RawUpdater : GroupUpdater() {
                                             "early-data-header-name" -> {
                                                 bean.earlyDataHeaderName = wsOpt.value.toString()
                                             }
+
+                                            "v2ray-http-upgrade" -> {
+                                                isHttpUpgrade = true
+                                            }
                                         }
                                     }
 
@@ -411,10 +416,14 @@ object RawUpdater : GroupUpdater() {
                                     }
                                 }
                             }
+                            if (isHttpUpgrade) {
+                                bean.type = "httpupgrade"
+                            }
                             proxies.add(bean)
                         }
 
                         "trojan" -> {
+                            var isHttpUpgrade = false
                             val bean = TrojanBean()
                             bean.security = "tls"
                             for (opt in proxy) {
@@ -451,6 +460,10 @@ object RawUpdater : GroupUpdater() {
                                             "path" -> {
                                                 bean.path = wsOpt.value.toString()
                                             }
+
+                                            "v2ray-http-upgrade" -> {
+                                                isHttpUpgrade = true
+                                            }
                                         }
                                     }
 
@@ -461,6 +474,9 @@ object RawUpdater : GroupUpdater() {
                                         }
                                     }
                                 }
+                            }
+                            if (isHttpUpgrade) {
+                                bean.type = "httpupgrade"
                             }
                             proxies.add(bean)
                         }

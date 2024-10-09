@@ -48,7 +48,6 @@ const val TAG_DNS_IN = "dns-in"
 const val TAG_DNS_OUT = "dns-out"
 
 const val LOCALHOST = "127.0.0.1"
-const val LOCAL_DNS_SERVER = "local"
 
 class ConfigBuildResult(
     var config: String,
@@ -697,7 +696,7 @@ fun buildConfig(
             })
         }
         dns.servers.add(DNSServerOptions().apply {
-            address = LOCAL_DNS_SERVER
+            address = "local"
             tag = "dns-local"
             detour = TAG_DIRECT
         })
@@ -714,14 +713,8 @@ fun buildConfig(
         }
 
         if (forTest) {
-            // Always use system DNS for urlTest
-            dns.servers = listOf(
-                DNSServerOptions().apply {
-                    address = LOCAL_DNS_SERVER
-                    tag = "dns-local"
-                    detour = TAG_DIRECT
-                }
-            )
+            // Always use direct DNS for urlTest
+            dns.servers.removeAt(0)
             dns.rules = listOf()
         } else {
             // built-in DNS rules
@@ -732,7 +725,7 @@ fun buildConfig(
             route.rules.add(0, Rule_DefaultOptions().apply {
                 port = listOf(53)
                 outbound = TAG_DNS_OUT
-            }) // TODO new mode use system dns?
+            })
             if (DataStore.bypassLanInCore) {
                 route.rules.add(Rule_DefaultOptions().apply {
                     outbound = TAG_BYPASS

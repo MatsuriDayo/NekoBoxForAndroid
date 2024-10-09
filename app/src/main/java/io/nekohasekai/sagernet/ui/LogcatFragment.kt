@@ -43,13 +43,13 @@ class LogcatFragment : ToolbarFragment(R.layout.layout_logcat),
     private fun getColorForLine(line: String): ForegroundColorSpan {
         var color = ForegroundColorSpan(Color.GRAY)
         when {
-            line.contains(" INFO[") || line.contains(" [Info]") -> {
+            line.contains("INFO[") || line.contains(" [Info]") -> {
                 color = ForegroundColorSpan((0xFF86C166).toInt())
             }
-            line.contains(" ERROR[") || line.contains(" [Error]") -> {
+            line.contains("ERROR[") || line.contains(" [Error]") -> {
                 color = ForegroundColorSpan(Color.RED)
             }
-            line.contains(" WARN[") || line.contains(" [Warning]") -> {
+            line.contains("WARN[") || line.contains(" [Warning]") -> {
                 color = ForegroundColorSpan(Color.RED)
             }
         }
