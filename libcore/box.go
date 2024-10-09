@@ -11,7 +11,6 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
 	"github.com/sagernet/sing-box/boxapi"
@@ -21,6 +20,8 @@ import (
 	"github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
+	"github.com/sagernet/sing/common"
+	"github.com/sagernet/sing/service"
 	"github.com/sagernet/sing/service/pause"
 )
 
@@ -79,15 +80,16 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 		return nil, fmt.Errorf("decode config: %v", err)
 	}
 
-	// create box
+	// create box context
 	ctx, cancel := context.WithCancel(context.Background())
-	sleepManager := pause.ManagerFromContext(ctx)
-	//sleepManager := pause.NewDefaultManager(ctx)
-	ctx = pause.ContextWithManager(ctx, sleepManager)
+	ctx = service.ContextWithDefaultRegistry(ctx)
+
+	// create box
 	instance, err := box.New(box.Options{
 		Options:           options,
 		Context:           ctx,
 		PlatformInterface: boxPlatformInterfaceInstance,
+		PlatformLogWriter: boxPlatformLogWriter,
 	})
 	if err != nil {
 		cancel()
@@ -97,15 +99,8 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	b = &BoxInstance{
 		Box:          instance,
 		cancel:       cancel,
-		pauseManager: sleepManager,
+		pauseManager: service.FromContext[pause.Manager](ctx),
 	}
-
-	b.SetLogWritter(neko_log.LogWriter)
-
-	// fuck your sing-box platformFormatter
-	pf := instance.GetLogPlatformFormatter()
-	pf.DisableColors = true
-	pf.DisableLineBreak = false
 
 	// selector
 	if proxy, ok := b.Router().Outbound("proxy"); ok {
@@ -143,9 +138,7 @@ func (b *BoxInstance) Close() (err error) {
 	}
 
 	// close box
-	b.Close()
-	// close box.Box
-	b.Box.Close()
+	common.Close(b.Box)
 
 	return nil
 }
@@ -162,10 +155,6 @@ func (b *BoxInstance) Wake() {
 func (b *BoxInstance) SetAsMain() {
 	mainInstance = b
 	goServeProtect(true)
-}
-
-func (b *BoxInstance) SetConnectionPoolEnabled(enable bool) {
-	// TODO api
 }
 
 func (b *BoxInstance) SetV2rayStats(outbounds string) {

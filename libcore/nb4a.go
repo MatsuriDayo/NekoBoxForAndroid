@@ -13,6 +13,7 @@ import (
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 	boxmain "github.com/sagernet/sing-box/cmd/sing-box"
+	"github.com/sagernet/sing-box/nekoutils"
 )
 
 //go:linkname resourcePaths github.com/sagernet/sing-box/constant.resourcePaths
@@ -60,7 +61,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	boxmain.SetDisableColor(true)
 
 	// nekoutils
-	// nekoutils.Selector_OnProxySelected = intfNB4A.Selector_OnProxySelected
+	nekoutils.Selector_OnProxySelected = intfNB4A.Selector_OnProxySelected
 
 	// Set up some component
 	go func() {
