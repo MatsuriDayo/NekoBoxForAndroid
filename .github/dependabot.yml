@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gomod"
+  - package-ecosystem: "gradle"
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
