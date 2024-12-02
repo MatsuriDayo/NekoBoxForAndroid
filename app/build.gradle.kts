@@ -52,7 +52,7 @@ dependencies {
 
     implementation("com.github.jenly1314:zxing-lite:3.2.0")
     implementation("com.blacksquircle.ui:editorkit:2.9.0")
-    implementation("com.blacksquircle.ui:language-base:2.6.0")
+    implementation("com.blacksquircle.ui:language-base:2.9.0")
     implementation("com.blacksquircle.ui:language-json:2.9.0")
 
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
