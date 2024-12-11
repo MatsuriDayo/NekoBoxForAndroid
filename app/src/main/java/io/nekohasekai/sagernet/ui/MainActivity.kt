@@ -333,7 +333,7 @@ class MainActivity : ThemedActivity(),
 
             R.id.nav_about -> displayFragment(AboutFragment())
             R.id.nav_tuiguang -> {
-                launchCustomTab("https://matsuricom.pages.dev/")
+                launchCustomTab("https://neko-box.pages.dev/喵")
                 return false
             }
 

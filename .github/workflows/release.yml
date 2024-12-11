@@ -3,13 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release Tag'
+        description: "Release Tag"
         required: true
       publish:
-        description: 'Publish: If want ignore'
+        description: "Publish: If want ignore"
         required: false
       play:
-        description: 'Play: If want ignore'
+        description: "Play: If want ignore"
         required: false
 jobs:
   libcore:
@@ -33,7 +33,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.21
+          go-version: "1.22.10"
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
