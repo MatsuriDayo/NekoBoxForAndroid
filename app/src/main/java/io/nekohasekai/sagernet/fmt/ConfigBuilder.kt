@@ -440,7 +440,10 @@ fun buildConfig(
 
                     // custom JSON merge
                     if (bean.customOutboundJson.isNotBlank()) {
-                        Util.mergeJSON(bean.customOutboundJson, currentOutbound)
+                        Util.mergeJSON(
+                            bean.customOutboundJson,
+                            currentOutbound as MutableMap<String, Any?>
+                        )
                     }
                 }
 
