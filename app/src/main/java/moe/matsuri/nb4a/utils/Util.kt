@@ -122,6 +122,20 @@ object Util {
                 val currentMap = (to[k] as Map<*, *>).toMutableMap()
                 currentMap += v
                 to[k] = currentMap
+            } else if (v is List<*>) {
+                if (k.startsWith("+")) {  // prepend
+                    val dstKey = k.removePrefix("+")
+                    var currentList = (to[dstKey] as List<*>).toMutableList()
+                    currentList = (v + currentList).toMutableList()
+                    to[dstKey] = currentList
+                } else if (k.endsWith("+")) {  // append
+                    val dstKey = k.removeSuffix("+")
+                    var currentList = (to[dstKey] as List<*>).toMutableList()
+                    currentList = (currentList + v).toMutableList()
+                    to[dstKey] = currentList
+                } else {
+                    to[k] = v
+                }
             } else {
                 to[k] = v
             }
