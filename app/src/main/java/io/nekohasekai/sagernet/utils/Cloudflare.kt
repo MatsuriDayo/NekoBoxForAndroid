@@ -9,6 +9,7 @@ import io.nekohasekai.sagernet.utils.cf.RegisterRequest
 import io.nekohasekai.sagernet.utils.cf.UpdateDeviceRequest
 import libcore.Libcore
 import moe.matsuri.nb4a.utils.JavaUtil.gson
+import moe.matsuri.nb4a.utils.Util
 
 // kang from wgcf
 object Cloudflare {
@@ -37,8 +38,9 @@ object Cloudflare {
                 setUserAgent("okhttp/3.12.1")
             }.execute()
 
-            Logs.d(response.contentString)
-            val device = gson.fromJson(response.contentString, DeviceResponse::class.java)
+            Logs.d(Util.getStringBox(response.contentString))
+            val device =
+                gson.fromJson(Util.getStringBox(response.contentString), DeviceResponse::class.java)
             val accessToken = device.token
 
             client.newRequest().apply {

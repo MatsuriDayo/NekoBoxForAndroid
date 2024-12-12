@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source ../../env_go.sh || true
 source ../buildScript/init/env_ndk.sh
 
 BUILD=".build"

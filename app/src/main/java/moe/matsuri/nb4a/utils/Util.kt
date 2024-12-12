@@ -3,6 +3,7 @@ package moe.matsuri.nb4a.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
+import libcore.StringBox
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -181,4 +182,10 @@ object Util {
         }
     }
 
+    fun getStringBox(b: StringBox?): String {
+        if (b != null && b.value != null) {
+            return b.value
+        }
+        return ""
+    }
 }
