@@ -1,11 +1,7 @@
 package io.nekohasekai.sagernet.fmt
 
 import android.widget.Toast
-import io.nekohasekai.sagernet.IPv6Mode
-import io.nekohasekai.sagernet.Key
-import io.nekohasekai.sagernet.R
-import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.TunImplementation
+import io.nekohasekai.sagernet.*
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
@@ -27,32 +23,11 @@ import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
+import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
-import moe.matsuri.nb4a.Protocols
-import moe.matsuri.nb4a.SingBoxOptions.CacheFile
-import moe.matsuri.nb4a.SingBoxOptions.ClashAPIOptions
-import moe.matsuri.nb4a.SingBoxOptions.DNSFakeIPOptions
-import moe.matsuri.nb4a.SingBoxOptions.DNSOptions
-import moe.matsuri.nb4a.SingBoxOptions.DNSRule_DefaultOptions
-import moe.matsuri.nb4a.SingBoxOptions.DNSServerOptions
-import moe.matsuri.nb4a.SingBoxOptions.ExperimentalOptions
-import moe.matsuri.nb4a.SingBoxOptions.Inbound_DirectOptions
-import moe.matsuri.nb4a.SingBoxOptions.Inbound_MixedOptions
-import moe.matsuri.nb4a.SingBoxOptions.Inbound_TunOptions
-import moe.matsuri.nb4a.SingBoxOptions.LogOptions
-import moe.matsuri.nb4a.SingBoxOptions.MultiplexOptions
-import moe.matsuri.nb4a.SingBoxOptions.MyOptions
-import moe.matsuri.nb4a.SingBoxOptions.Outbound
-import moe.matsuri.nb4a.SingBoxOptions.Outbound_SelectorOptions
-import moe.matsuri.nb4a.SingBoxOptions.Outbound_SocksOptions
-import moe.matsuri.nb4a.SingBoxOptions.RouteOptions
-import moe.matsuri.nb4a.SingBoxOptions.RuleSet
-import moe.matsuri.nb4a.SingBoxOptions.Rule_DefaultOptions
-import moe.matsuri.nb4a.SingBoxOptionsUtil
-import moe.matsuri.nb4a.checkEmpty
-import moe.matsuri.nb4a.generateRuleSet
-import moe.matsuri.nb4a.makeSingBoxRule
+import moe.matsuri.nb4a.*
+import moe.matsuri.nb4a.SingBoxOptions.*
 import moe.matsuri.nb4a.plugin.Plugins
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
@@ -60,6 +35,7 @@ import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
 import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.listByLineOrComma
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val TAG_MIXED = "mixed-in"
 
@@ -156,6 +132,7 @@ fun buildConfig(
         }.toHashSet().toList()).associateBy { it.id }
     val buildSelector = !forTest && group?.isSelector == true && !forExport
     val userDNSRuleList = mutableListOf<DNSRule_DefaultOptions>()
+    val domainListDNSDirectForce = mutableListOf<String>()
     val bypassDNSBeans = hashSetOf<AbstractBean>()
     val isVPN = DataStore.serviceMode == Key.MODE_VPN
     val bind = if (!forTest && DataStore.allowAccess) "0.0.0.0" else LOCALHOST
@@ -434,7 +411,12 @@ fun buildConfig(
                     }
 
                     // domain_strategy
-
+                    pastEntity?.requireBean()?.apply {
+                        // don't loopback
+                        if (defaultServerDomainStrategy != "" && !serverAddress.isIpAddress()) {
+                            domainListDNSDirectForce.add("full:$serverAddress")
+                        }
+                    }
                     currentOutbound["domain_strategy"] =
                         if (forTest) "" else defaultServerDomainStrategy
 
@@ -667,6 +649,35 @@ fun buildConfig(
             }.asMap())
         }
 
+        // Bypass Lookup for the first profile
+        bypassDNSBeans.forEach {
+            var serverAddr = it.serverAddress
+
+            if (it is ConfigBean) {
+                var config = mutableMapOf<String, Any>()
+                config = gson.fromJson(it.config, config.javaClass)
+                config["server"]?.apply {
+                    serverAddr = toString()
+                }
+            }
+
+            if (!serverAddr.isIpAddress()) {
+                domainListDNSDirectForce.add("full:${serverAddr}")
+            }
+        }
+
+        remoteDns.forEach {
+            var address = it
+            if (address.contains("://")) {
+                address = address.substringAfter("://")
+            }
+            "https://$address".toHttpUrlOrNull()?.apply {
+                if (!host.isIpAddress()) {
+                    domainListDNSDirectForce.add("full:$host")
+                }
+            }
+        }
+
         // remote dns obj
         remoteDns.firstOrNull().let {
             dns.servers.add(DNSServerOptions().apply {
@@ -748,11 +759,18 @@ fun buildConfig(
                     disable_cache = true
                 })
             }
-            // avoid loopback (always top DNS rule)
+            // avoid loopback
             dns.rules.add(0, DNSRule_DefaultOptions().apply {
                 outbound = mutableListOf("any")
                 server = "dns-direct"
             })
+            // force bypass (always top DNS rule)
+            if (domainListDNSDirectForce.isNotEmpty()) {
+                dns.rules.add(0, DNSRule_DefaultOptions().apply {
+                    makeSingBoxRule(domainListDNSDirectForce.toHashSet().toList())
+                    server = "dns-direct"
+                })
+            }
         }
     }.let {
         ConfigBuildResult(
