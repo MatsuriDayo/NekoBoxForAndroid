@@ -130,8 +130,7 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
         } else if (it.startsWith("keyword:")) {
             domain_keyword.plusAssign(it.removePrefix("keyword:").lowercase())
         } else {
-            // https://github.com/SagerNet/sing-box/commit/5d41e328d4a9f7549dd27f11b4ccc43710a73664
-            domain.plusAssign(it.lowercase())
+            domain_suffix.plusAssign(it.lowercase())
         }
     }
     ip_cidr?.removeIf { it.isNullOrBlank() }
