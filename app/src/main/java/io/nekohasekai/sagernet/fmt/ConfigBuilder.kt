@@ -652,7 +652,7 @@ fun buildConfig(
             }.asMap()
             fragmentOutbound["fragment"] = Fragment().apply {
                 length = "500"
-                interval = "0-1"
+                interval = "10-20"
             }
             outbounds.add(fragmentOutbound)
         }
