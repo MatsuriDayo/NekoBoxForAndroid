@@ -225,7 +225,7 @@ object ProfileManager {
                 if (country == "cn") createRule(
                     RuleEntity(
                         name = app.getString(R.string.route_play_store, displayCountry),
-                        domains = "googleapis.cn",
+                        domains = "domain:googleapis.cn\ndomain:xn--ngstr-lra8j.com\ndomain:xn--ngstr-cn-8za9o.com",
                     ), false
                 )
                 createRule(
