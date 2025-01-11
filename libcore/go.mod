@@ -93,7 +93,7 @@ require (
 
 replace github.com/matsuridayo/libneko => github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199
 
-replace github.com/sagernet/sing-box => github.com/starifly/sing-box v0.0.0-20250111143604-3854606f5439
+replace github.com/sagernet/sing-box => github.com/starifly/sing-box v0.0.0-20250111150615-08adbf68bdc7
 
 replace github.com/sagernet/sing-quic => github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36
 
