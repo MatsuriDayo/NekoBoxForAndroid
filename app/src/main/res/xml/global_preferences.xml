@@ -160,6 +160,9 @@
             app:key="globalAllowInsecure"
             app:icon="@drawable/ic_action_lock_open"
             app:title="@string/global_allow_insecure" />
+        <SwitchPreference
+            app:key="enableTLSFragment"
+            app:title="@string/enable_tls_fragment" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_dns">

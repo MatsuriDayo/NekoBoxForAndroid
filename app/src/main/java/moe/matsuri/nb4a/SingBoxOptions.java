@@ -804,6 +804,13 @@ public class SingBoxOptions {
 
     }
 
+    public static class Fragment extends SingBoxOption {
+
+        public String length;
+
+        public String interval;
+    }
+
     public static class DialerOptions extends SingBoxOption {
 
         public String detour;

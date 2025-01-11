@@ -248,6 +248,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     var rulesFirstCreate by profileCacheStore.boolean("rulesFirstCreate")
 
+    var enableTLSFragment by configurationStore.boolean(Key.ENABLE_TLS_FRAGMENT)
+
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
     }
 }
