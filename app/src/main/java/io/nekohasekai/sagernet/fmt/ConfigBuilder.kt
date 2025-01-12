@@ -651,8 +651,8 @@ fun buildConfig(
                 type = "direct"
             }.asMap()
             fragmentOutbound["fragment"] = Fragment().apply {
-                length = "500"
-                interval = "10-20"
+                length = DataStore.fragmentLength
+                interval = DataStore.fragmentInterval
             }
             outbounds.add(fragmentOutbound)
         }

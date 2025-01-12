@@ -160,9 +160,23 @@
             app:key="globalAllowInsecure"
             app:icon="@drawable/ic_action_lock_open"
             app:title="@string/global_allow_insecure" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="@string/fragment_settings">
         <SwitchPreference
             app:key="enableTLSFragment"
             app:title="@string/enable_tls_fragment" />
+        <EditTextPreference
+            app:defaultValue="200"
+            app:key="fragmentLength"
+            app:title="@string/fragment_length"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="10-20"
+            app:key="fragmentInterval"
+            app:title="@string/fragment_interval"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_dns">
