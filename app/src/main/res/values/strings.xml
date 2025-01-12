@@ -577,5 +577,5 @@
     <string name="fragment_settings">Fragment Settings</string>
     <string name="enable_tls_fragment">Enable TLS Client Hello Fragment</string>
     <string name="fragment_length">Fragment Length (min-max)</string>
-    <string name="fragment_interval">Fragment Interval (min-max)
+    <string name="fragment_interval">Fragment Interval (min-max)</string>
 </resources>
