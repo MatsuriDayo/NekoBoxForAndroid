@@ -483,6 +483,63 @@ object RawUpdater : GroupUpdater() {
                             proxies.add(bean)
                         }
 
+                        "wireguard" -> {
+                            val peers = proxy["peers"] as? List<Map<String, Any?>>
+                            val configToUse = peers?.firstOrNull() ?: proxy
+
+                            val bean = WireGuardBean().apply {
+                                name = proxy["name"].toString()
+
+                                for ((key, value) in configToUse) {
+                                    when (key.replace("_", "-")) {
+                                        "server" -> serverAddress = value.toString()
+                                        "port" -> serverPort = value.toString().toIntOrNull() ?: 0
+                                        "mtu" -> mtu = value.toString().toIntOrNull() ?: 0
+                                        "ip" -> {
+                                            val ipValue = value.toString()
+                                            localAddress = if (!ipValue.contains("/")) {
+                                                "$ipValue/32"
+                                            } else {
+                                                ipValue
+                                            }
+                                        }
+                                        "ipv6" -> {
+                                            val ipv6Value = value.toString()
+                                            val processedIPv6Value = if (!ipv6Value.contains("/")) {
+                                                "$ipv6Value/128"
+                                            } else {
+                                                ipv6Value
+                                            }
+                                            if (localAddress.isNullOrEmpty()) {
+                                                localAddress = processedIPv6Value
+                                            } else {
+                                                localAddress += "\n$processedIPv6Value"
+                                            }
+                                        }
+                                        "private-key" -> privateKey = value.toString()
+                                        "public-key" -> peerPublicKey = value.toString()
+                                        "pre-shared-key", "preshared-key" -> peerPreSharedKey = value.toString()
+                                        "reserved" -> {
+                                            val reservedValue = value
+                                            when (reservedValue) {
+                                                is List<*> -> {
+                                                    if (reservedValue.size == 1) {
+                                                        reserved = reservedValue[0].toString().replace("[\\[\\] ]".toRegex(), "")
+                                                    } else {
+                                                        reserved = reservedValue.joinToString("\n") { it.toString() }
+                                                    }
+                                                }
+                                                else -> {
+                                                    reserved = reservedValue.toString().replace("[\\[\\] ]".toRegex(), "")
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            proxies.add(bean)
+                        }
+
                         "hysteria" -> {
                             val bean = HysteriaBean()
                             bean.protocolVersion = 1
