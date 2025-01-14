@@ -164,7 +164,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var globalAllowInsecure by configurationStore.boolean(Key.GLOBAL_ALLOW_INSECURE) { false }
 
     var enableTLSFragment by configurationStore.boolean(Key.ENABLE_TLS_FRAGMENT) { false }
-    var fragmentLength by configurationStore.string(Key.FRAGMENT_LENGTH) { "200" }
+    var fragmentLength by configurationStore.string(Key.FRAGMENT_LENGTH) { "100-200" }
     var fragmentInterval by configurationStore.string(Key.FRAGMENT_INTERVAL) { "10-20" }
 
     // old cache, DO NOT ADD
