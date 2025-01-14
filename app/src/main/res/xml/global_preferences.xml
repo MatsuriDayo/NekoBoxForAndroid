@@ -168,7 +168,7 @@
             app:key="enableTLSFragment"
             app:title="@string/enable_tls_fragment" />
         <EditTextPreference
-            app:defaultValue="200"
+            app:defaultValue="100-200"
             app:key="fragmentLength"
             app:title="@string/fragment_length"
             app:useSimpleSummaryProvider="true" />
