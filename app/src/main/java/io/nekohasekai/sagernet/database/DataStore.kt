@@ -2,13 +2,24 @@ package io.nekohasekai.sagernet.database
 
 import android.os.Binder
 import androidx.preference.PreferenceDataStore
-import io.nekohasekai.sagernet.*
+import io.nekohasekai.sagernet.CONNECTION_TEST_URL
+import io.nekohasekai.sagernet.GroupType
+import io.nekohasekai.sagernet.IPv6Mode
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.TunImplementation
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
 import io.nekohasekai.sagernet.database.preference.RoomPreferenceDataStore
-import io.nekohasekai.sagernet.ktx.*
+import io.nekohasekai.sagernet.ktx.boolean
+import io.nekohasekai.sagernet.ktx.int
+import io.nekohasekai.sagernet.ktx.long
+import io.nekohasekai.sagernet.ktx.parsePort
+import io.nekohasekai.sagernet.ktx.string
+import io.nekohasekai.sagernet.ktx.stringSet
+import io.nekohasekai.sagernet.ktx.stringToInt
+import io.nekohasekai.sagernet.ktx.stringToIntIfExists
 import moe.matsuri.nb4a.TempDatabase
 
 object DataStore : OnPreferenceDataStoreChangeListener {
@@ -82,6 +93,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var isExpert by configurationStore.boolean(Key.APP_EXPERT)
     var appTheme by configurationStore.int(Key.APP_THEME)
     var nightTheme by configurationStore.stringToInt(Key.NIGHT_THEME)
+    var useNewUI by configurationStore.boolean(Key.USE_NEW_UI) { true }
     var serviceMode by configurationStore.string(Key.SERVICE_MODE) { Key.MODE_VPN }
 
     var trafficSniffing by configurationStore.stringToInt(Key.TRAFFIC_SNIFFING) { 1 }

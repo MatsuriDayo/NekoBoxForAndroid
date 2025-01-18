@@ -153,6 +153,8 @@ object Key {
     const val NEKO_PLUGIN_MANAGED = "nekoPlugins"
     const val APP_TLS_VERSION = "appTLSVersion"
     const val ENABLE_CLASH_API = "enableClashAPI"
+
+    const val USE_NEW_UI = "useNewUI"
 }
 
 object TunImplementation {
