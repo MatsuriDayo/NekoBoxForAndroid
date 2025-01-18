@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">NekoBox</string>
-    <string name="app_name_long" translatable="false">NekoBox for Android</string>
+    <string name="app_name" translatable="false">MaterialBox</string>
+    <string name="app_name_long" translatable="false">MaterialBox for Android</string>
     <string name="app_desc">The universal proxy toolchain for Android, written in Kotlin.</string>
     <string name="project">Project</string>
     <string name="github">Source code</string>
@@ -512,7 +512,7 @@
     <string name="neko_plugin">Advanced plugin</string>
     <string name="neko_plugin_summary">Advanced plugins can provide protocols that are not
         originally supported.\n\n
-        Anyone can write advanced plugins, which can control NekoBox. please download and install
+        Anyone can write advanced plugins, which can control MaterialBox. please download and install
         from trusted sources.</string>
     <string name="neko_plugin_internal_error">%s internal error</string>
     <string name="move">Move</string>
