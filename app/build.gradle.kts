@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 setupApp()
@@ -23,8 +24,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        aidl = true
         buildConfig = true
+        compose = true
+        aidl = true
     }
     namespace = "io.nekohasekai.sagernet"
 }
@@ -36,7 +38,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
-    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.activity:activity-ktx:1.10.0")
+    implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.fragment:fragment-ktx:1.5.6")
     implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -75,6 +78,15 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.MatrixDev.Roomigrant:RoomigrantLib:0.3.4")
     kapt("com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.3.4")
+
+    val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation("androidx.compose.material3:material3")
+
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

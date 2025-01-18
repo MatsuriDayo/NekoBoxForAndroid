@@ -105,7 +105,7 @@ class AppManagerActivity : ThemedActivity() {
         suspend fun reload() {
             apps = cachedApps.map { (packageName, packageInfo) ->
                 coroutineContext[Job]!!.ensureActive()
-                ProxiedApp(packageManager, packageInfo.applicationInfo, packageName)
+                ProxiedApp(packageManager, packageInfo.applicationInfo!!, packageName)
             }.sortedWith(compareBy({ !isProxiedApp(it) }, { it.name.toString() }))
         }
 
@@ -165,7 +165,7 @@ class AppManagerActivity : ThemedActivity() {
         proxiedUids.clear()
         val apps = cachedApps
         for (line in str.lineSequence()) proxiedUids[(apps[line]
-            ?: continue).applicationInfo.uid] = true
+            ?: continue).applicationInfo!!.uid] = true
     }
 
     private fun isProxiedApp(app: ProxiedApp) = proxiedUids[app.uid]
@@ -325,14 +325,14 @@ class AppManagerActivity : ThemedActivity() {
                     proxiedUids.clear()
                     for (app in cachedApps) {
                         val needProxy =
-                            needProxyAppsList.contains(app.key) || app.value.applicationInfo.uid == 1000
+                            needProxyAppsList.contains(app.key) || app.value.applicationInfo!!.uid == 1000
                         if (needProxy) {
                             if (!bypass) {
-                                proxiedUids[app.value.applicationInfo.uid] = true
+                                proxiedUids[app.value.applicationInfo!!.uid] = true
                             }
                         } else {
                             if (bypass) {
-                                proxiedUids[app.value.applicationInfo.uid] = true
+                                proxiedUids[app.value.applicationInfo!!.uid] = true
                             }
                         }
                     }

@@ -92,7 +92,7 @@ fun Project.requireTargetAbi(): String {
 
 fun Project.setupCommon() {
     android.apply {
-        compileSdk = 34
+        compileSdk = 35
         defaultConfig {
             minSdk = 21
             targetSdk = 33
