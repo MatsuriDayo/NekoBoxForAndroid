@@ -1,30 +1,20 @@
-# NekoBox for Android
+# MaterialBox for Android
 
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Releases](https://img.shields.io/github/v/release/MatsuriDayo/NekoBoxForAndroid)](https://github.com/MatsuriDayo/NekoBoxForAndroid/releases)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-sing-box / universal proxy toolchain for Android.
+sing-box / universal proxy toolchain for Android, based
+on [NekoBox for Android](https://github.com/MatsuriDayo/NekoBoxForAndroid) development.
 
-一款使用 sing-box 的 Android 通用代理软件.
+一款使用 sing-box 的 Android 通用代理软件,
+基于 [NekoBox for Android](https://github.com/MatsuriDayo/NekoBoxForAndroid) 开发.
 
 ## 下载 / Downloads
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/Matsuridayo/NekoBoxForAndroid/total?label=downloads-total&logo=github&style=flat-square)](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
+[![GitHub All Releases](https://img.shields.io/github/downloads/purofle/MaterialBoxForAndroid/total?label=downloads-total&logo=github&style=flat-square)](https://github.com/purofle/MaterialBoxForAndroid/releases)
 
-[GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
-
-**Google Play 版本自 2024 年 5 月起已被第三方控制，为非开源版本，请不要下载。**
-
-**The Google Play version has been controlled by a third party since May 2024 and is a non-open source version. Please do not download it.**
-
-## 更新日志 & Telegram 发布频道 / Changelog & Telegram Channel
-
-https://t.me/Matsuridayo
-
-## 项目主页 & 文档 / Homepage & Documents
-
-https://matsuridayo.github.io
+[GitHub Releases 下载](https://github.com/purofle/MaterialForAndroid/releases)
 
 ## 支持的代理协议 / Supported Proxy Protocols
 
@@ -63,11 +53,7 @@ Donations of 50 USD or more can display your avatar on the [Donation List](https
 
 USDT TRC20
 
-`TRhnA7SXE5Sap5gSG3ijxRmdYFiD4KRhPs`
-
-XMR
-
-`49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
+`TSEUf8YSwSGFy4tx61PW3QwrNxo1KHKFct`
 
 </details>
 
@@ -81,6 +67,7 @@ Android GUI:
 - [shadowsocks/shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
 - [SagerNet/SagerNet](https://github.com/SagerNet/SagerNet)
 - [Matsuridayo/Matsuri](https://github.com/MatsuriDayo/Matsuri)
+- [Matsuridayo/NekoBoxForAndroid](https://github.com/MatsuriDayo/NekoBoxForAndroid)
 
 Web Dashboard:
 - [Yacd-meta](https://github.com/MetaCubeX/Yacd-meta)
