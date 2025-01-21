@@ -58,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
@@ -70,6 +71,8 @@ import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.ProxyGroup
 import io.nekohasekai.sagernet.database.SagerDatabase
 import kotlinx.coroutines.launch
+import moe.matsuri.nb4a.utils.Util
+import moe.matsuri.nb4a.utils.toBytesString
 import my.nanihadesuka.compose.LazyColumnScrollbar
 import my.nanihadesuka.compose.ScrollbarSettings
 import kotlin.math.roundToInt
@@ -283,6 +286,61 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
         selectedGroup: Long,
         onClick: () -> Unit = {}
     ) {
+
+        val group = groupList.firstOrNull { it.id == selectedGroup }
+        val trafficText = group?.subscription?.let { subscription ->
+            if (subscription.bytesUsed > 0L) {
+                if (subscription.bytesRemaining > 0L) {
+                    stringResource(
+                        R.string.subscription_traffic,
+                        subscription.bytesUsed,
+                        subscription.bytesRemaining
+                    )
+                } else {
+                    stringResource(R.string.subscription_used, subscription.bytesUsed)
+                }
+            } else {
+                if (!subscription.subscriptionUserinfo.isNullOrBlank()) {
+                    var text = ""
+
+                    fun get(regex: String): String? {
+                        return regex.toRegex().findAll(subscription.subscriptionUserinfo)
+                            .mapNotNull {
+                                if (it.groupValues.size > 1) it.groupValues[1] else null
+                            }.firstOrNull()
+                    }
+                    runCatching {
+                        var used: Long = 0
+                        get("upload=([0-9]+)")?.apply {
+                            used += toLong()
+                        }
+                        get("download=([0-9]+)")?.apply {
+                            used += toLong()
+                        }
+                        val total = get("total=([0-9]+)")?.toLong() ?: 0
+                        if (used > 0 || total > 0) {
+                            text += stringResource(
+                                R.string.subscription_traffic,
+                                used.toBytesString(),
+                                (total - used).toBytesString()
+                            )
+                        }
+                        get("expire=([0-9]+)")?.apply {
+                            text += "\n"
+                            text += stringResource(
+                                R.string.subscription_expire,
+                                Util.timeStamp2Text(this.toLong() * 1000)
+                            )
+                        }
+                    }
+
+                    text
+                } else {
+                    ""
+                }
+            }
+        }
+
         SharedTransitionLayout {
             Row(
                 modifier = Modifier
@@ -313,7 +371,7 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
-                                    groupList.firstOrNull { it.id == selectedGroup }?.name
+                                    group?.name
                                         ?: stringResource(R.string.group_default),
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.sharedElement(
@@ -322,14 +380,17 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                                         boundsTransform = boundsTransform,
                                     )
                                 )
-                                Text(
-                                    "这里应该显示流量",
-                                    modifier = Modifier.sharedElement(
-                                        state = rememberSharedContentState("traffic"),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        boundsTransform = boundsTransform,
+                                trafficText?.let {
+                                    Text(
+                                        it,
+                                        modifier = Modifier.sharedElement(
+                                            state = rememberSharedContentState("traffic"),
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            boundsTransform = boundsTransform,
+                                        ),
+                                        fontSize = 14.sp
                                     )
-                                )
+                                }
                             }
                         }
                     } else {
@@ -342,7 +403,7 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                         ) {
                             Column {
                                 Text(
-                                    groupList.firstOrNull { it.id == selectedGroup }?.name
+                                    group?.name
                                         ?: stringResource(R.string.group_default),
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.sharedElement(
@@ -351,14 +412,17 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                                         boundsTransform = boundsTransform,
                                     )
                                 )
-                                Text(
-                                    "这里应该显示流量",
-                                    modifier = Modifier.sharedElement(
-                                        state = rememberSharedContentState("traffic"),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        boundsTransform = boundsTransform,
+                                trafficText?.let {
+                                    Text(
+                                        it,
+                                        modifier = Modifier.sharedElement(
+                                            state = rememberSharedContentState("traffic"),
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            boundsTransform = boundsTransform,
+                                        ),
+                                        fontSize = 14.sp
                                     )
-                                )
+                                }
                             }
                             val surfaceContainer =
                                 MaterialTheme.colorScheme.surfaceContainer
