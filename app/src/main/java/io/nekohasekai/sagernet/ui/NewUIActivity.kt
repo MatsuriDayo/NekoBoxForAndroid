@@ -16,6 +16,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,12 +55,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollDispatcher
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -128,7 +134,24 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                 configurationList.addAll(SagerDatabase.proxyDao.getByGroup(selectedGroup))
             }
 
-            MaterialTheme {
+            val isDarkTheme = isSystemInDarkTheme()
+            val supportsDynamicColor = Build.VERSION.SDK_INT == Build.VERSION_CODES.S
+            val colorScheme = when {
+                supportsDynamicColor && isDarkTheme -> {
+                    dynamicDarkColorScheme(LocalContext.current)
+                }
+
+                supportsDynamicColor && !isDarkTheme -> {
+                    dynamicLightColorScheme(LocalContext.current)
+                }
+
+                isDarkTheme -> darkColorScheme()
+                else -> lightColorScheme()
+            }
+
+            MaterialTheme(
+                colorScheme = colorScheme
+            ) {
                 val isCollapsed = scrollBehavior.state.collapsedFraction == 1.0f
                 val listState = rememberLazyListState()
                 val bottomScrollDispatcher = NestedScrollDispatcher()
@@ -143,16 +166,6 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                     bottomBar = {
                         AnimatedVisibility(!listState.canScrollBackward || !isCollapsed) {
                             BottomAppBar(
-                                modifier = Modifier.layout { measurable, constraints ->
-                                    val placeable = measurable.measure(constraints)
-                                    scrollBehavior.state.heightOffsetLimit =
-                                        -placeable.height.toFloat()
-                                    val height =
-                                        placeable.height + scrollBehavior.state.heightOffset
-                                    layout(placeable.width, height.roundToInt().coerceAtLeast(0)) {
-                                        placeable.place(0, 0)
-                                    }
-                                },
                                 scrollBehavior = scrollBehavior,
                             ) {
                                 NavigationBarItem(
@@ -284,7 +297,9 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                         proxyEntity.displayAddress(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = if (isSystemInDarkTheme()) Color.LightGray else Color.Gray
+
                     )
                     Icon(
                         painterResource(R.drawable.ic_image_edit),
