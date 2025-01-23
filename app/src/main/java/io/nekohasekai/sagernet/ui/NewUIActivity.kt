@@ -51,6 +51,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollDispatcher
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
@@ -75,7 +78,6 @@ import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.toBytesString
 import my.nanihadesuka.compose.LazyColumnScrollbar
 import my.nanihadesuka.compose.ScrollbarSettings
-import kotlin.math.roundToInt
 
 
 class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
@@ -129,10 +131,14 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
             MaterialTheme {
                 val isCollapsed = scrollBehavior.state.collapsedFraction == 1.0f
                 val listState = rememberLazyListState()
+                val bottomScrollDispatcher = NestedScrollDispatcher()
 
                 Scaffold(
                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    modifier = Modifier.nestedScroll(
+                        scrollBehavior.nestedScrollConnection,
+                        bottomScrollDispatcher
+                    ),
                     topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) },
                     bottomBar = {
                         AnimatedVisibility(!listState.canScrollBackward || !isCollapsed) {
@@ -199,6 +205,14 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                             onClick = {
                                 scope.launch {
                                     listState.animateScrollToItem(0)
+                                    bottomScrollDispatcher.dispatchPostScroll(
+                                        consumed = Offset(
+                                            0f,
+                                            -scrollBehavior.state.heightOffsetLimit
+                                        ),
+                                        available = Offset.Zero,
+                                        NestedScrollSource.SideEffect
+                                    )
                                 }
                             }
                         )
@@ -209,6 +223,10 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                         ) {
                             LazyColumn(
                                 state = listState,
+                                modifier = Modifier.nestedScroll(
+                                    scrollBehavior.nestedScrollConnection,
+                                    bottomScrollDispatcher
+                                )
                             ) {
                                 items(configurationList, key = {
                                     it.id
