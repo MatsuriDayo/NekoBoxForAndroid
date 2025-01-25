@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
@@ -37,6 +38,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
@@ -72,6 +75,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.bg.SagerConnection
@@ -79,6 +83,7 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.ProxyGroup
 import io.nekohasekai.sagernet.database.SagerDatabase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.toBytesString
@@ -87,6 +92,10 @@ import my.nanihadesuka.compose.ScrollbarSettings
 
 
 class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
+
+    private val connection =
+        SagerConnection(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND, true)
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +113,8 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
             }
         }
 
+        connection.connect(this, this)
+
         setContent {
 
             val groupList = remember { mutableStateListOf<ProxyGroup>() }
@@ -112,6 +123,16 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
 
             val navController = rememberNavController()
             val scrollBehavior = BottomAppBarDefaults.exitAlwaysScrollBehavior()
+
+            val snackbarHostState = remember { SnackbarHostState() }
+
+            val scope = rememberCoroutineScope()
+
+            val connect = rememberLauncherForActivityResult(VpnRequestActivity.StartService()) {
+                if (it) scope.launch {
+                    snackbarHostState.showSnackbar(getString(R.string.vpn_permission_denied))
+                }
+            }
 
             LaunchedEffect(Unit) {
                 var newGroupList = ArrayList(SagerDatabase.groupDao.allGroups())
@@ -162,6 +183,9 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                         scrollBehavior.nestedScrollConnection,
                         bottomScrollDispatcher
                     ),
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackbarHostState)
+                    },
                     topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) },
                     bottomBar = {
                         AnimatedVisibility(!listState.canScrollBackward || !isCollapsed) {
@@ -208,9 +232,6 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                     Column(
                         modifier = Modifier.padding(pd)
                     ) {
-
-                        val scope = rememberCoroutineScope()
-
                         GroupSwitcher(
                             listState = listState,
                             groupList = groupList,
@@ -244,7 +265,20 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                                 items(configurationList, key = {
                                     it.id
                                 }) { item ->
-                                    ConfigurationCard(item)
+                                    ConfigurationCard(
+                                        item,
+                                        DataStore.selectedProxy == item.id
+                                    ) {
+                                        scope.launch {
+                                            if (DataStore.serviceState.started) {
+                                                SagerNet.stopService()
+                                                delay(500) // wait for service stop
+                                            }
+
+                                            connect.launch(null)
+                                            DataStore.selectedProxy = item.id
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -254,7 +288,6 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
         }
     }
 
-    val connection = SagerConnection(SagerConnection.CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND, true)
     override fun onServiceConnected(service: ISagerNetService) {
         DataStore.serviceState = try {
             BaseService.State.entries[service.state]
@@ -268,8 +301,16 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
     }
 
     @Composable
-    fun ConfigurationCard(proxyEntity: ProxyEntity) {
-        Card(modifier = Modifier.padding(16.dp, 8.dp)) {
+    fun ConfigurationCard(
+        proxyEntity: ProxyEntity,
+        selected: Boolean,
+        onClick: () -> Unit
+    ) {
+        Card(
+            modifier = Modifier
+                .padding(16.dp, 8.dp)
+                .clickable { onClick() }
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
