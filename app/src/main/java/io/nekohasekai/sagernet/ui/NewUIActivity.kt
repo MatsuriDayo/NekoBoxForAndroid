@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,8 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +45,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -58,6 +62,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -67,7 +72,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -251,6 +259,8 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                             }
                         )
 
+                        var selectedProxy by remember { mutableLongStateOf(-1) }
+
                         LazyColumnScrollbar(
                             state = listState,
                             settings = ScrollbarSettings.Default
@@ -265,18 +275,16 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                                 items(configurationList, key = {
                                     it.id
                                 }) { item ->
+
                                     ConfigurationCard(
-                                        item,
-                                        DataStore.selectedProxy == item.id
+                                        proxyEntity = item,
+                                        selected = selectedProxy == item.id
+
                                     ) {
                                         scope.launch {
-                                            if (DataStore.serviceState.started) {
-                                                SagerNet.stopService()
-                                                delay(500) // wait for service stop
+                                            launchConfiguration(connect) {
+                                                selectedProxy = item.id
                                             }
-
-                                            connect.launch(null)
-                                            DataStore.selectedProxy = item.id
                                         }
                                     }
                                 }
@@ -303,13 +311,73 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
     @Composable
     fun ConfigurationCard(
         proxyEntity: ProxyEntity,
-        selected: Boolean,
+        selected: Boolean = true,
         onClick: () -> Unit
     ) {
+
+        val surfaceContainer = MaterialTheme.colorScheme.surfaceContainer
+
+        val textColor = contentColorFor(surfaceContainer)
+        val trafficUplink = stringResource(R.string.traffic_uplink)
+
+        val textMeasurer = rememberTextMeasurer()
+
+        val style = TextStyle(
+            fontSize = 16.sp,
+            color = textColor,
+        )
+        val textLayoutResult = remember(trafficUplink, style) {
+            textMeasurer.measure(trafficUplink, style)
+        }
+
+        val barAnimationProcess = remember {
+            Animatable(0f)
+        }
+
+        LaunchedEffect(selected) {
+            if (selected) {
+                barAnimationProcess.animateTo(
+                    1f,
+                    animationSpec = tween(600, easing = FastOutSlowInEasing)
+                )
+            }
+        }
+
+        fun Modifier.selectedModifier(selected: Boolean) = if (selected) {
+            then(
+                Modifier
+                    .drawBehind {
+                        drawRoundRect(
+                            color = surfaceContainer,
+                            topLeft = Offset(0f, 16.dp.toPx()) * barAnimationProcess.value,
+                            size = size.copy(height = size.height - 16.dp.toPx()),
+                            cornerRadius = CornerRadius(8.dp.toPx())
+                        )
+
+                        if (barAnimationProcess.value > 0.7f) {
+                            drawText(
+                                textMeasurer = textMeasurer,
+                                text = trafficUplink,
+                                style = style,
+                                topLeft = Offset(
+                                    x = 8.dp.toPx(),
+                                    //                (竖排居中)
+                                    //  绘制区域高度  - (   刘海高     / 2 +              文字高度        )
+                                    y = size.height - (16.dp.toPx() / 2 + textLayoutResult.size.height),
+                                )
+                            )
+                        }
+                    }
+                    .padding(0.dp, 0.dp, 0.dp, 32.dp))
+        } else {
+            this
+        }
+
         Card(
             modifier = Modifier
                 .padding(16.dp, 8.dp)
                 .clickable { onClick() }
+                .selectedModifier(selected)
         ) {
             Column(
                 modifier = Modifier
@@ -342,11 +410,14 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                         color = if (isSystemInDarkTheme()) Color.LightGray else Color.Gray
 
                     )
-                    Icon(
-                        painterResource(R.drawable.ic_image_edit),
-                        contentDescription = stringResource(R.string.edit),
-                        modifier = Modifier.padding(start = 64.dp)
-                    )
+                    Row {
+                        Text("114514ms", modifier = Modifier.padding(start = 8.dp))
+                        Icon(
+                            painterResource(R.drawable.ic_image_edit),
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
                 }
             }
         }
@@ -517,6 +588,19 @@ class NewUIActivity : ComponentActivity(), SagerConnection.Callback {
                 }
             }
         }
+    }
+
+    private suspend fun launchConfiguration(
+        connect: ManagedActivityResultLauncher<Void?, Boolean>,
+        callback: () -> Unit
+    ) {
+        if (DataStore.serviceState.started) {
+            SagerNet.stopService()
+            delay(500) // wait for service stop
+        }
+
+        connect.launch(null)
+        callback()
     }
 
     companion object {
