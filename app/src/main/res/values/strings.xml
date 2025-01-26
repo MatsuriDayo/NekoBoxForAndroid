@@ -498,6 +498,9 @@
     <string name="release_wake_lock">Release WakeLock</string>
     <string name="acquire_wake_lock_summary">Keep the CPU on</string>
     <string name="action_switch">Switch</string>
+    <string name="custom_rules_provider">Custom</string>
+    <string name="rules_geosite_url">geosite URL</string>
+    <string name="rules_geoip_url">geoip URL</string>
 
     <string name="tuic_udp_relay_mode">UDP Relay Mode</string>
     <string name="tuic_congestion_controller">Congestion Controller</string>

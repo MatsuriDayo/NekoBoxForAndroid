@@ -365,6 +365,7 @@
         <item>Loyalsoldier (soffchen/sing-geosite)</item>
         <item>Chocolate4U/Iran-sing-box-rules</item>
         <item>L11R/Antizapret-sing-box-geo</item>
+        <item>@string/custom_rules_provider</item>
     </string-array>
 
     <string-array name="balancer_type">

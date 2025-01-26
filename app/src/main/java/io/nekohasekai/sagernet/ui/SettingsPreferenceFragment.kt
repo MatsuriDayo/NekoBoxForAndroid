@@ -173,6 +173,18 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
 
+        val rulesProvider = findPreference<SimpleMenuPreference>(Key.RULES_PROVIDER)!!
+        val rulesGeositeUrl = findPreference<EditTextPreference>(Key.RULES_GEOSITE_URL)!!
+        val rulesGeoipUrl = findPreference<EditTextPreference>(Key.RULES_GEOIP_URL)!!
+        rulesGeositeUrl.isVisible = DataStore.rulesProvider == 4
+        rulesGeoipUrl.isVisible = DataStore.rulesProvider == 4
+        rulesProvider.setOnPreferenceChangeListener { _, newValue ->
+            val provider = (newValue as String).toInt()
+            rulesGeositeUrl.isVisible = provider == 4
+            rulesGeoipUrl.isVisible = provider == 4
+            true
+        }
+
         mixedPort.onPreferenceChangeListener = reloadListener
         appendHttpProxy.onPreferenceChangeListener = reloadListener
         showDirectSpeed.onPreferenceChangeListener = reloadListener

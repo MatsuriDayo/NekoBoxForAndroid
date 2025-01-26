@@ -496,4 +496,5 @@
     <string name="enable_tls_fragment">启用TLS Client Hello分片</string>
     <string name="fragment_length">分片包长（最小-最大）</string>
     <string name="fragment_interval">分片间隔（最小-最大）</string>
+    <string name="custom_rules_provider">自定义</string>
 </resources>

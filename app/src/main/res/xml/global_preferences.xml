@@ -127,10 +127,20 @@
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="0"
             app:entries="@array/rules_dat_provider"
-            app:entryValues="@array/int_array_4"
+            app:entryValues="@array/int_array_5"
             app:icon="@drawable/ic_baseline_rule_folder_24"
             app:key="rulesProvider"
             app:title="@string/route_rules_provider"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db"
+            app:key="rulesGeositeUrl"
+            app:title="@string/rules_geosite_url"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db"
+            app:key="rulesGeoipUrl"
+            app:title="@string/rules_geoip_url"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
