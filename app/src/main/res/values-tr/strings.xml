@@ -55,9 +55,9 @@
     <string name="group_delete_confirm_prompt">Bu grubu silmek istediğinize emin misiniz\?</string>
     <string name="group_diff">Fark (%s)</string>
     <string name="group_show_diff">Fark</string>
-    <string name="group_updated">%s: %d vekil sunucu güncellendi</string>
+    <string name="group_updated">%1$s: %2$d vekil sunucu güncellendi</string>
     <string name="group_no_difference">%s: Farklılık yok</string>
-    <string name="group_status_proxies_subscription">%d Vekil Sunucu | %s güncellendi</string>
+    <string name="group_status_proxies_subscription">%1$d Vekil Sunucu | %2$s güncellendi</string>
     <string name="group_status_proxies">%d Vekil Sunucu</string>
     <string name="group_status_empty_subscription">Henüz güncellenmedi</string>
     <string name="group_status_empty">Boş grup</string>
@@ -166,7 +166,7 @@
     <string name="copy_label">İsmi Kopyala</string>
     <string name="udp_connections">%d UDP bağlantı</string>
     <string name="tcp_connections">%d TCP bağlantı</string>
-    <string name="plugin_exists_but_on_shit_system">Profil %s %s eklentisine ihtiyaç duyuyor, ancak kapalı kaynak ekipman sağlayıcınız (genellikle sermaye devleri ve kötü amaçlı yazılım geliştiricileri) Android ile oynamış ve eklenti bu yüzden kullanılamıyor.</string>
+    <string name="plugin_exists_but_on_shit_system">Profil %1$s %2$s eklentisine ihtiyaç duyuyor, ancak kapalı kaynak ekipman sağlayıcınız (genellikle sermaye devleri ve kötü amaçlı yazılım geliştiricileri) Android ile oynamış ve eklenti bu yüzden kullanılamıyor.</string>
     <string name="group_order_by_delay">Gecikme</string>
     <string name="group_order_by_name">İsim</string>
     <string name="group_order_origin">Köken</string>
@@ -183,7 +183,7 @@
     <string name="profile_import">Profili içe aktar</string>
     <string name="subscription_import_message">%s aboneliğini içe aktarmayı gerçekten istiyor musunuz\? Eğer güvenilir olmayan bir kaynaktan geliyorsanız bu IP adresinizin ve davranışınızın sızdırılmasına sebep olabilir.</string>
     <string name="subscription_import">Aboneliği içe aktar</string>
-    <string name="subscription_traffic">%s Kullanıldı / %s Kaldı</string>
+    <string name="subscription_traffic">%1$s Kullanıldı / %2$s Kaldı</string>
     <string name="subscription_used">%s Kullanıldı</string>
     <string name="group_filter">Filtre</string>
     <string name="subscription_update_message">%s güncelleniyor …</string>
@@ -198,7 +198,7 @@
     <string name="install_from_play_store">Play Store\'dan Kur</string>
     <string name="action_download">İNDİR</string>
     <string name="action_learn_more">DAHA FAZLASINI ÖĞREN</string>
-    <string name="profile_requiring_plugin">Profil %s %s eklentisinin kurulmasını gerektirir ama kurulu değil.</string>
+    <string name="profile_requiring_plugin">Profil %1$s %2$s eklentisinin kurulmasını gerektirir ama kurulu değil.</string>
     <string name="missing_plugin">Eksik Eklenti</string>
     <string name="confirm">Doğrula</string>
     <string name="subscription_user_agent">Kullanıcı Kimliği</string>

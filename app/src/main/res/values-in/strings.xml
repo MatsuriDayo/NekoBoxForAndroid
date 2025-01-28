@@ -2,7 +2,7 @@
 <resources>
     <string name="port_http">Proksi Port HTTP</string>
     <string name="port_proxy">Proksi Port SOCKS5</string>
-    <string name="group_status_proxies_subscription">%d Proksi | Diperbarui pada %s</string>
+    <string name="group_status_proxies_subscription">%1$d Proksi | Diperbarui pada %2$s</string>
     <string name="group_status_proxies">%d Proksi</string>
     <string name="protocol_param">Param Protokol</string>
     <string name="protocol">Protokol</string>
@@ -69,7 +69,7 @@
     <string name="group_delete_confirm_prompt">Anda yakin ingin menghapus grup ini\?</string>
     <string name="group_diff">Diff (%s)</string>
     <string name="group_show_diff">Diff</string>
-    <string name="group_updated">%s: Diperbarui %d proxy</string>
+    <string name="group_updated">%1$s: Diperbarui %2$d proxy</string>
     <string name="group_no_difference">%s: Tidak ada perbedaan</string>
     <string name="group_status_empty">Grup kosong</string>
     <string name="group_status_empty_subscription">Belum diperbarui</string>

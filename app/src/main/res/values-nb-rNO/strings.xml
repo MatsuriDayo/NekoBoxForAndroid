@@ -56,9 +56,9 @@
     <string name="alter_id">Alt-ID</string>
     <string name="group_diff">Forskjell (%s)</string>
     <string name="group_show_diff">Forskjell</string>
-    <string name="group_updated">%s: Oppdaterte %d mellomtjenere</string>
+    <string name="group_updated">%1$s: Oppdaterte %2$d mellomtjenere</string>
     <string name="group_no_difference">%s: Ingen forskjell</string>
-    <string name="group_status_proxies_subscription">%d mellomtjenere | Oppdatert %s</string>
+    <string name="group_status_proxies_subscription">%1$d mellomtjenere | Oppdatert %2$s</string>
     <string name="group_status_proxies">%d mellomtjenere</string>
     <string name="group_status_empty_subscription">Ikke oppdatert enda</string>
     <string name="group_status_empty">Tom gruppe</string>
@@ -112,7 +112,7 @@
     <string name="profile_import">Importer profil</string>
     <string name="subscription_import_message">Bekrefter du at du vil importere abonnement %s\? Hvis du kommer fra en kilde som du ikke har tillit til, kan dette føre til at din IP og denne oppførselen lekker.</string>
     <string name="subscription_import">Importer abonnement</string>
-    <string name="subscription_traffic">%s Brukt / %s Gjenstår</string>
+    <string name="subscription_traffic">%1$s Brukt / %2$s Gjenstår</string>
     <string name="subscription_used">%s Brukt</string>
     <string name="subscription_update_message">Oppdaterer %s…</string>
     <string name="subscription_update">Abonnementsoppdatering</string>
@@ -120,7 +120,7 @@
     <string name="ooc_missing_protocol">Abonnementet krever støtte for protokoll %s, men det kan ikke bli funnet. Profiler som ikke støttes, blir ignorert.</string>
     <string name="update_subscription_warning">Proxy er ikke tilkoblet. Er du sikker på at du vil fortsette å oppdatere\?</string>
     <string name="ooc_subscription_token_invalid">Ugyldig OOCv1 -token</string>
-    <string name="profile_requiring_plugin">Profil %s krever at %s plugin er installert, men det ble ikke funnet.</string>
+    <string name="profile_requiring_plugin">Profil %1$s krever at %2$s plugin er installert, men det ble ikke funnet.</string>
     <string name="missing_plugin">Plugin mangler</string>
     <string name="subscription_user_agent">Bruker agent</string>
     <string name="update_when_connected_only_sum">Forhindre lekkasje av IP -adresse</string>
@@ -337,7 +337,7 @@
     <string name="hysteria_stream_receive_window">Mottaksvindu for QUIC-strøm</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (Shawdowsocks-programtillegg for Android)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple-obfs (Shawdowsocks-programtillegg for Android)</string>
-    <string name="plugin_exists_but_on_shit_system">Profilen %s krever %s-programtillegget, men den proprietære utstyrsfabrikanten (vanligvis i overvåkningsøyemed for profitt, eller skadevare) tuklet med Android-installasjonen din, noe som gjør programtillegget ubrukelig.</string>
+    <string name="plugin_exists_but_on_shit_system">Profilen %1$s krever %2$s-programtillegget, men den proprietære utstyrsfabrikanten (vanligvis i overvåkningsøyemed for profitt, eller skadevare) tuklet med Android-installasjonen din, noe som gjør programtillegget ubrukelig.</string>
     <string name="hysteria_disable_mtu_discovery">Skru av oppdagelse av maksimal overførelsesenhet i sti</string>
     <string name="ssh_private_key_passphrase">Passord for privat nøkkel</string>
     <string name="wireguard_psk">Forhåndsdelt nøkkel for likemann</string>

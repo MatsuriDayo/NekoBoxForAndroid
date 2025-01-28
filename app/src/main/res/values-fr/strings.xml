@@ -25,7 +25,7 @@
     <string name="enable_log">Activer la journalisation</string>
     <string name="delete_group_prompt">Êtes-vous sûr(e) de vouloir supprimer ce groupe \?</string>
     <string name="subscription">Abonnement</string>
-    <string name="profile_requiring_plugin">%s nécessite l\'installation du greffon %s, mais il n\'a pas été trouvé.</string>
+    <string name="profile_requiring_plugin">%1$s nécessite l\'installation du greffon %2$s, mais il n\'a pas été trouvé.</string>
     <string name="missing_plugin">Greffon manquant</string>
     <string name="confirm">Confirmer</string>
     <string name="action_download">TÉLÉCHARGER</string>
@@ -42,9 +42,9 @@
     <string name="group_delete_confirm_prompt">Êtes-vous sûr(e) de vouloir supprimer ce groupe \?</string>
     <string name="group_diff">Diff (%s)</string>
     <string name="group_show_diff">Diff</string>
-    <string name="group_updated">%s : %d proxys mis à jour</string>
+    <string name="group_updated">%1$s : %2$d proxys mis à jour</string>
     <string name="group_no_difference">%s : aucune différence</string>
-    <string name="group_status_proxies_subscription">%d proxys | Mis à jour le %s</string>
+    <string name="group_status_proxies_subscription">%1$d proxys | Mis à jour le %2$s</string>
     <string name="group_status_proxies">%d proxys</string>
     <string name="group_status_empty_subscription">Pas encore mis à jour</string>
     <string name="group_status_empty">Groupe vide</string>
@@ -288,7 +288,7 @@
     <string name="update_when_connected_only">Mettre à jour que quand connecté</string>
     <string name="auto_update_delay">Délai de mise à jour automatique (en minutes)</string>
     <string name="auto_update">Mise à jour auto</string>
-    <string name="subscription_traffic">%s utilisé(s) / %s restant(s)</string>
+    <string name="subscription_traffic">%1$s utilisé(s) / %2$s restant(s)</string>
     <string name="subscription_import">Importer une souscription</string>
     <string name="profile_import">Importer un profil</string>
     <string name="warp_generate">Générer une configuration</string>

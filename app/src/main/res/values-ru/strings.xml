@@ -61,9 +61,9 @@
     <string name="group_delete_confirm_prompt">Вы уверены, что хотите удалить эту группу\?</string>
     <string name="group_diff">различия (%s)</string>
     <string name="group_show_diff">Сравнить группы</string>
-    <string name="group_updated">%s: Обновлено %d прокси</string>
+    <string name="group_updated">%1$s: Обновлено %2$d прокси</string>
     <string name="group_no_difference">%s: Не отличаются</string>
-    <string name="group_status_proxies_subscription">%d Прокси | Обновлено %s</string>
+    <string name="group_status_proxies_subscription">%1$d Прокси | Обновлено %2$s</string>
     <string name="group_status_proxies">%d прокси</string>
     <string name="group_status_empty_subscription">Еще не обновлено</string>
     <string name="group_status_empty">Пустая группа</string>
@@ -117,7 +117,7 @@
     <string name="profile_import">Импортировать профиль</string>
     <string name="subscription_import_message">Подтвердите, что хотите импортировать подписку %s\? Если вы импортируете из ненадежного источника, это может привести к утечке вашего IP-адреса и такого поведения.</string>
     <string name="subscription_import">Импортировать подписку</string>
-    <string name="subscription_traffic">%s Использовано / %s Осталось</string>
+    <string name="subscription_traffic">%1$s Использовано / %2$s Осталось</string>
     <string name="subscription_used">%s Использовано</string>
     <string name="group_filter">Фильтр</string>
     <string name="subscription_update_message">Обновление %s …</string>
@@ -132,7 +132,7 @@
     <string name="install_from_play_store">Установить из Play Store</string>
     <string name="action_download">СКАЧАТЬ</string>
     <string name="action_learn_more">УЗНАТЬ БОЛЬШЕ</string>
-    <string name="profile_requiring_plugin">Профиль %s требует установки подключаемого модуля %s, но он не найден.</string>
+    <string name="profile_requiring_plugin">Профиль %1$s требует установки подключаемого модуля %2$s, но он не найден.</string>
     <string name="missing_plugin">Отсутствующий плагин</string>
     <string name="confirm">Подтвердить</string>
     <string name="subscription_user_agent">UserAgent</string>
@@ -351,7 +351,7 @@
     <string name="tcp_connections">%d TCP-соединений</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (плагин Shadowsocks для Android)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (плагин Shadowsocks для Android)</string>
-    <string name="plugin_exists_but_on_shit_system">Профиль %s требует плагин %s, но поставщик вашего проприетарного оборудования (обычно это большие компании, занимающиеся слежкой и производители вредоносного ПО) изменил ваш Android, сделав плагин непригодным для использования.</string>
+    <string name="plugin_exists_but_on_shit_system">Профиль %1$s требует плагин %2$s, но поставщик вашего проприетарного оборудования (обычно это большие компании, занимающиеся слежкой и производители вредоносного ПО) изменил ваш Android, сделав плагин непригодным для использования.</string>
     <string name="group_order_by_delay">По задержке</string>
     <string name="group_order_by_name">По имени</string>
     <string name="group_order_origin">По происхождению</string>
