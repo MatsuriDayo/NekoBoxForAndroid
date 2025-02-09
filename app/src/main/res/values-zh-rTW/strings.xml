@@ -23,9 +23,9 @@
     <string name="group_status_empty">空白群組</string>
     <string name="group_status_empty_subscription">尚未更新</string>
     <string name="group_status_proxies">%d 個代理</string>
-    <string name="group_status_proxies_subscription">%d 個代理 | 更新於 %s</string>
+    <string name="group_status_proxies_subscription">%1$d 個代理 | 更新於 %2$s</string>
     <string name="group_no_difference">%s: 沒有變化</string>
-    <string name="group_updated">%s: 更新了 %d 個代理</string>
+    <string name="group_updated">%1$s: 更新了 %2$d 個代理</string>
     <string name="group_show_diff">變化</string>
     <string name="group_delete_confirm_prompt">您真的希望刪除這個群組嗎？</string>
     <string name="group_added">新增：
@@ -310,7 +310,7 @@
     <string name="subscription_user_agent">使用者代理</string>
     <string name="confirm">確認</string>
     <string name="missing_plugin">遺失外掛程式</string>
-    <string name="profile_requiring_plugin">設定檔 %s 需要外掛程式 %s，但其未被安裝。</string>
+    <string name="profile_requiring_plugin">設定檔 %1$s 需要外掛程式 %2$s，但其未被安裝。</string>
     <string name="action_learn_more">深入瞭解</string>
     <string name="action_download">下載</string>
     <string name="install_from_play_store">從 Play 商店安裝</string>
@@ -325,7 +325,7 @@
     <string name="subscription_update_message">正在更新 %s …</string>
     <string name="group_filter">篩選</string>
     <string name="subscription_used">已用 %s</string>
-    <string name="subscription_traffic">已用 %s / 剩餘 %s</string>
+    <string name="subscription_traffic">已用 %1$s / 剩餘 %2$s</string>
     <string name="subscription_import">匯入訂閱</string>
     <string name="subscription_import_message">您確定要匯入訂閱 %s 嗎？如果訂閱的來源不可信，您的 IP 和行為將被洩漏。</string>
     <string name="profile_import">匯入設定檔</string>
@@ -338,7 +338,7 @@
     <string name="menu_traffic">流量</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (Shadowsocks Android 外掛程式)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (Shadowsocks Android 外掛程式)</string>
-    <string name="plugin_exists_but_on_shit_system">設定檔 %s 需要外掛程式 %s，但是您的專有設備提供商（通常也是監視資本主義巨頭和惡意軟體製造商）篡改了你的 Android 系統，使此外掛程式不可用。</string>
+    <string name="plugin_exists_but_on_shit_system">設定檔 %1$s 需要外掛程式 %2$s，但是您的專有設備提供商（通常也是監視資本主義巨頭和惡意軟體製造商）篡改了你的 Android 系統，使此外掛程式不可用。</string>
     <string name="ssh_private_key_passphrase">私密金鑰複雜密碼</string>
     <string name="ssh_private_key">私密金鑰</string>
     <string name="ssh_public_key">公開金鑰</string>

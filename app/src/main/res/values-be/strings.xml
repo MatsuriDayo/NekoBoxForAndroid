@@ -83,9 +83,9 @@
     <string name="group_delete_confirm_prompt">Вы ўпэўненыя, што хочаце выдаліць гэтую групу\?</string>
     <string name="group_diff">Розніца (%s)</string>
     <string name="group_show_diff">Розніца</string>
-    <string name="group_updated">%s: Абноўлены %d проксі</string>
+    <string name="group_updated">%1$s: Абноўлены %2$d проксі</string>
     <string name="group_no_difference">%s: няма розніцы</string>
-    <string name="group_status_proxies_subscription">%d проксі | Абноўлена %s</string>
+    <string name="group_status_proxies_subscription">%1$d проксі | Абноўлена %2$s</string>
     <string name="group_status_proxies">%d проксі</string>
     <string name="group_status_empty_subscription">Пакуль не абноўлена</string>
     <string name="group_status_empty">Пустая група</string>

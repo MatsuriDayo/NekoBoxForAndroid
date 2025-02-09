@@ -24,9 +24,9 @@
     <string name="group_status_empty">空</string>
     <string name="group_status_empty_subscription">从未更新</string>
     <string name="group_status_proxies">%d 个配置</string>
-    <string name="group_status_proxies_subscription">%d 个配置 | 更新于 %s</string>
+    <string name="group_status_proxies_subscription">%1$d 个配置 | 更新于 %2$s</string>
     <string name="group_no_difference">%s: 没有变化</string>
-    <string name="group_updated">%s: 更新了 %d 个节点</string>
+    <string name="group_updated">%1$s: 更新了 %2$d 个节点</string>
     <string name="group_show_diff">变化</string>
     <string name="group_delete_confirm_prompt">您确定要删除这个分组吗\?</string>
     <string name="group_added">新增:
@@ -309,7 +309,7 @@
     <string name="subscription_user_agent">用户代理</string>
     <string name="confirm">确认</string>
     <string name="missing_plugin">缺少插件</string>
-    <string name="profile_requiring_plugin">配置 %s 需要插件 %s, 但找不到.</string>
+    <string name="profile_requiring_plugin">配置 %1$s 需要插件 %2$s, 但找不到.</string>
     <string name="action_learn_more">了解更多</string>
     <string name="action_download">下载</string>
     <string name="install_from_play_store">从 Play Store 安装</string>
@@ -324,7 +324,7 @@
     <string name="update_subscription_warning">代理未连接, 您确定要继续更新吗\?</string>
     <string name="group_filter">筛选</string>
     <string name="subscription_used">已用 %s</string>
-    <string name="subscription_traffic">已用 %s / 剩余 %s</string>
+    <string name="subscription_traffic">已用 %1$s / 剩余 %2$s</string>
     <string name="subscription_import">导入订阅</string>
     <string name="subscription_import_message">确认要导入订阅 %s？如果来源不可信, 您的 IP 和行为将被泄露.</string>
     <string name="profile_import">导入配置</string>
@@ -355,8 +355,8 @@
     <string name="group_order_origin">原始</string>
     <string name="group_order_by_name">以名称</string>
     <string name="group_order_by_delay">以延时</string>
-    <string name="plugin_exists_but_on_shit_system">配置 %s 需要插件
-        %s，但你的专有设备供应商（通常也是监视资本主义巨头和恶意软件制造商）篡改了你的安卓系统，使该插件无法使用。</string>
+    <string name="plugin_exists_but_on_shit_system">配置 %1$s 需要插件
+        %2$s，但你的专有设备供应商（通常也是监视资本主义巨头和恶意软件制造商）篡改了你的安卓系统，使该插件无法使用。</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray （Shadowsocks Android 插件）</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs （Shadowsocks Android 插件）</string>
     <string name="menu_traffic">流量</string>
@@ -422,8 +422,8 @@
     <string name="backup_importing">正导入…</string>
     <string name="action_copy">复制</string>
     <string name="action_open">打开</string>
-    <string name="please_update">您的 APP (%s) 太旧了喵，%s 再不更新就没的用了喵～</string>
-    <string name="please_update_force">您的 APP (%s) 版本过旧，已于 %s 停止工作，请立即升级。</string>
+    <string name="please_update">您的 APP (%1$s) 太旧了喵，%2$s 再不更新就没的用了喵～</string>
+    <string name="please_update_force">您的 APP (%1$s) 版本过旧，已于 %2$s 停止工作，请立即升级。</string>
     <string name="connection_test_delete_unavailable">清理不可用配置</string>
     <string name="neko_plugin">高级插件</string>
     <string name="neko_plugin_summary">高级插件可以提供原本不支持的协议。\n\n

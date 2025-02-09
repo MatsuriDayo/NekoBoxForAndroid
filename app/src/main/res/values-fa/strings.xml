@@ -33,9 +33,9 @@
     <string name="group_status_empty">گروه خالی</string>
     <string name="group_status_empty_subscription">هنوز آپدیت نشده</string>
     <string name="group_status_proxies">%d پراکسی ها</string>
-    <string name="group_status_proxies_subscription">%d پراگسی ها | اپدیت شدند در %s</string>
+    <string name="group_status_proxies_subscription">%1$d پراگسی ها | اپدیت شدند در %2$s</string>
     <string name="group_no_difference">%s: بدون تغییر</string>
-    <string name="group_updated">%s: اپدیت شد %d پراکسی ها</string>
+    <string name="group_updated">%1$s: اپدیت شد %2$d پراکسی ها</string>
     <string name="group_show_diff">تفاوت</string>
     <string name="group_diff">تفاوت (%s)</string>
     <string name="group_delete_confirm_prompt">آیا مطمئن هستید که می خواهید این گروه را حذف کنید?</string>
@@ -317,7 +317,7 @@
     <string name="subscription_user_agent">عامل کاربر</string>
     <string name="confirm">تایید</string>
     <string name="missing_plugin">افزونه از دست رفته</string>
-    <string name="profile_requiring_plugin">پروفایل %s نیاز دارد %s افزونه نصب شود، اما پیدا نشد.</string>
+    <string name="profile_requiring_plugin">پروفایل %1$s نیاز دارد %2$s افزونه نصب شود، اما پیدا نشد.</string>
     <string name="action_learn_more">بیشتر بدانید</string>
     <string name="action_download">دانلود</string>
     <string name="install_from_play_store">از پلی استور نصب کنید</string>
@@ -332,7 +332,7 @@
     <string name="subscription_update_message">در حال بروز رسانی %s …</string>
     <string name="group_filter">فیلتر</string>
     <string name="subscription_used">%s استفاده شده</string>
-    <string name="subscription_traffic">%s استفاده شده / %s باقی مانده است</string>
+    <string name="subscription_traffic">%1$s استفاده شده / %2$s باقی مانده است</string>
     <string name="subscription_expire">انقضا: %s</string>
     <string name="subscription_import">وارد کردن اشتراک</string>
     <string name="subscription_import_message">تأیید کنید که می خواهید اشتراک را وارد کنید %s? اگر از یک منبع نامعتبر وارد می شوید، انجام این کار ممکن است منجر به لو رفتن IP شما و این رفتار شود.</string>
@@ -355,7 +355,7 @@
     <string name="group_order_origin">مبدا</string>
     <string name="group_order_by_name">بر اساس اسم</string>
     <string name="group_order_by_delay">با تاخیر</string>
-    <string name="plugin_exists_but_on_shit_system">پروفایل %s نیاز دارد %s افزونه، اما فروشنده تجهیزات اختصاصی شما (معمولا غول های سرمایه نظارتی و سازنده بدافزار) اندروید شما را دستکاری کرده و باعث غیرقابل استفاده شدن افزونه شده است.</string>
+    <string name="plugin_exists_but_on_shit_system">پروفایل %1$s نیاز دارد %2$s افزونه، اما فروشنده تجهیزات اختصاصی شما (معمولا غول های سرمایه نظارتی و سازنده بدافزار) اندروید شما را دستکاری کرده و باعث غیرقابل استفاده شدن افزونه شده است.</string>
     <string name="shadowsocks_plugin_simple_obfs">Obfs ساده (افزونه اندروید Shadowsocks)</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (افزونه Shadowsocks Android)</string>
     <string name="tcp_connections">%d اتصالات TCP</string>
@@ -423,8 +423,8 @@
     <string name="tuic_congestion_controller">کنترل کننده ازدحام</string>
     <string name="tuic_disable_sni">SNI را غیرفعال کنید</string>
     <string name="tuic_reduce_rtt">UDP کاهش RTT</string>
-    <string name="please_update">ماتسوری شما خیلی قدیمی است (%s). و در %s کار نخواهد کرد. لطفا به روز رسانی کن!</string>
-    <string name="please_update_force">ماتسوری شما خیلی قدیمی است (%s). و در %s کار نمی کند. لطفا به روز رسانی کن!</string>
+    <string name="please_update">ماتسوری شما خیلی قدیمی است (%1$s). و در %2$s کار نخواهد کرد. لطفا به روز رسانی کن!</string>
+    <string name="please_update_force">ماتسوری شما خیلی قدیمی است (%1$s). و در %2$s کار نمی کند. لطفا به روز رسانی کن!</string>
     <string name="connection_test_delete_unavailable">پاک کردن در دسترس نیست</string>
     <string name="neko_plugin">افزونه پیشرفته</string>
     <string name="neko_plugin_internal_error">%s خطای داخلی</string>

@@ -32,9 +32,9 @@
     <string name="group_status_empty">Grupo vacío</string> 
     <string name="group_status_empty_subscription">Aún no actualizado</string> 
     <string name="group_status_proxies">%d proxys</string> 
-    <string name="group_status_proxies_subscription">%d proxys | Actualizado el %s</string> 
+    <string name="group_status_proxies_subscription">%1$d proxys | Actualizado el %2$s</string>
     <string name="group_no_difference">%s: Sin diferencia</string> 
-    <string name="group_updated">%s: %d proxys actualizados</string> 
+    <string name="group_updated">%1$s: %2$d proxys actualizados</string>
     <string name="group_show_diff">Diferencia</string> 
     <string name="group_diff">Diferencia (%s)</string> 
     <string name="group_delete_confirm_prompt">¿Seguro que quieres eliminar este grupo?</string> 
@@ -324,7 +324,7 @@
     <string name="subscription_user_agent">Agente de usuario</string> 
     <string name="confirm">Confirmar</string> 
     <string name="missing_plugin">Complemento faltante</string> 
-    <string name="profile_requiring_plugin">El perfil %s requiere que se instale el complemento %s, pero no se encontró.</string> 
+    <string name="profile_requiring_plugin">El perfil %1$s requiere que se instale el complemento %2$s, pero no se encontró.</string>
     <string name="action_learn_more">APRENDER MÁS</string> 
     <string name="action_download">DESCARGAR</string> 
     <string name="install_from_play_store">Instalar desde Play Store</string> 
@@ -340,7 +340,7 @@
     <string name="subscription_update_message">Actualizando %s…</string> 
     <string name="group_filter">Filtrar</string>
     <string name="subscription_used">%s usado</string>
-    <string name="subscription_traffic">%s usados ​​/ %s restantes</string> 
+    <string name="subscription_traffic">%1$s usados ​​/ %2$s restantes</string>
     <string name="subscription_import">Importar suscripción</string> 
     <string name="subscription_import_message">¿Confirma que desea importar la suscripción %s? Si proviene de una fuente que no es de confianza, hacer esto puede provocar que se filtre su IP y su comportamiento.</string> 
     <string name="profile_import">Importar perfil</string> 
@@ -361,13 +361,13 @@
     <string name="group_order_origin">Origen</string> 
     <string name="group_order_by_name">Por nombre</string> 
     <string name="group_order_by_delay">Por retraso</string> 
-    <string name="plugin_exists_but_on_shit_system">El perfil %s requiere el complemento %s, pero el proveedor de su equipo patentado (por lo general, los gigantes del capital de vigilancia y el fabricante de malware) manipuló su Android e inutilizó el complemento.</string> 
+    <string name="plugin_exists_but_on_shit_system">El perfil %1$s requiere el complemento %2$s, pero el proveedor de su equipo patentado (por lo general, los gigantes del capital de vigilancia y el fabricante de malware) manipuló su Android e inutilizó el complemento.</string>
  
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (complemento de Android Shadowsocks)</string> 
     <string name="shadowsocks_plugin_v2ray">V2Ray (complemento de Android Shadowsocks)</string> 
  
-    <string name="traffic_uplink" translatable="false">%s | %s/s ↑</string> 
-    <string name="traffic_downlink" translatable="false">%s | %s/s ↓</string> 
+    <string name="traffic_uplink" translatable="false">%1$s | %2$s/s ↑</string>
+    <string name="traffic_downlink" translatable="false">%1$s | %2$s/s ↓</string>
  
     <string name="traffic_uplink_total" translatable="false">%s ↑</string> 
     <string name="traffic_downlink_total" translatable="false">%s ↓</string>

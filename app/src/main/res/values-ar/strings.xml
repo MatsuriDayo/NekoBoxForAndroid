@@ -27,8 +27,8 @@
     <string name="document">وثيقة</string>
     <string name="theme">موضوع</string>
     <string name="menu_about">حول</string>
-    <string name="group_status_proxies_subscription">%d البروکسیز | تم التحديث في %s</string>
-    <string name="group_updated">%s: تم تحديث %d البروکسیز</string>
+    <string name="group_status_proxies_subscription">%2$d البروکسیز | تم التحديث في %1$s</string>
+    <string name="group_updated">%1$s: تم تحديث %2$d البروکسیز</string>
     <string name="port_http">منفذ بروکسی HTTP</string>
     <string name="port_proxy">منفذ بروکسی SOCKS5</string>
     <string name="service_mode_proxy">البروکسی فقط</string>
@@ -228,7 +228,7 @@
     <string name="profile_import">استيراد ملف التعريف</string>
     <string name="subscription_import_message">هل تريد تأكيد رغبتك في استيراد اشتراك %s؟ إذا كنت قادمًا من مصدر غير موثوق به، فقد يؤدي القيام بذلك إلى تسريب عنوان IP الخاص بك وهذا السلوك.</string>
     <string name="subscription_import">اشتراك الاستيراد</string>
-    <string name="subscription_traffic">%s مستخدمة / %s متبقية</string>
+    <string name="subscription_traffic">%1$s مستخدمة / %2$s متبقية</string>
     <string name="subscription_used">%s مستخدمة</string>
     <string name="group_filter">التكرير</string>
     <string name="subscription_update_message">جاري تحديث %s …</string>
@@ -243,7 +243,7 @@
     <string name="install_from_play_store">التثبيت من متجر Play</string>
     <string name="action_download">تحميل</string>
     <string name="action_learn_more">يتعلم أكثر</string>
-    <string name="profile_requiring_plugin">يتطلب ملف التعريف %s تثبيت المكون الإضافي %s، لكن لم يتم العثور عليه.</string>
+    <string name="profile_requiring_plugin">يتطلب ملف التعريف %1$s تثبيت المكون الإضافي %2$s، لكن لم يتم العثور عليه.</string>
     <string name="missing_plugin">في عداد المفقودين المكونات في</string>
     <string name="confirm">أكد</string>
     <string name="subscription_user_agent">وكيل المستخدم</string>
@@ -358,7 +358,7 @@
     <string name="tcp_connections">%d اتصالات TCP</string>
     <string name="shadowsocks_plugin_v2ray">V2Ray (مكون أندرويد الإضافي Shadowsocks)</string>
     <string name="shadowsocks_plugin_simple_obfs">Simple Obfs (مكون أندرويد الإضافي Shadowsocks)</string>
-    <string name="plugin_exists_but_on_shit_system">يتطلب الملف التعریف %s المكوّن الإضافي %s، لكن بائع المعدات المملوكة لك (عادةً عمالقة المراقبة وصانع البرامج الضارة) تلاعب بجهاز أندرويد، مما يجعل المكون الإضافي غير قابل للاستخدام.</string>
+    <string name="plugin_exists_but_on_shit_system">يتطلب الملف التعریف %1$s المكوّن الإضافي %2$s، لكن بائع المعدات المملوكة لك (عادةً عمالقة المراقبة وصانع البرامج الضارة) تلاعب بجهاز أندرويد، مما يجعل المكون الإضافي غير قابل للاستخدام.</string>
     <string name="group_order_by_delay">عن طريق التأخير</string>
     <string name="group_order_by_name">بالاسم</string>
     <string name="group_order_origin">أصل</string>
