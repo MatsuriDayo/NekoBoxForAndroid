@@ -66,7 +66,7 @@
     <string name="speed_interval">Speed Notification Update Interval</string>
     <string name="cag_misc">Misc Settings</string>
     <string name="show_stop">Show Stop Button</string>
-    <string name="show_stop_sum">If you don’t want to use Quick Tile as the switch</string>
+    <string name="show_stop_sum">If you don\'t want to use Quick Tile as the switch</string>
     <string name="show_direct_speed">Show Direct Speed</string>
     <string name="show_direct_speed_sum">Show the traffic speed without proxy in the notification as
         well</string>
@@ -581,4 +581,28 @@
     <string name="enable_tls_fragment">Enable TLS Client Hello Fragment</string>
     <string name="fragment_length">Fragment Length (min-max)</string>
     <string name="fragment_interval">Fragment Interval (min-max)</string>
+
+    <string name="backup_local">Local Backup</string>
+    <string name="backup_webdav">WebDAV Backup</string>
+    <string name="webdav_settings">WebDAV Settings</string>
+    <string name="webdav_server">Server Address</string>
+    <string name="webdav_username">Username</string>
+    <string name="webdav_password">Password</string>
+    <string name="webdav_path">Backup Path</string>
+    <string name="webdav_test">Test Connection</string>
+    <string name="webdav_test_success">Connection Successful</string>
+    <string name="webdav_test_failed" formatted="false">Connection Failed: %s</string>
+    <string name="backup_to_webdav">Backup to WebDAV</string>
+    <string name="restore_from_webdav">Restore from WebDAV</string>
+    <string name="webdav_backup_success">Backup to WebDAV successful</string>
+    <string name="webdav_backup_failed">Backup to WebDAV failed: %s</string>
+    <string name="webdav_restore_success">Restore from WebDAV successful</string>
+    <string name="webdav_restore_failed">Restore from WebDAV failed: %s</string>
+    <string name="webdav_server_empty">Please configure WebDAV server first</string>
+    <string name="webdav_auth_error">Authentication failed: Invalid username or password</string>
+    <string name="webdav_permission_denied">Permission denied</string>
+    <string name="webdav_server_not_found">Server not found</string>
+    <string name="webdav_server_error">Server error</string>
+    <string name="webdav_connect_failed">Connection failed with code: %d</string>
+    <string name="webdav_create_dir_failed">Failed to create or access backup directory</string>
 </resources>

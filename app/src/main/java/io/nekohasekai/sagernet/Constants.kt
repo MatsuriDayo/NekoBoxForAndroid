@@ -161,6 +161,11 @@ object Key {
 
     const val FRAGMENT_LENGTH = "fragmentLength"
     const val FRAGMENT_INTERVAL = "fragmentInterval"
+
+    const val WEBDAV_SERVER = "webdavServer"
+    const val WEBDAV_USERNAME = "webdavUsername"
+    const val WEBDAV_PASSWORD = "webdavPassword"
+    const val WEBDAV_PATH = "webdavPath"
 }
 
 object TunImplementation {
@@ -195,3 +200,4 @@ object Action {
     // const val SWITCH_WAKE_LOCK = "io.nekohasekai.sagernet.SWITCH_WAKELOCK"
     const val RESET_UPSTREAM_CONNECTIONS = "moe.nb4a.RESET_UPSTREAM_CONNECTIONS"
 }
+

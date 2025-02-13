@@ -257,6 +257,23 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     // var enableTLSFragment by configurationStore.boolean(Key.ENABLE_TLS_FRAGMENT)
 
+    var webdavServer: String?
+        get() = configurationStore.getString("webdavServer")
+        set(value) = configurationStore.putString("webdavServer", value)
+
+    var webdavUsername: String?
+        get() = configurationStore.getString("webdavUsername")
+        set(value) = configurationStore.putString("webdavUsername", value)
+
+    var webdavPassword: String?
+        get() = configurationStore.getString("webdavPassword")
+        set(value) = configurationStore.putString("webdavPassword", value)
+
+    var webdavPath: String?
+        get() = configurationStore.getString("webdavPath") ?: "NekoBox"  // 设置默认值
+        set(value) = configurationStore.putString("webdavPath", value)
+
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
     }
 }
+

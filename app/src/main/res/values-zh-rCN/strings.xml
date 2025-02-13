@@ -404,7 +404,8 @@
     <string name="route_play_store">%s Play 商店规则</string>
     <string name="route_opt_block_analysis">屏蔽跟踪器</string>
     <string name="naive_insecure_concurrency">不安全并发</string>
-    <string name="naive_insecure_concurrency_summary">使用N个并发的隧道连接，在恶劣的网络条件下更加强大。更多的连接使隧道更容易被发现，安全性更低。这个项目力求对流量分析有最强的安全性。以不安全的方式使用它就违背了它的目的。
+    <string name="naive_insecure_concurrency_summary">使用N个并发的隧道连接，在恶劣的网络条件下更加强大。更多的连接使隧道更容易被发现，安全性更低。这个项目力求对流量
+分析有最强的安全性。以不安全的方式使用它就违背了它的目的。
         \n
         \n如果你必须使用它，先试试N=2，看看是否能解决你的问题。强烈建议不要在这里使用超过4个连接。</string>
     <string name="tools_network">网络</string>
@@ -497,4 +498,27 @@
     <string name="fragment_length">分片包长（最小-最大）</string>
     <string name="fragment_interval">分片间隔（最小-最大）</string>
     <string name="custom_rules_provider">自定义</string>
+    <string name="backup_webdav">WebDAV</string>
+    <string name="webdav_settings">WebDAV 设置</string>
+    <string name="webdav_server">服务器地址</string>
+    <string name="webdav_username">用户名</string>
+    <string name="webdav_password">密码</string>
+    <string name="webdav_path">备份目录</string>
+    <string name="webdav_test">测试连接</string>
+    <string name="webdav_test_success">连接成功</string>
+    <string name="webdav_test_failed">连接失败: %s</string>
+    <string name="backup_to_webdav">备份到 WebDAV</string>
+    <string name="restore_from_webdav">从 WebDAV 恢复</string>
+    <string name="webdav_backup_success">备份到 WebDAV 成功</string>
+    <string name="webdav_backup_failed">备份到 WebDAV 失败：%s</string>
+    <string name="webdav_restore_success">从 WebDAV 恢复成功</string>
+    <string name="webdav_restore_failed">从 WebDAV 恢复失败：%s</string>
+    <string name="webdav_server_empty">请先配置 WebDAV 服务器</string>
+    <string name="backup_local">本地</string>
+    <string name="webdav_auth_error">认证失败：用户名或密码错误</string>
+    <string name="webdav_permission_denied">权限被拒绝</string>
+    <string name="webdav_server_not_found">服务器未找到</string>
+    <string name="webdav_server_error">服务器错误</string>
+    <string name="webdav_connect_failed">连接失败，错误代码：%d</string>
+    <string name="webdav_create_dir_failed">无法创建或访问备份目录</string>
 </resources>
