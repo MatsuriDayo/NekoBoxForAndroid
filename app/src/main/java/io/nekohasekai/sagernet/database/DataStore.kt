@@ -273,6 +273,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
         get() = configurationStore.getString("webdavPath") ?: "NekoBox"  // 设置默认值
         set(value) = configurationStore.putString("webdavPath", value)
 
+    var globalMode by configurationStore.boolean(Key.GLOBAL_MODE)
+
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
     }
 }

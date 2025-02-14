@@ -166,6 +166,8 @@ object Key {
     const val WEBDAV_USERNAME = "webdavUsername"
     const val WEBDAV_PASSWORD = "webdavPassword"
     const val WEBDAV_PATH = "webdavPath"
+
+    const val GLOBAL_MODE = "globalMode"
 }
 
 object TunImplementation {

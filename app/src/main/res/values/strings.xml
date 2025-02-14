@@ -605,4 +605,6 @@
     <string name="webdav_server_error">Server error</string>
     <string name="webdav_connect_failed">Connection failed with code: %d</string>
     <string name="webdav_create_dir_failed">Failed to create or access backup directory</string>
+    <string name="global_mode">Global Mode</string>
+    <string name="global_mode_summary">Bypass all routing rules and proxy all traffic through current node</string>
 </resources>

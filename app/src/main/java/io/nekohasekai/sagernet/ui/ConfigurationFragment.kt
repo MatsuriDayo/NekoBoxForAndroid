@@ -134,6 +134,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 
         if (!select) {
             toolbar.inflateMenu(R.menu.add_profile_menu)
+            toolbar.menu.findItem(R.id.action_global_mode)?.isChecked = DataStore.globalMode
             toolbar.setOnMenuItemClickListener(this)
         } else {
             toolbar.setTitle(titleRes)
@@ -198,6 +199,11 @@ class ConfigurationFragment @JvmOverloads constructor(
         }
 
         DataStore.profileCacheStore.registerChangeListener(this)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_global_mode)?.isChecked = DataStore.globalMode
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
@@ -575,8 +581,41 @@ class ConfigurationFragment @JvmOverloads constructor(
             R.id.action_connection_url_test -> {
                 urlTest()
             }
+
+            R.id.action_global_mode -> {
+                item.isChecked = !item.isChecked
+                DataStore.globalMode = item.isChecked
+                if (DataStore.serviceState.canStop) {
+                    runOnDefaultDispatcher {
+                        try {
+                            // 等待一段时间确保配置已保存
+                            delay(500)
+                            snackbar(getString(R.string.need_reload)).setAction(R.string.apply) {
+                                runOnDefaultDispatcher {
+                                    try {
+                                        // 再次等待确保配置已保存
+                                        delay(100)
+                                        SagerNet.reloadService()
+                                    } catch (e: Exception) {
+                                        Logs.w(e)
+                                        onMainDispatcher {
+                                            snackbar(getString(R.string.service_failed)).show()
+                                        }
+                                    }
+                                }
+                            }.show()
+                        } catch (e: Exception) {
+                            Logs.w(e)
+                            onMainDispatcher {
+                                snackbar(getString(R.string.service_failed)).show()
+                            }
+                        }
+                    }
+                }
+                return true
+            }
         }
-        return true
+        return false
     }
 
     inner class TestDialog {
@@ -1717,3 +1756,4 @@ class ConfigurationFragment @JvmOverloads constructor(
         }
 
 }
+

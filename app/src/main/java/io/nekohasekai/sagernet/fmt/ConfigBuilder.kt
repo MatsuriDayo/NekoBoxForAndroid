@@ -523,119 +523,128 @@ fun buildConfig(
             tagMap[key] = buildChain(key, p)
         }
 
-        // apply user rules
-        for (rule in extraRules) {
-            if (rule.packages.isNotEmpty()) {
-                PackageCache.awaitLoadSync()
-            }
-            val uidList = rule.packages.map {
-                if (!isVPN) {
-                    Toast.makeText(
-                        SagerNet.application,
-                        SagerNet.application.getString(R.string.route_need_vpn, rule.displayName()),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                PackageCache[it]?.takeIf { uid -> uid >= 1000 }
-            }.toHashSet().filterNotNull()
-            val ruleSets = mutableListOf<RuleSet>()
-
-            val ruleObj = Rule_DefaultOptions().apply {
-                if (uidList.isNotEmpty()) {
+        // 在应用用户规则之前检查全局模式
+        if (!forTest && DataStore.globalMode) {
+            // 全局模式下只添加一个规则：所有流量走代理
+            route.rules.add(Rule_DefaultOptions().apply {
+                inbound = listOf(TAG_MIXED)  // 添加入站条件
+                outbound = TAG_PROXY  // 将所有流量转发到代理
+            })
+        } else {
+            // 应用用户规则
+            for (rule in extraRules) {
+                if (rule.packages.isNotEmpty()) {
                     PackageCache.awaitLoadSync()
-                    user_id = uidList
                 }
-                var domainList: List<String>? = null
-                if (rule.domains.isNotBlank()) {
-                    domainList = rule.domains.listByLineOrComma()
-                    makeSingBoxRule(domainList, false)
-                }
-                if (rule.ip.isNotBlank()) {
-                    makeSingBoxRule(rule.ip.listByLineOrComma(), true)
-                }
+                val uidList = rule.packages.map {
+                    if (!isVPN) {
+                        Toast.makeText(
+                            SagerNet.application,
+                            SagerNet.application.getString(R.string.route_need_vpn, rule.displayName()),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    PackageCache[it]?.takeIf { uid -> uid >= 1000 }
+                }.toHashSet().filterNotNull()
+                val ruleSets = mutableListOf<RuleSet>()
 
-                if (rule_set != null) generateRuleSet(rule_set, ruleSets)
+                val ruleObj = Rule_DefaultOptions().apply {
+                    if (uidList.isNotEmpty()) {
+                        PackageCache.awaitLoadSync()
+                        user_id = uidList
+                    }
+                    var domainList: List<String>? = null
+                    if (rule.domains.isNotBlank()) {
+                        domainList = rule.domains.listByLineOrComma()
+                        makeSingBoxRule(domainList, false)
+                    }
+                    if (rule.ip.isNotBlank()) {
+                        makeSingBoxRule(rule.ip.listByLineOrComma(), true)
+                    }
 
-                if (rule.port.isNotBlank()) {
-                    port = mutableListOf<Int>()
-                    port_range = mutableListOf<String>()
-                    rule.port.listByLineOrComma().map {
-                        if (it.contains(":")) {
-                            port_range.add(it)
-                        } else {
-                            it.toIntOrNull()?.apply { port.add(this) }
+                    if (rule_set != null) generateRuleSet(rule_set, ruleSets)
+
+                    if (rule.port.isNotBlank()) {
+                        port = mutableListOf<Int>()
+                        port_range = mutableListOf<String>()
+                        rule.port.listByLineOrComma().map {
+                            if (it.contains(":")) {
+                                port_range.add(it)
+                            } else {
+                                it.toIntOrNull()?.apply { port.add(this) }
+                            }
                         }
                     }
-                }
-                if (rule.sourcePort.isNotBlank()) {
-                    source_port = mutableListOf<Int>()
-                    source_port_range = mutableListOf<String>()
-                    rule.sourcePort.listByLineOrComma().map {
-                        if (it.contains(":")) {
-                            source_port_range.add(it)
-                        } else {
-                            it.toIntOrNull()?.apply { source_port.add(this) }
+                    if (rule.sourcePort.isNotBlank()) {
+                        source_port = mutableListOf<Int>()
+                        source_port_range = mutableListOf<String>()
+                        rule.sourcePort.listByLineOrComma().map {
+                            if (it.contains(":")) {
+                                source_port_range.add(it)
+                            } else {
+                                it.toIntOrNull()?.apply { source_port.add(this) }
+                            }
                         }
                     }
-                }
-                if (rule.network.isNotBlank()) {
-                    network = listOf(rule.network)
-                }
-                if (rule.source.isNotBlank()) {
-                    source_ip_cidr = rule.source.listByLineOrComma()
-                }
-                if (rule.protocol.isNotBlank()) {
-                    protocol = rule.protocol.listByLineOrComma()
-                }
-
-                fun makeDnsRuleObj(): DNSRule_DefaultOptions {
-                    return DNSRule_DefaultOptions().apply {
-                        if (uidList.isNotEmpty()) user_id = uidList
-                        domainList?.let { makeSingBoxRule(it) }
+                    if (rule.network.isNotBlank()) {
+                        network = listOf(rule.network)
                     }
-                }
-
-                when (rule.outbound) {
-                    -1L -> {
-                        userDNSRuleList += makeDnsRuleObj().apply { server = "dns-direct" }
+                    if (rule.source.isNotBlank()) {
+                        source_ip_cidr = rule.source.listByLineOrComma()
+                    }
+                    if (rule.protocol.isNotBlank()) {
+                        protocol = rule.protocol.listByLineOrComma()
                     }
 
-                    0L -> {
-                        if (useFakeDns) userDNSRuleList += makeDnsRuleObj().apply {
-                            server = "dns-fake"
-                            inbound = listOf("tun-in")
-                        }
-                        userDNSRuleList += makeDnsRuleObj().apply {
-                            server = "dns-remote"
+                    fun makeDnsRuleObj(): DNSRule_DefaultOptions {
+                        return DNSRule_DefaultOptions().apply {
+                            if (uidList.isNotEmpty()) user_id = uidList
+                            domainList?.let { makeSingBoxRule(it) }
                         }
                     }
 
-                    -2L -> {
-                        userDNSRuleList += makeDnsRuleObj().apply {
-                            server = "dns-block"
-                            disable_cache = true
+                    when (rule.outbound) {
+                        -1L -> {
+                            userDNSRuleList += makeDnsRuleObj().apply { server = "dns-direct" }
                         }
+
+                        0L -> {
+                            if (useFakeDns) userDNSRuleList += makeDnsRuleObj().apply {
+                                server = "dns-fake"
+                                inbound = listOf("tun-in")
+                            }
+                            userDNSRuleList += makeDnsRuleObj().apply {
+                                server = "dns-remote"
+                            }
+                        }
+
+                        -2L -> {
+                            userDNSRuleList += makeDnsRuleObj().apply {
+                                server = "dns-block"
+                                disable_cache = true
+                            }
+                        }
+                    }
+
+                    outbound = when (val outId = rule.outbound) {
+                        0L -> TAG_PROXY
+                        -1L -> TAG_BYPASS
+                        -2L -> TAG_BLOCK
+                        else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
                     }
                 }
 
-                outbound = when (val outId = rule.outbound) {
-                    0L -> TAG_PROXY
-                    -1L -> TAG_BYPASS
-                    -2L -> TAG_BLOCK
-                    else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
-                }
-            }
-
-            if (!ruleObj.checkEmpty()) {
-                if (ruleObj.outbound.isNullOrBlank()) {
-                    Toast.makeText(
-                        SagerNet.application,
-                        "Warning: " + rule.displayName() + ": A non-existent outbound was specified.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    route.rules.add(ruleObj)
-                    route.rule_set.addAll(ruleSets)
+                if (!ruleObj.checkEmpty()) {
+                    if (ruleObj.outbound.isNullOrBlank()) {
+                        Toast.makeText(
+                            SagerNet.application,
+                            "Warning: " + rule.displayName() + ": A non-existent outbound was specified.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        route.rules.add(ruleObj)
+                        route.rule_set.addAll(ruleSets)
+                    }
                 }
             }
         }
@@ -815,3 +824,4 @@ fun buildConfig(
     }
 
 }
+

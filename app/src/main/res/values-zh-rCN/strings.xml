@@ -521,4 +521,6 @@
     <string name="webdav_server_error">服务器错误</string>
     <string name="webdav_connect_failed">连接失败，错误代码：%d</string>
     <string name="webdav_create_dir_failed">无法创建或访问备份目录</string>
+    <string name="global_mode">全局模式</string>
+    <string name="global_mode_summary">绕过所有路由规则,所有流量都通过当前节点</string>
 </resources>
