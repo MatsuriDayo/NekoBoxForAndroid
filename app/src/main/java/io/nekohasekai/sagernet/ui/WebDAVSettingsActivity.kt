@@ -24,7 +24,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
 
-class WebDAVSettingsActivity : AppCompatActivity() {
+class WebDAVSettingsActivity : ThemedActivity() {
     
     private lateinit var toolbar: Toolbar
 
@@ -49,7 +49,7 @@ class WebDAVSettingsActivity : AppCompatActivity() {
         return true
     }
 
-    class WebDAVSettingsFragment : PreferenceFragmentCompat() {
+    class WebDAVSettingsFragment : PreferenceFragmentCompat(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.configurationStore
             addPreferencesFromResource(R.xml.webdav_preferences)
@@ -160,6 +160,10 @@ class WebDAVSettingsActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
+            return false
         }
     }
 }

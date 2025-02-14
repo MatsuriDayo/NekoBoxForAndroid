@@ -255,6 +255,7 @@
         <activity
             android:name=".ui.WebDAVSettingsActivity"
             android:label="@string/webdav_settings"
+            android:configChanges="uiMode"
             android:theme="@style/Theme.SagerNet" />
 
         <service
