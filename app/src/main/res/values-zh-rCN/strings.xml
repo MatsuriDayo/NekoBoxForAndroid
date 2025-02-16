@@ -412,7 +412,7 @@
     <string name="backup">备份</string>
     <string name="backup_groups_and_configurations">分组和配置</string>
     <string name="backup_import">导入</string>
-    <string name="backup_summary">如果路由规则与配置一起备份，则自定义出站将丢失。</string>
+    <string name="backup_summary">如果路由规则不与配置一起备份，则自定义出站将丢失。</string>
     <string name="backup_settings">设置</string>
     <string name="backup_not_file">不是一个备份文件，预期 .json，但 %s</string>
     <string name="backup_rules">路由规则</string>
