@@ -63,6 +63,7 @@ jobs:
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
+          GRADLE_OPTS: "-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
