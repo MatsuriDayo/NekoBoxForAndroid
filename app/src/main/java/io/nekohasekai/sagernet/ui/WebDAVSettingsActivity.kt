@@ -50,6 +50,24 @@ class WebDAVSettingsActivity : ThemedActivity() {
     }
 
     class WebDAVSettingsFragment : PreferenceFragmentCompat(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+        private var lastClickTime = 0L
+        private val DEBOUNCE_TIME = 1000L  // 1秒内不允许重复点击
+        private var isFragmentAlive = true
+
+        private fun isClickAllowed(): Boolean {
+            val currentTime = System.currentTimeMillis()
+            val isAllowed = currentTime - lastClickTime > DEBOUNCE_TIME
+            if (isAllowed) {
+                lastClickTime = currentTime
+            }
+            return isAllowed
+        }
+
+        override fun onDestroy() {
+            isFragmentAlive = false
+            super.onDestroy()
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.preferenceDataStore = DataStore.configurationStore
             addPreferencesFromResource(R.xml.webdav_preferences)
@@ -75,8 +93,12 @@ class WebDAVSettingsActivity : ThemedActivity() {
             }
             
             findPreference<Preference>("webdavTest")?.setOnPreferenceClickListener {
-                testWebDAV()
-                true  // 返回 true 表示事件已被处理
+                if (isClickAllowed()) {
+                    testWebDAV()
+                } else {
+                    Snackbar.make(requireView(), "请稍后再试", Snackbar.LENGTH_SHORT).show()
+                }
+                true
             }
         }
 
@@ -144,6 +166,7 @@ class WebDAVSettingsActivity : ThemedActivity() {
                     }
 
                     onMainDispatcher {
+                        if (!isFragmentAlive) return@onMainDispatcher
                         Snackbar.make(
                             requireView(),
                             getString(R.string.webdav_test_success),
@@ -152,6 +175,7 @@ class WebDAVSettingsActivity : ThemedActivity() {
                     }
                 } catch (e: Exception) {
                     onMainDispatcher {
+                        if (!isFragmentAlive) return@onMainDispatcher
                         Snackbar.make(
                             requireView(),
                             getString(R.string.webdav_test_failed, e.message),
