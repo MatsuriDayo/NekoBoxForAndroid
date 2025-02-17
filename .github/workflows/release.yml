@@ -63,7 +63,6 @@ jobs:
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
-          GRADLE_OPTS: "-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
@@ -132,7 +131,7 @@ jobs:
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           ./run init action gradle
           ./gradlew bundlePlayRelease
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: AAB
           path: app/build/outputs/bundle/playRelease/app-play-release.aab
