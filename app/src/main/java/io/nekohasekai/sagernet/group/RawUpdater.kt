@@ -246,6 +246,7 @@ object RawUpdater : GroupUpdater() {
                                 serverPort = proxy["port"].toString().toInt()
                                 username = proxy["username"]?.toString()
                                 password = proxy["password"]?.toString()
+                                allowInsecure = (proxy["skip-cert-verify"]?.toString() == "true")
                                 setTLS(proxy["tls"]?.toString() == "true")
                                 sni = proxy["sni"]?.toString()
                                 name = proxy["name"]?.toString()
