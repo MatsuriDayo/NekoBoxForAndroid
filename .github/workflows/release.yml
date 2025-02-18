@@ -53,6 +53,10 @@ jobs:
       image: ubuntu:latest
       options: --memory=12g --cpus=4
     steps:
+      - name: Install essential packages
+        run: |
+          apt-get update
+          apt-get install -y curl openjdk-17-jdk
       - name: Checkout
         uses: actions/checkout@v4
 
