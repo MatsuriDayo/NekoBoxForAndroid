@@ -69,7 +69,20 @@ jobs:
           key: ${{ runner.os }}-libcore-${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
           restore-keys: |
             ${{ runner.os }}-libcore-
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
+      - name: Setup Gradle
+        run: |
+          echo "org.gradle.jvmargs=-Xmx8g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError" >> gradle.properties
+          echo "org.gradle.daemon=false" >> gradle.properties
+          echo "org.gradle.parallel=true" >> gradle.properties
+          echo "kotlin.compiler.execution.strategy=in-process" >> gradle.properties
+          echo "kotlin.incremental=false" >> gradle.properties
       - name: Gradle Cache
         uses: actions/cache@v4
         with:
@@ -80,15 +93,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/*.toml') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Setup Gradle
-        run: |
-          echo "org.gradle.jvmargs=-Xmx8g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError" >> gradle.properties
-          echo "org.gradle.daemon=false" >> gradle.properties
-          echo "org.gradle.parallel=true" >> gradle.properties
-          echo "kotlin.compiler.execution.strategy=in-process" >> gradle.properties
-          echo "kotlin.incremental=false" >> gradle.properties
-
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
