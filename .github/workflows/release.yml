@@ -11,6 +11,7 @@ on:
       play:
         description: "Play: If want ignore"
         required: false
+
 jobs:
   libcore:
     name: Native Build (LibCore)
@@ -18,48 +19,64 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Golang Status
         run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+
       - name: Libcore Status
         run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
       - name: LibCore Cache
         id: cache
         uses: actions/cache@v4
         with:
-          path: |
-            app/libs/libcore.aar
-          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          path: app/libs/libcore.aar
+          key: ${{ runner.os }}-libcore-${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          restore-keys: |
+            ${{ runner.os }}-libcore-
+
       - name: Install Golang
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/setup-go@v5
         with:
           go-version: "1.22.10"
+
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
+
   build:
     name: Build OSS APK
     runs-on: ubuntu-latest
-    needs:
-      - libcore
+    needs: [libcore]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Golang Status
         run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+
       - name: Libcore Status
         run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
       - name: LibCore Cache
         uses: actions/cache@v4
         with:
-          path: |
-            app/libs/libcore.aar
-          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          path: app/libs/libcore.aar
+          key: ${{ runner.os }}-libcore-${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          restore-keys: |
+            ${{ runner.os }}-libcore-
+
       - name: Gradle cache
         uses: actions/cache@v4
         with:
-          path: ~/.gradle
-          key: gradle-oss-${{ hashFiles('**/*.gradle.kts') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-oss-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-oss-
+
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
@@ -73,23 +90,27 @@ jobs:
           APK=$(find app/build/outputs/apk -name '*arm64-v8a*.apk')
           APK=$(dirname $APK)
           echo "APK=$APK" >> $GITHUB_ENV
+
       - uses: actions/upload-artifact@v4
         with:
           name: APKs
           path: ${{ env.APK }}
+
   publish:
     name: Publish Release
     if: github.event.inputs.publish != 'y'
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: APKs
           path: artifacts
+
       - name: Release
         run: |
           wget -O ghr.tar.gz https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
@@ -98,41 +119,54 @@ jobs:
           mkdir apks
           find artifacts -name "*.apk" -exec cp {} apks \;
           ./ghr -delete -t "${{ github.token }}" -n "${{ github.event.inputs.tag }}" "${{ github.event.inputs.tag }}" apks
+
   play:
     name: Build Play Bundle
     if: github.event.inputs.play != 'y'
     runs-on: ubuntu-latest
-    needs:
-      - libcore
+    needs: [libcore]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Golang Status
         run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+
       - name: Libcore Status
         run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
       - name: LibCore Cache
         uses: actions/cache@v4
         with:
-          path: |
-            app/libs/libcore.aar
-          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          path: app/libs/libcore.aar
+          key: ${{ runner.os }}-libcore-${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+          restore-keys: |
+            ${{ runner.os }}-libcore-
+
       - name: Gradle cache
         uses: actions/cache@v4
         with:
-          path: ~/.gradle
-          key: gradle-play-${{ hashFiles('**/*.gradle.kts') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-play-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-play-
+
       - name: Checkout Library
         run: |
           git submodule update --init 'app/*'
+
       - name: Gradle Build
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           ./run init action gradle
           ./gradlew bundlePlayRelease
+
       - uses: actions/upload-artifact@v4
         with:
           name: AAB
