@@ -63,15 +63,23 @@ jobs:
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.jvmargs=-Xmx2g"
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           ./run init action gradle
-          ./gradlew app:assembleOssRelease
+          ./gradlew app:assembleOssRelease \
+                --no-daemon \
+                --stacktrace \
+                --info \
+                --console=plain \
+                --warning-mode=all \
+                --max-workers=2
           APK=$(find app/build/outputs/apk -name '*arm64-v8a*.apk')
           APK=$(dirname $APK)
           echo "APK=$APK" >> $GITHUB_ENV
+          echo "Build completed. APK directory: $APK"
       - uses: actions/upload-artifact@v4
         with:
           name: APKs
