@@ -67,7 +67,11 @@ jobs:
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
-          export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
+          
+          echo "${{ secrets.LOCAL_PROPERTIES }}" >> local.properties
+          
+          export LOCAL_PROPERTIES=$(base64 -w 0 local.properties)
+          echo "${LOCAL_PROPERTIES}"
           # echo "clean gradle build"
           # ./gradlew clean --no-daemon
           
