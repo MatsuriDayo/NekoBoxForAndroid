@@ -69,7 +69,8 @@ jobs:
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           ./run init action gradle
-          ./gradlew app:assembleOssRelease \
+          ./gradlew clean build app:assembleOssRelease \
+                --info \
                 --no-daemon \
                 --stacktrace \
                 --info \
