@@ -68,8 +68,8 @@ jobs:
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
           echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
-          echo "clean gradle build"
-          ./gradlew clean --no-daemon
+          # echo "clean gradle build"
+          # ./gradlew clean --no-daemon
           
           echo "start init aciton"
           ./run init action gradle
