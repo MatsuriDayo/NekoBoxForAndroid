@@ -501,7 +501,7 @@
     <string name="backup_webdav">WebDAV</string>
     <string name="webdav_settings">WebDAV 设置</string>
     <string name="webdav_server">服务器地址</string>
-    <string name="webdav_username">用户名</string>
+    <string name="webdav_username">账号</string>
     <string name="webdav_password">密码</string>
     <string name="webdav_path">备份目录</string>
     <string name="webdav_test">测试连接</string>

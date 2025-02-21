@@ -37,6 +37,7 @@ class WebDAVSettingsActivity : ThemedActivity() {
         supportActionBar?.apply {
             setTitle(R.string.webdav_settings)
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_navigation_close)
         }
         
         supportFragmentManager.beginTransaction()
@@ -73,22 +74,34 @@ class WebDAVSettingsActivity : ThemedActivity() {
             addPreferencesFromResource(R.xml.webdav_preferences)
             
             findPreference<EditTextPreference>("webdavServer")?.apply {
-                setOnBindEditTextListener { it.setSingleLine() }
+                setOnBindEditTextListener { editText ->
+                    editText.setSingleLine()
+                    editText.setSelection(editText.text.length)
+                }
                 summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
             }
             
             findPreference<EditTextPreference>("webdavUsername")?.apply {
-                setOnBindEditTextListener { it.setSingleLine() }
+                setOnBindEditTextListener { editText ->
+                    editText.setSingleLine()
+                    editText.setSelection(editText.text.length)
+                }
                 summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
             }
             
             findPreference<EditTextPreference>("webdavPassword")?.apply {
-                setOnBindEditTextListener { it.setSingleLine() }
+                setOnBindEditTextListener { editText ->
+                    editText.setSingleLine()
+                    editText.setSelection(editText.text.length)
+                }
                 summary = "********"
             }
             
             findPreference<EditTextPreference>("webdavPath")?.apply {
-                setOnBindEditTextListener { it.setSingleLine() }
+                setOnBindEditTextListener { editText ->
+                    editText.setSingleLine()
+                    editText.setSelection(editText.text.length)
+                }
                 summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
             }
             
