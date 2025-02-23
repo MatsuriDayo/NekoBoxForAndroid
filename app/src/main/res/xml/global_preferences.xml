@@ -2,10 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="@string/general_settings">
-        <io.nekohasekai.sagernet.widget.AppListPreference
-            app:icon="@drawable/ic_baseline_android_24"
-            app:key="nekoPlugins"
-            app:title="@string/neko_plugin" />
         <SwitchPreference
             app:defaultValue="false"
             app:icon="@drawable/ic_communication_phonelink_ring"
@@ -88,6 +84,10 @@
             app:key="logLevel"
             app:title="@string/log_level"
             app:useSimpleSummaryProvider="true" />
+        <io.nekohasekai.sagernet.widget.AppListPreference
+            app:icon="@drawable/ic_baseline_android_24"
+            app:key="nekoPlugins"
+            app:title="@string/neko_plugin" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_route">
@@ -234,14 +234,14 @@
             app:title="@string/app_tls_version"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
-            app:key="showBottomBar"
-            app:title="@string/show_bottom_bar" />
+            app:icon="@drawable/ic_action_lock_open"
+            app:key="globalAllowInsecure"
+            app:title="@string/global_allow_insecure" />
         <SwitchPreference
             app:key="allowInsecureOnRequest"
             app:title="@string/allow_insecure_on_request_sum" />
         <SwitchPreference
-            app:icon="@drawable/ic_action_lock_open"
-            app:key="globalAllowInsecure"
-            app:title="@string/global_allow_insecure" />
+            app:key="showBottomBar"
+            app:title="@string/show_bottom_bar" />
     </PreferenceCategory>
 </PreferenceScreen>

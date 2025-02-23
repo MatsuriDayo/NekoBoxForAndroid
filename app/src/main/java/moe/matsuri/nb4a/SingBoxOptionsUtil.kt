@@ -113,7 +113,6 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
         if (isIP) {
             if (it.startsWith("geoip:")) {
                 rule_set.plusAssign(it)
-                rule_set_ipcidr_match_source = false
             } else {
                 ip_cidr.plusAssign(it)
             }

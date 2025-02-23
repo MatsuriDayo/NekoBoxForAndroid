@@ -5,8 +5,11 @@ package io.nekohasekai.sagernet.ktx
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.content.*
-import android.content.pm.PackageInfo
+import android.content.ActivityNotFoundException
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Build
 import android.system.Os
@@ -33,10 +36,17 @@ import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
 import io.nekohasekai.sagernet.ui.MainActivity
 import io.nekohasekai.sagernet.ui.ThemedActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import moe.matsuri.nb4a.utils.NGUtil
 import java.io.FileDescriptor
-import java.net.*
+import java.net.HttpURLConnection
+import java.net.InetAddress
+import java.net.Socket
+import java.net.URLEncoder
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -48,6 +58,7 @@ import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 
+fun String?.blankAsNull(): String? = if (isNullOrBlank()) null else this
 
 inline fun <T> Iterable<T>.forEachTry(action: (T) -> Unit) {
     var result: Exception? = null

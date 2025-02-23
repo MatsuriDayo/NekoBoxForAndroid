@@ -1,5 +1,6 @@
 package io.nekohasekai.sagernet.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -15,7 +16,11 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [ProxyGroup::class, ProxyEntity::class, RuleEntity::class],
-    version = 3
+    version = 5,
+    autoMigrations = [
+        AutoMigration(from = 3, to = 4),
+        AutoMigration(from = 4, to = 5)
+    ]
 )
 @TypeConverters(value = [KryoConverters::class, GsonConverters::class])
 @GenerateRoomMigrations

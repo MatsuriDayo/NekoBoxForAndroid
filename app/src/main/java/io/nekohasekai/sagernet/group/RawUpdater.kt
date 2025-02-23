@@ -22,6 +22,7 @@ import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.ktx.*
 import libcore.Libcore
 import moe.matsuri.nb4a.Protocols
+import moe.matsuri.nb4a.proxy.anytls.AnyTLSBean
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.utils.Util
 import org.ini4j.Ini
@@ -506,6 +507,31 @@ object RawUpdater : GroupUpdater() {
                             }
                             if (isHttpUpgrade) {
                                 bean.type = "httpupgrade"
+                            }
+                            proxies.add(bean)
+                        }
+
+                        "anytls" -> {
+                            val bean = AnyTLSBean()
+                            for (opt in proxy) {
+                                if (opt.value == null) continue
+                                when (opt.key.replace("_", "-")) {
+                                    "name" -> bean.name = opt.value.toString()
+                                    "server" -> bean.serverAddress = opt.value as String
+                                    "port" -> bean.serverPort = opt.value.toString().toInt()
+                                    "password" -> bean.password = opt.value.toString()
+                                    "client-fingerprint" -> bean.utlsFingerprint =
+                                        opt.value as String
+
+                                    "sni" -> bean.sni = opt.value.toString()
+                                    "skip-cert-verify" -> bean.allowInsecure =
+                                        opt.value.toString() == "true"
+
+                                    "alpn" -> {
+                                        val alpn = (opt.value as? (List<String>))
+                                        bean.alpn = alpn?.joinToString("\n")
+                                    }
+                                }
                             }
                             proxies.add(bean)
                         }
