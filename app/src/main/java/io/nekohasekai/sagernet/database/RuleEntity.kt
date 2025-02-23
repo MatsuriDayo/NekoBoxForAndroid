@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "rules")
 @Parcelize
+@TypeConverters(StringCollectionConverter::class)
 data class RuleEntity(
     @PrimaryKey(autoGenerate = true) var id: Long = 0L,
     var name: String = "",
@@ -21,7 +22,7 @@ data class RuleEntity(
     var source: String = "",
     var protocol: String = "",
     var outbound: Long = 0,
-    var packages: List<String> = listOf(),
+    var packages: Set<String> = emptySet(),
 ) : Parcelable {
 
     fun displayName(): String {

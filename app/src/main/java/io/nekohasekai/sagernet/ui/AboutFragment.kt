@@ -107,7 +107,7 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         PackageCache.awaitLoadSync()
                         for ((_, pkg) in PackageCache.installedPluginPackages) {
                             try {
-                                val pluginId = pkg.providers[0].loadString(Plugins.METADATA_KEY_ID)
+                                val pluginId = pkg.providers?.get(0)?.loadString(Plugins.METADATA_KEY_ID)
                                 if (pluginId.isNullOrBlank() || pluginId.startsWith(Plugins.AUTHORITIES_PREFIX_NEKO_PLUGIN)) continue
                                 addItem(MaterialAboutActionItem.Builder()
                                     .icon(R.drawable.ic_baseline_nfc_24)

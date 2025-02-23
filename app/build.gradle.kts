@@ -3,7 +3,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 
@@ -13,8 +13,8 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
-    kapt.arguments {
-        arg("room.incremental", true)
+    ksp {
+        arg("room.incremental", "true")
         arg("room.schemaLocation", "$projectDir/schemas")
     }
     bundle {
@@ -23,14 +23,18 @@ android {
         }
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         aidl = true
     }
     namespace = "io.nekohasekai.sagernet"
-    packagingOptions {
+    packaging {
         jniLibs {
             useLegacyPackaging = true
         }
+    }
+    androidResources {
+        generateLocaleConfig = true
     }
 }
 
@@ -74,11 +78,11 @@ dependencies {
         exclude(group = "androidx.appcompat")
     }
 
-    implementation("androidx.room:room-runtime:2.5.1")
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.MatrixDev.Roomigrant:RoomigrantLib:0.3.4")
-    kapt("com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.3.4")
+    ksp("com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.3.4")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }

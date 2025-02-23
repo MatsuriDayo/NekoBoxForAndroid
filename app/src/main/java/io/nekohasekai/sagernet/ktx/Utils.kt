@@ -113,9 +113,6 @@ fun Context.listenForPackageChanges(onetime: Boolean = true, callback: () -> Uni
         })
     }
 
-val PackageInfo.signaturesCompat
-    get() = if (Build.VERSION.SDK_INT >= 28) signingInfo.apkContentsSigners else @Suppress("DEPRECATION") signatures
-
 /**
  * Based on: https://stackoverflow.com/a/26348729/2245107
  */

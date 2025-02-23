@@ -1,9 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.Lint
 import com.android.build.gradle.AbstractAppExtension
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -11,7 +7,9 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import java.security.MessageDigest
-import java.util.*
+import java.util.Base64
+import java.util.Locale
+import java.util.Properties
 import kotlin.system.exitProcess
 
 fun sha256Hex(bytes: ByteArray): String {
@@ -80,7 +78,7 @@ fun Project.requireTargetAbi(): String {
     var targetAbi = ""
     if (gradle.startParameter.taskNames.isNotEmpty()) {
         if (gradle.startParameter.taskNames.size == 1) {
-            val targetTask = gradle.startParameter.taskNames[0].toLowerCase(Locale.ROOT).trim()
+            val targetTask = gradle.startParameter.taskNames[0].lowercase(Locale.ROOT).trim()
             when {
                 targetTask.contains("arm64") -> targetAbi = "arm64-v8a"
                 targetTask.contains("arm") -> targetAbi = "armeabi-v7a"
@@ -94,11 +92,11 @@ fun Project.requireTargetAbi(): String {
 
 fun Project.setupCommon() {
     android.apply {
-        buildToolsVersion = "30.0.3"
-        compileSdk = 33
+        buildToolsVersion = "35.0.1"
+        compileSdk = 35
         defaultConfig {
             minSdk = 21
-            targetSdk = 33
+            targetSdk = 35
         }
         buildTypes {
             getByName("release") {
@@ -120,7 +118,7 @@ fun Project.setupCommon() {
             textOutput = project.file("build/lint.txt")
             htmlOutput = project.file("build/lint.html")
         }
-        packagingOptions {
+        packaging {
             resources.excludes.addAll(
                 listOf(
                     "**/*.kotlin_*",
@@ -136,9 +134,6 @@ fun Project.setupCommon() {
                     "okhttp3/**"
                 )
             )
-        }
-        packagingOptions {
-            jniLibs.useLegacyPackaging = true
         }
         (this as? AbstractAppExtension)?.apply {
             buildTypes {

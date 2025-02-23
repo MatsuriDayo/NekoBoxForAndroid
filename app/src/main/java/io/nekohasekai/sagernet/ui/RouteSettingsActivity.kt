@@ -49,7 +49,7 @@ class RouteSettingsActivity(
     fun init(packageName: String?) {
         RuleEntity().apply {
             if (!packageName.isNullOrBlank()) {
-                packages = listOf(packageName)
+                packages = setOf(packageName)
                 name = app.getString(R.string.route_for, PackageCache.loadLabel(packageName))
             }
         }.init()
@@ -89,7 +89,7 @@ class RouteSettingsActivity(
             2 -> -2L
             else -> DataStore.routeOutboundRule
         }
-        packages = DataStore.routePackages.split("\n").filter { it.isNotBlank() }
+        packages = DataStore.routePackages.split("\n").filter { it.isNotBlank() }.toSet()
 
         if (DataStore.editingId == 0L) {
             enabled = true

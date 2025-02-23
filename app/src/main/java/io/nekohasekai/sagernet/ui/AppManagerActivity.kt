@@ -103,9 +103,9 @@ class AppManagerActivity : ThemedActivity() {
         var filteredApps = apps
 
         suspend fun reload() {
-            apps = cachedApps.map { (packageName, packageInfo) ->
+            apps = cachedApps.mapNotNull { (packageName, packageInfo) ->
                 coroutineContext[Job]!!.ensureActive()
-                ProxiedApp(packageManager, packageInfo.applicationInfo, packageName)
+                packageInfo.applicationInfo?.let { ProxiedApp(packageManager, it, packageName) }
             }.sortedWith(compareBy({ !isProxiedApp(it) }, { it.name.toString() }))
         }
 
@@ -164,8 +164,11 @@ class AppManagerActivity : ThemedActivity() {
     private fun initProxiedUids(str: String = DataStore.individual) {
         proxiedUids.clear()
         val apps = cachedApps
-        for (line in str.lineSequence()) proxiedUids[(apps[line]
-            ?: continue).applicationInfo.uid] = true
+        for (line in str.lineSequence()) {
+            val app = (apps[line] ?: continue)
+            val uid = app.applicationInfo?.uid ?: continue
+            proxiedUids[uid] = true
+        }
     }
 
     private fun isProxiedApp(app: ProxiedApp) = proxiedUids[app.uid]
@@ -325,14 +328,19 @@ class AppManagerActivity : ThemedActivity() {
                     proxiedUids.clear()
                     for (app in cachedApps) {
                         val needProxy =
-                            needProxyAppsList.contains(app.key) || app.value.applicationInfo.uid == 1000
+                            needProxyAppsList.contains(app.key) || (app.value.applicationInfo?.uid
+                                ?: 0) == 1000
                         if (needProxy) {
                             if (!bypass) {
-                                proxiedUids[app.value.applicationInfo.uid] = true
+                                app.value.applicationInfo?.apply {
+                                    proxiedUids[uid] = true
+                                }
                             }
                         } else {
                             if (bypass) {
-                                proxiedUids[app.value.applicationInfo.uid] = true
+                                app.value.applicationInfo?.apply {
+                                    proxiedUids[uid] = true
+                                }
                             }
                         }
                     }
