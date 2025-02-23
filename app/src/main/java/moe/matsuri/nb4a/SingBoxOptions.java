@@ -1879,10 +1879,6 @@ public class SingBoxOptions {
 
         public Boolean enabled;
 
-        public Boolean pq_signature_schemes_enabled;
-
-        public Boolean dynamic_record_sizing_disabled;
-
         // Generate note: Listable
         public List<String> key;
 
@@ -1893,10 +1889,6 @@ public class SingBoxOptions {
     public static class OutboundECHOptions extends SingBoxOption {
 
         public Boolean enabled;
-
-        public Boolean pq_signature_schemes_enabled;
-
-        public Boolean dynamic_record_sizing_disabled;
 
         // Generate note: Listable
         public List<String> config;

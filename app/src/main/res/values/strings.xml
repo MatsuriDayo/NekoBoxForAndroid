@@ -560,13 +560,7 @@
     <string name="enable_ech">Enable ECH</string>
     <string name="enable_ech_sum">Enable Encrypted Client Hello</string>
     <string name="ech_settings">ECH Settings</string>
-    <string name="pq_signature_schemes_enabled">Enable post-quantum peer certificate signature
-        supports</string>
-    <string name="dynamic_record_sizing_disabled">Disables adaptive sizing of TLS records</string>
     <string name="ech_config">ECH Config</string>
-    <string name="dynamic_record_sizing_sum">If enable, the largest possible TLS record size is
-        always used. When disable, the size of TLS records may be adjusted in an attempt to improve
-        latency.</string>
     <string name="http_upgrade_host">HTTPUpgrade Host</string>
     <string name="http_upgrade_path">HTTPUpgrade Path</string>
     <string name="update_current_subscription">Update current Group\'s subscription</string>

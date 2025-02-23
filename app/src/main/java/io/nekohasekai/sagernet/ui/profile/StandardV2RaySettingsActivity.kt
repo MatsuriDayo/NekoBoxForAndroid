@@ -45,8 +45,6 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val realityShortId = pbm.add(PreferenceBinding(Type.Text, "realityShortId"))
 
     private val enableECH = pbm.add(PreferenceBinding(Type.Bool, "enableECH"))
-    private val enablePqSignature = pbm.add(PreferenceBinding(Type.Bool, "enablePqSignature"))
-    private val disabledDRS = pbm.add(PreferenceBinding(Type.Bool, "disabledDRS"))
     private val echConfig = pbm.add(PreferenceBinding(Type.Text, "echConfig"))
 
     override fun StandardV2RayBean.init() {

@@ -151,15 +151,6 @@
     <PreferenceCategory
         app:key="serverECHCategory"
         app:title="@string/ech_settings">
-        <SwitchPreference
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="enablePqSignature"
-            app:title="@string/pq_signature_schemes_enabled" />
-        <SwitchPreference
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="disabledDRS"
-            app:summary="@string/dynamic_record_sizing_sum"
-            app:title="@string/dynamic_record_sizing_disabled" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_texture_24"
             app:key="echConfig"
