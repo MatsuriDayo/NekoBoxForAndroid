@@ -760,9 +760,25 @@ object RawUpdater : GroupUpdater() {
                 }
 
                 json.has("outbounds") -> {
-                    return listOf(ConfigBean().applyDefaultValues().apply {
-                        config = json.toStringPretty()
-                    })
+                    return json.getJSONArray("outbounds")
+                        .filterIsInstance<JSONObject>()
+                        .mapNotNull {
+                            val ty = it.getStr("type")
+                            if (ty == null || ty == "" ||
+                                ty == "dns" || ty == "block" || ty == "direct" || ty == "selector" || ty == "urltest"
+                            ) {
+                                null
+                            } else {
+                                it
+                            }
+                        }.map {
+                            ConfigBean().apply {
+                                applyDefaultValues()
+                                type = 1
+                                config = it.toStringPretty()
+                                name = it.getStr("tag")
+                            }
+                        }
                 }
 
                 json.has("server") && json.has("server_port") -> {
