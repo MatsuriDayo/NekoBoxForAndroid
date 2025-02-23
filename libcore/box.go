@@ -10,6 +10,7 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+	"sync"
 
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
@@ -20,7 +21,6 @@ import (
 	"github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/outbound"
-	"github.com/sagernet/sing/common"
 	"github.com/sagernet/sing/service"
 	"github.com/sagernet/sing/service/pause"
 )
@@ -59,6 +59,8 @@ func ResetAllConnections(system bool) {
 }
 
 type BoxInstance struct {
+	access sync.Mutex
+
 	*box.Box
 	cancel context.CancelFunc
 	state  int
@@ -66,8 +68,6 @@ type BoxInstance struct {
 	v2api        *boxapi.SbV2rayServer
 	selector     *outbound.Selector
 	pauseManager pause.Manager
-
-	ForTest bool
 }
 
 func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
@@ -113,6 +113,9 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 }
 
 func (b *BoxInstance) Start() (err error) {
+	b.access.Lock()
+	defer b.access.Unlock()
+
 	defer device.DeferPanicToError("box.Start", func(err_ error) { err = err_ })
 
 	if b.state == 0 {
@@ -123,6 +126,9 @@ func (b *BoxInstance) Start() (err error) {
 }
 
 func (b *BoxInstance) Close() (err error) {
+	b.access.Lock()
+	defer b.access.Unlock()
+
 	defer device.DeferPanicToError("box.Close", func(err_ error) { err = err_ })
 
 	// no double close
@@ -138,7 +144,12 @@ func (b *BoxInstance) Close() (err error) {
 	}
 
 	// close box
-	common.Close(b.Box)
+	if b.cancel != nil {
+		b.cancel()
+	}
+	if b.Box != nil {
+		b.Box.Close()
+	}
 
 	return nil
 }

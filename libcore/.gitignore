@@ -5,3 +5,4 @@ binary*.go
 /debug.go
 build
 .build
+env_*.sh

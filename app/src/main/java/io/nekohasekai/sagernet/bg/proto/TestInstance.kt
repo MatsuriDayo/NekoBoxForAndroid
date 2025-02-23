@@ -47,7 +47,6 @@ class TestInstance(profile: ProxyEntity, val link: String, val timeout: Int) :
         // don't call destroyAllJsi here
         if (BuildConfig.DEBUG) Logs.d(config.config)
         box = Libcore.newSingBoxInstance(config.config)
-        box.forTest = true
     }
 
 }
