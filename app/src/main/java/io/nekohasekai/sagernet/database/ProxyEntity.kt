@@ -33,6 +33,7 @@ import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.applyDefaultValues
 import io.nekohasekai.sagernet.ui.profile.*
 import moe.matsuri.nb4a.Protocols
+import moe.matsuri.nb4a.SingBoxOptions.MultiplexOptions
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
 import moe.matsuri.nb4a.proxy.neko.*
@@ -309,19 +310,31 @@ data class ProxyEntity(
         }
     }
 
-    fun needCoreMux(): Boolean {
+    fun singMux(): MultiplexOptions? {
         return when (type) {
-            TYPE_VMESS -> if (vmessBean!!.isVLESS) {
-                Protocols.isProfileNeedMux(vmessBean!!) && Protocols.shouldEnableMux("vless")
-            } else {
-                Protocols.isProfileNeedMux(vmessBean!!) && Protocols.shouldEnableMux("vmess")
+            TYPE_VMESS -> MultiplexOptions().apply {
+                enabled = vmessBean!!.enableMux
+                padding = vmessBean!!.muxPadding
+                max_streams = vmessBean!!.muxConcurrency
+                protocol = when (vmessBean!!.muxType) {
+                    1 -> "smux"
+                    2 -> "yamux"
+                    else -> "h2mux"
+                }
             }
 
-            TYPE_TROJAN -> Protocols.isProfileNeedMux(trojanBean!!)
-                    && Protocols.shouldEnableMux("trojan")
+            TYPE_TROJAN -> MultiplexOptions().apply {
+                enabled = trojanBean!!.enableMux
+                padding = trojanBean!!.muxPadding
+                max_streams = trojanBean!!.muxConcurrency
+                protocol = when (trojanBean!!.muxType) {
+                    1 -> "smux"
+                    2 -> "yamux"
+                    else -> "h2mux"
+                }
+            }
 
-            TYPE_SS -> !ssBean!!.sUoT && Protocols.shouldEnableMux("shadowsocks")
-            else -> false
+            else -> null
         }
     }
 

@@ -134,34 +134,6 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/protocol_settings">
-        <MultiSelectListPreference
-            app:defaultValue="@array/mux_select_init"
-            app:entries="@array/mux_select_init"
-            app:entryValues="@array/mux_select_init"
-            app:icon="@drawable/ic_baseline_compare_arrows_24"
-            app:key="mux"
-            app:summary="@string/mux_sum"
-            app:title="@string/enable_mux" />
-        <moe.matsuri.nb4a.ui.SimpleMenuPreference
-            app:defaultValue="0"
-            app:entries="@array/mux_type"
-            app:entryValues="@array/int_array_3"
-            app:key="muxType"
-            app:title="@string/mux_type"
-            app:useSimpleSummaryProvider="true" />
-        <EditTextPreference
-            app:defaultValue="8"
-            app:icon="@drawable/ic_baseline_low_priority_24"
-            app:key="muxConcurrency"
-            app:title="@string/mux_concurrency"
-            app:useSimpleSummaryProvider="true" />
-        <SwitchPreference
-            app:key="globalAllowInsecure"
-            app:icon="@drawable/ic_action_lock_open"
-            app:title="@string/global_allow_insecure" />
-    </PreferenceCategory>
-
     <PreferenceCategory app:title="@string/cag_dns">
         <EditTextPreference
             app:defaultValue="https://dns.google/dns-query"
@@ -267,5 +239,9 @@
         <SwitchPreference
             app:key="allowInsecureOnRequest"
             app:title="@string/allow_insecure_on_request_sum" />
+        <SwitchPreference
+            app:icon="@drawable/ic_action_lock_open"
+            app:key="globalAllowInsecure"
+            app:title="@string/global_allow_insecure" />
     </PreferenceCategory>
 </PreferenceScreen>

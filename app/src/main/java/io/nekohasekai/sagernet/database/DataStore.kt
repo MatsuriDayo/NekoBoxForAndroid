@@ -169,9 +169,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     // protocol
 
-    var muxType by configurationStore.stringToInt(Key.MUX_TYPE)
-    var muxProtocols by configurationStore.stringSet(Key.MUX_PROTOCOLS)
-    var muxConcurrency by configurationStore.stringToInt(Key.MUX_CONCURRENCY) { 8 }
     var globalAllowInsecure by configurationStore.boolean(Key.GLOBAL_ALLOW_INSECURE) { false }
 
     // old cache, DO NOT ADD

@@ -2,43 +2,13 @@ package moe.matsuri.nb4a
 
 import android.content.Context
 import io.nekohasekai.sagernet.R
-import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_NEKO
 import io.nekohasekai.sagernet.fmt.AbstractBean
-import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
-import io.nekohasekai.sagernet.fmt.v2ray.isTLS
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.getColorAttr
-import moe.matsuri.nb4a.plugin.NekoPluginManager
 
 // Settings for all protocols, built-in or plugin
 object Protocols {
-    // Mux
-
-    fun isProfileNeedMux(bean: StandardV2RayBean): Boolean {
-        return when (bean.type) {
-            "tcp", "ws" -> true
-            "http" -> !bean.isTLS()
-            else -> false
-        }
-    }
-
-    fun shouldEnableMux(protocol: String): Boolean {
-        return DataStore.muxProtocols.contains(protocol)
-    }
-
-    fun getCanMuxList(): List<String> {
-        // built-in and support mux
-        val list = mutableListOf("vmess", "trojan", "trojan-go", "shadowsocks", "vless", "padding")
-
-        NekoPluginManager.getProtocols().forEach {
-            if (it.protocolConfig.optBoolean("canMux")) {
-                list.add(it.protocolId)
-            }
-        }
-
-        return list
-    }
 
     // Deduplication
 

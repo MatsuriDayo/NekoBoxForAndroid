@@ -416,6 +416,20 @@ object RawUpdater : GroupUpdater() {
                                                 realityOpt.value.toString()
                                         }
                                     }
+
+                                    "smux" -> for (smuxOpt in (opt.value as Map<String, Any>)) {
+                                        when (smuxOpt.key.lowercase()) {
+                                            "enabled" -> bean.enableMux =
+                                                smuxOpt.value.toString() == "true"
+
+                                            "max-streams" -> bean.muxConcurrency =
+                                                smuxOpt.value.toString().toInt()
+
+                                            "padding" -> bean.muxPadding =
+                                                smuxOpt.value.toString() == "true"
+                                        }
+                                    }
+
                                 }
                             }
                             if (isHttpUpgrade) {
@@ -473,6 +487,19 @@ object RawUpdater : GroupUpdater() {
                                         when (grpcOpt.key.lowercase()) {
                                             "grpc-service-name" -> bean.path =
                                                 grpcOpt.value.toString()
+                                        }
+                                    }
+
+                                    "smux" -> for (smuxOpt in (opt.value as Map<String, Any>)) {
+                                        when (smuxOpt.key.lowercase()) {
+                                            "enabled" -> bean.enableMux =
+                                                smuxOpt.value.toString() == "true"
+
+                                            "max-streams" -> bean.muxConcurrency =
+                                                smuxOpt.value.toString().toInt()
+
+                                            "padding" -> bean.muxPadding =
+                                                smuxOpt.value.toString() == "true"
                                         }
                                     }
                                 }

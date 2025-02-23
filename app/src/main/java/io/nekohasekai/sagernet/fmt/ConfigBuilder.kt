@@ -383,18 +383,12 @@ fun buildConfig(
 //                        val keepAliveInterval = DataStore.tcpKeepAliveInterval
 //                        val needKeepAliveInterval = keepAliveInterval !in intArrayOf(0, 15)
 
-                        if (!muxApplied && proxyEntity.needCoreMux()) {
-                            muxApplied = true
-                            currentOutbound["multiplex"] = MultiplexOptions().apply {
-                                enabled = true
-                                padding = Protocols.shouldEnableMux("padding")
-                                max_streams = DataStore.muxConcurrency
-                                protocol = when (DataStore.muxType) {
-                                    1 -> "smux"
-                                    2 -> "yamux"
-                                    else -> "h2mux"
-                                }
-                            }.asMap()
+                        if (!muxApplied) {
+                            val muxObj = proxyEntity.singMux()
+                            if (muxObj != null && muxObj.enabled) {
+                                muxApplied = true
+                                currentOutbound["multiplex"] = muxObj.asMap()
+                            }
                         }
                     }
                 }
