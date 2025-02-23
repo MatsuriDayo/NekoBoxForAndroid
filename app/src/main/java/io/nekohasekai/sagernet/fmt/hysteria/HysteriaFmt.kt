@@ -284,7 +284,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                server_ports = bean.serverPorts
+                server_ports = bean.serverPorts.replace("-", ":").split(",", "/")
             }
             hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
@@ -323,7 +323,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                server_ports = bean.serverPorts
+                server_ports = bean.serverPorts.replace("-", ":").split(",", "/")
             }
             hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
