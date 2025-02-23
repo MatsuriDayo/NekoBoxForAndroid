@@ -4,6 +4,7 @@ import (
 	"net/netip"
 
 	tun "github.com/sagernet/sing-tun"
+	"github.com/sagernet/sing/common/control"
 	"github.com/sagernet/sing/common/x/list"
 )
 
@@ -28,8 +29,8 @@ func (i *interfaceMonitor) DefaultInterfaceIndex(destination netip.Addr) int {
 	return 0
 }
 
-func (i *interfaceMonitor) DefaultInterface(destination netip.Addr) (string, int) {
-	return "", 0
+func (i *interfaceMonitor) DefaultInterface() *control.Interface {
+	return nil
 }
 
 func (i *interfaceMonitor) OverrideAndroidVPN() bool {

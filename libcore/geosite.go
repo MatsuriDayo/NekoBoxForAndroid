@@ -1,13 +1,13 @@
 package libcore
 
 import (
+	"log"
+	"os"
+
 	"github.com/sagernet/sing-box/common/geosite"
 	"github.com/sagernet/sing-box/common/srs"
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/option"
-	"os"
-
-	"log"
 )
 
 type Geosite struct {
@@ -58,7 +58,8 @@ func (g *Geosite) ConvertGeosite(code string, outputPath string) {
 	}
 
 	outputFile, err := os.Create(outputPath)
-	err = srs.Write(outputFile, plainRuleSet.Upgrade())
+	rs, _ := plainRuleSet.Upgrade()
+	err = srs.Write(outputFile, rs, plainRuleSet.Version)
 	if err != nil {
 		log.Println("failed to write geosite file:", err)
 		return

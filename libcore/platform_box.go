@@ -18,7 +18,6 @@ import (
 	sblog "github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
 	tun "github.com/sagernet/sing-tun"
-	"github.com/sagernet/sing/common/control"
 	E "github.com/sagernet/sing/common/exceptions"
 	"github.com/sagernet/sing/common/logger"
 	N "github.com/sagernet/sing/common/network"
@@ -36,7 +35,7 @@ func (w *boxPlatformInterfaceWrapper) ReadWIFIState() adapter.WIFIState {
 	}
 }
 
-func (w *boxPlatformInterfaceWrapper) Initialize(ctx context.Context, router adapter.Router) error {
+func (w *boxPlatformInterfaceWrapper) Initialize(n adapter.NetworkManager) error {
 	return nil
 }
 
@@ -44,13 +43,9 @@ func (w *boxPlatformInterfaceWrapper) UsePlatformAutoDetectInterfaceControl() bo
 	return true
 }
 
-func (w *boxPlatformInterfaceWrapper) AutoDetectInterfaceControl() control.Func {
+func (w *boxPlatformInterfaceWrapper) AutoDetectInterfaceControl(fd int) error {
 	// "protect"
-	return func(network, address string, conn syscall.RawConn) error {
-		return control.Raw(conn, func(fd uintptr) error {
-			return intfBox.AutoDetectInterfaceControl(int32(fd))
-		})
-	}
+	return intfBox.AutoDetectInterfaceControl(int32(fd))
 }
 
 func (w *boxPlatformInterfaceWrapper) OpenTun(options *tun.Options, platformOptions option.TunPlatformOptions) (tun.Tun, error) {
@@ -92,12 +87,16 @@ func (w *boxPlatformInterfaceWrapper) UsePlatformInterfaceGetter() bool {
 	return false
 }
 
-func (w *boxPlatformInterfaceWrapper) Interfaces() ([]control.Interface, error) {
+func (w *boxPlatformInterfaceWrapper) Interfaces() ([]adapter.NetworkInterface, error) {
 	return nil, errors.New("wtf")
 }
 
 func (w *boxPlatformInterfaceWrapper) IncludeAllNetworks() bool {
 	return false
+}
+
+func (w *boxPlatformInterfaceWrapper) SendNotification(notification *platform.Notification) error {
+	return nil
 }
 
 // Android not using

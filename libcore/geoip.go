@@ -1,14 +1,15 @@
 package libcore
 
 import (
-	"github.com/oschwald/maxminddb-golang"
-	"github.com/sagernet/sing-box/common/srs"
-	C "github.com/sagernet/sing-box/constant"
-	"github.com/sagernet/sing-box/option"
 	"log"
 	"net"
 	"os"
 	"strings"
+
+	"github.com/oschwald/maxminddb-golang"
+	"github.com/sagernet/sing-box/common/srs"
+	C "github.com/sagernet/sing-box/constant"
+	"github.com/sagernet/sing-box/option"
 )
 
 type Geoip struct {
@@ -66,7 +67,8 @@ func (g *Geoip) ConvertGeoip(countryCode, outputPath string) {
 	}
 
 	outputFile, err := os.Create(outputPath)
-	err = srs.Write(outputFile, plainRuleSet.Upgrade())
+	rs, _ := plainRuleSet.Upgrade()
+	err = srs.Write(outputFile, rs, plainRuleSet.Version)
 	if err != nil {
 		log.Println("failed to write geosite file:", err)
 		return
