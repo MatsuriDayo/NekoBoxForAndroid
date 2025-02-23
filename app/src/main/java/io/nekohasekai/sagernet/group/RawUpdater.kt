@@ -250,6 +250,7 @@ object RawUpdater : GroupUpdater() {
                                 setTLS(proxy["tls"]?.toString() == "true")
                                 sni = proxy["sni"]?.toString()
                                 name = proxy["name"]?.toString()
+                                allowInsecure = proxy["name"]?.toString() == "true"
                             })
                         }
 

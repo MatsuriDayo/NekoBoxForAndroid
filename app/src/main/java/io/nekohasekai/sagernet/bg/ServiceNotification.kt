@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Build
 import android.text.format.Formatter
 import androidx.core.app.NotificationCompat
@@ -183,7 +184,17 @@ class ServiceNotification(
 
 
     private suspend fun show() =
-        useBuilder { (service as Service).startForeground(notificationId, it.build()) }
+        useBuilder {
+            if (Build.VERSION.SDK_INT >= 34) {
+                (service as Service).startForeground(
+                    notificationId,
+                    it.build(),
+                    FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
+            } else {
+                (service as Service).startForeground(notificationId, it.build())
+            }
+        }
 
     private suspend fun update() = useBuilder {
         NotificationManagerCompat.from(service as Service).notify(notificationId, it.build())

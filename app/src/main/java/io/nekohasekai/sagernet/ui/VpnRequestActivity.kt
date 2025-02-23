@@ -31,7 +31,7 @@ class VpnRequestActivity : AppCompatActivity() {
                 registerReceiver(
                     receiver,
                     IntentFilter(Intent.ACTION_USER_PRESENT),
-                    Context.RECEIVER_NOT_EXPORTED
+                    Context.RECEIVER_EXPORTED
                 )
             } else {
                 registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))

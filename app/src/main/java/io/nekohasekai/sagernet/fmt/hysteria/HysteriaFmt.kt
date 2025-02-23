@@ -95,9 +95,9 @@ fun parseHysteria2(url: String): HysteriaBean {
         link.queryParameter("obfs-password")?.also {
             obfuscation = it
         }
-        link.queryParameter("pinSHA256")?.also {
-            // TODO your box do not support it
-        }
+//        link.queryParameter("pinSHA256")?.also {
+//            // TODO your box do not support it
+//        }
     }
 }
 
@@ -284,9 +284,9 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                hop_ports = bean.serverPorts
+                server_ports = bean.serverPorts
             }
-            hop_interval = bean.hopInterval
+            hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
             down_mbps = bean.downloadMbps
             obfs = bean.obfuscation
@@ -323,9 +323,9 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                hop_ports = bean.serverPorts
+                server_ports = bean.serverPorts
             }
-            hop_interval = bean.hopInterval
+            hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
             down_mbps = bean.downloadMbps
             if (bean.obfuscation.isNotBlank()) {
