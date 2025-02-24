@@ -284,7 +284,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                server_ports = bean.serverPorts
+                server_ports = hopPortsToSingboxList(bean.serverPorts)
             }
             hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
@@ -323,7 +323,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                server_ports = bean.serverPorts
+                server_ports = hopPortsToSingboxList(bean.serverPorts)
             }
             hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
@@ -356,5 +356,16 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
         }.asMap()
 
         else -> mutableMapOf("error_version" to bean.protocolVersion)
+    }
+}
+
+fun hopPortsToSingboxList(s: String): List<String> {
+    return s.split(",").mapNotNull {
+        val pRange = it.replace("-", ":")
+        if (pRange.split(":").size == 2) {
+            pRange
+        } else {
+            null
+        }
     }
 }
