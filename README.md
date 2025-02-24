@@ -14,6 +14,8 @@ sing-box / universal proxy toolchain for Android.
 
 [GitHub Releases 下载](https://github.com/Matsuridayo/NekoBoxForAndroid/releases)
 
+Find and download the desired release (based on your device) from the "Assets" section in Github Releases.
+
 **Google Play 版本自 2024 年 5 月起已被第三方控制，为非开源版本，请不要下载。**
 
 **The Google Play version has been controlled by a third party since May 2024 and is a non-open source version. Please do not download it.**
