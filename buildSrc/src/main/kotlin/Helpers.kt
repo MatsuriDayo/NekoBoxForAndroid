@@ -214,7 +214,7 @@ fun Project.setupApp() {
         applicationVariants.all {
             outputs.all {
                 this as BaseVariantOutputImpl
-                outputFileName = outputFileName.replace(project.name, "NB4A-$versionName")
+                outputFileName = outputFileName.replace(project.name, "NekoBox-$versionName")
                     .replace("-release", "")
                     .replace("-oss", "")
             }

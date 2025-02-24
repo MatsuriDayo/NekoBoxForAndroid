@@ -27,6 +27,7 @@ import (
 	"github.com/sagernet/sing-box/protocol/wireguard"
 
 	_ "github.com/sagernet/sing-box/experimental/clashapi"
+	_ "github.com/sagernet/sing-dns/quic"
 )
 
 func nekoboxAndroidInboundRegistry() *inbound.Registry {

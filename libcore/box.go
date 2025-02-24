@@ -162,12 +162,16 @@ func (b *BoxInstance) Close() (err error) {
 }
 
 func (b *BoxInstance) Sleep() {
-	b.pauseManager.DevicePause()
+	if b.pauseManager != nil {
+		b.pauseManager.DevicePause()
+	}
 	// _ = b.Box.Router().ResetNetwork()
 }
 
 func (b *BoxInstance) Wake() {
-	b.pauseManager.DeviceWake()
+	if b.pauseManager != nil {
+		b.pauseManager.DeviceWake()
+	}
 }
 
 func (b *BoxInstance) SetAsMain() {
