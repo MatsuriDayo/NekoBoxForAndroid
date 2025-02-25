@@ -711,9 +711,11 @@ class ConfigurationFragment @JvmOverloads constructor(
         val testJobs = mutableListOf<Job>()
         val dialog = test.builder.show()
         val mainJob = runOnDefaultDispatcher {
+            var vpnWasStoped = false
             if (DataStore.serviceState.started) {
                 stopService()
                 delay(500) // wait for service stop
+                vpnWasStoped = true
             }
             val group = DataStore.currentGroup()
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
@@ -828,6 +830,14 @@ class ConfigurationFragment @JvmOverloads constructor(
             testJobs.joinAll()
             testPool.close()
 
+            if (vpnWasStoped) {
+                try {
+                    SagerNet.startService()
+                } catch (e: Exception) {
+                    Logs.w("恢复 VPN 连接失败", e)
+                }
+            }
+
             onMainDispatcher {
                 dialog.dismiss()
             }
@@ -855,9 +865,11 @@ class ConfigurationFragment @JvmOverloads constructor(
         val testJobs = mutableListOf<Job>()
 
         val mainJob = runOnDefaultDispatcher {
+            var vpnWasStoped = false
             if (DataStore.serviceState.started) {
                 stopService()
                 delay(500) // wait for service stop
+                vpnWasStoped = true
             }
             val group = DataStore.currentGroup()
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
@@ -893,6 +905,14 @@ class ConfigurationFragment @JvmOverloads constructor(
             }
 
             testJobs.joinAll()
+
+            if (vpnWasStoped) {
+                try {
+                    SagerNet.startService()
+                } catch (e: Exception) {
+                    Logs.w("恢复 VPN 连接失败", e)
+                }
+            }
 
             onMainDispatcher {
                 dialog.dismiss()
