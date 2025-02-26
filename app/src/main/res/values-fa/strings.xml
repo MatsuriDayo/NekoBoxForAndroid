@@ -433,7 +433,7 @@
     <string name="create_shortcut">ایجاد میانبر</string>
     <string name="app_tls_version">حداقل اشتراک نسخه TLS</string>
     <string name="hop_interval">فاصله پرش بندر (ثانیه)</string>
-    <string name="dns_network">نوع پرس و جو DNS</string>
+    <string name="dns_network_select">نوع پرس و جو DNS</string>
     <string name="show_bottom_bar">نمایش نوار پایین مانند SagerNet</string>
     <string name="utls_fingerprint">اثر انگشت uTLS</string>
 </resources>

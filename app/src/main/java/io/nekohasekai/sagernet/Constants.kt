@@ -38,7 +38,6 @@ object Key {
     const val ALLOW_ACCESS = "allowAccess"
     const val SPEED_INTERVAL = "speedInterval"
     const val SHOW_DIRECT_SPEED = "showDirectSpeed"
-    const val LOCAL_DNS_PORT = "portLocalDns"
 
     const val APPEND_HTTP_PROXY = "appendHttpProxy"
 

@@ -46,9 +46,6 @@ const val TAG_DIRECT = "direct"
 const val TAG_BYPASS = "bypass"
 const val TAG_BLOCK = "block"
 
-const val TAG_DNS_IN = "dns-in"
-const val TAG_DNS_OUT = "dns-out"
-
 const val LOCALHOST = "127.0.0.1"
 
 class ConfigBuildResult(
@@ -637,22 +634,6 @@ fun buildConfig(
             type = "direct"
         }.asMap())
 
-        if (!forTest) {
-            inbounds.add(0, Inbound_DirectOptions().apply {
-                type = "direct"
-                tag = TAG_DNS_IN
-                listen = bind
-                listen_port = DataStore.localDNSPort
-                override_address = "8.8.8.8"
-                override_port = 53
-            })
-
-            outbounds.add(Outbound().apply {
-                type = "dns"
-                tag = TAG_DNS_OUT
-            }.asMap())
-        }
-
         // Bypass Lookup for the first profile
         bypassDNSBeans.forEach {
             var serverAddr = it.serverAddress
@@ -726,12 +707,12 @@ fun buildConfig(
         } else {
             // built-in DNS rules
             route.rules.add(0, Rule_DefaultOptions().apply {
-                inbound = listOf(TAG_DNS_IN)
-                outbound = TAG_DNS_OUT
+                protocol = listOf("dns")
+                action = "hijack-dns"
             })
             route.rules.add(0, Rule_DefaultOptions().apply {
                 port = listOf(53)
-                outbound = TAG_DNS_OUT
+                action = "hijack-dns"
             })
             if (DataStore.bypassLanInCore) {
                 route.rules.add(Rule_DefaultOptions().apply {

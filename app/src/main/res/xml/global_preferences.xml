@@ -187,10 +187,6 @@
             app:key="mixedPort"
             app:title="@string/port_proxy"
             app:useSimpleSummaryProvider="true" />
-        <EditTextPreference
-            app:key="portLocalDns"
-            app:title="@string/port_local_dns"
-            app:useSimpleSummaryProvider="true" />
         <SwitchPreference
             app:defaultValue="false"
             app:key="appendHttpProxy"

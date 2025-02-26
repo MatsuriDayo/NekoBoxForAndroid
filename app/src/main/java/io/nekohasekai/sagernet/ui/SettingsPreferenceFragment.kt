@@ -75,7 +75,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val allowAccess = findPreference<Preference>(Key.ALLOW_ACCESS)!!
         val appendHttpProxy = findPreference<SwitchPreference>(Key.APPEND_HTTP_PROXY)!!
 
-        val portLocalDns = findPreference<EditTextPreference>(Key.LOCAL_DNS_PORT)!!
         val showDirectSpeed = findPreference<SwitchPreference>(Key.SHOW_DIRECT_SPEED)!!
         val ipv6Mode = findPreference<Preference>(Key.IPV6_MODE)!!
         val trafficSniffing = findPreference<Preference>(Key.TRAFFIC_SNIFFING)!!
@@ -121,7 +120,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
 
-        portLocalDns.setOnBindEditTextListener(EditTextPreferenceModifiers.Port)
         mixedPort.setOnBindEditTextListener(EditTextPreferenceModifiers.Port)
 
         val metedNetwork = findPreference<Preference>(Key.METERED_NETWORK)!!
@@ -174,7 +172,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         directDns.onPreferenceChangeListener = reloadListener
         enableDnsRouting.onPreferenceChangeListener = reloadListener
 
-        portLocalDns.onPreferenceChangeListener = reloadListener
         ipv6Mode.onPreferenceChangeListener = reloadListener
         allowAccess.onPreferenceChangeListener = reloadListener
 

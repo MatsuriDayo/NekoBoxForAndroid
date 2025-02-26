@@ -252,9 +252,6 @@ fun HysteriaBean.buildHysteria1Config(port: Int, cacheFile: (() -> File)?): Stri
         if (connectionReceiveWindow > 0) put("recv_window", connectionReceiveWindow)
         if (disableMtuDiscovery) put("disable_mtu_discovery", true)
 
-        // hy 1.2.0 （不兼容）
-        put("resolver", "udp://127.0.0.1:" + DataStore.localDNSPort)
-
         put("hop_interval", hopInterval)
     }.toStringPretty()
 }
