@@ -4,6 +4,7 @@ var intfBox BoxPlatformInterface
 var intfNB4A NB4AInterface
 
 var useProcfs bool
+var isBgProcess bool
 
 type NB4AInterface interface {
 	UseOfficialAssets() bool

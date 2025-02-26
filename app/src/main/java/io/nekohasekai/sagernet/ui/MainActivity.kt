@@ -37,7 +37,6 @@ import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListHolderListener
 import moe.matsuri.nb4a.utils.Util
-import java.util.*
 
 class MainActivity : ThemedActivity(),
     SagerConnection.Callback,

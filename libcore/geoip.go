@@ -64,6 +64,7 @@ func init() {
 		if err := g.Open(filepath.Join(externalAssetsPath, "geoip.db")); err != nil {
 			return nil, err
 		}
+		defer g.geoipReader.Close()
 		return g.Rules(name)
 	}
 }

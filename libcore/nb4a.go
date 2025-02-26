@@ -20,8 +20,6 @@ import (
 //go:linkname resourcePaths github.com/sagernet/sing-box/constant.resourcePaths
 var resourcePaths []string
 
-var isBgProcess bool
-
 func NekoLogPrintln(s string) {
 	log.Println(s)
 }
