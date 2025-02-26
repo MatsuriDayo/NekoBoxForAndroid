@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import libcore.Libcore
 import kotlin.coroutines.suspendCoroutine
 
-class TestInstance(profile: ProxyEntity, val link: String, val timeout: Int) :
+class TestInstance(profile: ProxyEntity, val link: String, private val timeout: Int) :
     BoxInstance(profile) {
 
     suspend fun doTest(): Int {

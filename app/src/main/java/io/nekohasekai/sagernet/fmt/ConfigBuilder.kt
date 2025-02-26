@@ -182,12 +182,6 @@ fun buildConfig(
         }
 
         dns = DNSOptions().apply {
-            // TODO nb4a hosts?
-//            hosts = DataStore.hosts.split("\n")
-//                .filter { it.isNotBlank() }
-//                .associate { it.substringBefore(" ") to it.substringAfter(" ") }
-//                .toMutableMap()
-
             servers = mutableListOf()
             rules = mutableListOf()
             independent_cache = true
@@ -665,7 +659,8 @@ fun buildConfig(
 
         // remote dns obj
         remoteDns.firstOrNull().let {
-            dns.servers.add(DNSServerOptions().apply {
+            // Always use direct DNS for urlTest
+            if (!forTest) dns.servers.add(DNSServerOptions().apply {
                 address = it ?: throw Exception("No remote DNS, check your settings!")
                 tag = "dns-remote"
                 address_resolver = "dns-direct"
@@ -701,8 +696,6 @@ fun buildConfig(
         }
 
         if (forTest) {
-            // Always use direct DNS for urlTest
-            dns.servers.removeAt(0)
             dns.rules = listOf()
         } else {
             // built-in DNS rules

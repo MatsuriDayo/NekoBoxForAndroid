@@ -14,6 +14,7 @@ require (
 	github.com/sagernet/sing-tun v0.6.1
 	github.com/ulikunitz/xz v0.5.11
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
+	golang.org/x/sys v0.30.0
 )
 
 require (
@@ -78,7 +79,6 @@ require (
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.7.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect

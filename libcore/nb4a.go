@@ -1,6 +1,7 @@
 package libcore
 
 import (
+	"fmt"
 	"libcore/device"
 	"os"
 	"path/filepath"
@@ -13,10 +14,13 @@ import (
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/sagernet/sing-box/nekoutils"
+	"golang.org/x/sys/unix"
 )
 
 //go:linkname resourcePaths github.com/sagernet/sing-box/constant.resourcePaths
 var resourcePaths []string
+
+var isBgProcess bool
 
 func NekoLogPrintln(s string) {
 	log.Println(s)
@@ -35,7 +39,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	if1 NB4AInterface, if2 BoxPlatformInterface,
 ) {
 	defer device.DeferPanicToError("InitCore", func(err error) { log.Println(err) })
-	isBgProcess := strings.HasSuffix(process, ":bg")
+	isBgProcess = strings.HasSuffix(process, ":bg")
 
 	neko_common.RunMode = neko_common.RunMode_NekoBoxForAndroid
 	intfNB4A = if1
@@ -80,4 +84,38 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 			extractAssets()
 		}
 	}()
+}
+
+func sendFdToProtect(fd int, path string) error {
+	socketFd, err := unix.Socket(unix.AF_UNIX, unix.SOCK_STREAM, 0)
+	if err != nil {
+		return fmt.Errorf("failed to create unix socket: %w", err)
+	}
+	defer unix.Close(socketFd)
+
+	var timeout unix.Timeval
+	timeout.Usec = 100 * 1000
+
+	_ = unix.SetsockoptTimeval(socketFd, unix.SOL_SOCKET, unix.SO_RCVTIMEO, &timeout)
+	_ = unix.SetsockoptTimeval(socketFd, unix.SOL_SOCKET, unix.SO_SNDTIMEO, &timeout)
+
+	err = unix.Connect(socketFd, &unix.SockaddrUnix{Name: path})
+	if err != nil {
+		return fmt.Errorf("failed to connect: %w", err)
+	}
+
+	err = unix.Sendmsg(socketFd, nil, unix.UnixRights(fd), nil, 0)
+	if err != nil {
+		return fmt.Errorf("failed to send: %w", err)
+	}
+
+	dummy := []byte{1}
+	n, err := unix.Read(socketFd, dummy)
+	if err != nil {
+		return fmt.Errorf("failed to receive: %w", err)
+	}
+	if n != 1 {
+		return fmt.Errorf("socket closed unexpectedly")
+	}
+	return nil
 }
