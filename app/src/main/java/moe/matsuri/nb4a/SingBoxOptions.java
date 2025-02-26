@@ -4374,6 +4374,8 @@ public class SingBoxOptions {
 
         public Boolean invert;
 
+        public String action;
+
         public String outbound;
 
     }

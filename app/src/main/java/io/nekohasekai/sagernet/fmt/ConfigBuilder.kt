@@ -616,20 +616,25 @@ fun buildConfig(
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
+                    // block 改用新的写法
+                    if (ruleObj.outbound == TAG_BLOCK) {
+                        ruleObj.outbound = null
+                        ruleObj.action = "reject"
+                    }
                     route.rules.add(ruleObj)
                     route.rule_set.addAll(ruleSets)
                 }
             }
         }
 
+        // 对 rule_set tag 去重
+        if (route.rule_set != null) {
+            route.rule_set = route.rule_set.distinctBy { it.tag }
+        }
+
         for (freedom in arrayOf(TAG_DIRECT, TAG_BYPASS)) outbounds.add(Outbound().apply {
             tag = freedom
             type = "direct"
-        }.asMap())
-
-        outbounds.add(Outbound().apply {
-            tag = TAG_BLOCK
-            type = "block"
         }.asMap())
 
         if (!forTest) {
@@ -738,7 +743,7 @@ fun buildConfig(
             route.rules.add(Rule_DefaultOptions().apply {
                 ip_cidr = listOf("224.0.0.0/3", "ff00::/8")
                 source_ip_cidr = listOf("224.0.0.0/3", "ff00::/8")
-                outbound = TAG_BLOCK
+                action = "reject"
             })
             // FakeDNS obj
             if (useFakeDns) {

@@ -1,34 +1,28 @@
 package libcore
 
 import (
-	"log"
+	"fmt"
 	"net"
-	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/oschwald/maxminddb-golang"
-	"github.com/sagernet/sing-box/common/srs"
 	C "github.com/sagernet/sing-box/constant"
+	"github.com/sagernet/sing-box/nekoutils"
 	"github.com/sagernet/sing-box/option"
 )
 
-type Geoip struct {
+type geoip struct {
 	geoipReader *maxminddb.Reader
 }
 
-func (g *Geoip) OpenGeosite(path string) bool {
+func (g *geoip) Open(path string) error {
 	geoipReader, err := maxminddb.Open(path)
 	g.geoipReader = geoipReader
-	if err != nil {
-		log.Println("failed to open geoip file:", err)
-		return false
-	} else {
-		log.Println("loaded geoip database")
-	}
-	return true
+	return err
 }
 
-func (g *Geoip) ConvertGeoip(countryCode, outputPath string) {
+func (g *geoip) Rules(countryCode string) ([]option.HeadlessRule, error) {
 	networks := g.geoipReader.Networks(maxminddb.SkipAliasedNetworks)
 	countryMap := make(map[string][]*net.IPNet)
 	var (
@@ -39,8 +33,7 @@ func (g *Geoip) ConvertGeoip(countryCode, outputPath string) {
 	for networks.Next() {
 		ipNet, err = networks.Network(&nextCountryCode)
 		if err != nil {
-			log.Println("failed to get network:", err)
-			return
+			return nil, fmt.Errorf("failed to get network: %w", err)
 		}
 		countryMap[nextCountryCode] = append(countryMap[nextCountryCode], ipNet)
 	}
@@ -48,8 +41,7 @@ func (g *Geoip) ConvertGeoip(countryCode, outputPath string) {
 	ipNets := countryMap[strings.ToLower(countryCode)]
 
 	if len(ipNets) == 0 {
-		log.Println("no networks found for country code:", countryCode)
-		return
+		return nil, fmt.Errorf("no networks found for country code: %s", countryCode)
 	}
 
 	var headlessRule option.DefaultHeadlessRule
@@ -57,24 +49,21 @@ func (g *Geoip) ConvertGeoip(countryCode, outputPath string) {
 	for _, cidr := range ipNets {
 		headlessRule.IPCIDR = append(headlessRule.IPCIDR, cidr.String())
 	}
-	var plainRuleSet option.PlainRuleSetCompat
-	plainRuleSet.Version = C.RuleSetVersion1
-	plainRuleSet.Options.Rules = []option.HeadlessRule{
+
+	return []option.HeadlessRule{
 		{
 			Type:           C.RuleTypeDefault,
 			DefaultOptions: headlessRule,
 		},
-	}
-
-	outputFile, err := os.Create(outputPath)
-	rs, _ := plainRuleSet.Upgrade()
-	err = srs.Write(outputFile, rs, plainRuleSet.Version)
-	if err != nil {
-		log.Println("failed to write geosite file:", err)
-		return
-	}
+	}, nil
 }
 
-func NewGeoip() *Geoip {
-	return new(Geoip)
+func init() {
+	nekoutils.GetGeoIPHeadlessRules = func(name string) ([]option.HeadlessRule, error) {
+		g := new(geoip)
+		if err := g.Open(filepath.Join(externalAssetsPath, "geoip.db")); err != nil {
+			return nil, err
+		}
+		return g.Rules(name)
+	}
 }
