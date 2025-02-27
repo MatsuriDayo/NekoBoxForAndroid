@@ -2,12 +2,11 @@
 
     <EditTextPreference
         app:icon="@drawable/ic_social_emoji_symbols"
-        app:key="profileName"
+        app:key="name"
         app:title="@string/profile_name"
         app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory app:title="@string/proxy_cat">
-
         <EditTextPreference
             app:icon="@drawable/ic_hardware_router"
             app:key="serverAddress"
