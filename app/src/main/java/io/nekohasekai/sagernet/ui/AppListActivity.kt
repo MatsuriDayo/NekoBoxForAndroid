@@ -139,9 +139,9 @@ class AppListActivity : ThemedActivity() {
         var filteredApps = apps
 
         suspend fun reload() {
-            apps = getCachedApps().map { (packageName, packageInfo) ->
+            apps = getCachedApps().mapNotNull { (packageName, packageInfo) ->
                 coroutineContext[Job]!!.ensureActive()
-                ProxiedApp(packageManager, packageInfo.applicationInfo, packageName)
+                packageInfo.applicationInfo?.let { ProxiedApp(packageManager, it, packageName) }
             }.sortedWith(compareBy({ !isProxiedApp(it) }, { it.name.toString() }))
         }
 
@@ -200,8 +200,11 @@ class AppListActivity : ThemedActivity() {
     private fun initProxiedUids(str: String = DataStore.routePackages) {
         proxiedUids.clear()
         val apps = getCachedApps()
-        for (line in str.lineSequence()) proxiedUids[(apps[line]
-            ?: continue).applicationInfo.uid] = true
+        for (line in str.lineSequence()) {
+            val app = (apps[line] ?: continue)
+            val uid = app.applicationInfo?.uid ?: continue
+            proxiedUids[uid] = true
+        }
     }
 
     private fun isProxiedApp(app: ProxiedApp) = proxiedUids[app.uid]
@@ -306,6 +309,7 @@ class AppListActivity : ThemedActivity() {
 
                 return true
             }
+
             R.id.action_clear_selections -> {
                 runOnDefaultDispatcher {
                     proxiedUids.clear()
@@ -316,6 +320,7 @@ class AppListActivity : ThemedActivity() {
                     }
                 }
             }
+
             R.id.action_export_clipboard -> {
                 val success = SagerNet.trySetPrimaryClip("false\n${DataStore.routePackages}")
                 Snackbar.make(
@@ -325,6 +330,7 @@ class AppListActivity : ThemedActivity() {
                 ).show()
                 return true
             }
+
             R.id.action_import_clipboard -> {
                 val proxiedAppString =
                     SagerNet.clipboard.primaryClip?.getItemAt(0)?.text?.toString()
@@ -344,6 +350,7 @@ class AppListActivity : ThemedActivity() {
                 }
                 Snackbar.make(binding.list, R.string.action_import_err, Snackbar.LENGTH_LONG).show()
             }
+
             R.id.uninstall_all -> {
                 runOnDefaultDispatcher {
                     proxiedUids.clear()

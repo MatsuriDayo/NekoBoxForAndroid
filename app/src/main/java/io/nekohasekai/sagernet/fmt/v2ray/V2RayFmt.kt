@@ -622,8 +622,6 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
         if (bean.enableECH) {
             ech = OutboundECHOptions().apply {
                 enabled = true
-                pq_signature_schemes_enabled = bean.enablePqSignature
-                dynamic_record_sizing_disabled = bean.disabledDRS
                 if (bean.echConfig.isNotBlank()) {
                     config = bean.echConfig.lines()
                 }

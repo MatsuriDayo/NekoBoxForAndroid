@@ -10,20 +10,26 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+	"sync"
 
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
 	"github.com/sagernet/sing-box/boxapi"
+	"github.com/sagernet/sing-box/experimental/libbox/platform"
+	"github.com/sagernet/sing-box/protocol/group"
 
 	box "github.com/sagernet/sing-box"
 	"github.com/sagernet/sing-box/common/conntrack"
+	"github.com/sagernet/sing-box/common/dialer"
 	"github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/option"
-	"github.com/sagernet/sing-box/outbound"
-	"github.com/sagernet/sing/common"
 	"github.com/sagernet/sing/service"
 	"github.com/sagernet/sing/service/pause"
 )
+
+func init() {
+	dialer.DoNotSelectInterface = true
+}
 
 var mainInstance *BoxInstance
 
@@ -59,36 +65,37 @@ func ResetAllConnections(system bool) {
 }
 
 type BoxInstance struct {
+	access sync.Mutex
+
 	*box.Box
 	cancel context.CancelFunc
 	state  int
 
 	v2api        *boxapi.SbV2rayServer
-	selector     *outbound.Selector
+	selector     *group.Selector
 	pauseManager pause.Manager
-
-	ForTest bool
 }
 
 func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	defer device.DeferPanicToError("NewSingBoxInstance", func(err_ error) { err = err_ })
 
+	// create box context
+	ctx, cancel := context.WithCancel(context.Background())
+	ctx = box.Context(ctx, nekoboxAndroidInboundRegistry(), nekoboxAndroidOutboundRegistry(), nekoboxAndroidEndpointRegistry())
+	ctx = service.ContextWithDefaultRegistry(ctx)
+	service.MustRegister[platform.Interface](ctx, boxPlatformInterfaceInstance)
+
 	// parse options
 	var options option.Options
-	err = options.UnmarshalJSON([]byte(config))
+	err = options.UnmarshalJSONContext(ctx, []byte(config))
 	if err != nil {
 		return nil, fmt.Errorf("decode config: %v", err)
 	}
-
-	// create box context
-	ctx, cancel := context.WithCancel(context.Background())
-	ctx = service.ContextWithDefaultRegistry(ctx)
 
 	// create box
 	instance, err := box.New(box.Options{
 		Options:           options,
 		Context:           ctx,
-		PlatformInterface: boxPlatformInterfaceInstance,
 		PlatformLogWriter: boxPlatformLogWriter,
 	})
 	if err != nil {
@@ -103,8 +110,8 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 	}
 
 	// selector
-	if proxy, ok := b.Router().Outbound("proxy"); ok {
-		if selector, ok := proxy.(*outbound.Selector); ok {
+	if proxy, ok := b.Outbound().Outbound("proxy"); ok {
+		if selector, ok := proxy.(*group.Selector); ok {
 			b.selector = selector
 		}
 	}
@@ -113,6 +120,9 @@ func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
 }
 
 func (b *BoxInstance) Start() (err error) {
+	b.access.Lock()
+	defer b.access.Unlock()
+
 	defer device.DeferPanicToError("box.Start", func(err_ error) { err = err_ })
 
 	if b.state == 0 {
@@ -123,6 +133,9 @@ func (b *BoxInstance) Start() (err error) {
 }
 
 func (b *BoxInstance) Close() (err error) {
+	b.access.Lock()
+	defer b.access.Unlock()
+
 	defer device.DeferPanicToError("box.Close", func(err_ error) { err = err_ })
 
 	// no double close
@@ -138,18 +151,27 @@ func (b *BoxInstance) Close() (err error) {
 	}
 
 	// close box
-	common.Close(b.Box)
+	if b.cancel != nil {
+		b.cancel()
+	}
+	if b.Box != nil {
+		b.Box.Close()
+	}
 
 	return nil
 }
 
 func (b *BoxInstance) Sleep() {
-	b.pauseManager.DevicePause()
-	_ = b.Box.Router().ResetNetwork()
+	if b.pauseManager != nil {
+		b.pauseManager.DevicePause()
+	}
+	// _ = b.Box.Router().ResetNetwork()
 }
 
 func (b *BoxInstance) Wake() {
-	b.pauseManager.DeviceWake()
+	if b.pauseManager != nil {
+		b.pauseManager.DeviceWake()
+	}
 }
 
 func (b *BoxInstance) SetAsMain() {
@@ -162,7 +184,7 @@ func (b *BoxInstance) SetV2rayStats(outbounds string) {
 		Enabled:   true,
 		Outbounds: strings.Split(outbounds, "\n"),
 	})
-	b.Box.Router().SetV2RayServer(b.v2api)
+	b.Box.Router().SetTracker(b.v2api.StatsService())
 }
 
 func (b *BoxInstance) QueryStats(tag, direct string) int64 {

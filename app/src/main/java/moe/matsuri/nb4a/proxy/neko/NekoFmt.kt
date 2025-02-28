@@ -65,8 +65,8 @@ suspend fun NekoBean.updateAllConfig(port: Int) = suspendCoroutine<Unit> {
             val otherArgs = mutableMapOf<String, Any>()
             otherArgs["finalAddress"] = finalAddress
             otherArgs["finalPort"] = finalPort
-            otherArgs["muxEnabled"] = Protocols.shouldEnableMux(protocolId)
-            otherArgs["muxConcurrency"] = DataStore.muxConcurrency
+//            otherArgs["muxEnabled"] = Protocols.shouldEnableMux(protocolId)
+//            otherArgs["muxConcurrency"] = DataStore.muxConcurrency
 
             val ret = jsip.buildAllConfig(port, this@updateAllConfig, otherArgs)
 

@@ -38,7 +38,6 @@ object Key {
     const val ALLOW_ACCESS = "allowAccess"
     const val SPEED_INTERVAL = "speedInterval"
     const val SHOW_DIRECT_SPEED = "showDirectSpeed"
-    const val LOCAL_DNS_PORT = "portLocalDns"
 
     const val APPEND_HTTP_PROXY = "appendHttpProxy"
 
@@ -55,9 +54,6 @@ object Key {
     const val RULES_GEOIP_URL = "rulesGeoipUrl"
 
     // Protocol Settings
-    const val MUX_TYPE = "muxType"
-    const val MUX_PROTOCOLS = "mux"
-    const val MUX_CONCURRENCY = "muxConcurrency"
     const val GLOBAL_ALLOW_INSECURE = "globalAllowInsecure"
 
     const val ACQUIRE_WAKE_LOCK = "acquireWakeLock"

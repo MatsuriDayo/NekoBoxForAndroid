@@ -1,24 +1,14 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.Lint
 import com.android.build.gradle.AbstractAppExtension
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-import java.security.MessageDigest
-import java.util.*
+import java.util.Base64
+import java.util.Properties
 import kotlin.system.exitProcess
-
-fun sha256Hex(bytes: ByteArray): String {
-    val md = MessageDigest.getInstance("SHA-256")
-    val digest = md.digest(bytes)
-    return digest.fold("") { str, it -> str + "%02x".format(it) }
-}
 
 private val Project.android get() = extensions.getByName<ApplicationExtension>("android")
 
@@ -76,29 +66,13 @@ fun Project.requireLocalProperties(): Properties {
     return localProperties
 }
 
-fun Project.requireTargetAbi(): String {
-    var targetAbi = ""
-    if (gradle.startParameter.taskNames.isNotEmpty()) {
-        if (gradle.startParameter.taskNames.size == 1) {
-            val targetTask = gradle.startParameter.taskNames[0].toLowerCase(Locale.ROOT).trim()
-            when {
-                targetTask.contains("arm64") -> targetAbi = "arm64-v8a"
-                targetTask.contains("arm") -> targetAbi = "armeabi-v7a"
-                targetTask.contains("x64") -> targetAbi = "x86_64"
-                targetTask.contains("x86") -> targetAbi = "x86"
-            }
-        }
-    }
-    return targetAbi
-}
-
 fun Project.setupCommon() {
     android.apply {
-        buildToolsVersion = "30.0.3"
-        compileSdk = 33
+        buildToolsVersion = "35.0.1"
+        compileSdk = 35
         defaultConfig {
             minSdk = 21
-            targetSdk = 33
+            targetSdk = 35
         }
         buildTypes {
             getByName("release") {
@@ -120,7 +94,7 @@ fun Project.setupCommon() {
             textOutput = project.file("build/lint.txt")
             htmlOutput = project.file("build/lint.html")
         }
-        packagingOptions {
+        packaging {
             resources.excludes.addAll(
                 listOf(
                     "**/*.kotlin_*",
@@ -136,9 +110,6 @@ fun Project.setupCommon() {
                     "okhttp3/**"
                 )
             )
-        }
-        packagingOptions {
-            jniLibs.useLegacyPackaging = true
         }
         (this as? AbstractAppExtension)?.apply {
             buildTypes {
@@ -191,9 +162,7 @@ fun Project.setupAppCommon() {
         buildTypes {
             val key = signingConfigs.findByName("release")
             if (key != null) {
-                if (requireTargetAbi().isBlank()) {
-                    getByName("release").signingConfig = key
-                }
+                getByName("release").signingConfig = key
                 getByName("debug").signingConfig = key
             }
         }
@@ -213,8 +182,6 @@ fun Project.setupApp() {
     }
     setupAppCommon()
 
-    val targetAbi = requireTargetAbi()
-
     android.apply {
         this as AbstractAppExtension
 
@@ -228,12 +195,13 @@ fun Project.setupApp() {
         }
 
         splits.abi {
+            reset()
             isEnable = true
             isUniversalApk = false
-            if (targetAbi.isNotBlank()) {
-                reset()
-                include(targetAbi)
-            }
+            include("armeabi-v7a")
+            include("arm64-v8a")
+            include("x86")
+            include("x86_64")
         }
 
         flavorDimensions += "vendor"
@@ -246,7 +214,7 @@ fun Project.setupApp() {
         applicationVariants.all {
             outputs.all {
                 this as BaseVariantOutputImpl
-                outputFileName = outputFileName.replace(project.name, "NB4A-$versionName")
+                outputFileName = outputFileName.replace(project.name, "NekoBox-$versionName")
                     .replace("-release", "")
                     .replace("-oss", "")
             }

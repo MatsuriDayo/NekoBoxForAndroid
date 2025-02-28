@@ -328,7 +328,7 @@ class BaseService {
             data.proxy = proxy
             BootReceiver.enabled = DataStore.persistAcrossReboot
             if (!data.closeReceiverRegistered) {
-                registerReceiver(data.receiver, IntentFilter().apply {
+                val filter = IntentFilter().apply {
                     addAction(Action.RELOAD)
                     addAction(Intent.ACTION_SHUTDOWN)
                     addAction(Action.CLOSE)
@@ -337,7 +337,23 @@ class BaseService {
                         addAction(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED)
                     }
                     addAction(Action.RESET_UPSTREAM_CONNECTIONS)
-                }, "$packageName.SERVICE", null)
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    registerReceiver(
+                        data.receiver,
+                        filter,
+                        "$packageName.SERVICE",
+                        null,
+                        Context.RECEIVER_EXPORTED
+                    )
+                } else {
+                    registerReceiver(
+                        data.receiver,
+                        filter,
+                        "$packageName.SERVICE",
+                        null
+                    )
+                }
                 data.closeReceiverRegistered = true
             }
 

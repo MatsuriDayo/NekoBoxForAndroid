@@ -95,9 +95,9 @@ fun parseHysteria2(url: String): HysteriaBean {
         link.queryParameter("obfs-password")?.also {
             obfuscation = it
         }
-        link.queryParameter("pinSHA256")?.also {
-            // TODO your box do not support it
-        }
+//        link.queryParameter("pinSHA256")?.also {
+//            // TODO your box do not support it
+//        }
     }
 }
 
@@ -252,9 +252,6 @@ fun HysteriaBean.buildHysteria1Config(port: Int, cacheFile: (() -> File)?): Stri
         if (connectionReceiveWindow > 0) put("recv_window", connectionReceiveWindow)
         if (disableMtuDiscovery) put("disable_mtu_discovery", true)
 
-        // hy 1.2.0 （不兼容）
-        put("resolver", "udp://127.0.0.1:" + DataStore.localDNSPort)
-
         put("hop_interval", hopInterval)
     }.toStringPretty()
 }
@@ -284,9 +281,9 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                hop_ports = bean.serverPorts
+                server_ports = hopPortsToSingboxList(bean.serverPorts)
             }
-            hop_interval = bean.hopInterval
+            hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
             down_mbps = bean.downloadMbps
             obfs = bean.obfuscation
@@ -323,9 +320,9 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
             if (port != null) {
                 server_port = port
             } else {
-                hop_ports = bean.serverPorts
+                server_ports = hopPortsToSingboxList(bean.serverPorts)
             }
-            hop_interval = bean.hopInterval
+            hop_interval = "${bean.hopInterval}s"
             up_mbps = bean.uploadMbps
             down_mbps = bean.downloadMbps
             if (bean.obfuscation.isNotBlank()) {
@@ -356,5 +353,16 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
         }.asMap()
 
         else -> mutableMapOf("error_version" to bean.protocolVersion)
+    }
+}
+
+fun hopPortsToSingboxList(s: String): List<String> {
+    return s.split(",").mapNotNull {
+        val pRange = it.replace("-", ":")
+        if (pRange.split(":").size == 2) {
+            pRange
+        } else {
+            null
+        }
     }
 }

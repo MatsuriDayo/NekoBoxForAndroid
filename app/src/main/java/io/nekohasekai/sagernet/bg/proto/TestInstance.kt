@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import libcore.Libcore
 import kotlin.coroutines.suspendCoroutine
 
-class TestInstance(profile: ProxyEntity, val link: String, val timeout: Int) :
+class TestInstance(profile: ProxyEntity, val link: String, private val timeout: Int) :
     BoxInstance(profile) {
 
     suspend fun doTest(): Int {
@@ -47,7 +47,6 @@ class TestInstance(profile: ProxyEntity, val link: String, val timeout: Int) :
         // don't call destroyAllJsi here
         if (BuildConfig.DEBUG) Logs.d(config.config)
         box = Libcore.newSingBoxInstance(config.config)
-        box.forTest = true
     }
 
 }

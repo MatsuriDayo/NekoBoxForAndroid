@@ -6,10 +6,6 @@ ENV_NB4A=1
 source "buildScript/lib/core/get_source_env.sh"
 pushd ..
 
-######
-## From nekoray/libs/get_source.sh
-######
-
 ####
 
 if [ ! -d "sing-box" ]; then
@@ -17,17 +13,6 @@ if [ ! -d "sing-box" ]; then
 fi
 pushd sing-box
 git checkout "$COMMIT_SING_BOX"
-
-popd
-
-####
-
-if [ ! -d "sing-quic" ]; then
-  git clone --no-checkout https://github.com/MatsuriDayo/sing-quic.git
-fi
-pushd sing-quic
-git checkout "$COMMIT_SING_QUIC"
-
 popd
 
 ####
@@ -37,7 +22,6 @@ if [ ! -d "libneko" ]; then
 fi
 pushd libneko
 git checkout "$COMMIT_LIBNEKO"
-
 popd
 
 ####

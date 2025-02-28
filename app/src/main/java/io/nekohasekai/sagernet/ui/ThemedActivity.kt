@@ -6,7 +6,12 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.utils.Theme
 
 abstract class ThemedActivity : AppCompatActivity {
@@ -28,6 +33,15 @@ abstract class ThemedActivity : AppCompatActivity {
         super.onCreate(savedInstanceState)
 
         uiMode = resources.configuration.uiMode
+
+        findViewById<MaterialToolbar>(R.id.toolbar)?.let {
+            val appbarTopPadding = it.paddingTop
+
+            ViewCompat.setOnApplyWindowInsetsListener(it) { v, insets ->
+                v.updatePadding(top = appbarTopPadding + insets.getInsets(WindowInsetsCompat.Type.systemBars()).top)
+                insets
+            }
+        }
     }
 
     override fun setTheme(resId: Int) {
@@ -51,6 +65,7 @@ abstract class ThemedActivity : AppCompatActivity {
             maxLines = 10
         }
     }
+
     internal open fun snackbarInternal(text: CharSequence): Snackbar = throw NotImplementedError()
 
 }

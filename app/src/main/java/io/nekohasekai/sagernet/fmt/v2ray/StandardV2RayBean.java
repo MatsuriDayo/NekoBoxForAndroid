@@ -52,11 +52,20 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     public Boolean enableECH;
 
+    public String echConfig;
+
+    // sing-box 不再使用
     public Boolean enablePqSignature;
 
     public Boolean disabledDRS;
 
-    public String echConfig;
+    // --------------------------------------- Mux
+
+    public Boolean enableMux;
+    public Boolean muxPadding;
+    public Integer muxType;
+    public Integer muxConcurrency;
+
 
     // --------------------------------------- //
 
@@ -101,11 +110,16 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(echConfig)) echConfig = "";
         if (enablePqSignature == null) enablePqSignature = false;
         if (disabledDRS == null) disabledDRS = false;
+
+        if (enableMux == null) enableMux = false;
+        if (muxPadding == null) muxPadding = false;
+        if (muxType == null) muxType = 0;
+        if (muxConcurrency == null) muxConcurrency = 1;
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(1);
+        output.writeInt(2);
         super.serialize(output);
         output.writeString(uuid);
         output.writeString(encryption);
@@ -160,6 +174,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
         }
 
         output.writeInt(packetEncoding);
+
+        output.writeBoolean(enableMux);
+        output.writeBoolean(muxPadding);
+        output.writeInt(muxType);
+        output.writeInt(muxConcurrency);
     }
 
     @Override
@@ -239,6 +258,13 @@ public abstract class StandardV2RayBean extends AbstractBean {
         }
 
         packetEncoding = input.readInt();
+
+        if (version >= 2) {
+            enableMux = input.readBoolean();
+            muxPadding = input.readBoolean();
+            muxType = input.readInt();
+            muxConcurrency = input.readInt();
+        }
     }
 
     @Override
@@ -251,6 +277,10 @@ public abstract class StandardV2RayBean extends AbstractBean {
         bean.enableECH = enableECH;
         bean.disabledDRS = disabledDRS;
         bean.echConfig = echConfig;
+        bean.enableMux = enableMux;
+        bean.muxPadding = muxPadding;
+        bean.muxType = muxType;
+        bean.muxConcurrency = muxConcurrency;
     }
 
     public boolean isVLESS() {

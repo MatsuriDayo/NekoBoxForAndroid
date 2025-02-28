@@ -118,11 +118,6 @@
             app:key="allowInsecure"
             app:summary="@string/allow_insecure_sum"
             app:title="@string/allow_insecure" />
-        <SwitchPreference
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="enableECH"
-            app:summary="@string/enable_ech_sum"
-            app:title="@string/enable_ech" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -149,19 +144,41 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="serverECHCategory"
-        app:title="@string/ech_settings">
+        app:key="serverMuxCategory"
+        app:title="@string/mux_preference">
         <SwitchPreference
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="enablePqSignature"
-            app:title="@string/pq_signature_schemes_enabled" />
-        <SwitchPreference
-            app:icon="@drawable/ic_baseline_security_24"
-            app:key="disabledDRS"
-            app:summary="@string/dynamic_record_sizing_sum"
-            app:title="@string/dynamic_record_sizing_disabled" />
+            app:icon="@drawable/ic_baseline_compare_arrows_24"
+            app:key="enableMux"
+            app:summary="@string/mux_sum"
+            app:title="@string/enable_mux" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="0"
+            app:entries="@array/mux_type"
+            app:entryValues="@array/int_array_3"
+            app:key="muxType"
+            app:title="@string/mux_type"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            app:icon="@drawable/ic_baseline_texture_24"
+            app:defaultValue="1"
+            app:icon="@drawable/ic_baseline_low_priority_24"
+            app:key="muxConcurrency"
+            app:title="@string/mux_concurrency"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/baseline_developer_board_24"
+            app:key="muxPadding"
+            app:title="@string/padding" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="serverECHCategory"
+        app:title="ECH">
+        <SwitchPreference
+            app:icon="@drawable/ic_baseline_security_24"
+            app:key="enableECH"
+            app:title="@string/enable" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_nfc_24"
             app:key="echConfig"
             app:title="@string/ech_config"
             app:useSimpleSummaryProvider="true" />

@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:inputType="text"
-                            android:text="stun.syncthing.net:3478" />
+                            android:text="stun.voipgate.com:3478" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

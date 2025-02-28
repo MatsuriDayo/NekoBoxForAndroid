@@ -58,14 +58,17 @@
                         android:id="@+id/action_new_tuic"
                         android:title="@string/action_tuic" />
                     <item
+                        android:id="@+id/action_new_shadowtls"
+                        android:title="@string/action_shadowtls" />
+                    <item
+                        android:id="@+id/action_new_anytls"
+                        android:title="@string/action_anytls" />
+                    <item
                         android:id="@+id/action_new_ssh"
                         android:title="@string/action_ssh" />
                     <item
                         android:id="@+id/action_new_wg"
                         android:title="@string/action_wireguard" />
-                    <item
-                        android:id="@+id/action_new_shadowtls"
-                        android:title="@string/action_shadowtls" />
                     <item
                         android:id="@+id/action_new_config"
                         android:title="@string/custom_config" />

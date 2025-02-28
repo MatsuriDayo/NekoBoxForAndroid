@@ -284,7 +284,7 @@
     <string name="connection_test_icmp_ping_unavailable">ICMPing 無法使用</string>
     <string name="connection_test_domain_not_found">網域不存在</string>
     <string name="connection_test_refused">連線被拒</string>
-    <string name="donate_info">世界很可愛 請給世界錢</string>
+    <string name="donate_info">貓貓很可愛 請給貓貓錢</string>
     <string name="connection_test_unreachable">無法連線</string>
     <string name="connection_test_timeout">逾時</string>
     <string name="append_http_proxy">為 VPN 附加 HTTP 代理</string>
