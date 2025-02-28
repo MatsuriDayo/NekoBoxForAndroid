@@ -2,13 +2,8 @@ github.com/ajg/form v1.5.1 h1:t9c7v8JUKu/XxOGBU0yjNpaMloxGEJhUkqFRq0ibGeU=
 github.com/ajg/form v1.5.1/go.mod h1:uL1WgH+h2mgNtvBq0339dVnzXdBETtL2LeUXaIv25UY=
 github.com/andybalholm/brotli v1.0.6 h1:Yf9fFpf49Zrxb9NlQaluyE92/+X7UVHlhMNJN2sxfOI=
 github.com/andybalholm/brotli v1.0.6/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
-<<<<<<< HEAD
-github.com/berty/go-libtor v0.0.0-20220627102132-9189eb6e3982 h1:qmwYlJ1NAVc7l5+dGvzzOH7xyifYS9whtI3ptu6ZVMQ=
-github.com/berty/go-libtor v0.0.0-20220627102132-9189eb6e3982/go.mod h1:9swOOQVb+kmvuAlsgWUK/4c52pm69AdbJsxLzk+fJEw=
-=======
 github.com/anytls/sing-anytls v0.0.5 h1:I1NIh3zKTSXThLG5UgjsOOT/x2DZJqjfBzjuP/wZlDk=
 github.com/anytls/sing-anytls v0.0.5/go.mod h1:7rjN6IukwysmdusYsrV51Fgu1uW6vsrdd6ctjnEAln8=
->>>>>>> upstream/main
 github.com/caddyserver/certmagic v0.20.0 h1:bTw7LcEZAh9ucYCRXyCpIrSAGplplI0vGYJ4BpCQ/Fc=
 github.com/caddyserver/certmagic v0.20.0/go.mod h1:N4sXgpICQUskEWpj7zVzvWD41p3NYacrNoZYiRM2jTg=
 github.com/cloudflare/circl v1.3.7 h1:qlCDlTPz2n9fu58M0Nh1J/JzcFpfgkFHHX3O35r5vcU=
@@ -62,21 +57,14 @@ github.com/libdns/libdns v0.2.2 h1:O6ws7bAfRPaBsgAYt8MDe2HcNBGC29hkZ9MX2eUSX3s=
 github.com/libdns/libdns v0.2.2/go.mod h1:4Bj9+5CQiNMVGf87wjX4CY3HQJypUHRuLvlsfsZqLWQ=
 github.com/logrusorgru/aurora v2.0.3+incompatible h1:tOpm7WcpBTn4fjmVfgpQq0EfczGlG91VSDkswnjF5A8=
 github.com/logrusorgru/aurora v2.0.3+incompatible/go.mod h1:7rIyQOR62GCctdiQpZ/zOJlFyk6y+94wXzv6RNZgaR4=
-<<<<<<< HEAD
 github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199 h1:zv8GdEqhTXnn52/svG9i3aQxAXRLxXK97gZpHoNUUYM=
 github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199/go.mod h1:IRO07Queptz/rGFvEW+3Hmwpx7MCup6WiDs4p5jMt4g=
-github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36 h1:UQYy+pNuqPOIDNw5PAs5/6TpAkQQBrMg8HbqL014bD0=
-github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36/go.mod h1:YLV1dUDv8Eyp/8e55O/EvfsrwxOgEDVgDCIoPqmDREE=
-github.com/metacubex/tfo-go v0.0.0-20240821025650-e9be0afd5e7d h1:j9LtzkYstLFoNvXW824QQeN7Y26uPL5249kzWKbzO9U=
-github.com/metacubex/tfo-go v0.0.0-20240821025650-e9be0afd5e7d/go.mod h1:c7bVFM9f5+VzeZ/6Kg77T/jrg1Xp8QpqlSHvG/aXVts=
-=======
 github.com/mdlayher/netlink v1.7.2 h1:/UtM3ofJap7Vl4QWCPDGXY8d3GIY2UGSDbK+QWmY8/g=
 github.com/mdlayher/netlink v1.7.2/go.mod h1:xraEF7uJbxLhc5fpHL4cPe221LI2bdttWlU+ZGLfQSw=
 github.com/mdlayher/socket v0.4.1 h1:eM9y2/jlbs1M615oshPQOHZzj6R6wMT7bX5NPiQvn2U=
 github.com/mdlayher/socket v0.4.1/go.mod h1:cAqeGjoufqdxWkD7DkpyS+wcefOtmu5OQ8KuoJGIReA=
 github.com/metacubex/tfo-go v0.0.0-20241231083714-66613d49c422 h1:zGeQt3UyNydIVrMRB97AA5WsYEau/TyCnRtTf1yUmJY=
 github.com/metacubex/tfo-go v0.0.0-20241231083714-66613d49c422/go.mod h1:l9oLnLoEXyGZ5RVLsh7QCC5XsouTUyKk4F2nLm2DHLw=
->>>>>>> upstream/main
 github.com/mholt/acmez v1.2.0 h1:1hhLxSgY5FvH5HCnGUuwbKY2VQVo8IU7rxXKSnZ7F30=
 github.com/mholt/acmez v1.2.0/go.mod h1:VT9YwH1xgNX1kmYY89gY8xPJC84BFAisjo8Egigt4kE=
 github.com/miekg/dns v1.1.63 h1:8M5aAw6OMZfFXTT7K5V0Eu5YiiL8l7nUAkyN6C9YwaY=
@@ -138,15 +126,8 @@ github.com/sagernet/wireguard-go v0.0.1-beta.5 h1:aBEsxJUMEONwOZqKPIkuAcv4zJV5p6
 github.com/sagernet/wireguard-go v0.0.1-beta.5/go.mod h1:jGXij2Gn2wbrWuYNUmmNhf1dwcZtvyAvQoe8Xd8MbUo=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854 h1:6uUiZcDRnZSAegryaUGwPC/Fj13JSHwiTftrXhMmYOc=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854/go.mod h1:LtfoSK3+NG57tvnVEHgcuBW9ujgE8enPSgzgwStwCAA=
-<<<<<<< HEAD
-github.com/spf13/cobra v1.8.0 h1:7aJaZx1B85qltLMc546zn58BxxfZdR/W22ej9CFoEf0=
-github.com/spf13/cobra v1.8.0/go.mod h1:WXLWApfZ71AjXPya3WOlMsY9yMs7YeiHhFVlvLyhcho=
-github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
-github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
-github.com/starifly/sing-box v0.0.0-20250111150615-08adbf68bdc7 h1:jj9u1g60J/FOVNxQHne/D6VC/730e1tieTbb5LZ67LA=
-github.com/starifly/sing-box v0.0.0-20250111150615-08adbf68bdc7/go.mod h1:N0hPcloZRgl4A+D2ELx7AnMa81kifxu7LDbGlZtHx50=
-=======
->>>>>>> upstream/main
+github.com/starifly/sing-box v0.0.0-20250228135507-b2ee88e26ecb h1:EtQ2gDJ/r0yOSPxSU8+VX36UM5GufDhPh9r2qA5Vikk=
+github.com/starifly/sing-box v0.0.0-20250228135507-b2ee88e26ecb/go.mod h1:q7VXlHT074jNy3vWsEBG9ECKANrGBpyjIwmMallIVHg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
