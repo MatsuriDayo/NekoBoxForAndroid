@@ -624,29 +624,17 @@ fun buildConfig(
                     }
                 }
 
-                outbound = when (val outId = rule.outbound) {
-                    0L -> TAG_PROXY
-                    -1L -> TAG_BYPASS
-                    -2L -> TAG_BLOCK
-                    else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
-                }
-            }
-
-            if (!ruleObj.checkEmpty()) {
-                if (ruleObj.outbound.isNullOrBlank()) {
-                    Toast.makeText(
-                        SagerNet.application,
-                        "Warning: " + rule.displayName() + ": A non-existent outbound was specified.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    // block 改用新的写法
-                    if (ruleObj.outbound == TAG_BLOCK) {
-                        ruleObj.outbound = null
-                        ruleObj.action = "reject"
+                if (!ruleObj.checkEmpty()) {
+                    if (ruleObj.outbound.isNullOrBlank()) {
+                        Toast.makeText(
+                            SagerNet.application,
+                            "Warning: " + rule.displayName() + ": A non-existent outbound was specified.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        route.rules.add(ruleObj)
+                        route.rule_set.addAll(ruleSets)
                     }
-                    route.rules.add(ruleObj)
-                    route.rule_set.addAll(ruleSets)
                 }
             }
         }
@@ -809,4 +797,3 @@ fun buildConfig(
     }
 
 }
-
