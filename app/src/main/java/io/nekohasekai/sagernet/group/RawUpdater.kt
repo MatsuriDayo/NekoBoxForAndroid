@@ -512,6 +512,31 @@ object RawUpdater : GroupUpdater() {
                             proxies.add(bean)
                         }
 
+                        "anytls" -> {
+                            val bean = AnyTLSBean()
+                            for (opt in proxy) {
+                                if (opt.value == null) continue
+                                when (opt.key.replace("_", "-")) {
+                                    "name" -> bean.name = opt.value.toString()
+                                    "server" -> bean.serverAddress = opt.value as String
+                                    "port" -> bean.serverPort = opt.value.toString().toInt()
+                                    "password" -> bean.password = opt.value.toString()
+                                    "client-fingerprint" -> bean.utlsFingerprint =
+                                        opt.value as String
+
+                                    "sni" -> bean.sni = opt.value.toString()
+                                    "skip-cert-verify" -> bean.allowInsecure =
+                                        opt.value.toString() == "true"
+
+                                    "alpn" -> {
+                                        val alpn = (opt.value as? (List<String>))
+                                        bean.alpn = alpn?.joinToString("\n")
+                                    }
+                                }
+                            }
+                            proxies.add(bean)
+                        }
+
                         "wireguard" -> {
                             val peers = proxy["peers"] as? List<Map<String, Any?>>
                             val configToUse = peers?.firstOrNull() ?: proxy
@@ -563,25 +588,6 @@ object RawUpdater : GroupUpdater() {
                                                 }
                                             }
                                         }
-                        "anytls" -> {
-                            val bean = AnyTLSBean()
-                            for (opt in proxy) {
-                                if (opt.value == null) continue
-                                when (opt.key.replace("_", "-")) {
-                                    "name" -> bean.name = opt.value.toString()
-                                    "server" -> bean.serverAddress = opt.value as String
-                                    "port" -> bean.serverPort = opt.value.toString().toInt()
-                                    "password" -> bean.password = opt.value.toString()
-                                    "client-fingerprint" -> bean.utlsFingerprint =
-                                        opt.value as String
-
-                                    "sni" -> bean.sni = opt.value.toString()
-                                    "skip-cert-verify" -> bean.allowInsecure =
-                                        opt.value.toString() == "true"
-
-                                    "alpn" -> {
-                                        val alpn = (opt.value as? (List<String>))
-                                        bean.alpn = alpn?.joinToString("\n")
                                     }
                                 }
                             }
