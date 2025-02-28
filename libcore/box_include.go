@@ -27,6 +27,7 @@ import (
 	"github.com/sagernet/sing-box/protocol/wireguard"
 
 	_ "github.com/sagernet/sing-box/experimental/clashapi"
+	_ "github.com/sagernet/sing-box/transport/v2rayquic"
 	_ "github.com/sagernet/sing-dns/quic"
 )
 
