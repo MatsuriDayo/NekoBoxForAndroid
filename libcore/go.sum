@@ -126,8 +126,8 @@ github.com/sagernet/wireguard-go v0.0.1-beta.5 h1:aBEsxJUMEONwOZqKPIkuAcv4zJV5p6
 github.com/sagernet/wireguard-go v0.0.1-beta.5/go.mod h1:jGXij2Gn2wbrWuYNUmmNhf1dwcZtvyAvQoe8Xd8MbUo=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854 h1:6uUiZcDRnZSAegryaUGwPC/Fj13JSHwiTftrXhMmYOc=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854/go.mod h1:LtfoSK3+NG57tvnVEHgcuBW9ujgE8enPSgzgwStwCAA=
-github.com/starifly/sing-box v0.0.0-20250228135507-b2ee88e26ecb h1:EtQ2gDJ/r0yOSPxSU8+VX36UM5GufDhPh9r2qA5Vikk=
-github.com/starifly/sing-box v0.0.0-20250228135507-b2ee88e26ecb/go.mod h1:q7VXlHT074jNy3vWsEBG9ECKANrGBpyjIwmMallIVHg=
+github.com/starifly/sing-box v0.0.0-20250228153113-39609abe2649 h1:i07VTBACxi5zPkBJXXGBsNUi9VEiaje91NhCDHwLzU8=
+github.com/starifly/sing-box v0.0.0-20250228153113-39609abe2649/go.mod h1:q7VXlHT074jNy3vWsEBG9ECKANrGBpyjIwmMallIVHg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
