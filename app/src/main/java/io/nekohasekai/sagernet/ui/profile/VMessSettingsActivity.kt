@@ -8,6 +8,7 @@ class VMessSettingsActivity : StandardV2RaySettingsActivity() {
         if (intent?.getBooleanExtra("vless", false) == true) {
             alterId = -1
         }
+        initializeDefaultValues()
     }
 
 }

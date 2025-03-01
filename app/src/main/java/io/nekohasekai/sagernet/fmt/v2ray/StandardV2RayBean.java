@@ -77,6 +77,8 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
         if (JavaUtil.isNullOrBlank(uuid)) uuid = "";
 
+        if (JavaUtil.isNullOrBlank(encryption)) encryption = "";
+
         if (JavaUtil.isNullOrBlank(type)) type = "tcp";
         else if ("h2".equals(type)) type = "http";
 
