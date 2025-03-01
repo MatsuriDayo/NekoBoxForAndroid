@@ -57,6 +57,13 @@
             app:summary="@string/profile_traffic_statistics_summary"
             app:title="@string/profile_traffic_statistics" />
         <SwitchPreference
+            app:defaultValue="true"
+            app:icon="@drawable/ic_baseline_speed_24"
+            app:key="showDirectSpeed"
+            app:summary="@string/show_direct_speed_sum"
+            app:title="@string/show_direct_speed"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
             app:key="showGroupInNotification"
             app:title="@string/show_group_in_notification" />
         <SwitchPreference
@@ -74,12 +81,10 @@
             app:summary="@string/metered_summary"
             app:title="@string/metered" />
         <SwitchPreference
-            app:defaultValue="true"
-            app:icon="@drawable/ic_baseline_speed_24"
-            app:key="showDirectSpeed"
-            app:summary="@string/show_direct_speed_sum"
-            app:title="@string/show_direct_speed"
-            app:useSimpleSummaryProvider="true" />
+            app:icon="@drawable/baseline_developer_board_24"
+            app:key="acquireWakeLock"
+            app:summary="@string/acquire_wake_lock_summary"
+            app:title="@string/acquire_wake_lock" />
         <moe.matsuri.nb4a.ui.LongClickListPreference
             app:defaultValue="0"
             app:entries="@array/log_level"
@@ -237,27 +242,19 @@
             app:title="@string/connection_test_url"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
-            app:icon="@drawable/baseline_developer_board_24"
-            app:key="acquireWakeLock"
-            app:summary="@string/acquire_wake_lock_summary"
-            app:title="@string/acquire_wake_lock" />
-        <SwitchPreference
             app:icon="@drawable/baseline_construction_24"
             app:key="enableClashAPI"
             app:summary="@string/enable_clash_api_summary"
             app:title="@string/enable_clash_api" />
-        <EditTextPreference
-            app:defaultValue="15"
+        <SwitchPreference
+            app:defaultValue="true"
             app:icon="@drawable/ic_baseline_flip_camera_android_24"
-            app:key="tcpKeepAliveInterval"
-            app:title="@string/tcp_keep_alive_interval"
+            app:key="networkChangeResetConnections"
+            app:title="@string/network_change_reset_connections"
             app:useSimpleSummaryProvider="true" />
-        <moe.matsuri.nb4a.ui.SimpleMenuPreference
-            app:defaultValue="1.2"
-            app:entries="@array/app_tls_version"
-            app:entryValues="@array/app_tls_version"
-            app:key="appTLSVersion"
-            app:title="@string/app_tls_version"
+        <SwitchPreference
+            app:key="wakeResetConnections"
+            app:title="@string/wake_reset_connections"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
             app:icon="@drawable/ic_action_lock_open"
@@ -266,6 +263,13 @@
         <SwitchPreference
             app:key="allowInsecureOnRequest"
             app:title="@string/allow_insecure_on_request_sum" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="1.2"
+            app:entries="@array/app_tls_version"
+            app:entryValues="@array/app_tls_version"
+            app:key="appTLSVersion"
+            app:title="@string/app_tls_version"
+            app:useSimpleSummaryProvider="true" />
         <SwitchPreference
             app:key="showBottomBar"
             app:title="@string/show_bottom_bar" />

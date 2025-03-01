@@ -30,11 +30,11 @@ import io.nekohasekai.sagernet.fmt.tuic.toUri
 import io.nekohasekai.sagernet.fmt.v2ray.*
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.ktx.app
-import io.nekohasekai.sagernet.ktx.applyDefaultValues
 import io.nekohasekai.sagernet.ui.profile.*
 import moe.matsuri.nb4a.SingBoxOptions.MultiplexOptions
 import moe.matsuri.nb4a.proxy.anytls.AnyTLSBean
 import moe.matsuri.nb4a.proxy.anytls.AnyTLSSettingsActivity
+import moe.matsuri.nb4a.proxy.anytls.toUri
 import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
 import moe.matsuri.nb4a.proxy.neko.*
@@ -98,10 +98,8 @@ data class ProxyEntity(
 
         val chainName by lazy { app.getString(R.string.proxy_chain) }
 
-        private val placeHolderBean = SOCKSBean().applyDefaultValues()
-
         @JvmField
-        val CREATOR = object : Serializable.CREATOR<ProxyEntity>() {
+        val CREATOR = object : CREATOR<ProxyEntity>() {
 
             override fun newInstance(): ProxyEntity {
                 return ProxyEntity()
@@ -241,7 +239,6 @@ data class ProxyEntity(
             is SSHBean -> false
             is WireGuardBean -> false
             is ShadowTLSBean -> false
-            is AnyTLSBean -> false
             is NekoBean -> nekoBean!!.haveStandardLink()
             is ConfigBean -> false
             else -> true
@@ -259,6 +256,7 @@ data class ProxyEntity(
             is NaiveBean -> toUri()
             is HysteriaBean -> toUri()
             is TuicBean -> toUri()
+            is AnyTLSBean -> toUri()
             is NekoBean -> shareLink()
             else -> toUniversalLink()
         }

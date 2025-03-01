@@ -79,9 +79,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         val ipv6Mode = findPreference<Preference>(Key.IPV6_MODE)!!
         val trafficSniffing = findPreference<Preference>(Key.TRAFFIC_SNIFFING)!!
 
-        val tcpKeepAliveInterval = findPreference<EditTextPreference>(Key.TCP_KEEP_ALIVE_INTERVAL)!!
-        tcpKeepAliveInterval.isVisible = false
-
         val bypassLan = findPreference<SwitchPreference>(Key.BYPASS_LAN)!!
         val bypassLanInCore = findPreference<SwitchPreference>(Key.BYPASS_LAN_IN_CORE)!!
 
@@ -176,7 +173,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         appendHttpProxy.onPreferenceChangeListener = reloadListener
         showDirectSpeed.onPreferenceChangeListener = reloadListener
         trafficSniffing.onPreferenceChangeListener = reloadListener
-        tcpKeepAliveInterval.onPreferenceChangeListener = reloadListener
         bypassLan.onPreferenceChangeListener = reloadListener
         bypassLanInCore.onPreferenceChangeListener = reloadListener
         mtu.onPreferenceChangeListener = reloadListener
