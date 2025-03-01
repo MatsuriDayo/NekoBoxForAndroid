@@ -1645,9 +1645,9 @@ class ConfigurationFragment @JvmOverloads constructor(
                     adapter?.let { adapter ->
                         val index = adapter.configurationIdList.indexOf(proxyEntity.id)
                         if (DataStore.confirmProfileDelete) {
-                            MaterialAlertDialogBuilder(requireContext())
+                            AlertDialog.Builder(requireContext())
                                 .setTitle(R.string.delete_confirm_prompt)
-                                .setMessage(getString(R.string.delete_confirm_prompt))
+                                // .setMessage(getString(R.string.delete_confirm_prompt))
                                 .setPositiveButton(R.string.yes) { dialog: DialogInterface, which: Int ->
                                     adapter.remove(index)
                                     undoManager.remove(index to proxyEntity)
