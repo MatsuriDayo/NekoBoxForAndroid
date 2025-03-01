@@ -15,8 +15,8 @@ import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.utils.PackageCache
 import libcore.BoxPlatformInterface
+import libcore.Libcore
 import libcore.NB4AInterface
-import moe.matsuri.nb4a.utils.LibcoreUtil
 import java.net.InetSocketAddress
 
 class NativeInterface : BoxPlatformInterface, NB4AInterface {
@@ -86,7 +86,7 @@ class NativeInterface : BoxPlatformInterface, NB4AInterface {
             Logs.d("other selector: $selectorTag")
             return
         }
-        LibcoreUtil.resetAllConnections(true)
+        Libcore.resetAllConnections(true)
         DataStore.baseService?.apply {
             runOnDefaultDispatcher {
                 val id = data.proxy!!.config.profileTagMap

@@ -23,7 +23,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import libcore.Libcore
 import moe.matsuri.nb4a.Protocols
-import moe.matsuri.nb4a.utils.LibcoreUtil
 import moe.matsuri.nb4a.utils.Util
 import java.net.UnknownHostException
 
@@ -58,12 +57,15 @@ class BaseService {
                             proxy?.box?.sleep()
                         } else {
                             proxy?.box?.wake()
+                            if (DataStore.wakeResetConnections) {
+                                Libcore.resetAllConnections(true)
+                            }
                         }
                     }
                 }
 
                 Action.RESET_UPSTREAM_CONNECTIONS -> runOnDefaultDispatcher {
-                    LibcoreUtil.resetAllConnections(true)
+                    Libcore.resetAllConnections(true)
                     runOnMainDispatcher {
                         Util.collapseStatusBar(ctx)
                         Toast.makeText(ctx, "Reset upstream connections done", Toast.LENGTH_SHORT)
@@ -259,7 +261,7 @@ class BaseService {
             }
         }
 
-        open fun persistStats() {
+        fun persistStats() {
             // TODO NEW save app stats?
         }
 
@@ -278,7 +280,9 @@ class BaseService {
                     }
                     if (oldName != null && upstreamInterfaceName != null && oldName != upstreamInterfaceName) {
                         Logs.d("Network changed: $oldName -> $upstreamInterfaceName")
-                        LibcoreUtil.resetAllConnections(true)
+                        if (DataStore.networkChangeResetConnections) {
+                            Libcore.resetAllConnections(true)
+                        }
                     }
                 }
             }
@@ -286,16 +290,6 @@ class BaseService {
 
         var wakeLock: PowerManager.WakeLock?
         fun acquireWakeLock()
-        suspend fun switchWakeLock() {
-            wakeLock?.apply {
-                release()
-                wakeLock = null
-                data.notification?.postNotificationWakeLockStatus(false)
-            } ?: apply {
-                acquireWakeLock()
-                data.notification?.postNotificationWakeLockStatus(true)
-            }
-        }
 
         suspend fun lateInit() {
             wakeLock?.apply {

@@ -489,4 +489,6 @@
     <string name="group_not_subscription">组类型不是订阅</string>
     <string name="allow_insecure_on_request_sum">更新订阅的时候允许不安全的连接</string>
     <string name="global_allow_insecure">总是跳过 TLS 证书验证</string>
+    <string name="network_change_reset_connections">当网络发生变化时重置出站连接</string>
+    <string name="wake_reset_connections">当设备从睡眠状态唤醒时重置出站连接</string>
 </resources>

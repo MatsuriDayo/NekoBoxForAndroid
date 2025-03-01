@@ -87,6 +87,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var showBottomBar by configurationStore.boolean(Key.SHOW_BOTTOM_BAR)
 
     var allowInsecureOnRequest by configurationStore.boolean(Key.ALLOW_INSECURE_ON_REQUEST)
+    var networkChangeResetConnections by configurationStore.boolean(Key.NETWORK_CHANGE_RESET_CONNECTIONS) { true }
+    var wakeResetConnections by configurationStore.boolean(Key.WAKE_RESET_CONNECTIONS)
 
     //
 
@@ -98,7 +100,6 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var trafficSniffing by configurationStore.stringToInt(Key.TRAFFIC_SNIFFING) { 1 }
     var resolveDestination by configurationStore.boolean(Key.RESOLVE_DESTINATION)
 
-    //    var tcpKeepAliveInterval by configurationStore.stringToInt(Key.TCP_KEEP_ALIVE_INTERVAL) { 15 }
     var mtu by configurationStore.stringToInt(Key.MTU) { 9000 }
 
     var bypassLan by configurationStore.boolean(Key.BYPASS_LAN)
