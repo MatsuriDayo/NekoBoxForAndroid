@@ -136,6 +136,7 @@
     <string name="profile_config">服务器配置</string>
     <string name="delete">删除</string>
     <string name="delete_confirm_prompt">您确定要删除这个服务器配置吗\?</string>
+    <string name="confirm_profile_delete">删除配置文件确认</string>
     <string name="share_qr_nfc">二维码</string>
     <string name="add_profile_methods_scan_qr_code">扫描二维码</string>
     <string name="add_profile_methods_manual_settings">手动输入</string>

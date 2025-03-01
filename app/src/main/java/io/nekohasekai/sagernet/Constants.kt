@@ -58,6 +58,7 @@ object Key {
 
     const val ACQUIRE_WAKE_LOCK = "acquireWakeLock"
     const val SHOW_BOTTOM_BAR = "showBottomBar"
+    const val CONFIRM_PROFILE_DELETE = "confirmProfileDelete"
 
     const val ALLOW_INSECURE_ON_REQUEST = "allowInsecureOnRequest"
 
@@ -198,4 +199,5 @@ object Action {
     // const val SWITCH_WAKE_LOCK = "io.nekohasekai.sagernet.SWITCH_WAKELOCK"
     const val RESET_UPSTREAM_CONNECTIONS = "moe.nb4a.RESET_UPSTREAM_CONNECTIONS"
 }
+
 

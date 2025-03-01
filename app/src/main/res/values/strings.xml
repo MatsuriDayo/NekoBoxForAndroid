@@ -251,6 +251,7 @@
     <string name="profile_config">Profile config</string>
     <string name="delete">Remove</string>
     <string name="delete_confirm_prompt">Are you sure you want to remove this profile?</string>
+    <string name="confirm_profile_delete">Delete profile confirmation</string>
     <string name="share_qr_nfc">QR code</string>
     <string name="add_profile_methods_scan_qr_code">Scan QR code</string>
     <string name="add_profile_methods_manual_settings">Manual Settings</string>

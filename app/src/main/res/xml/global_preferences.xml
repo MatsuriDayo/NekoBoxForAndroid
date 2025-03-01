@@ -60,6 +60,10 @@
             app:key="showGroupInNotification"
             app:title="@string/show_group_in_notification" />
         <SwitchPreference
+            app:key="confirmProfileDelete"
+            app:defaultValue="true"
+            app:title="@string/confirm_profile_delete" />
+        <SwitchPreference
             app:icon="@drawable/ic_baseline_center_focus_weak_24"
             app:key="alwaysShowAddress"
             app:summary="@string/always_show_address_sum"
@@ -267,3 +271,4 @@
             app:title="@string/show_bottom_bar" />
     </PreferenceCategory>
 </PreferenceScreen>
+

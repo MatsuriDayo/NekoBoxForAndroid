@@ -1,5 +1,6 @@
 package io.nekohasekai.sagernet.ui
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -1641,10 +1642,22 @@ class ConfigurationFragment @JvmOverloads constructor(
                 }
 
                 removeButton.setOnClickListener {
-                    adapter?.let {
-                        val index = it.configurationIdList.indexOf(proxyEntity.id)
-                        it.remove(index)
-                        undoManager.remove(index to proxyEntity)
+                    adapter?.let { adapter ->
+                        val index = adapter.configurationIdList.indexOf(proxyEntity.id)
+                        if (DataStore.confirmProfileDelete) {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle(R.string.delete_confirm_prompt)
+                                .setMessage(getString(R.string.delete_confirm_prompt))
+                                .setPositiveButton(R.string.yes) { dialog: DialogInterface, which: Int ->
+                                    adapter.remove(index)
+                                    undoManager.remove(index to proxyEntity)
+                                }
+                                .setNegativeButton(R.string.no, null)
+                                .show()
+                        } else {
+                            adapter.remove(index)
+                            undoManager.remove(index to proxyEntity)
+                        }
                     }
                 }
 
@@ -1781,4 +1794,5 @@ class ConfigurationFragment @JvmOverloads constructor(
     }
 
 }
+
 
