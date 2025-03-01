@@ -515,7 +515,35 @@ fun buildConfig(
 
         // 在应用用户规则之前检查全局模式
         if (!forTest && DataStore.globalMode) {
-            // 全局模式下只添加一个规则：所有流量走代理
+            // 全局模式下的规则处理
+            
+            // DNS查询规则：DNS查询也通过代理
+            if (enableDnsRouting && !useFakeDns) {
+                route.rules.add(Rule_DefaultOptions().apply {
+                    protocol = listOf("dns")
+                    outbound = TAG_PROXY
+                })
+            }
+
+            // 绕过内部网络（如果启用）
+            if (DataStore.bypassLan) {
+                route.rules.add(Rule_DefaultOptions().apply {
+                    ip_cidr = listOf(
+                        "224.0.0.0/3",
+                        "172.16.0.0/12",
+                        "127.0.0.0/8",
+                        "10.0.0.0/8",
+                        "192.168.0.0/16",
+                        "169.254.0.0/16",
+                        "::/128",
+                        "fc00::/7",
+                        "fe80::/10"
+                    )
+                    outbound = TAG_DIRECT
+                })
+            }
+
+            // 主规则：其他所有流量走代理
             route.rules.add(Rule_DefaultOptions().apply {
                 inbound = listOf(TAG_MIXED)  // 添加入站条件
                 outbound = TAG_PROXY  // 将所有流量转发到代理
@@ -797,3 +825,4 @@ fun buildConfig(
     }
 
 }
+
