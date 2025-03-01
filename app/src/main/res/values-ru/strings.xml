@@ -49,7 +49,7 @@
     <string name="cag_route">Настройки маршрута</string>
     <string name="port_http">Порт прокси HTTP</string>
     <string name="service_mode_proxy">Только прокси</string>
-    <string name="service_mode">Сервисный режим</string>
+    <string name="service_mode">Режим сервиса</string>
     <string name="group_duplicate">Дубликат:
 \n%s</string>
     <string name="group_deleted">Удалено:
@@ -139,7 +139,7 @@
     <string name="update_when_connected_only_sum">Предотвратить утечку IP-адреса</string>
     <string name="update_when_connected_only">Обновлять только при подключении</string>
     <string name="auto_update_delay">Задержка автоматического обновления (в минутах)</string>
-    <string name="auto_update">Автоматическое обновление</string>
+    <string name="auto_update">Автообновление</string>
     <string name="update_settings">Обновить настройки</string>
     <string name="force_resolve_sum">При обновлении преобразовать все доменные имена в IP-адреса. Хост и SNI будут добавлены автоматически, если это возможно</string>
     <string name="raw">Обычный</string>
@@ -265,7 +265,7 @@
     <string name="direct_boot_aware_summary">Выбранная вами информация профиля будет менее защищена</string>
     <string name="direct_boot_aware">Разрешить переключение на экране блокировки</string>
     <string name="auto_connect_summary">Включить прокси при запуске/обновлении приложения, если он был запущен до этого</string>
-    <string name="auto_connect">Автоматическое подключение</string>
+    <string name="auto_connect">Автоподключение</string>
     <string name="show_system_apps">Показать системные приложения</string>
     <string name="bypass_apps">Обход</string>
     <string name="clear_selections">Очистить выбор</string>
@@ -279,10 +279,15 @@
     <string name="tcp_keep_alive_interval">Интервал доставки пакетов TCP keep-alive</string>
     <string name="mux_concurrency">Число одновременных подключений Mux</string>
     <string name="enable_mux">Включить мультиплексор</string>
+    <string name="mux_sum">Mux предназначен для уменьшения задержки TCP-передачи, а не для увеличения
+        пропускной способности соединения. Использование Mux для просмотра видео, загрузки или
+        тестирования скорости обычно не приносит пользы. Если сервер его не поддерживает, то вы
+        не сможете получить доступ в интернет.</string>
+    <string name="mux_type">Протокол Mux</string>
     <string name="traffic_sniffing">Включить анализ трафика</string>
     <string name="domain_strategy">Стратегия разрешения доменов</string>
     <string name="route_opt_block_ads">Блокировать рекламу</string>
-    <string name="route_opt_bypass_lan">Обход LAN</string>
+    <string name="route_opt_bypass_lan">Обход локальной сети</string>
     <string name="route_not_asset">Не файл ресурса: ожидался .db, а не %s</string>
     <string name="route_asset_updated">Обновлено</string>
     <string name="route_asset_no_update">Обновлений нет</string>
@@ -388,12 +393,12 @@
     <string name="naive_insecure_concurrency_summary">Использовать N параллельных соединений для повышения отказоустойчивости в условиях ненадёжной сети. Большее число соединений увеличивает риск обнаружения туннелей и снижает безопасность. Этот проект стремится к максимальной защите от анализа трафика, следовательно, использование его небезопасным образом противоречит данной цели.
 \n
 \nЕсли придётся использовать данную функцию, попробуйте N=2, чтобы проверить, решит ли это проблему. Настоятельно не рекомендуется использовать более 4 соединений.</string>
-    <string name="resolve_destination">Резолвить адрес назначения</string>
+    <string name="resolve_destination">Определить адрес назначения</string>
     <string name="start">Старт</string>
-    <string name="stun_attest_loading">Пожалуйста, подождите…</string>
+    <string name="stun_attest_loading">Подождите…</string>
     <string name="stun_test">Обнаружение поведения NAT</string>
     <string name="stun_test_summary">Определить поведение сопоставления адресов NAT и поведение фильтрации NAT в соответствии с RFC 5780 при помощи STUN.</string>
-    <string name="warp_license">[CloudFlare Warp](https://blog.cloudflare.com/1111-warp-better-vpn/) - это бесплатный провайдер WireGuard VPN. Используя его, вы соглашаетесь с [условиями использования](https://www.cloudflare.com/application/terms/).</string>
+    <string name="warp_license">CloudFlare Warp — это бесплатный VPN-провайдер WireGuard. Используя его, вы соглашаетесь с условиями использования.</string>
     <string name="tools_network">Сеть</string>
     <string name="backup">Бэкап</string>
     <string name="backup_rules">Правила маршрутизации</string>
@@ -406,4 +411,30 @@
     <string name="backup_groups_and_configurations">Группы и конфигурации</string>
     <string name="backup_summary">Если правила маршрутизации резервируются без конфигураций, то пользовательские исходящие соединения будут потеряны.</string>
     <string name="packet_encoding">Кодирование пакетов</string>
+    <string name="connection_test_delete_unavailable">Очистить недоступные</string>
+    <string name="neko_plugin">Плагины</string>
+    <string name="neko_plugin_summary">Плагины могут предоставлять протоколы, которые изначально не поддерживаются.\n\n
+        Любой желающий может написать плагины, которые могут управлять NekoBox.
+        Скачивайте и устанавливайте плагины только из надёжных источников.</string>
+    <string name="update_current_subscription">Обновить текущие группы подписки</string>
+    <string name="group_not_subscription">Тип группы не является подпиской</string>
+    <string name="remove_duplicate">Удалить дубликаты серверов</string>
+    <string name="ads">Реклама</string>
+    <string name="show_group_in_notification">Показывать название группы в уведомлении</string>
+    <string name="log_level">Уровень логгирования</string>
+    <string name="enable_clash_api">Включить Clash API</string>
+    <string name="enable_clash_api_summary">На 127.0.0.1:9090 укажите API Clash и панель управления Yacd</string>
+    <string name="bypass_lan_in_core">Обход локальной сети в ядре</string>
+    <string name="sniff_routing">Анализ результата для маршрутизации</string>
+    <string name="sniff_override">Анализ результата для адреса назначения</string>
+    <string name="global_allow_insecure">Всегда разрешать небезопасные</string>
+    <string name="domain_strategy_for_remote">Стратегия домена для удалённого доступа</string>
+    <string name="domain_strategy_for_direct">Стратегия домена для прямого доступа</string>
+    <string name="domain_strategy_for_server">Стратегия домена для адреса сервера</string>
+    <string name="acquire_wake_lock">Получить WakeLock</string>
+    <string name="release_wake_lock">Выпуск WakeLock</string>
+    <string name="acquire_wake_lock_summary">Держать процессор включенным</string>
+    <string name="app_tls_version">Минимальная версия TLS подписки</string>
+    <string name="show_bottom_bar">Показывать нижнюю панель как SagerNet</string>
+    <string name="allow_insecure_on_request_sum">Отключите проверку сертификатов при обновлении подписок</string>
 </resources>
