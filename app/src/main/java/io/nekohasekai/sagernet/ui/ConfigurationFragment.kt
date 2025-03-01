@@ -1661,8 +1661,8 @@ class ConfigurationFragment @JvmOverloads constructor(
                 try {
                     currentName = entity.displayName()!!
                     when (item.itemId) {
-                        R.id.action_standard_qr -> showCode(entity.toStdLink()!!)
-                        R.id.action_standard_clipboard -> export(entity.toStdLink()!!)
+                        R.id.action_standard_qr -> showCode(entity.toStdLink())
+                        R.id.action_standard_clipboard -> export(entity.toStdLink())
                         R.id.action_universal_qr -> showCode(entity.requireBean().toUniversalLink())
                         R.id.action_universal_clipboard -> export(
                             entity.requireBean().toUniversalLink()
