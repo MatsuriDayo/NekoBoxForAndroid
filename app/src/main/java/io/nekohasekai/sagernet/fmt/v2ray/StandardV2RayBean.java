@@ -90,7 +90,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(security)) {
             if (this instanceof TrojanBean) {
                 security = "tls";
-            } else {
+            } else if (!isVLESS()) {
                 security = "none";
             }
         }
