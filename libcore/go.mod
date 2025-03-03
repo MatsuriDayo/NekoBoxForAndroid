@@ -89,9 +89,9 @@ require (
 	lukechampine.com/blake3 v1.3.0 // indirect
 )
 
-replace github.com/matsuridayo/libneko => github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199
+replace github.com/matsuridayo/libneko => ../../libneko
 
-replace github.com/sagernet/sing-box => github.com/starifly/sing-box v0.0.0-20250228153113-39609abe2649
+replace github.com/sagernet/sing-box => ../../sing-box
 
 // replace github.com/sagernet/sing-quic => github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36
 // replace github.com/sagernet/sing-quic => ../../sing-quic
@@ -100,4 +100,4 @@ replace github.com/sagernet/sing-box => github.com/starifly/sing-box v0.0.0-2025
 
 // replace github.com/sagernet/sing-dns => ../../sing-dns
 
-replace berty.tech/go-libtor => github.com/berty/go-libtor v0.0.0-20220627102132-9189eb6e3982
+// replace berty.tech/go-libtor => github.com/berty/go-libtor v0.0.0-20220627102132-9189eb6e3982

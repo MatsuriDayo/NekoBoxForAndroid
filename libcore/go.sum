@@ -57,8 +57,6 @@ github.com/libdns/libdns v0.2.2 h1:O6ws7bAfRPaBsgAYt8MDe2HcNBGC29hkZ9MX2eUSX3s=
 github.com/libdns/libdns v0.2.2/go.mod h1:4Bj9+5CQiNMVGf87wjX4CY3HQJypUHRuLvlsfsZqLWQ=
 github.com/logrusorgru/aurora v2.0.3+incompatible h1:tOpm7WcpBTn4fjmVfgpQq0EfczGlG91VSDkswnjF5A8=
 github.com/logrusorgru/aurora v2.0.3+incompatible/go.mod h1:7rIyQOR62GCctdiQpZ/zOJlFyk6y+94wXzv6RNZgaR4=
-github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199 h1:zv8GdEqhTXnn52/svG9i3aQxAXRLxXK97gZpHoNUUYM=
-github.com/matsuridayo/libneko v0.0.0-20240702024904-1c47a3af7199/go.mod h1:IRO07Queptz/rGFvEW+3Hmwpx7MCup6WiDs4p5jMt4g=
 github.com/mdlayher/netlink v1.7.2 h1:/UtM3ofJap7Vl4QWCPDGXY8d3GIY2UGSDbK+QWmY8/g=
 github.com/mdlayher/netlink v1.7.2/go.mod h1:xraEF7uJbxLhc5fpHL4cPe221LI2bdttWlU+ZGLfQSw=
 github.com/mdlayher/socket v0.4.1 h1:eM9y2/jlbs1M615oshPQOHZzj6R6wMT7bX5NPiQvn2U=
@@ -126,8 +124,6 @@ github.com/sagernet/wireguard-go v0.0.1-beta.5 h1:aBEsxJUMEONwOZqKPIkuAcv4zJV5p6
 github.com/sagernet/wireguard-go v0.0.1-beta.5/go.mod h1:jGXij2Gn2wbrWuYNUmmNhf1dwcZtvyAvQoe8Xd8MbUo=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854 h1:6uUiZcDRnZSAegryaUGwPC/Fj13JSHwiTftrXhMmYOc=
 github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854/go.mod h1:LtfoSK3+NG57tvnVEHgcuBW9ujgE8enPSgzgwStwCAA=
-github.com/starifly/sing-box v0.0.0-20250228153113-39609abe2649 h1:i07VTBACxi5zPkBJXXGBsNUi9VEiaje91NhCDHwLzU8=
-github.com/starifly/sing-box v0.0.0-20250228153113-39609abe2649/go.mod h1:q7VXlHT074jNy3vWsEBG9ECKANrGBpyjIwmMallIVHg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
