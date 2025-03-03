@@ -114,7 +114,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
 
         encryption.preference.apply {
             this as SimpleMenuPreference
-            if (tmpBean!!.isVLESS) {
+            if (isVless) {
                 title = resources.getString(R.string.xtls_flow)
                 setIcon(R.drawable.ic_baseline_stream_24)
                 setEntries(R.array.xtls_flow_value)

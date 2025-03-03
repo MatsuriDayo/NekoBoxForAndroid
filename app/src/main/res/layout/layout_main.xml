@@ -5,21 +5,18 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:fitsSystemWindows="true">
+        android:clipChildren="false">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/fragment_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+            android:layout_height="match_parent" />
 
         <!-- We double trackThickness as half of it will be invisible -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -51,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:fitsSystemWindows="true"
             android:nextFocusUp="@+id/fab"
             app:backgroundTint="?colorMaterial300"
             app:contentInsetStart="0dp"
@@ -110,7 +106,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:itemIconTint="@color/navigation_icon"
         app:itemTextColor="@color/navigation_icon"
         app:menu="@menu/main_drawer_menu" />
@@ -121,7 +116,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:itemIconTint="@color/navigation_icon"
         app:itemShapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent"
         app:itemShapeFillColor="@color/navigation_item"
