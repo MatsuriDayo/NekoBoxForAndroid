@@ -518,7 +518,8 @@ fun buildConfig(
             // 全局模式下的规则处理
             
             // DNS查询规则：DNS查询也通过代理
-            if (enableDnsRouting && !useFakeDns) {
+            // if (enableDnsRouting && !useFakeDns) {
+            if (enableDnsRouting) {
                 route.rules.add(Rule_DefaultOptions().apply {
                     protocol = listOf("dns")
                     outbound = TAG_PROXY
