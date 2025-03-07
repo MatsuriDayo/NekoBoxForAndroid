@@ -7,10 +7,15 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.SparseBooleanArray
-import android.view.*
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.UiThread
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.util.contains
 import androidx.core.util.set
 import androidx.core.view.ViewCompat
@@ -30,9 +35,12 @@ import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.databinding.LayoutAppListBinding
 import io.nekohasekai.sagernet.databinding.LayoutAppsItemBinding
-import io.nekohasekai.sagernet.ktx.*
+import io.nekohasekai.sagernet.ktx.crossFadeFrom
+import io.nekohasekai.sagernet.ktx.launchCustomTab
+import io.nekohasekai.sagernet.ktx.onMainDispatcher
+import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
+import io.nekohasekai.sagernet.ktx.runOnIoDispatcher
 import io.nekohasekai.sagernet.utils.PackageCache
-import io.nekohasekai.sagernet.widget.ListHolderListener
 import io.nekohasekai.sagernet.widget.ListListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -79,7 +87,12 @@ class AppListActivity : ThemedActivity() {
                 binding.desc.text = "$packageName ($ver)"
                 //
                 binding.button.isVisible = true
-                binding.button.setImageDrawable(getDrawable(R.drawable.ic_baseline_info_24))
+                binding.button.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this@AppListActivity,
+                        R.drawable.ic_baseline_info_24
+                    )
+                )
                 binding.button.setOnClickListener {
                     runOnIoDispatcher {
                         val jsi = NekoJSInterface(packageName)
@@ -238,7 +251,6 @@ class AppListActivity : ThemedActivity() {
         binding = LayoutAppListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ListHolderListener.setup(this)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setTitle(R.string.select_apps)

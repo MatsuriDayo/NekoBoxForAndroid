@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.blacksquircle.ui.editorkit.insert
 import com.blacksquircle.ui.language.json.JsonLanguage
@@ -18,6 +19,7 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.databinding.LayoutEditConfigBinding
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.ui.ThemedActivity
+import io.nekohasekai.sagernet.widget.ListListener
 import moe.matsuri.nb4a.ui.ExtendedKeyboard
 import org.json.JSONObject
 
@@ -97,6 +99,8 @@ class ConfigEditActivity : ThemedActivity() {
         extendedKeyboard.setHasFixedSize(true)
         extendedKeyboard.submitList("{},:_\"".map { it.toString() })
         extendedKeyboard.setBackgroundColor(getColorAttr(R.attr.primaryOrTextPrimary))
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root, ListListener)
     }
 
     fun formatText(): String? {

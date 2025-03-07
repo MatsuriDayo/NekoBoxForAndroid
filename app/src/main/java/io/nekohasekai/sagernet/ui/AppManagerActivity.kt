@@ -8,7 +8,11 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.SparseBooleanArray
-import android.view.*
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.UiThread
@@ -35,7 +39,6 @@ import io.nekohasekai.sagernet.ktx.crossFadeFrom
 import io.nekohasekai.sagernet.ktx.onMainDispatcher
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.utils.PackageCache
-import io.nekohasekai.sagernet.widget.ListHolderListener
 import io.nekohasekai.sagernet.widget.ListListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -191,7 +194,6 @@ class AppManagerActivity : ThemedActivity() {
         binding = LayoutAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ListHolderListener.setup(this)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setTitle(R.string.proxied_apps)

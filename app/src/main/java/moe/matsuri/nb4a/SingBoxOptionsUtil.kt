@@ -108,7 +108,11 @@ fun SingBoxOptions.Rule_DefaultOptions.makeSingBoxRule(list: List<String>, isIP:
     list.forEach {
         if (isIP) {
             if (it.startsWith("geoip:")) {
-                rule_set.plusAssign(it)
+                if (it == "geoip:private") {
+                    ip_is_private = true
+                } else {
+                    rule_set.plusAssign(it)
+                }
             } else {
                 ip_cidr.plusAssign(it)
             }
