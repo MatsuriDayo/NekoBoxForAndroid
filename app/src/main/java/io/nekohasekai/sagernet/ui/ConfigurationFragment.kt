@@ -75,6 +75,9 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipInputStream
 import kotlin.collections.set
 
+import io.nekohasekai.sagernet.GroupType
+import io.nekohasekai.sagernet.database.ProxyGroup
+
 class ConfigurationFragment @JvmOverloads constructor(
     val select: Boolean = false, val selectedItem: ProxyEntity? = null, val titleRes: Int = 0
 ) : ToolbarFragment(R.layout.layout_group_list),
@@ -320,15 +323,26 @@ class ConfigurationFragment @JvmOverloads constructor(
                     snackbar(getString(R.string.clipboard_empty)).show()
                 } else runOnDefaultDispatcher {
                     try {
-                        val proxies = RawUpdater.parseRaw(text)
-                        if (proxies.isNullOrEmpty()) onMainDispatcher {
-                            snackbar(getString(R.string.no_proxies_found_in_clipboard)).show()
-                        } else import(proxies)
-                    } catch (e: SubscriptionFoundException) {
-                        (requireActivity() as MainActivity).importSubscription(Uri.parse(e.link))
+                        val singleURI = Uri.parse(text)
+                        if (singleURI.scheme == "http" || singleURI.scheme == "https") {
+                            val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
+                            val subscription = SubscriptionBean()
+                            group.subscription = subscription
+                            subscription.link = text
+                            subscription.autoUpdate = false
+                            group.name = ""
+                            startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
+                                putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
+                                putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, text)
+                            })
+                        } else {
+                            val proxies = RawUpdater.parseRaw(text)
+                            if (proxies.isNullOrEmpty()) onMainDispatcher {
+                                snackbar(getString(R.string.no_proxies_found_in_clipboard)).show()
+                            } else import(proxies)
+                        }
                     } catch (e: Exception) {
                         Logs.w(e)
-
                         onMainDispatcher {
                             snackbar(e.readableMessage).show()
                         }
@@ -1794,5 +1808,6 @@ class ConfigurationFragment @JvmOverloads constructor(
     }
 
 }
+
 
 
