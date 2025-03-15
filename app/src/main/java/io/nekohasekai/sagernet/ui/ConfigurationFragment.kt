@@ -323,23 +323,25 @@ class ConfigurationFragment @JvmOverloads constructor(
                     snackbar(getString(R.string.clipboard_empty)).show()
                 } else runOnDefaultDispatcher {
                     try {
-                        val singleURI = Uri.parse(text)
-                        if (singleURI.scheme == "http" || singleURI.scheme == "https") {
-                            val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
-                            val subscription = SubscriptionBean()
-                            group.subscription = subscription
-                            subscription.link = text
-                            subscription.autoUpdate = false
-                            group.name = ""
-                            startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
-                                putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
-                                putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, text)
-                            })
+                        val proxies = RawUpdater.parseRaw(text)
+                        if (!proxies.isNullOrEmpty()) {
+                            import(proxies)
                         } else {
-                            val proxies = RawUpdater.parseRaw(text)
-                            if (proxies.isNullOrEmpty()) onMainDispatcher {
+                            val singleURI = Uri.parse(text)
+                            if (singleURI.scheme == "http" || singleURI.scheme == "https") {
+                                val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
+                                val subscription = SubscriptionBean()
+                                group.subscription = subscription
+                                subscription.link = text
+                                subscription.autoUpdate = false
+                                group.name = ""
+                                startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
+                                    putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
+                                    putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, text)
+                                })
+                            } else onMainDispatcher {
                                 snackbar(getString(R.string.no_proxies_found_in_clipboard)).show()
-                            } else import(proxies)
+                            }
                         }
                     } catch (e: Exception) {
                         Logs.w(e)
