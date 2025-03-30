@@ -523,4 +523,7 @@
     <string name="global_mode_summary">绕过所有路由规则,所有流量都通过当前节点</string>
     <string name="network_change_reset_connections">当网络发生变化时重置出站连接</string>
     <string name="wake_reset_connections">当设备从睡眠状态唤醒时重置出站连接</string>
+    <string name="backup_in_progress">备份正在进行中</string>
+    <string name="restore_in_progress">恢复正在进行中</string>
+    <string name="restore_cancelled">恢复操作已取消</string>
 </resources>

@@ -51,6 +51,30 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     private lateinit var binding: LayoutBackupBinding
     private lateinit var backupData: ByteArray
     private var isWebDAVBackup = false
+    private var isBackupInProgress = false
+    private var isRestoreInProgress = false
+    private var currentJob: kotlinx.coroutines.Job? = null
+    private var snackbar: Snackbar? = null
+    private var restoreJob: kotlinx.coroutines.Job? = null
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        snackbar?.dismiss()
+        snackbar = null
+        // 如果正在进行恢复操作，取消它
+        if (isRestoreInProgress) {
+            restoreJob?.cancel()
+            restoreJob = null
+            isRestoreInProgress = false
+            MessageStore.showMessage(requireActivity(), R.string.restore_cancelled)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        currentJob?.cancel()
+        currentJob = null
+    }
 
     override fun name0() = app.getString(R.string.backup)
 
@@ -154,11 +178,16 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     }
 
     private fun backupToWebDAV() {
+        if (isBackupInProgress) {
+            showMessage(R.string.backup_in_progress)
+            return
+        }
+        isBackupInProgress = true
+        val activity = requireActivity()
         runOnDefaultDispatcher {
             try {
                 isWebDAVBackup = true
                 val backupData = doBackup(
-                    // 远程默认全部备份
                     true,  // 备份配置和分组
                     true,  // 备份路由规则
                     true   // 备份设置
@@ -258,20 +287,28 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 }
 
                 onMainDispatcher {
-                    showMessage(R.string.webdav_backup_success)
+                    MessageStore.showMessage(activity, R.string.webdav_backup_success)
                 }
             } catch (e: Exception) {
                 isWebDAVBackup = false  // 确保发生异常时也重置标志
                 Logs.w(e)
                 onMainDispatcher {
-                    showMessage(getString(R.string.webdav_backup_failed, e.message))
+                    MessageStore.showMessage(activity, getString(R.string.webdav_backup_failed, e.message ?: ""))
                 }
+            } finally {
+                isBackupInProgress = false
             }
         }
     }
 
     private fun restoreFromWebDAV() {
-        runOnDefaultDispatcher {
+        if (isRestoreInProgress) {
+            showMessage(R.string.restore_in_progress)
+            return
+        }
+        isRestoreInProgress = true
+        val activity = requireActivity()
+        restoreJob = runOnDefaultDispatcher {
             try {
                 val client = OkHttpClient()
                 val baseUrl = DataStore.webdavServer!!.trimEnd('/')
@@ -373,6 +410,12 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 // 解析并导入备份数据
                 val json = JSONObject(backupContent)
                 onMainDispatcher {
+                    // 如果 Fragment 已经被销毁，取消恢复操作
+                    if (!isAdded) {
+                        MessageStore.showMessage(activity, R.string.restore_cancelled)
+                        return@onMainDispatcher
+                    }
+
                     val import = LayoutImportBinding.inflate(layoutInflater)
                     if (!json.has("profiles")) {
                         import.backupConfigurations.isVisible = false
@@ -383,6 +426,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                     if (!json.has("settings")) {
                         import.backupSettings.isVisible = false
                     }
+
                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.backup_import)
                         .setView(import.root)
                         .setPositiveButton(R.string.backup_import) { _, _ ->
@@ -396,6 +440,11 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                 .show()
                             runOnDefaultDispatcher {
                                 runCatching {
+                                    // 再次检查是否已被取消
+                                    if (!isAdded) {
+                                        MessageStore.showMessage(activity, R.string.restore_cancelled)
+                                        return@runOnDefaultDispatcher
+                                    }
                                     finishImport(
                                         json,
                                         import.backupConfigurations.isChecked,
@@ -403,12 +452,12 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                         import.backupSettings.isChecked
                                     )
                                     ProcessPhoenix.triggerRebirth(
-                                        requireContext(), Intent(requireContext(), MainActivity::class.java)
+                                        activity, Intent(activity, MainActivity::class.java)
                                     )
                                 }.onFailure {
                                     Logs.w(it)
                                     onMainDispatcher {
-                                        alert(it.readableMessage).tryToShow()
+                                        MessageStore.showMessage(activity, it.readableMessage)
                                     }
                                 }
 
@@ -423,8 +472,10 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
             } catch (e: Exception) {
                 Logs.w(e)
                 onMainDispatcher {
-                    snackbar(e.readableMessage).show()
+                    MessageStore.showMessage(activity, e.readableMessage)
                 }
+            } finally {
+                isRestoreInProgress = false
             }
         }
     }
@@ -511,6 +562,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     }
 
     suspend fun startImport(file: Uri) {
+        val activity = requireActivity()
         val fileName = requireContext().contentResolver.query(file, null, null, null, null)
             ?.use { cursor ->
                 cursor.moveToFirst()
@@ -576,12 +628,12 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                     import.backupSettings.isChecked
                                 )
                                 ProcessPhoenix.triggerRebirth(
-                                    requireContext(), Intent(requireContext(), MainActivity::class.java)
+                                    activity, Intent(activity, MainActivity::class.java)
                                 )
                             }.onFailure {
                                 Logs.w(it)
                                 onMainDispatcher {
-                                    alert(it.readableMessage).tryToShow()
+                                    MessageStore.showMessage(activity, it.readableMessage)
                                 }
                             }
 
@@ -596,7 +648,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
         } catch (e: Exception) {
             Logs.w(e)
             onMainDispatcher {
-                snackbar(e.readableMessage).show()
+                MessageStore.showMessage(activity, e.readableMessage)
             }
         }
     }
@@ -662,11 +714,15 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     }
 
     private fun showMessage(message: String) {
-        snackbar(message).show()
+        MessageStore.showMessage(message)
     }
 
     private fun showMessage(@StringRes resId: Int) {
-        snackbar(getString(resId)).show()
+        MessageStore.showMessage(requireActivity(), resId)
+    }
+
+    private fun showMessage(@StringRes resId: Int, vararg args: Any) {
+        MessageStore.showMessage(requireActivity(), resId, *args)
     }
 
 }
