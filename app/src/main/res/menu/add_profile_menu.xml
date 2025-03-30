@@ -93,12 +93,6 @@
                 android:id="@+id/action_update_subscription"
                 android:title="@string/update_current_subscription" />
             <item
-                android:id="@+id/action_global_mode"
-                android:title="@string/global_mode"
-                android:checkable="true"
-                android:checked="false"
-                app:showAsAction="never" />
-            <item
                 android:id="@+id/action_clear_traffic_statistics"
                 android:title="@string/clear_traffic_statistics" />
             <item
@@ -116,6 +110,12 @@
             <item
                 android:id="@+id/action_connection_test_delete_unavailable"
                 android:title="@string/connection_test_delete_unavailable" />
+            <item
+                android:id="@+id/action_global_mode"
+                android:title="@string/global_mode"
+                android:checkable="true"
+                android:checked="false"
+                app:showAsAction="never" />
             <item
                 android:id="@+id/action_order"
                 android:title="@string/group_order">
