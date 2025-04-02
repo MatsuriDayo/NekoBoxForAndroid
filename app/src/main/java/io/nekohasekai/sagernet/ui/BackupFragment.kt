@@ -292,8 +292,19 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
             } catch (e: Exception) {
                 isWebDAVBackup = false  // 确保发生异常时也重置标志
                 Logs.w(e)
+
+                val errorMessage = try {
+                    if (isAdded) {
+                        getString(R.string.webdav_backup_failed, e.message ?: "")
+                    } else {
+                        app.getString(R.string.webdav_backup_failed, e.message ?: "")
+                    }
+                } catch (ex: Exception) {
+                    "WebDAV backup failed: ${e.message ?: ""}"
+                }
+                
                 onMainDispatcher {
-                    MessageStore.showMessage(activity, getString(R.string.webdav_backup_failed, e.message ?: ""))
+                    MessageStore.showMessage(activity, errorMessage)
                 }
             } finally {
                 isBackupInProgress = false
