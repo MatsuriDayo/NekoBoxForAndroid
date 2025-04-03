@@ -350,15 +350,19 @@ class AssetsActivity : ThemedActivity() {
             cacheFile.parentFile?.mkdirs()
             response.writeTo(cacheFile.canonicalPath)
             cacheFile.renameTo(file)
+
+            val currentDate = java.text.SimpleDateFormat("yyyyMMdd").format(java.util.Date())
+            versionFile.writeText(currentDate)
+
             adapter.reloadAssets()
             onMainDispatcher {
                 snackbar(R.string.route_asset_updated).show()
             }
         } finally {
             client.close()
-            if (versionFile.isFile) {
-                versionFile.delete()
-            }
+            // if (versionFile.isFile) {
+            //     versionFile.delete()
+            // }
         }
     }
 
