@@ -476,7 +476,7 @@
 
     <string name="please_update">نسخه (%s) برنامه شما بسیار قدیمی شده است و در %s متوقف می‌شود. لطفاً به نسخه جدیدتر به‌روزرسانی کنید</string>
     <string name="please_update_force">برنامه شما خیلی قدیمی شده است (%s). و در %s کار نمی‌کند. باید نسخه جدید را دانلود کنید!</string>
-    <string name="connection_test_delete_unavailable">Clear unavailable</string>
+    <string name="connection_test_delete_unavailable">پاک‌کردن غیرقابل‌دسترس‌ها</string>
     <string name="neko_plugin">افزونه پیشرفته</string>
     <string name="neko_plugin_summary">افزونه‌های پیشرفته می‌توانند پروتکل‌هایی را ارائه دهند که به صورت پیش‌فرض در این برنامه پشتیبانی نشده‌اند.\n\n هر کسی می‌تواند افزونه‌های پیشرفته بنویسد که می‌توانند NekoBox را کنترل کنند. لطفا از منابع معتبر دانلود و نصب کنید.</string>
     <string name="neko_plugin_internal_error">مشکل داخلی %s</string>
@@ -534,4 +534,6 @@
     <string name="group_not_subscription">نوع این گروه اشتراکی نیست</string>
     <string name="allow_insecure_on_request_sum">غیرفعال کردن بررسی گواهی‌ها هنگام به‌روزرسانی اشتراک‌ها</string>
     <string name="global_allow_insecure">به اتصال محافظت‌نشده همیشه اجازه داده شود.</string>
+    <string name="network_change_reset_connections">بازنشانی اتصال خروجی، هنگام تغییر شبکه</string>
+    <string name="wake_reset_connections">بازنشانی اتصال خروجی، هنگام روشن‌شدن صفحه موبایل</string>
 </resources>
