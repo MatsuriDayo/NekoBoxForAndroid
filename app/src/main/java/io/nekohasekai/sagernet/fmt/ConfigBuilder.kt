@@ -158,16 +158,22 @@ fun buildConfig(
     }
 
     return MyOptions().apply {
-        if (!forTest && DataStore.enableClashAPI) experimental = ExperimentalOptions().apply {
-            clash_api = ClashAPIOptions().apply {
-                external_controller = "127.0.0.1:9090"
-                external_ui = "../files/yacd"
-            }
-
-            cache_file = CacheFile().apply {
-                enabled = true
-                store_fakeip = true
-                path = "../cache/clash.db"
+	if (!forTest) {
+            experimental = ExperimentalOptions().apply {
+                cache_file = CacheFile().apply {
+                    enabled = true
+                    path = "../cache/clash.db"
+                    if (DataStore.enableClashAPI) {
+                        store_fakeip = true
+                    }
+                }
+                
+                if (DataStore.enableClashAPI) {
+                    clash_api = ClashAPIOptions().apply {
+                        external_controller = "127.0.0.1:9090"
+                        external_ui = "../files/yacd"
+                    }
+                }
             }
         }
 
@@ -580,8 +586,27 @@ fun buildConfig(
                     if (rule.ip.isNotBlank()) {
                         makeSingBoxRule(rule.ip.listByLineOrComma(), true)
                     }
-
+                    
                     if (rule_set != null) generateRuleSet(rule_set, ruleSets)
+                    
+		    // 存储ruleset标签和类型信息
+                    val rulesetTags = mutableListOf<Pair<String, Boolean>>()
+                    
+                    // 处理远程ruleset
+                    if (rule.ruleset.isNotBlank()) {
+                        val rulesetUrls = rule.ruleset.listByLineOrComma()
+                        rulesetUrls.forEach { origUrl ->
+                            val (url, isIPRuleset) = processRulesetUrl(origUrl)
+                            
+                            val tag = generateRemoteRuleSet(url, ruleSets, DataStore.rulesUpdateInterval)
+                            
+                            rulesetTags.add(Pair(tag, isIPRuleset))
+                            
+                            rule_set = (rule_set ?: mutableListOf()).apply {
+                                add(tag)
+                            }
+                        }
+                    }
 
                     if (rule.port.isNotBlank()) {
                         port = mutableListOf<Int>()
@@ -622,9 +647,22 @@ fun buildConfig(
                         }
                     }
 
-                    when (rule.outbound) {
+		    when (rule.outbound) {
                         -1L -> {
                             userDNSRuleList += makeDnsRuleObj().apply { server = "dns-direct" }
+                            
+                            if (rule_set != null && rulesetTags.isNotEmpty()) {
+                                for (tag in rule_set) {
+                                    // 只处理ruleset标签，且必须是非IP类型
+                                    val tagInfo = rulesetTags.find { it.first == tag }
+                                    if (tag.startsWith("ruleset-") && tagInfo != null && !tagInfo.second) {
+                                        userDNSRuleList += DNSRule_DefaultOptions().apply {
+                                            rule_set = mutableListOf(tag)
+                                            server = "dns-direct"
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         0L -> {
@@ -635,12 +673,44 @@ fun buildConfig(
                             userDNSRuleList += makeDnsRuleObj().apply {
                                 server = "dns-remote"
                             }
+                            
+                            if (rule_set != null && rulesetTags.isNotEmpty()) {
+                                for (tag in rule_set) {
+                                    val tagInfo = rulesetTags.find { it.first == tag }
+                                    if (tag.startsWith("ruleset-") && tagInfo != null && !tagInfo.second) {
+                                        if (useFakeDns) {
+                                            userDNSRuleList += DNSRule_DefaultOptions().apply {
+                                                rule_set = mutableListOf(tag)
+                                                server = "dns-fake"
+                                                inbound = listOf("tun-in")
+                                            }
+                                        }
+                                        userDNSRuleList += DNSRule_DefaultOptions().apply {
+                                            rule_set = mutableListOf(tag)
+                                            server = "dns-remote"
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         -2L -> {
                             userDNSRuleList += makeDnsRuleObj().apply {
                                 server = "dns-block"
                                 disable_cache = true
+                            }
+                            
+                            if (rule_set != null && rulesetTags.isNotEmpty()) {
+                                for (tag in rule_set) {
+                                    val tagInfo = rulesetTags.find { it.first == tag }
+                                    if (tag.startsWith("ruleset-") && tagInfo != null && !tagInfo.second) {
+                                        userDNSRuleList += DNSRule_DefaultOptions().apply {
+                                            rule_set = mutableListOf(tag)
+                                            server = "dns-block"
+                                            disable_cache = true
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

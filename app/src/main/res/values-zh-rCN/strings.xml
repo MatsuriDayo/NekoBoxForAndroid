@@ -19,7 +19,7 @@
     <string name="group_name_required">需要分组名称</string>
     <string name="group_create">创建分组</string>
     <string name="group_create_subscription">添加订阅</string>
-    <string name="group_edit">编辑</string>
+    <string name="group_edit">编辑分组</string>
     <string name="group_edit_subscription">编辑订阅</string>
     <string name="group_status_empty">空</string>
     <string name="group_status_empty_subscription">从未更新</string>
@@ -526,4 +526,7 @@
     <string name="backup_in_progress">备份正在进行中</string>
     <string name="restore_in_progress">恢复正在进行中</string>
     <string name="restore_cancelled">恢复操作已取消</string>
+    <string name="ruleset_update_interval">RuleSet 更新间隔</string>
+    <string name="ruleset_update_interval_summary">远程 RuleSet 自动更新的时间间隔。例如：1h、30m、3600s。设为 0 表示禁用自动更新</string>
+    <string name="ruleset_prefix_error">Ruleset格式错误: 必须以rsip:或rssite:开头</string>
 </resources>

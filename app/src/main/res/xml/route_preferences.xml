@@ -33,6 +33,11 @@
             app:key="routeSourcePort"
             app:title="sourcePort"
             app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_rule_folder_24"
+            app:key="routeRuleset"
+            app:title="RuleSet(.srs)"
+            app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/route_protocol_entry"
             app:entryValues="@array/route_protocol_value"

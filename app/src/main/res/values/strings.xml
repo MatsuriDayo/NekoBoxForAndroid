@@ -609,4 +609,7 @@
     <string name="backup_in_progress">Backup is already in progress</string>
     <string name="restore_in_progress">Restore is already in progress</string>
     <string name="restore_cancelled">Restore operation cancelled</string>
+    <string name="ruleset_update_interval">RuleSet Update Interval</string>
+    <string name="ruleset_update_interval_summary">Time between updates of remote RuleSets. Examples: 1h, 30m, 3600s. Set to 0 to disable automatic updates</string>
+    <string name="ruleset_prefix_error">Ruleset format error: must start with rsip: or rssite:</string>
 </resources>

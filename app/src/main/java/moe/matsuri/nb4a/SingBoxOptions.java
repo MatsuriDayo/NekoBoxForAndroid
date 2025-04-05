@@ -1017,6 +1017,8 @@ public class SingBoxOptions {
 
         public String url;
 
+	public String update_interval;
+
     }
 
     public static class DefaultRule extends SingBoxOption {

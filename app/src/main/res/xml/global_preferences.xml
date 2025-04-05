@@ -151,6 +151,12 @@
             app:key="rulesGeoipUrl"
             app:title="@string/rules_geoip_url"
             app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="0"
+            app:key="rulesUpdateInterval"
+            app:icon="@drawable/ic_baseline_shutter_speed_24"
+            app:title="@string/ruleset_update_interval"
+            app:summary="@string/ruleset_update_interval_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/fragment_settings">
@@ -275,4 +281,3 @@
             app:title="@string/show_bottom_bar" />
     </PreferenceCategory>
 </PreferenceScreen>
-

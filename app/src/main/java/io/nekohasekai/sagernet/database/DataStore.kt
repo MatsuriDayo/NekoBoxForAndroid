@@ -122,6 +122,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     var rulesGeositeUrl by configurationStore.string(Key.RULES_GEOSITE_URL) { "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db" }
     var rulesGeoipUrl by configurationStore.string(Key.RULES_GEOIP_URL) { "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db" }
+    var rulesUpdateInterval by configurationStore.string(Key.RULES_UPDATE_INTERVAL) { "0" } // 默认为0，不自动更新
 
     // hopefully hashCode = mHandle doesn't change, currently this is true from KitKat to Nougat
     private val userIndex by lazy { Binder.getCallingUserHandle().hashCode() }
@@ -229,6 +230,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var routeNetwork by profileCacheStore.string(Key.ROUTE_NETWORK)
     var routeSource by profileCacheStore.string(Key.ROUTE_SOURCE)
     var routeProtocol by profileCacheStore.string(Key.ROUTE_PROTOCOL)
+    var routeRuleset by profileCacheStore.string(Key.ROUTE_RULESET)
     var routeOutbound by profileCacheStore.stringToInt(Key.ROUTE_OUTBOUND)
     var routeOutboundRule by profileCacheStore.long(Key.ROUTE_OUTBOUND + "Long")
     var routePackages by profileCacheStore.string(Key.ROUTE_PACKAGES)
@@ -280,5 +282,3 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
     }
 }
-
-

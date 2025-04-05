@@ -64,6 +64,7 @@ class RouteSettingsActivity(
         DataStore.routeNetwork = network
         DataStore.routeSource = source
         DataStore.routeProtocol = protocol
+        DataStore.routeRuleset = ruleset
         DataStore.routeOutboundRule = outbound
         DataStore.routeOutbound = when (outbound) {
             0L -> 0
@@ -83,6 +84,7 @@ class RouteSettingsActivity(
         network = DataStore.routeNetwork
         source = DataStore.routeSource
         protocol = DataStore.routeProtocol
+        ruleset = DataStore.routeRuleset
         outbound = when (DataStore.routeOutbound) {
             0 -> 0L
             1 -> -1L
@@ -98,7 +100,7 @@ class RouteSettingsActivity(
 
     fun needSave(): Boolean {
         if (!DataStore.dirty) return false
-        if (DataStore.routePackages.isBlank() && DataStore.routeDomain.isBlank() && DataStore.routeIP.isBlank() && DataStore.routePort.isBlank() && DataStore.routeSourcePort.isBlank() && DataStore.routeNetwork.isBlank() && DataStore.routeSource.isBlank() && DataStore.routeProtocol.isBlank()) {
+        if (DataStore.routePackages.isBlank() && DataStore.routeDomain.isBlank() && DataStore.routeIP.isBlank() && DataStore.routePort.isBlank() && DataStore.routeSourcePort.isBlank() && DataStore.routeNetwork.isBlank() && DataStore.routeSource.isBlank() && DataStore.routeProtocol.isBlank() && DataStore.routeRuleset.isBlank()) {
             return false
         }
         return true
