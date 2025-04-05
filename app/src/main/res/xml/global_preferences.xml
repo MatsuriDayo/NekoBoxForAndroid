@@ -171,7 +171,7 @@
 
     <PreferenceCategory app:title="@string/cag_dns">
         <EditTextPreference
-      app:defaultValue="tls://8.8.4.4"
+      app:defaultValue="https://dns.google/dns-query"
             app:icon="@drawable/ic_action_dns"
             app:key="remoteDns"
             app:title="@string/remote_dns"
@@ -184,7 +184,7 @@
             app:title="@string/domain_strategy_for_remote"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            app:defaultValue="223.6.6.6"
+            app:defaultValue="https://223.5.5.5/dns-query"
             app:icon="@drawable/ic_action_dns"
             app:key="directDns"
             app:title="@string/direct_dns"
