@@ -213,6 +213,7 @@ fun buildConfig(
             if (isVPN) inbounds.add(Inbound_TunOptions().apply {
                 type = "tun"
                 tag = "tun-in"
+                interface_name = "tun0"
                 stack = when (DataStore.tunImplementation) {
                     TunImplementation.GVISOR -> "gvisor"
                     TunImplementation.SYSTEM -> "system"
@@ -221,6 +222,8 @@ fun buildConfig(
                 endpoint_independent_nat = true
                 mtu = DataStore.mtu
                 domain_strategy = genDomainStrategy(DataStore.resolveDestination)
+                auto_route = true
+                strict_route = true
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
                 when (ipv6Mode) {
@@ -254,6 +257,7 @@ fun buildConfig(
         // init routing object
         route = RouteOptions().apply {
             auto_detect_interface = true
+            override_android_vpn = true
             rules = mutableListOf()
             rule_set = mutableListOf()
         }
