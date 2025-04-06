@@ -11,6 +11,7 @@ on:
       play:
         description: "Play: If want ignore"
         required: false
+
 jobs:
   libcore:
     name: Native Build (LibCore)
@@ -37,6 +38,12 @@ jobs:
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
+      - name: Upload LibCore AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: LibCore-AAR
+          path: app/libs/libcore.aar
+
   build:
     name: Build OSS APK
     runs-on: ubuntu-latest
@@ -76,62 +83,70 @@ jobs:
         with:
           name: APKs
           path: ${{ env.APK }}
+
   publish:
     name: Publish Release
     if: github.event.inputs.publish != 'y'
     runs-on: ubuntu-latest
-    needs: build
+    needs: libcore
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Donwload Artifacts
+#      - name: Download APK Artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: APKs
+#          path: artifacts
+      - name: Download LibCore AAR
         uses: actions/download-artifact@v4
         with:
-          name: APKs
-          path: artifacts
+          name: LibCore-AAR
+          path: artifacts/libcore
       - name: Release
         run: |
           wget -O ghr.tar.gz https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
           tar -xvf ghr.tar.gz
           mv ghr*linux_amd64/ghr .
-          mkdir apks
-          find artifacts -name "*.apk" -exec cp {} apks \;
-          ./ghr -delete -t "${{ github.token }}" -n "${{ github.event.inputs.tag }}" "${{ github.event.inputs.tag }}" apks
-  play:
-    name: Build Play Bundle
-    if: github.event.inputs.play != 'y'
-    runs-on: ubuntu-latest
-    needs:
-      - libcore
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Golang Status
-        run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
-      - name: Libcore Status
-        run: git ls-files libcore | xargs cat | sha1sum > libcore_status
-      - name: LibCore Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            app/libs/libcore.aar
-          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
-      - name: Gradle cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle
-          key: gradle-play-${{ hashFiles('**/*.gradle.kts') }}
-      - name: Checkout Library
-        run: |
-          git submodule update --init 'app/*'
-      - name: Gradle Build
-        run: |
-          echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
-          export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
-          ./run init action gradle
-          ./gradlew bundlePlayRelease
-      - uses: actions/upload-artifact@v3
-        with:
-          name: AAB
-          path: app/build/outputs/bundle/playRelease/app-play-release.aab
+          mkdir -p release
+#          find artifacts -name "*.apk" -exec cp {} release \;
+          find artifacts/libcore -name "*.aar" -exec cp {} release \;
+          ./ghr -delete -t "${{ github.token }}" -n "${{ github.event.inputs.tag }}" "${{ github.event.inputs.tag }}" release
+
+#  play:
+#    name: Build Play Bundle
+#    if: github.event.inputs.play != 'y'
+#    runs-on: ubuntu-latest
+#    needs:
+#      - libcore
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Golang Status
+#        run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+#      - name: Libcore Status
+#        run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+#      - name: LibCore Cache
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            app/libs/libcore.aar
+#          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+#      - name: Gradle cache
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.gradle
+#          key: gradle-play-${{ hashFiles('**/*.gradle.kts') }}
+#      - name: Checkout Library
+#        run: |
+#          git submodule update --init 'app/*'
+#      - name: Gradle Build
+#        run: |
+#          echo "sdk.dir=${ANDROID_HOME}" > local.properties
+#          echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
+#          export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
+#          ./run init action gradle
+#          ./gradlew bundlePlayRelease
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: AAB
+#          path: app/build/outputs/bundle/playRelease/app-play-release.aab
