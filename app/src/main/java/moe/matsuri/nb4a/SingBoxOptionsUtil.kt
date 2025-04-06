@@ -180,7 +180,8 @@ fun processRulesetUrl(origUrl: String): Pair<String, Boolean> {
 }
 
 fun generateRemoteRuleSet(url: String, ruleSets: MutableList<RuleSet>, updateInterval: String): String {
-    val tag = "ruleset-" + url.hashCode()
+    val hashCode = kotlin.math.abs(url.hashCode())
+    val tag = "ruleset-$hashCode"
     
     // 添加到规则集列表
     ruleSets.add(RuleSet().apply {
