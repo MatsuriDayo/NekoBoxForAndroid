@@ -673,9 +673,11 @@ fun buildConfig(
                             if (useFakeDns) userDNSRuleList += makeDnsRuleObj().apply {
                                 server = "dns-fake"
                                 inbound = listOf("tun-in")
-                            }
-                            userDNSRuleList += makeDnsRuleObj().apply {
-                                server = "dns-remote"
+                                query_type = listOf("A", "AAAA")
+                            } else {
+                                userDNSRuleList += makeDnsRuleObj().apply {
+                                    server = "dns-remote"
+                                }
                             }
                             
                             if (rule_set != null && rulesetTags.isNotEmpty()) {
@@ -687,11 +689,13 @@ fun buildConfig(
                                                 rule_set = mutableListOf(tag)
                                                 server = "dns-fake"
                                                 inbound = listOf("tun-in")
+                                                query_type = listOf("A", "AAAA")
                                             }
-                                        }
-                                        userDNSRuleList += DNSRule_DefaultOptions().apply {
-                                            rule_set = mutableListOf(tag)
-                                            server = "dns-remote"
+                                        } else {
+                                            userDNSRuleList += DNSRule_DefaultOptions().apply {
+                                                rule_set = mutableListOf(tag)
+                                                server = "dns-remote"
+                                            }
                                         }
                                     }
                                 }
@@ -871,6 +875,7 @@ fun buildConfig(
                     inbound = listOf("tun-in")
                     server = "dns-fake"
                     disable_cache = true
+                    query_type = listOf("A", "AAAA")
                 })
             }
             // avoid loopback
