@@ -239,7 +239,7 @@ data class ProxyEntity(
             is SSHBean -> false
             is WireGuardBean -> false
             is ShadowTLSBean -> false
-            is NekoBean -> nekoBean!!.haveStandardLink()
+            is NekoBean -> false
             is ConfigBean -> false
             else -> true
         }
@@ -257,7 +257,7 @@ data class ProxyEntity(
             is HysteriaBean -> toUri()
             is TuicBean -> toUri()
             is AnyTLSBean -> toUri()
-            is NekoBean -> shareLink()
+            is NekoBean -> ""
             else -> toUniversalLink()
         }
     }
@@ -470,7 +470,6 @@ data class ProxyEntity(
                 TYPE_SHADOWTLS -> ShadowTLSSettingsActivity::class.java
                 TYPE_ANYTLS -> AnyTLSSettingsActivity::class.java
                 TYPE_CHAIN -> ChainSettingsActivity::class.java
-                TYPE_NEKO -> NekoSettingActivity::class.java
                 TYPE_CONFIG -> ConfigSettingActivity::class.java
                 else -> throw IllegalArgumentException()
             }

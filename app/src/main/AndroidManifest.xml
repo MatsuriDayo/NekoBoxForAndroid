@@ -192,9 +192,6 @@
             android:name="moe.matsuri.nb4a.proxy.anytls.AnyTLSSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="moe.matsuri.nb4a.proxy.neko.NekoSettingActivity"
-            android:configChanges="uiMode" />
-        <activity
             android:name="moe.matsuri.nb4a.proxy.config.ConfigSettingActivity"
             android:configChanges="uiMode" />
         <activity

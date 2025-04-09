@@ -477,9 +477,6 @@
     <string name="please_update">نسخه (%s) برنامه شما بسیار قدیمی شده است و در %s متوقف می‌شود. لطفاً به نسخه جدیدتر به‌روزرسانی کنید</string>
     <string name="please_update_force">برنامه شما خیلی قدیمی شده است (%s). و در %s کار نمی‌کند. باید نسخه جدید را دانلود کنید!</string>
     <string name="connection_test_delete_unavailable">پاک‌کردن غیرقابل‌دسترس‌ها</string>
-    <string name="neko_plugin">افزونه پیشرفته</string>
-    <string name="neko_plugin_summary">افزونه‌های پیشرفته می‌توانند پروتکل‌هایی را ارائه دهند که به صورت پیش‌فرض در این برنامه پشتیبانی نشده‌اند.\n\n هر کسی می‌تواند افزونه‌های پیشرفته بنویسد که می‌توانند NekoBox را کنترل کنند. لطفا از منابع معتبر دانلود و نصب کنید.</string>
-    <string name="neko_plugin_internal_error">مشکل داخلی %s</string>
     <string name="move">حرکت</string>
     <string name="exe_prefer_provider">ارائه‌دهنده برگزیده افزونه‌ها</string>
     <string name="create_shortcut">ساخت میانبر</string>

@@ -16,9 +16,6 @@ import io.nekohasekai.sagernet.fmt.hysteria.HysteriaBean
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.ui.VpnRequestActivity
 import io.nekohasekai.sagernet.utils.Subnet
-import libcore.*
-import moe.matsuri.nb4a.net.LocalResolverImpl
-import moe.matsuri.nb4a.proxy.neko.needBypassRootUid
 import android.net.VpnService as BaseVpnService
 
 class VpnService : BaseVpnService(),
@@ -135,7 +132,7 @@ class VpnService : BaseVpnService(),
         var bypass = DataStore.bypass
         val workaroundSYSTEM = false /* DataStore.tunImplementation == TunImplementation.SYSTEM */
         val needBypassRootUid = workaroundSYSTEM || data.proxy!!.config.trafficMap.values.any {
-            it[0].nekoBean?.needBypassRootUid() == true || it[0].hysteriaBean?.protocol == HysteriaBean.PROTOCOL_FAKETCP
+            it[0].hysteriaBean?.protocol == HysteriaBean.PROTOCOL_FAKETCP
         }
 
         if (proxyApps || needBypassRootUid) {

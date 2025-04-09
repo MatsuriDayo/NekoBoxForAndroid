@@ -14,10 +14,7 @@ import io.nekohasekai.sagernet.fmt.trojan.parseTrojan
 import io.nekohasekai.sagernet.fmt.tuic.parseTuic
 import io.nekohasekai.sagernet.fmt.trojan_go.parseTrojanGo
 import io.nekohasekai.sagernet.fmt.v2ray.parseV2Ray
-import moe.matsuri.nb4a.plugin.NekoPluginManager
 import moe.matsuri.nb4a.proxy.anytls.parseAnytls
-import moe.matsuri.nb4a.proxy.neko.NekoJSInterface
-import moe.matsuri.nb4a.proxy.neko.parseShareLink
 import moe.matsuri.nb4a.utils.JavaUtil.gson
 import moe.matsuri.nb4a.utils.Util
 import org.json.JSONArray
@@ -112,7 +109,7 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
     val entities = ArrayList<AbstractBean>()
     val entitiesByLine = ArrayList<AbstractBean>()
 
-    suspend fun String.parseLink(entities: ArrayList<AbstractBean>) {
+    fun String.parseLink(entities: ArrayList<AbstractBean>) {
         if (startsWith("clash://install-config?") || startsWith("sn://subscription?")) {
             throw SubscriptionFoundException(this)
         }
@@ -211,22 +208,6 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             }.onFailure {
                 Logs.w(it)
             }
-        } else { // Neko Plugins
-            NekoPluginManager.getProtocols().forEach { obj ->
-                obj.protocolConfig.optJSONArray("links")?.forEach { _, any ->
-                    if (any is String && startsWith(any)) {
-                        runCatching {
-                            entities.add(
-                                parseShareLink(
-                                    obj.plgId, obj.protocolId, this@parseLink
-                                )
-                            )
-                        }.onFailure {
-                            Logs.w(it)
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -246,7 +227,6 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             }
         }
     }
-    NekoJSInterface.Default.destroyAllJsi()
     return if (entities.size > entitiesByLine.size) entities else entitiesByLine
 }
 

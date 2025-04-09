@@ -54,11 +54,6 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     public String echConfig;
 
-    // sing-box 不再使用
-    public Boolean enablePqSignature;
-
-    public Boolean disabledDRS;
-
     // --------------------------------------- Mux
 
     public Boolean enableMux;
@@ -108,8 +103,6 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
         if (enableECH == null) enableECH = false;
         if (JavaUtil.isNullOrBlank(echConfig)) echConfig = "";
-        if (enablePqSignature == null) enablePqSignature = false;
-        if (disabledDRS == null) disabledDRS = false;
 
         if (enableMux == null) enableMux = false;
         if (muxPadding == null) muxPadding = false;
@@ -119,7 +112,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(2);
+        output.writeInt(3);
         super.serialize(output);
         output.writeString(uuid);
         output.writeString(encryption);
@@ -167,11 +160,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
         }
 
         output.writeBoolean(enableECH);
-        if (enableECH) {
-            output.writeBoolean(enablePqSignature);
-            output.writeBoolean(disabledDRS);
-            output.writeString(echConfig);
-        }
+        output.writeString(echConfig);
 
         output.writeInt(packetEncoding);
 
@@ -229,16 +218,18 @@ public abstract class StandardV2RayBean extends AbstractBean {
             realityShortId = input.readString();
         }
 
-        if (version >= 1) { // 从老版本升级上来
+        if (version >= 1) {
             enableECH = input.readBoolean();
-            if (enableECH) {
-                enablePqSignature = input.readBoolean();
-                disabledDRS = input.readBoolean();
+            if (version >= 3) {
                 echConfig = input.readString();
+            } else {
+                if (enableECH) {
+                    input.readBoolean();
+                    input.readBoolean();
+                    echConfig = input.readString();
+                }
             }
-        }
-
-        if (version == 0) {
+        } else if (version == 0) {
             // 从老版本升级上来但是 version == 0, 可能有 enableECH 也可能没有，需要做判断
             int position = input.getByteBuffer().position(); // 当前位置
 
@@ -250,8 +241,8 @@ public abstract class StandardV2RayBean extends AbstractBean {
             if (tmpPacketEncoding != 1 && tmpPacketEncoding != 2) {
                 enableECH = tmpEnableECH;
                 if (enableECH) {
-                    enablePqSignature = input.readBoolean();
-                    disabledDRS = input.readBoolean();
+                    input.readBoolean();
+                    input.readBoolean();
                     echConfig = input.readString();
                 }
             } // 否则后一位就是 packetEncoding
@@ -275,7 +266,6 @@ public abstract class StandardV2RayBean extends AbstractBean {
         bean.utlsFingerprint = utlsFingerprint;
         bean.packetEncoding = packetEncoding;
         bean.enableECH = enableECH;
-        bean.disabledDRS = disabledDRS;
         bean.echConfig = echConfig;
         bean.enableMux = enableMux;
         bean.muxPadding = muxPadding;

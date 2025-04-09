@@ -75,9 +75,11 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
             }
 
             return MaterialAboutList.Builder()
-                .addCard(MaterialAboutCard.Builder()
+                .addCard(
+                    MaterialAboutCard.Builder()
                     .outline(false)
-                    .addItem(MaterialAboutActionItem.Builder()
+                    .addItem(
+                        MaterialAboutActionItem.Builder()
                         .icon(R.drawable.ic_baseline_update_24)
                         .text(R.string.app_version)
                         .subText(versionName)
@@ -87,13 +89,15 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                             )
                         }
                         .build())
-                    .addItem(MaterialAboutActionItem.Builder()
+                    .addItem(
+                        MaterialAboutActionItem.Builder()
                         .icon(R.drawable.ic_baseline_layers_24)
                         .text(getString(R.string.version_x, "sing-box"))
                         .subText(Libcore.versionBox())
                         .setOnClickAction { }
                         .build())
-                    .addItem(MaterialAboutActionItem.Builder()
+                    .addItem(
+                        MaterialAboutActionItem.Builder()
                         .icon(R.drawable.ic_baseline_card_giftcard_24)
                         .text(R.string.donate)
                         .subText(R.string.donate_info)
@@ -107,9 +111,11 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         PackageCache.awaitLoadSync()
                         for ((_, pkg) in PackageCache.installedPluginPackages) {
                             try {
-                                val pluginId = pkg.providers?.get(0)?.loadString(Plugins.METADATA_KEY_ID)
-                                if (pluginId.isNullOrBlank() || pluginId.startsWith(Plugins.AUTHORITIES_PREFIX_NEKO_PLUGIN)) continue
-                                addItem(MaterialAboutActionItem.Builder()
+                                val pluginId =
+                                    pkg.providers?.get(0)?.loadString(Plugins.METADATA_KEY_ID)
+                                if (pluginId.isNullOrBlank()) continue
+                                addItem(
+                                    MaterialAboutActionItem.Builder()
                                     .icon(R.drawable.ic_baseline_nfc_24)
                                     .text(
                                         getString(
@@ -137,7 +143,8 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             val pm = app.getSystemService(Context.POWER_SERVICE) as PowerManager
                             if (!pm.isIgnoringBatteryOptimizations(app.packageName)) {
-                                addItem(MaterialAboutActionItem.Builder()
+                                addItem(
+                                    MaterialAboutActionItem.Builder()
                                     .icon(R.drawable.ic_baseline_running_with_errors_24)
                                     .text(R.string.ignore_battery_optimizations)
                                     .subText(R.string.ignore_battery_optimizations_sum)
@@ -154,10 +161,12 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         }
                     }
                     .build())
-                .addCard(MaterialAboutCard.Builder()
+                .addCard(
+                    MaterialAboutCard.Builder()
                     .outline(false)
                     .title(R.string.project)
-                    .addItem(MaterialAboutActionItem.Builder()
+                    .addItem(
+                        MaterialAboutActionItem.Builder()
                         .icon(R.drawable.ic_baseline_sanitizer_24)
                         .text(R.string.github)
                         .setOnClickAction {
@@ -167,7 +176,8 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                             )
                         }
                         .build())
-                    .addItem(MaterialAboutActionItem.Builder()
+                    .addItem(
+                        MaterialAboutActionItem.Builder()
                         .icon(R.drawable.ic_qu_shadowsocks_foreground)
                         .text(R.string.telegram)
                         .setOnClickAction {

@@ -509,12 +509,6 @@
     <string name="please_update_force">Your APP is too old (%s). And has been stopped working at %s.
         Please update!</string>
     <string name="connection_test_delete_unavailable">Clear unavailable</string>
-    <string name="neko_plugin">Advanced plugin</string>
-    <string name="neko_plugin_summary">Advanced plugins can provide protocols that are not
-        originally supported.\n\n
-        Anyone can write advanced plugins, which can control NekoBox. please download and install
-        from trusted sources.</string>
-    <string name="neko_plugin_internal_error">%s internal error</string>
     <string name="move">Move</string>
     <string name="exe_prefer_provider">Plugin Preferred Provider</string>
     <string name="create_shortcut">Create Shortcut</string>
