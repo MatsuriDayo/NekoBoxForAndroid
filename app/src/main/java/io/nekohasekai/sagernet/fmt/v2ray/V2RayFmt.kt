@@ -153,7 +153,7 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     }
 
     type = url.queryParameter("type") ?: "tcp"
-    if (type == "h2") type = "http"
+    if (type == "h2" || url.queryParameter("headerType") == "http") type = "http"
 
     security = url.queryParameter("security")
     if (security.isNullOrBlank()) {
@@ -163,6 +163,9 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     when (security) {
         "tls", "reality" -> {
             security = "tls"
+            url.queryParameter("allowInsecure")?.let {
+                allowInsecure = it == "1" || it == "true"
+            }
             url.queryParameter("sni")?.let {
                 sni = it
             }
@@ -185,16 +188,6 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
     }
 
     when (type) {
-        "tcp" -> {
-            // v2rayNG
-            if (url.queryParameter("headerType") == "http") {
-                url.queryParameter("host")?.let {
-                    type = "http"
-                    host = it
-                }
-            }
-        }
-
         "http" -> {
             url.queryParameter("host")?.let {
                 host = it
