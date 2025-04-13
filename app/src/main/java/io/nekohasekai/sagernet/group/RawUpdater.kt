@@ -251,7 +251,7 @@ object RawUpdater : GroupUpdater() {
                                 setTLS(proxy["tls"]?.toString() == "true")
                                 sni = proxy["sni"]?.toString()
                                 name = proxy["name"]?.toString()
-                                allowInsecure = proxy["name"]?.toString() == "true"
+                                allowInsecure = proxy["skip-cert-verify"]?.toString() == "true"
                             })
                         }
 
@@ -296,7 +296,6 @@ object RawUpdater : GroupUpdater() {
                                 "vless" -> VMessBean().apply {
                                     alterId = -1 // make it VLESS
                                     packetEncoding = 2 // clash meta default XUDP
-                                    security = "tls"
                                 }
 
                                 "trojan" -> TrojanBean().apply {

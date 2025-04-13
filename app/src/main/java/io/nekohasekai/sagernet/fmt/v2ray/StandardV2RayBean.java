@@ -81,7 +81,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(path)) path = "";
 
         if (JavaUtil.isNullOrBlank(security)) {
-            if (this instanceof TrojanBean || isVLESS()) {
+            if (this instanceof TrojanBean) {
                 security = "tls";
             } else {
                 security = "none";
