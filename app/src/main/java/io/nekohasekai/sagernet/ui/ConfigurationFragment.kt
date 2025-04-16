@@ -13,6 +13,7 @@ import android.text.format.Formatter
 import android.text.style.ForegroundColorSpan
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -116,9 +117,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipInputStream
 import kotlin.collections.set
-
-import io.nekohasekai.sagernet.GroupType
-import io.nekohasekai.sagernet.database.ProxyGroup
+import androidx.appcompat.app.AlertDialog
+import io.nekohasekai.sagernet.database.SubscriptionBean
 
 class ConfigurationFragment @JvmOverloads constructor(
     val select: Boolean = false, val selectedItem: ProxyEntity? = null, val titleRes: Int = 0
@@ -166,6 +166,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         if (savedInstanceState != null) {
             parentFragmentManager.beginTransaction()
