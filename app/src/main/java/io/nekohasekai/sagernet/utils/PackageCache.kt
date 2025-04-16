@@ -51,7 +51,7 @@ object PackageCache {
         }.associateBy { it.packageName }
 
         installedPluginPackages = rawPackageInfo.filter {
-            Plugins.isExeOrPlugin(it)
+            Plugins.isExe(it)
         }.associateBy { it.packageName }
 
         val installed = app.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)

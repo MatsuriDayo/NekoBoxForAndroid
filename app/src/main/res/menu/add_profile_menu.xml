@@ -77,9 +77,6 @@
                         android:title="@string/proxy_chain" />
                 </menu>
             </item>
-            <item
-                android:id="@+id/action_new_neko"
-                android:title="@string/neko_plugin" />
         </menu>
     </item>
 

@@ -16,13 +16,11 @@ import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.utils.Theme
-import io.nekohasekai.sagernet.widget.AppListPreference
 import moe.matsuri.nb4a.ui.*
 
 class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
     private lateinit var isProxyApps: SwitchPreference
-    private lateinit var nekoPlugins: AppListPreference
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,16 +37,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = DataStore.configurationStore
         DataStore.initGlobal()
         addPreferencesFromResource(R.xml.global_preferences)
-
-        DataStore.routePackages = DataStore.nekoPlugins
-        nekoPlugins = findPreference(Key.NEKO_PLUGIN_MANAGED)!!
-        nekoPlugins.setOnPreferenceClickListener {
-            // borrow from route app settings
-            startActivity(Intent(
-                context, AppListActivity::class.java
-            ).apply { putExtra(Key.NEKO_PLUGIN_MANAGED, true) })
-            true
-        }
 
         val appTheme = findPreference<ColorPickerPreference>(Key.APP_THEME)!!
         appTheme.setOnPreferenceChangeListener { _, newTheme ->
@@ -197,9 +185,6 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
         if (::isProxyApps.isInitialized) {
             isProxyApps.isChecked = DataStore.proxyApps
-        }
-        if (::nekoPlugins.isInitialized) {
-            nekoPlugins.postUpdate()
         }
     }
 

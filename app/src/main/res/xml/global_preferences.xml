@@ -93,10 +93,6 @@
             app:key="logLevel"
             app:title="@string/log_level"
             app:useSimpleSummaryProvider="true" />
-        <io.nekohasekai.sagernet.widget.AppListPreference
-            app:icon="@drawable/ic_baseline_android_24"
-            app:key="nekoPlugins"
-            app:title="@string/neko_plugin" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/cag_route">

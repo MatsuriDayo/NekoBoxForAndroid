@@ -8,17 +8,11 @@ import com.esotericsoftware.kryo.io.ByteBufferOutput;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import io.nekohasekai.sagernet.R;
-import io.nekohasekai.sagernet.SagerNet;
 import io.nekohasekai.sagernet.fmt.AbstractBean;
 import io.nekohasekai.sagernet.fmt.KryoConverters;
 import io.nekohasekai.sagernet.ktx.Logs;
-import moe.matsuri.nb4a.plugin.NekoPluginManager;
 
 public class NekoBean extends AbstractBean {
-
-    // BoxInstance use this
-    public JSONObject allConfig = null;
 
     public String plgId;
     public String protocolId;
@@ -62,31 +56,22 @@ public class NekoBean extends AbstractBean {
     }
 
     public String displayType() {
-        NekoPluginManager.Protocol p = NekoPluginManager.INSTANCE.findProtocol(protocolId);
-        String neko = SagerNet.application.getResources().getString(R.string.neko_plugin);
-        if (p == null) return neko;
-        return p.getProtocolId();
+        return "invalid";
     }
 
     @Override
     public boolean canMapping() {
-        NekoPluginManager.Protocol p = NekoPluginManager.INSTANCE.findProtocol(protocolId);
-        if (p == null) return false;
-        return p.getProtocolConfig().optBoolean("canMapping");
+        return false;
     }
 
     @Override
     public boolean canICMPing() {
-        NekoPluginManager.Protocol p = NekoPluginManager.INSTANCE.findProtocol(protocolId);
-        if (p == null) return false;
-        return p.getProtocolConfig().optBoolean("canICMPing");
+        return false;
     }
 
     @Override
     public boolean canTCPing() {
-        NekoPluginManager.Protocol p = NekoPluginManager.INSTANCE.findProtocol(protocolId);
-        if (p == null) return false;
-        return p.getProtocolConfig().optBoolean("canTCPing");
+        return false;
     }
 
     @NotNull

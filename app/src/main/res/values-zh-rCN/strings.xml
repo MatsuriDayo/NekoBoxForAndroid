@@ -427,16 +427,11 @@
     <string name="please_update">您的 APP (%s) 太旧了喵，%s 再不更新就没的用了喵～</string>
     <string name="please_update_force">您的 APP (%s) 版本过旧，已于 %s 停止工作，请立即升级。</string>
     <string name="connection_test_delete_unavailable">清理不可用配置</string>
-    <string name="neko_plugin">高级插件</string>
-    <string name="neko_plugin_summary">高级插件可以提供原本不支持的协议。\n\n
-        任何人都可以编写高级插件，开启相当于给予其控制 NekoBox 的权限，请从信任的来源下载安装。\n\n
-        普通插件在关于页面显示，无需手动开启。</string>
     <string name="packet_encoding">包编码</string>
     <string name="action_switch">切换</string>
     <string name="acquire_wake_lock">获取唤醒锁</string>
     <string name="release_wake_lock">释放唤醒锁</string>
     <string name="acquire_wake_lock_summary">保持 CPU 开启</string>
-    <string name="neko_plugin_internal_error">%s 内部错误</string>
     <string name="move">移动</string>
     <string name="subscription_expire">过期: %s</string>
     <string name="update_all_subscription">更新所有订阅</string>

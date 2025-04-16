@@ -446,7 +446,5 @@
     <string name="action_switch">Cambiar</string> 
  
     <string name="connection_test_delete_unavailable">Borrado no disponible</string> 
-    <string name="neko_plugin">Complemento avanzado</string> 
-    <string name="neko_plugin_internal_error">%s error interno</string> 
- 
+
 </resources> 
