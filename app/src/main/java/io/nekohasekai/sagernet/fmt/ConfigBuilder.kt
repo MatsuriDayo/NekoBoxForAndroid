@@ -739,6 +739,11 @@ fun buildConfig(
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
+                        // block 改用新的写法
+                        if (ruleObj.outbound == TAG_BLOCK) {
+                            ruleObj.outbound = null
+                            ruleObj.action = "reject"
+                        }
                         route.rules.add(ruleObj)
                         route.rule_set.addAll(ruleSets)
                     }
