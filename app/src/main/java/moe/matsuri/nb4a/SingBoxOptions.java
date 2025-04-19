@@ -992,6 +992,8 @@ public class SingBoxOptions {
 
         public Integer default_mark;
 
+        public Boolean concurrent_dial;
+
     }
 
 

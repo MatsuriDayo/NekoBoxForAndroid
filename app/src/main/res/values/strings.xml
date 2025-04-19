@@ -611,4 +611,6 @@
     <string name="clear_cache_confirm">Are you sure you want to clear the cache?</string>
     <string name="clear_cache_success">Cache cleared</string>
     <string name="clear_cache_failed">Failed to clear cache: %s</string>
+    <string name="concurrent_dial">Concurrent Dial</string>
+    <string name="concurrent_dial_summary">Enable concurrent connections for faster network establishment, may increase battery usage</string>
 </resources>

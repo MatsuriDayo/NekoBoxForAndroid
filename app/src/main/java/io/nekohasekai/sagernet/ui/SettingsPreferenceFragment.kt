@@ -169,6 +169,9 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         bypassLanInCore.onPreferenceChangeListener = reloadListener
         mtu.onPreferenceChangeListener = reloadListener
 
+        val concurrentDial = findPreference<SwitchPreference>(Key.CONCURRENT_DIAL)!!
+        concurrentDial.onPreferenceChangeListener = reloadListener
+
         enableFakeDns.onPreferenceChangeListener = reloadListener
         remoteDns.onPreferenceChangeListener = reloadListener
         directDns.onPreferenceChangeListener = reloadListener

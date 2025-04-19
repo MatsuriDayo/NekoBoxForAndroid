@@ -260,6 +260,9 @@ fun buildConfig(
             override_android_vpn = true
             rules = mutableListOf()
             rule_set = mutableListOf()
+
+            // 添加并发拨号设置
+             concurrent_dial = DataStore.concurrentDial
         }
 
         // returns outbound tag
