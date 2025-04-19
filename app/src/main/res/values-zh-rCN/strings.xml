@@ -524,4 +524,9 @@
     <string name="ruleset_update_interval">RuleSet 更新间隔</string>
     <string name="ruleset_update_interval_summary">远程 RuleSet 自动更新的时间间隔。例如：1h、30m、3600s。设为 0 表示禁用自动更新</string>
     <string name="ruleset_prefix_error">Ruleset格式错误: 必须以rsip:或rssite:开头</string>
+    <string name="clear_cache">清理缓存</string>
+    <string name="clear_cache_summary">清理应用缓存文件，解决一些异常问题</string>
+    <string name="clear_cache_confirm">确定要清理缓存吗？</string>
+    <string name="clear_cache_success">缓存已清理</string>
+    <string name="clear_cache_failed">清理缓存失败: %s</string>
 </resources>

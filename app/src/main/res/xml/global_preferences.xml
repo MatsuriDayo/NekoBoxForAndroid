@@ -275,5 +275,10 @@
         <SwitchPreference
             app:key="showBottomBar"
             app:title="@string/show_bottom_bar" />
+        <Preference
+            app:icon="@drawable/ic_baseline_delete_24"
+            app:key="clearCache"
+            app:title="@string/clear_cache"
+            app:summary="@string/clear_cache_summary" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -606,4 +606,9 @@
     <string name="ruleset_update_interval">RuleSet Update Interval</string>
     <string name="ruleset_update_interval_summary">Time between updates of remote RuleSets. Examples: 1h, 30m, 3600s. Set to 0 to disable automatic updates</string>
     <string name="ruleset_prefix_error">Ruleset format error: must start with rsip: or rssite:</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="clear_cache_summary">Clear application cache files to fix some abnormal issues</string>
+    <string name="clear_cache_confirm">Are you sure you want to clear the cache?</string>
+    <string name="clear_cache_success">Cache cleared</string>
+    <string name="clear_cache_failed">Failed to clear cache: %s</string>
 </resources>
