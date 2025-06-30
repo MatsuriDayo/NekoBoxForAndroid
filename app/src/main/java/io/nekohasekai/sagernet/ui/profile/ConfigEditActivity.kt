@@ -5,8 +5,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup.MarginLayoutParams
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import com.blacksquircle.ui.editorkit.insert
 import com.blacksquircle.ui.language.json.JsonLanguage
@@ -17,7 +21,9 @@ import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.databinding.LayoutEditConfigBinding
-import io.nekohasekai.sagernet.ktx.*
+import io.nekohasekai.sagernet.ktx.getColorAttr
+import io.nekohasekai.sagernet.ktx.readableMessage
+import io.nekohasekai.sagernet.ktx.toStringPretty
 import io.nekohasekai.sagernet.ui.ThemedActivity
 import io.nekohasekai.sagernet.widget.ListListener
 import moe.matsuri.nb4a.ui.ExtendedKeyboard
@@ -99,6 +105,23 @@ class ConfigEditActivity : ThemedActivity() {
         extendedKeyboard.setHasFixedSize(true)
         extendedKeyboard.submitList("{},:_\"".map { it.toString() })
         extendedKeyboard.setBackgroundColor(getColorAttr(R.attr.primaryOrTextPrimary))
+
+        val keyboardContainer = findViewById<LinearLayout>(R.id.keyboard_container)
+        ViewCompat.setOnApplyWindowInsetsListener(keyboardContainer) { v, windowInsets ->
+            val imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val imeVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
+            v.updateLayoutParams<MarginLayoutParams> {
+                // systemBar insets are applied to the bottom of the keyboard
+                if (imeVisible) {
+                    bottomMargin = imeInsets.bottom - systemBarInsets.bottom
+                } else {
+                    bottomMargin = 0
+                }
+            }
+
+            WindowInsetsCompat.CONSUMED
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root, ListListener)
     }
