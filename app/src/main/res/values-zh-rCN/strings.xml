@@ -537,4 +537,5 @@
     <string name="layout_single_column">单列</string>
     <string name="layout_double_column">双列</string>
     <string name="sort_and_layout">排序与布局</string>
+    <string name="connection_test_timeout">测试超时（ms）</string>
 </resources>

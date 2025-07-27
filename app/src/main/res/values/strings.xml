@@ -619,4 +619,5 @@
     <string name="clear_cache_failed">Failed to clear cache: %s</string>
     <string name="concurrent_dial">Concurrent Dial</string>
     <string name="concurrent_dial_summary">Enable concurrent connections for faster network establishment, may increase battery usage</string>
+    <string name="connection_test_timeout">Test Timeout (ms)</string>
 </resources>

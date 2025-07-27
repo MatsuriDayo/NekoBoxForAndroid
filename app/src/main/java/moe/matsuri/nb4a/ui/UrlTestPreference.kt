@@ -23,6 +23,7 @@ constructor(
 ) : EditTextPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     var concurrent: EditText? = null
+    var timeout: EditText? = null
 
     init {
         dialogLayoutResource = R.layout.layout_urltest_preference_dialog
@@ -32,7 +33,12 @@ constructor(
             concurrent?.apply {
                 setText(DataStore.connectionTestConcurrent.toString())
             }
+            timeout = it.rootView.findViewById(R.id.edit_timeout)
+            timeout?.apply {
+                setText(DataStore.connectionTestTimeout.toString())
+            }
             it.rootView.findViewById<LinearLayout>(R.id.concurrent_layout)?.isVisible = true
+            it.rootView.findViewById<LinearLayout>(R.id.timeout_layout)?.isVisible = true
         }
 
         setOnPreferenceChangeListener { _, _ ->
@@ -42,6 +48,13 @@ constructor(
                     newConcurrent = 5
                 }
                 DataStore.connectionTestConcurrent = newConcurrent
+            }
+            timeout?.apply {
+                var newTimeout = text?.toString()?.toIntOrNull()
+                if (newTimeout == null || newTimeout <= 0) {
+                    newTimeout = 3000
+                }
+                DataStore.connectionTestTimeout = newTimeout
             }
             true
         }

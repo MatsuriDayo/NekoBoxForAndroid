@@ -54,6 +54,31 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/timeout_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connection_test_timeout"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_timeout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:minHeight="48dp"
+                    android:paddingTop="12dp"
+                    android:singleLine="true"
+                    android:typeface="monospace" />
+
+            </LinearLayout>
+
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </ScrollView>
