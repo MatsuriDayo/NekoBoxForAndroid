@@ -432,6 +432,8 @@
     <string name="acquire_wake_lock">获取唤醒锁</string>
     <string name="release_wake_lock">释放唤醒锁</string>
     <string name="acquire_wake_lock_summary">保持 CPU 开启</string>
+    <string name="hide_from_recent_apps">从最近任务中隐藏</string>
+    <string name="hide_from_recent_apps_summary">应用在后台运行时，在最近任务中隐藏</string>
     <string name="move">移动</string>
     <string name="subscription_expire">过期: %s</string>
     <string name="update_all_subscription">更新所有订阅</string>

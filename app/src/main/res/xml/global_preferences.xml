@@ -85,6 +85,10 @@
             app:key="acquireWakeLock"
             app:summary="@string/acquire_wake_lock_summary"
             app:title="@string/acquire_wake_lock" />
+        <SwitchPreference
+            app:key="hideFromRecentApps"
+            app:summary="@string/hide_from_recent_apps_summary"
+            app:title="@string/hide_from_recent_apps" />
         <moe.matsuri.nb4a.ui.LongClickListPreference
             app:defaultValue="0"
             app:entries="@array/log_level"

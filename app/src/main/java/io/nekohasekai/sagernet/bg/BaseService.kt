@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.*
+import android.app.ActivityManager
 import android.widget.Toast
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.BootReceiver
@@ -302,6 +303,20 @@ class BaseService {
                 data.notification?.postNotificationWakeLockStatus(true)
             } else {
                 data.notification?.postNotificationWakeLockStatus(false)
+            }
+
+            // Update excludeFromRecents flag for MainActivity
+            if (this is Service) {
+                try {
+                    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                    val tasks = activityManager.appTasks
+                    if (tasks.isNotEmpty()) {
+                        val task = tasks[0]
+                        task.setExcludeFromRecents(DataStore.hideFromRecentApps)
+                    }
+                } catch (e: Exception) {
+                    Logs.w("Failed to set excludeFromRecents: ${e.message}")
+                }
             }
         }
 
