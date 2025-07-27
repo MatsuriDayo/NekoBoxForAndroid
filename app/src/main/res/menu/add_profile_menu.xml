@@ -114,10 +114,13 @@
                 android:checked="false"
                 app:showAsAction="never" />
             <item
-                android:id="@+id/action_order"
-                android:title="@string/group_order">
+                android:id="@+id/action_order_layout"
+                android:title="@string/sort_and_layout">
                 <menu>
-                    <group android:checkableBehavior="single">
+                    <item
+                        android:title="@string/group_order"
+                        android:enabled="false" />
+                    <group android:id="@+id/order_group" android:checkableBehavior="single">
                         <item
                             android:id="@+id/action_order_origin"
                             android:title="@string/group_order_origin" />
@@ -127,6 +130,17 @@
                         <item
                             android:id="@+id/action_order_by_delay"
                             android:title="@string/group_order_by_delay" />
+                    </group>
+                    <item
+                        android:title="@string/layout"
+                        android:enabled="false" />
+                    <group android:id="@+id/layout_group" android:checkableBehavior="single">
+                        <item
+                            android:id="@+id/action_layout_single"
+                            android:title="@string/layout_single_column" />
+                        <item
+                            android:id="@+id/action_layout_double"
+                            android:title="@string/layout_double_column" />
                     </group>
                 </menu>
             </item>

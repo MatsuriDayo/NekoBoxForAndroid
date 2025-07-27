@@ -5,7 +5,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="2dp"
     android:clickable="true"
     android:focusable="true"
     app:cardElevation="2dp">
@@ -53,6 +53,8 @@
                         android:id="@+id/profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
@@ -69,6 +71,18 @@
                     android:focusable="true"
                     android:padding="12dp"
                     app:srcCompat="@drawable/ic_image_edit" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/double_column_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/edit"
+                    android:focusable="true"
+                    android:padding="12dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
                 <LinearLayout
                     android:id="@+id/share"

@@ -33,6 +33,10 @@
     <string name="update_all_subscription">Update all subscriptions</string>
     <string name="group_edit">Edit group</string>
     <string name="group_edit_subscription">Edit subscription</string>
+    <string name="layout">Layout</string>
+    <string name="layout_single_column">Single column</string>
+    <string name="layout_double_column">Double column</string>
+    <string name="sort_and_layout">Sort and Layout</string>
     <string name="group_status_empty">Empty group</string>
     <string name="group_status_empty_subscription">Not updated yet</string>
     <string name="group_status_proxies">%d Proxies</string>
