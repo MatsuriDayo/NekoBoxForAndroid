@@ -337,7 +337,7 @@
     <string name="connection_test_domain_not_found">Domain not found</string>
     <string name="connection_test_refused">Connection refused</string>
     <string name="connection_test_unreachable">Unreachable</string>
-    <string name="connection_test_timeout">Timeout</string>
+    <string name="connection_test_timeout_error">Timeout</string>
     <string name="append_http_proxy">Append HTTP Proxy to VPN</string>
     <string name="append_http_proxy_sum">HTTP proxy will be used directly from (browser/ some
         supported apps), without going through the virtual NIC device (Android 10+)</string>

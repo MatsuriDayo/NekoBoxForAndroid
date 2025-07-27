@@ -283,7 +283,7 @@
     <string name="connection_test_domain_not_found">域名不存在</string>
     <string name="connection_test_tcp_ping_unavailable">TCPing 不可用</string>
     <string name="connection_test_refused">连接重置</string>
-    <string name="connection_test_timeout">超时</string>
+    <string name="connection_test_timeout_error">超时</string>
     <string name="connection_test_unreachable">不可达</string>
     <string name="tile_title">开关</string>
     <string name="append_http_proxy">追加 HTTP 代理至 VPN</string>

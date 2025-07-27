@@ -267,7 +267,7 @@
     <string name="protocol_settings">إعدادات البروتوكول</string>
     <string name="append_http_proxy_sum">سيتم استخدام بروکسی HTTP مباشرة من (المتصفح/ بعض التطبيقات المدعومة)، دون المرور عبر جهاز NIC الافتراضي (Android 10+)</string>
     <string name="append_http_proxy">إلحاق بروکسی HTTP ب VPN</string>
-    <string name="connection_test_timeout">نفذ الوقت</string>
+    <string name="connection_test_timeout_error">نفذ الوقت</string>
     <string name="connection_test_unreachable">لا يمكن الوصول إليه</string>
     <string name="connection_test_refused">الاتصال مرفوض</string>
     <string name="connection_test_domain_not_found">المجال لم يتم العثور</string>

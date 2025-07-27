@@ -221,7 +221,7 @@
     <string name="protocol_settings">Protokol Ayarları</string>
     <string name="append_http_proxy_sum">HTTP vekil sunucu direkt tarayıcı veya bazı destekli uygulamalar tarafından, sanal NIC aygıtından geçmeden kullanılır (Android 10+)</string>
     <string name="append_http_proxy">HTTP Vekil Sunucuyu VPN\'e Dahil Et</string>
-    <string name="connection_test_timeout">Zaman Aşımı</string>
+    <string name="connection_test_timeout_error">Zaman Aşımı</string>
     <string name="connection_test_unreachable">Erişilemez</string>
     <string name="connection_test_refused">Bağlantı reddedildi</string>
     <string name="connection_test_domain_not_found">Alan adı bulunamadı</string>

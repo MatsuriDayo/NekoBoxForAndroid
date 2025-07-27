@@ -848,7 +848,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                                 profile.status = 2
                                 when {
                                     !message.contains("failed:") -> profile.error =
-                                        getString(R.string.connection_test_timeout)
+                                        getString(R.string.connection_test_timeout_error)
 
                                     else -> when {
                                         message.contains("ECONNREFUSED") -> {

@@ -322,7 +322,7 @@
     <string name="connection_test_domain_not_found">دامنه یافت نشد</string>
     <string name="connection_test_refused">اتصال رد شد</string>
     <string name="connection_test_unreachable">متصل نمی‌شود</string>
-    <string name="connection_test_timeout">بدون پاسخ</string>
+    <string name="connection_test_timeout_error">بدون پاسخ</string>
     <string name="append_http_proxy">پراکسی HTTP را به VPN اضافه کنید</string>
     <string name="append_http_proxy_sum">پروکسی HTTP مستقیماً از (مرورگر/برخی برنامه‌های پشتیبانی‌شده) بدون استفاده از دستگاه NIC مجازی (نسخه اندروید بالاتر از 10) استفاده می‌شود.</string>
     <string name="protocol_settings">تنظیمات پروتکل‌ها</string>

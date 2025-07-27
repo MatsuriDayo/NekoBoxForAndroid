@@ -91,7 +91,7 @@
 <string name="connection_test_tcp_ping">TCP Пинг</string>
 <string name="connection_test_tcp_ping_unavailable">TCPing недоступен</string>
 <string name="connection_test_testing">Тестирование…</string>
-<string name="connection_test_timeout">Тайм-аут</string>
+<string name="connection_test_timeout_error">Тайм-аут</string>
 <string name="connection_test_unreachable">Недоступен</string>
 <string name="connection_test_url">URL-адрес проверки подключения</string>
 <string name="connection_test_url_test">URL Тест</string>

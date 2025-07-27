@@ -54,7 +54,7 @@ object Protocols {
         val msgL = msg.lowercase()
         return when {
             msgL.contains("timeout") || msgL.contains("deadline") -> {
-                app.getString(R.string.connection_test_timeout)
+                app.getString(R.string.connection_test_timeout_error)
             }
 
             msgL.contains("refused") || msgL.contains("closed pipe") -> {

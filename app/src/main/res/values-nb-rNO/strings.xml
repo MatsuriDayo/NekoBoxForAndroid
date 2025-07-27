@@ -10,7 +10,7 @@
     <string name="action_download">Last ned</string>
     <string name="action_learn_more">Lær mer</string>
     <string name="confirm">Bekreft</string>
-    <string name="connection_test_timeout">Tidsavbrudd</string>
+    <string name="connection_test_timeout_error">Tidsavbrudd</string>
     <string name="connection_test_clear_results">Tøm testresultater</string>
     <string name="connection_test">Tilkoblingstest</string>
     <string name="unavailable">Utilgjengelig</string>

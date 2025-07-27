@@ -300,7 +300,7 @@
     <string name="connection_test_domain_not_found">Dominio no encontrado</string> 
     <string name="connection_test_refused">Conexión denegada</string> 
     <string name="connection_test_unreachable">Inalcanzable</string> 
-    <string name="connection_test_timeout">Se acabó el tiempo</string> 
+    <string name="connection_test_timeout_error">Se acabó el tiempo</string> 
     <string name="append_http_proxy">Añadir proxy HTTP a la VPN</string> 
     <string name="append_http_proxy_sum">El proxy HTTP se utilizará directamente desde (navegador/algunas aplicaciones compatibles), sin pasar por el dispositivo NIC virtual (Android 10+)</string>
     <string name="protocol_settings">Ajustes de protocolo</string>
