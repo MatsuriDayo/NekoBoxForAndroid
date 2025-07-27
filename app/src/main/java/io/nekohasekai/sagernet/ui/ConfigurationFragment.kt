@@ -51,6 +51,7 @@ import io.nekohasekai.sagernet.database.ProfileManager
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.ProxyGroup
 import io.nekohasekai.sagernet.database.SagerDatabase
+import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
 import io.nekohasekai.sagernet.databinding.LayoutProfileListBinding
 import io.nekohasekai.sagernet.databinding.LayoutProgressListBinding
 import io.nekohasekai.sagernet.fmt.AbstractBean
@@ -125,7 +126,8 @@ class ConfigurationFragment @JvmOverloads constructor(
 ) : ToolbarFragment(R.layout.layout_group_list),
     PopupMenu.OnMenuItemClickListener,
     Toolbar.OnMenuItemClickListener,
-    SearchView.OnQueryTextListener {
+    SearchView.OnQueryTextListener,
+    OnPreferenceDataStoreChangeListener {
 
     interface SelectCallback {
         fun returnProfile(profileId: Long)
@@ -257,6 +259,8 @@ class ConfigurationFragment @JvmOverloads constructor(
             }
 
         }
+
+        DataStore.profileCacheStore.registerChangeListener(this)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -264,8 +268,27 @@ class ConfigurationFragment @JvmOverloads constructor(
         super.onPrepareOptionsMenu(menu)
     }
 
+    override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
+        runOnMainDispatcher {
+            // editingGroup
+            if (key == Key.PROFILE_GROUP) {
+                val targetId = DataStore.editingGroup
+                if (targetId > 0 && targetId != DataStore.selectedGroup) {
+                    DataStore.selectedGroup = targetId
+                    val targetIndex = adapter.groupList.indexOfFirst { it.id == targetId }
+                    if (targetIndex >= 0) {
+                        groupPager.setCurrentItem(targetIndex, false)
+                    } else {
+                        adapter.reload()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onDestroy() {
+        DataStore.profileCacheStore.unregisterChangeListener(this)
+
         if (::adapter.isInitialized) {
             GroupManager.removeListener(adapter)
             ProfileManager.removeListener(adapter)
