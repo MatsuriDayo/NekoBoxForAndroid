@@ -2,6 +2,8 @@ package io.nekohasekai.sagernet.ui
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -47,6 +49,7 @@ import io.nekohasekai.sagernet.ktx.parseProxies
 import io.nekohasekai.sagernet.ktx.readableMessage
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ui.MessageStore
+import io.nekohasekai.sagernet.ktx.Logs
 import moe.matsuri.nb4a.utils.Util
 
 class MainActivity : ThemedActivity(),
@@ -121,6 +124,21 @@ class MainActivity : ThemedActivity(),
     override fun onResume() {
         super.onResume()
         MessageStore.setCurrentActivity(this)
+        
+        applyHideFromRecentApps(DataStore.hideFromRecentApps)
+    }
+    
+    private fun applyHideFromRecentApps(hide: Boolean) {
+        try {
+            val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val tasks = activityManager.appTasks
+            if (tasks.isNotEmpty()) {
+                val task = tasks[0]
+                task.setExcludeFromRecents(hide)
+            }
+        } catch (e: Exception) {
+            Logs.w("Failed to set excludeFromRecents: ${e.message}")
+        }
     }
 
     fun refreshNavMenu(clashApi: Boolean) {
