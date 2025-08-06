@@ -557,10 +557,14 @@ fun buildConfig(
                 })
             }
 
-            // 主规则：其他所有流量走代理
             route.rules.add(Rule_DefaultOptions().apply {
-                inbound = listOf(TAG_MIXED)  // 添加入站条件
-                outbound = TAG_PROXY  // 将所有流量转发到代理
+                inbound = listOf("tun-in")
+                outbound = TAG_PROXY
+            })
+
+            route.rules.add(Rule_DefaultOptions().apply {
+                inbound = listOf(TAG_MIXED)
+                outbound = TAG_PROXY
             })
         } else {
             // 应用用户规则
