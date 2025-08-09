@@ -304,20 +304,6 @@ class BaseService {
             } else {
                 data.notification?.postNotificationWakeLockStatus(false)
             }
-
-            // Update excludeFromRecents flag for MainActivity
-            if (this is Service) {
-                try {
-                    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-                    val tasks = activityManager.appTasks
-                    if (tasks.isNotEmpty()) {
-                        val task = tasks[0]
-                        task.setExcludeFromRecents(DataStore.hideFromRecentApps)
-                    }
-                } catch (e: Exception) {
-                    Logs.w("Failed to set excludeFromRecents: ${e.message}")
-                }
-            }
         }
 
         fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
