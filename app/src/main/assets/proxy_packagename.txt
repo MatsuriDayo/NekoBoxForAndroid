@@ -383,3 +383,7 @@ mega.privacy.android.app
 com.taptap.global
 tw.com.gamer.android.animad
 com.microsoft.copilot
+com.google.android.apps.aiwallpapers
+ai.x.grok
+com.google.android.apps.weather
+com.metrolist.music
