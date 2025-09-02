@@ -486,4 +486,6 @@
     <string name="global_allow_insecure">总是跳过 TLS 证书验证</string>
     <string name="network_change_reset_connections">当网络发生变化时重置出站连接</string>
     <string name="wake_reset_connections">当设备从睡眠状态唤醒时重置出站连接</string>
+    <string name="preview_version">预览版</string>
+    <string name="preview_version_hint">本应用为预览版，可能存在诸多问题。若您不愿参与测试，请前往GitHub下载正式发布版本！</string>
 </resources>

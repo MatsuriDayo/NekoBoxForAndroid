@@ -41,6 +41,7 @@ import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
 import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.ktx.alert
 import io.nekohasekai.sagernet.ktx.isPlay
+import io.nekohasekai.sagernet.ktx.isPreview
 import io.nekohasekai.sagernet.ktx.launchCustomTab
 import io.nekohasekai.sagernet.ktx.onMainDispatcher
 import io.nekohasekai.sagernet.ktx.parseProxies
@@ -113,6 +114,13 @@ class MainActivity : ThemedActivity(),
                     this@MainActivity, arrayOf(POST_NOTIFICATIONS), 0
                 )
             }
+        }
+
+        if (isPreview) {
+            MaterialAlertDialogBuilder(this).setTitle(R.string.preview_version)
+                .setMessage(R.string.preview_version_hint)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
         }
     }
 

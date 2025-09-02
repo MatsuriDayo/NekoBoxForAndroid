@@ -209,6 +209,7 @@ fun Project.setupApp() {
             create("oss")
             create("fdroid")
             create("play")
+            create("preview")
         }
 
         applicationVariants.all {
