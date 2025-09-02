@@ -10,6 +10,7 @@ fi
 # Install gomobile
 if [ ! -f "$GOPATH/bin/gomobile-matsuri" ]; then
     git clone https://github.com/MatsuriDayo/gomobile.git
+	git checkout origin/master2
     pushd gomobile/cmd
     pushd gomobile
     go install -v
@@ -23,4 +24,4 @@ if [ ! -f "$GOPATH/bin/gomobile-matsuri" ]; then
     mv "$GOPATH/bin/gobind" "$GOPATH/bin/gobind-matsuri"
 fi
 
-gomobile-matsuri init
+GOBIND=gobind-matsuri gomobile-matsuri init

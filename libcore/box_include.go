@@ -4,10 +4,17 @@ import (
 	"github.com/sagernet/sing-box/adapter/endpoint"
 	"github.com/sagernet/sing-box/adapter/inbound"
 	"github.com/sagernet/sing-box/adapter/outbound"
+	"github.com/sagernet/sing-box/adapter/service"
+	"github.com/sagernet/sing-box/dns"
+	"github.com/sagernet/sing-box/dns/transport"
+	"github.com/sagernet/sing-box/dns/transport/fakeip"
+	"github.com/sagernet/sing-box/dns/transport/hosts"
+	"github.com/sagernet/sing-box/dns/transport/local"
+	"github.com/sagernet/sing-box/dns/transport/quic"
 	"github.com/sagernet/sing-box/protocol/anytls"
 	"github.com/sagernet/sing-box/protocol/block"
 	"github.com/sagernet/sing-box/protocol/direct"
-	"github.com/sagernet/sing-box/protocol/dns"
+	protocolDns "github.com/sagernet/sing-box/protocol/dns"
 	"github.com/sagernet/sing-box/protocol/group"
 	"github.com/sagernet/sing-box/protocol/http"
 	"github.com/sagernet/sing-box/protocol/hysteria"
@@ -52,7 +59,7 @@ func nekoboxAndroidOutboundRegistry() *outbound.Registry {
 	direct.RegisterOutbound(registry)
 
 	block.RegisterOutbound(registry)
-	dns.RegisterOutbound(registry)
+	protocolDns.RegisterOutbound(registry)
 
 	group.RegisterSelector(registry)
 	group.RegisterURLTest(registry)
@@ -68,8 +75,11 @@ func nekoboxAndroidOutboundRegistry() *outbound.Registry {
 	vless.RegisterOutbound(registry)
 	anytls.RegisterOutbound(registry)
 
-	registerQUICOutbounds(registry)
-	registerWireGuardOutbound(registry)
+	hysteria.RegisterOutbound(registry)
+	tuic.RegisterOutbound(registry)
+	hysteria2.RegisterOutbound(registry)
+
+	wireguard.RegisterOutbound(registry)
 
 	return registry
 }
@@ -77,27 +87,30 @@ func nekoboxAndroidOutboundRegistry() *outbound.Registry {
 func nekoboxAndroidEndpointRegistry() *endpoint.Registry {
 	registry := endpoint.NewRegistry()
 
-	registerWireGuardEndpoint(registry)
+	wireguard.RegisterEndpoint(registry)
 
 	return registry
 }
 
-func registerQUICInbounds(registry *inbound.Registry) {
-	hysteria.RegisterInbound(registry)
-	tuic.RegisterInbound(registry)
-	hysteria2.RegisterInbound(registry)
+func nekoboxAndroidDNSTransportRegistry() *dns.TransportRegistry {
+	registry := dns.NewTransportRegistry()
+
+	transport.RegisterTCP(registry)
+	transport.RegisterUDP(registry)
+	transport.RegisterTLS(registry)
+	transport.RegisterHTTPS(registry)
+	hosts.RegisterTransport(registry)
+	local.RegisterTransport(registry)
+	fakeip.RegisterTransport(registry)
+
+	quic.RegisterTransport(registry)
+	quic.RegisterHTTP3Transport(registry)
+
+	return registry
 }
 
-func registerQUICOutbounds(registry *outbound.Registry) {
-	hysteria.RegisterOutbound(registry)
-	tuic.RegisterOutbound(registry)
-	hysteria2.RegisterOutbound(registry)
-}
+func nekoboxAndroidServiceRegistry() *service.Registry {
+	registry := service.NewRegistry()
 
-func registerWireGuardOutbound(registry *outbound.Registry) {
-	wireguard.RegisterOutbound(registry)
-}
-
-func registerWireGuardEndpoint(registry *endpoint.Registry) {
-	wireguard.RegisterEndpoint(registry)
+	return registry
 }

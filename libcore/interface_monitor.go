@@ -1,8 +1,6 @@
 package libcore
 
 import (
-	"net/netip"
-
 	tun "github.com/sagernet/sing-tun"
 	"github.com/sagernet/sing/common/control"
 	"github.com/sagernet/sing/common/x/list"
@@ -10,40 +8,38 @@ import (
 
 // wtf
 
-type interfaceMonitor struct {
-}
+type interfaceMonitorStub struct{}
 
-func (i *interfaceMonitor) Start() error {
+func (s *interfaceMonitorStub) Start() error {
 	return nil
 }
 
-func (i *interfaceMonitor) Close() error {
+func (s *interfaceMonitorStub) Close() error {
 	return nil
 }
 
-func (i *interfaceMonitor) DefaultInterfaceName(destination netip.Addr) string {
+func (s *interfaceMonitorStub) DefaultInterface() *control.Interface {
+	return nil
+}
+
+func (s *interfaceMonitorStub) OverrideAndroidVPN() bool {
+	return false
+}
+
+func (s *interfaceMonitorStub) AndroidVPNEnabled() bool {
+	return false
+}
+
+func (s *interfaceMonitorStub) RegisterCallback(callback tun.DefaultInterfaceUpdateCallback) *list.Element[tun.DefaultInterfaceUpdateCallback] {
+	return nil
+}
+
+func (s *interfaceMonitorStub) UnregisterCallback(element *list.Element[tun.DefaultInterfaceUpdateCallback]) {
+}
+
+func (s *interfaceMonitorStub) RegisterMyInterface(interfaceName string) {
+}
+
+func (s *interfaceMonitorStub) MyInterface() string {
 	return ""
-}
-
-func (i *interfaceMonitor) DefaultInterfaceIndex(destination netip.Addr) int {
-	return 0
-}
-
-func (i *interfaceMonitor) DefaultInterface() *control.Interface {
-	return nil
-}
-
-func (i *interfaceMonitor) OverrideAndroidVPN() bool {
-	return false
-}
-
-func (i *interfaceMonitor) AndroidVPNEnabled() bool {
-	return false
-}
-
-func (i *interfaceMonitor) RegisterCallback(callback tun.DefaultInterfaceUpdateCallback) *list.Element[tun.DefaultInterfaceUpdateCallback] {
-	return nil
-}
-
-func (i *interfaceMonitor) UnregisterCallback(element *list.Element[tun.DefaultInterfaceUpdateCallback]) {
 }

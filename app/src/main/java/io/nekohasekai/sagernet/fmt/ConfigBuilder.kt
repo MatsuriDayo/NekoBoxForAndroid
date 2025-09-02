@@ -162,12 +162,6 @@ fun buildConfig(
                 external_controller = "127.0.0.1:9090"
                 external_ui = "../files/yacd"
             }
-
-            cache_file = CacheFile().apply {
-                enabled = true
-                store_fakeip = true
-                path = "../cache/clash.db"
-            }
         }
 
         log = LogOptions().apply {
@@ -657,7 +651,27 @@ fun buildConfig(
             }
         }
 
-        // remote dns obj
+        dns.servers.add(DNSServerOptions().apply {
+            address = "rcode://success"
+            tag = "dns-block"
+        })
+
+        dns.servers.add(DNSServerOptions().apply {
+            address = "local"
+            tag = "dns-local"
+            detour = TAG_DIRECT
+        })
+
+        directDNS.firstOrNull().let {
+            dns.servers.add(DNSServerOptions().apply {
+                address = it ?: throw Exception("No direct DNS, check your settings!")
+                tag = "dns-direct"
+                detour = TAG_DIRECT
+                address_resolver = "dns-local"
+                strategy = autoDnsDomainStrategy(SingBoxOptionsUtil.domainStrategy(tag))
+            })
+        }
+
         remoteDns.firstOrNull().let {
             // Always use direct DNS for urlTest
             if (!forTest) dns.servers.add(DNSServerOptions().apply {
@@ -668,25 +682,7 @@ fun buildConfig(
             })
         }
 
-        // add directDNS objects here
-        directDNS.firstOrNull().let {
-            dns.servers.add(DNSServerOptions().apply {
-                address = it ?: throw Exception("No direct DNS, check your settings!")
-                tag = "dns-direct"
-                detour = TAG_DIRECT
-                address_resolver = "dns-local"
-                strategy = autoDnsDomainStrategy(SingBoxOptionsUtil.domainStrategy(tag))
-            })
-        }
-        dns.servers.add(DNSServerOptions().apply {
-            address = "local"
-            tag = "dns-local"
-            detour = TAG_DIRECT
-        })
-        dns.servers.add(DNSServerOptions().apply {
-            address = "rcode://success"
-            tag = "dns-block"
-        })
+        dns.final_ = if (forTest) "dns-direct" else "dns-remote"
 
         // dns object user rules
         if (enableDnsRouting) {
