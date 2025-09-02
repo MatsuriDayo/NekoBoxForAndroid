@@ -17,6 +17,7 @@ import io.nekohasekai.sagernet.fmt.v2ray.parseV2Ray
 import moe.matsuri.nb4a.proxy.anytls.parseAnytls
 import moe.matsuri.nb4a.utils.JavaUtil.gson
 import moe.matsuri.nb4a.utils.Util
+import okhttp3.HttpUrl
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -137,6 +138,14 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
                 entities.add(parseHttp(this))
             }.onFailure {
                 Logs.w(it)
+                val clashUrl = HttpUrl.Builder()
+                    .scheme("https")
+                    .host("install-config")
+                    .addQueryParameter("url", this)
+                    .build()
+                    .toString()
+                    .replaceFirst("https://", "clash://")
+                throw (SubscriptionFoundException(clashUrl))
             }
         } else if (startsWith("vmess://")) {
             Logs.d("Try parse v2ray link: $this")
