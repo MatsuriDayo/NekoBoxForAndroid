@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import com.jakewharton.processphoenix.ProcessPhoenix
 import io.nekohasekai.sagernet.BuildConfig
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
 import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.app
@@ -61,7 +62,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
 
     fun buildReportHeader(): String {
         var report = ""
-        report += "NekoBox for Andoird ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.FLAVOR.uppercase()}\n"
+        report += "NekoBox for Android ${SagerNet.appVersionNameForDisplay} (${BuildConfig.VERSION_CODE})\n"
         report += "Date: ${getCurrentMilliSecondUTCTimeStamp()}\n\n"
         report += "OS_VERSION: ${getSystemPropertyWithAndroidAPI("os.version")}\n"
         report += "SDK_INT: ${Build.VERSION.SDK_INT}\n"
@@ -102,7 +103,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                 report += "\n"
                 report += pair.key + ": " + pair.toString()
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             report += "Export settings failed: " + formatThrowable(e)
         }
 
@@ -136,7 +137,8 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                 if (matcher.matches()) {
                     key = matcher.group(1)
                     value = matcher.group(2)
-                    if (key != null && value != null && !key.isEmpty() && !value.isEmpty()) systemProperties[key] = value
+                    if (key != null && value != null && !key.isEmpty() && !value.isEmpty()) systemProperties[key] =
+                        value
                 }
             }
             bufferedReader.close()

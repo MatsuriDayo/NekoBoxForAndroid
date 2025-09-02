@@ -20,6 +20,8 @@ import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ktx.Logs
+import io.nekohasekai.sagernet.ktx.isOss
+import io.nekohasekai.sagernet.ktx.isPreview
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ui.MainActivity
 import io.nekohasekai.sagernet.utils.*
@@ -194,6 +196,18 @@ class SagerNet : Application(),
 
         var underlyingNetwork: Network? = null
 
+        var appVersionNameForDisplay = lazy {
+            var n = BuildConfig.VERSION_NAME
+            if (isPreview) {
+                n += " " + BuildConfig.PRE_VERSION_NAME
+            } else if (!isOss) {
+                n += " ${BuildConfig.FLAVOR}"
+            }
+            if (BuildConfig.DEBUG) {
+                n += " DEBUG"
+            }
+            n
+        }
     }
 
 }
