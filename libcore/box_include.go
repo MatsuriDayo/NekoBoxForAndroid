@@ -1,6 +1,9 @@
 package libcore
 
 import (
+	"context"
+
+	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/adapter/endpoint"
 	"github.com/sagernet/sing-box/adapter/inbound"
 	"github.com/sagernet/sing-box/adapter/outbound"
@@ -11,6 +14,8 @@ import (
 	"github.com/sagernet/sing-box/dns/transport/hosts"
 	"github.com/sagernet/sing-box/dns/transport/local"
 	"github.com/sagernet/sing-box/dns/transport/quic"
+	"github.com/sagernet/sing-box/log"
+	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing-box/protocol/anytls"
 	"github.com/sagernet/sing-box/protocol/block"
 	"github.com/sagernet/sing-box/protocol/direct"
@@ -35,7 +40,6 @@ import (
 
 	_ "github.com/sagernet/sing-box/experimental/clashapi"
 	_ "github.com/sagernet/sing-box/transport/v2rayquic"
-	_ "github.com/sagernet/sing-dns/quic"
 )
 
 func nekoboxAndroidInboundRegistry() *inbound.Registry {
@@ -92,7 +96,7 @@ func nekoboxAndroidEndpointRegistry() *endpoint.Registry {
 	return registry
 }
 
-func nekoboxAndroidDNSTransportRegistry() *dns.TransportRegistry {
+func nekoboxAndroidDNSTransportRegistry(localTransport LocalDNSTransport) *dns.TransportRegistry {
 	registry := dns.NewTransportRegistry()
 
 	transport.RegisterTCP(registry)
@@ -100,11 +104,22 @@ func nekoboxAndroidDNSTransportRegistry() *dns.TransportRegistry {
 	transport.RegisterTLS(registry)
 	transport.RegisterHTTPS(registry)
 	hosts.RegisterTransport(registry)
-	local.RegisterTransport(registry)
+	// local.RegisterTransport(registry)
 	fakeip.RegisterTransport(registry)
 
 	quic.RegisterTransport(registry)
 	quic.RegisterHTTP3Transport(registry)
+
+	if localTransport == nil {
+		local.RegisterTransport(registry)
+	} else {
+		dns.RegisterTransport(registry, "local", func(ctx context.Context, logger log.ContextLogger, tag string, options option.LocalDNSServerOptions) (adapter.DNSTransport, error) {
+			return &platformLocalDNSTransport{
+				iif: localTransport,
+				tag: tag,
+			}, nil
+		})
+	}
 
 	return registry
 }

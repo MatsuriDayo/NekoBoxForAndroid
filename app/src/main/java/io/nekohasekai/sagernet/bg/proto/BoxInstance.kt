@@ -21,6 +21,7 @@ import io.nekohasekai.sagernet.plugin.PluginManager
 import kotlinx.coroutines.*
 import libcore.BoxInstance
 import libcore.Libcore
+import moe.matsuri.nb4a.net.LocalResolverImpl
 import java.io.File
 
 abstract class BoxInstance(
@@ -48,7 +49,7 @@ abstract class BoxInstance(
     }
 
     protected open suspend fun loadConfig() {
-        box = Libcore.newSingBoxInstance(config.config)
+        box = Libcore.newSingBoxInstance(config.config, LocalResolverImpl)
     }
 
     open suspend fun init() {

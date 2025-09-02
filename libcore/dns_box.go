@@ -8,7 +8,9 @@ import (
 	"strings"
 	"syscall"
 
-	dns "github.com/sagernet/sing-dns"
+	"github.com/sagernet/sing-box/adapter"
+	"github.com/sagernet/sing-box/constant"
+	"github.com/sagernet/sing-box/dns"
 	"github.com/sagernet/sing/common"
 	E "github.com/sagernet/sing/common/exceptions"
 	M "github.com/sagernet/sing/common/metadata"
@@ -23,29 +25,12 @@ type LocalDNSTransport interface {
 	Exchange(ctx *ExchangeContext, message []byte) error
 }
 
-func RegisterLocalDNSTransport(transport LocalDNSTransport) {
-	if transport == nil {
-		dns.RegisterTransport([]string{"local"}, dns.CreateTransport)
-	} else {
-		dns.RegisterTransport([]string{"local"}, func(options dns.TransportOptions) (dns.Transport, error) {
-			return &platformLocalDNSTransport{
-				iif: transport,
-			}, nil
-		})
-	}
-}
-
-var _ dns.Transport = (*platformLocalDNSTransport)(nil)
-
 type platformLocalDNSTransport struct {
 	iif LocalDNSTransport
+	tag string
 }
 
-func (p *platformLocalDNSTransport) Name() string {
-	return "local"
-}
-
-func (p *platformLocalDNSTransport) Start() error {
+func (p *platformLocalDNSTransport) Start(adapter.StartStage) error {
 	return nil
 }
 
@@ -82,12 +67,12 @@ func (p *platformLocalDNSTransport) Exchange(ctx context.Context, message *mDNS.
 	})
 }
 
-func (p *platformLocalDNSTransport) Lookup(ctx context.Context, domain string, strategy dns.DomainStrategy) ([]netip.Addr, error) {
+func (p *platformLocalDNSTransport) Lookup(ctx context.Context, domain string, strategy constant.DomainStrategy) ([]netip.Addr, error) {
 	var network string
 	switch strategy {
-	case dns.DomainStrategyUseIPv4:
+	case constant.DomainStrategyIPv4Only:
 		network = "ip4"
-	case dns.DomainStrategyPreferIPv6:
+	case constant.DomainStrategyPreferIPv6:
 		network = "ip6"
 	default:
 		network = "ip"
@@ -105,11 +90,11 @@ func (p *platformLocalDNSTransport) Lookup(ctx context.Context, domain string, s
 			return response.error
 		}
 		switch strategy {
-		case dns.DomainStrategyUseIPv4:
+		case constant.DomainStrategyIPv4Only:
 			responseAddr = common.Filter(response.addresses, func(it netip.Addr) bool {
 				return it.Is4()
 			})
-		case dns.DomainStrategyPreferIPv6:
+		case constant.DomainStrategyPreferIPv6:
 			responseAddr = common.Filter(response.addresses, func(it netip.Addr) bool {
 				return it.Is6()
 			})
@@ -121,6 +106,18 @@ func (p *platformLocalDNSTransport) Lookup(ctx context.Context, domain string, s
 		}*/
 		return nil
 	})
+}
+
+func (p *platformLocalDNSTransport) Tag() string {
+	return p.tag
+}
+
+func (p *platformLocalDNSTransport) Type() string {
+	return "local"
+}
+
+func (p *platformLocalDNSTransport) Dependencies() []string {
+	return nil
 }
 
 type Func interface {
@@ -157,7 +154,7 @@ func (c *ExchangeContext) RawSuccess(result []byte) {
 }
 
 func (c *ExchangeContext) ErrorCode(code int32) {
-	c.error = dns.RCodeError(code)
+	c.error = dns.RcodeError(code)
 }
 
 func (c *ExchangeContext) ErrnoCode(code int32) {

@@ -10,7 +10,6 @@ require (
 	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/sagernet/sing v0.7.6-0.20250825114712-2aeec120ce28
 	github.com/sagernet/sing-box v1.0.0 // replaced
-	github.com/sagernet/sing-dns v0.4.1
 	github.com/sagernet/sing-tun v0.7.0-beta.1
 	github.com/ulikunitz/xz v0.5.11
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
@@ -90,5 +89,3 @@ replace github.com/sagernet/sing-box => ../../sing-box
 // replace github.com/sagernet/sing-quic => ../../sing-quic
 
 // replace github.com/sagernet/sing => ../../sing
-
-// replace github.com/sagernet/sing-dns => ../../sing-dns
