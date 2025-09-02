@@ -193,9 +193,17 @@ fun Project.setupApp() {
         applicationVariants.all {
             outputs.all {
                 this as BaseVariantOutputImpl
-                outputFileName = outputFileName.replace(project.name, "NekoBox-$versionName")
-                    .replace("-release", "")
-                    .replace("-oss", "")
+                val isPreview = outputFileName.contains("-preview")
+                outputFileName = if (isPreview) {
+                    outputFileName.replace(
+                        project.name,
+                        "NekoBox-" + requireMetadata().getProperty("PRE_VERSION_NAME")
+                    ).replace("-preview", "")
+                } else {
+                    outputFileName.replace(project.name, "NekoBox-$versionName")
+                        .replace("-release", "")
+                        .replace("-oss", "")
+                }
             }
         }
 
