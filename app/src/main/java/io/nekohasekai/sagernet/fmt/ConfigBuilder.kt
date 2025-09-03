@@ -35,7 +35,6 @@ import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
 import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
-import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -82,7 +81,6 @@ fun buildConfig(
     val globalOutbounds = HashMap<Long, String>()
     val selectorNames = ArrayList<String>()
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
-    val optionsToMerge = proxy.requireBean().customConfigJson ?: ""
 
     fun ProxyEntity.resolveChainInternal(): MutableList<ProxyEntity> {
         val bean = requireBean()
@@ -255,13 +253,13 @@ fun buildConfig(
                 add(entity)
             }
 
-            var currentOutbound = mutableMapOf<String, Any>()
-            lateinit var pastOutbound: MutableMap<String, Any>
+            var currentOutbound: SingBoxOption
+            lateinit var pastOutbound: SingBoxOption
             lateinit var pastInboundTag: String
             var pastEntity: ProxyEntity? = null
             val externalChainMap = LinkedHashMap<Int, ProxyEntity>()
             externalIndexMap.add(IndexEntity(externalChainMap))
-            val chainOutbounds = ArrayList<MutableMap<String, Any>>()
+            val chainOutbounds = ArrayList<SingBoxOption>()
 
             // chainTagOut: v2ray outbound tag for this chain
             var chainTagOut = ""
@@ -309,7 +307,7 @@ fun buildConfig(
                             outbound = tagOut
                         })
                     } else {
-                        pastOutbound["detour"] = tagOut
+                        pastOutbound._hack_config_map["detour"] = tagOut
                     }
                 } else {
                     // index == 0 means last profile in chain / not chain
@@ -332,53 +330,51 @@ fun buildConfig(
                         type = "socks"
                         server = LOCALHOST
                         server_port = localPort
-                    }.asMap()
-                } else { // internal outbound
+                    }
+                } else {
+                    // internal outbound
+
                     currentOutbound = when (bean) {
-                        is ConfigBean ->
-                            gson.fromJson(bean.config, currentOutbound.javaClass)
+                        is ConfigBean -> SingBoxOption().apply {
+                            _hack_custom_config = bean.config
+                        }
 
                         is ShadowTLSBean -> // before StandardV2RayBean
-                            buildSingBoxOutboundShadowTLSBean(bean).asMap()
+                            buildSingBoxOutboundShadowTLSBean(bean)
 
                         is StandardV2RayBean -> // http/trojan/vmess/vless
-                            buildSingBoxOutboundStandardV2RayBean(bean).asMap()
+                            buildSingBoxOutboundStandardV2RayBean(bean)
 
                         is HysteriaBean ->
                             buildSingBoxOutboundHysteriaBean(bean)
 
                         is TuicBean ->
-                            buildSingBoxOutboundTuicBean(bean).asMap()
+                            buildSingBoxOutboundTuicBean(bean)
 
                         is SOCKSBean ->
-                            buildSingBoxOutboundSocksBean(bean).asMap()
+                            buildSingBoxOutboundSocksBean(bean)
 
                         is ShadowsocksBean ->
-                            buildSingBoxOutboundShadowsocksBean(bean).asMap()
+                            buildSingBoxOutboundShadowsocksBean(bean)
 
                         is WireGuardBean ->
-                            buildSingBoxOutboundWireguardBean(bean).asMap()
+                            buildSingBoxOutboundWireguardBean(bean)
 
                         is SSHBean ->
-                            buildSingBoxOutboundSSHBean(bean).asMap()
+                            buildSingBoxOutboundSSHBean(bean)
 
                         is AnyTLSBean ->
-                            buildSingBoxOutboundAnyTLSBean(bean).asMap()
+                            buildSingBoxOutboundAnyTLSBean(bean)
 
                         else -> throw IllegalStateException("can't reach")
-                    }
+                    } as SingBoxOption
 
-                    currentOutbound.apply {
-                        // TODO nb4a keepAliveInterval?
-//                        val keepAliveInterval = DataStore.tcpKeepAliveInterval
-//                        val needKeepAliveInterval = keepAliveInterval !in intArrayOf(0, 15)
-
-                        if (!muxApplied) {
-                            val muxObj = proxyEntity.singMux()
-                            if (muxObj != null && muxObj.enabled) {
-                                muxApplied = true
-                                currentOutbound["multiplex"] = muxObj.asMap()
-                            }
+                    // internal mux
+                    if (!muxApplied) {
+                        val muxObj = proxyEntity.singMux()
+                        if (muxObj != null && muxObj.enabled) {
+                            muxApplied = true
+                            currentOutbound._hack_config_map["multiplex"] = muxObj.asMap()
                         }
                     }
                 }
@@ -388,8 +384,8 @@ fun buildConfig(
                     // udp over tcp
                     try {
                         val sUoT = bean.javaClass.getField("sUoT").get(bean)
-                        if (sUoT is Boolean && sUoT == true) {
-                            currentOutbound["udp_over_tcp"] = true
+                        if (sUoT is Boolean && sUoT) {
+                            _hack_config_map["udp_over_tcp"] = true
                         }
                     } catch (_: Exception) {
                     }
@@ -401,19 +397,13 @@ fun buildConfig(
                             domainListDNSDirectForce.add("full:$serverAddress")
                         }
                     }
-                    currentOutbound["domain_strategy"] =
+                    _hack_config_map["domain_strategy"] =
                         if (forTest) "" else defaultServerDomainStrategy
 
-                    // custom JSON merge
-                    if (bean.customOutboundJson.isNotBlank()) {
-                        Util.mergeJSON(
-                            bean.customOutboundJson,
-                            currentOutbound as MutableMap<String, Any?>
-                        )
-                    }
-                }
+                    _hack_config_map["tag"] = tagOut
 
-                currentOutbound["tag"] = tagOut
+                    _hack_custom_config = bean.customOutboundJson
+                }
 
                 // External proxy need a dokodemo-door inbound to forward the traffic
                 // For external proxy software, their traffic must goes to v2ray-core to use protected fd.
@@ -472,8 +462,8 @@ fun buildConfig(
 
         // build outbounds
         if (buildSelector) {
-            val list = group?.id?.let { SagerDatabase.proxyDao.getByGroup(it) }
-            list?.forEach {
+            val list = group.id.let { SagerDatabase.proxyDao.getByGroup(it) }
+            list.forEach {
                 tagMap[it.id] = buildChain(it.id, it)
             }
             outbounds.add(0, Outbound_SelectorOptions().apply {
@@ -481,7 +471,7 @@ fun buildConfig(
                 tag = TAG_PROXY
                 default_ = tagMap[proxy.id]
                 outbounds = tagMap.values.toList()
-            }.asMap())
+            })
         } else {
             buildChain(0, proxy)
         }
@@ -591,6 +581,8 @@ fun buildConfig(
                     -2L -> TAG_BLOCK
                     else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
                 }
+
+                _hack_custom_config = rule.config
             }
 
             if (!ruleObj.checkEmpty()) {
@@ -620,7 +612,7 @@ fun buildConfig(
         for (freedom in arrayOf(TAG_DIRECT, TAG_BYPASS)) outbounds.add(Outbound().apply {
             tag = freedom
             type = "direct"
-        }.asMap())
+        })
 
         // Bypass Lookup for the first profile
         bypassDNSBeans.forEach {
@@ -746,16 +738,16 @@ fun buildConfig(
                 })
             }
         }
+
+        _hack_custom_config = proxy.requireBean().customConfigJson
     }.let {
         ConfigBuildResult(
-            gson.toJson(it.asMap().apply {
-                Util.mergeJSON(optionsToMerge, this)
-            }),
+            gson.toJson(it.asMap()),
             externalIndexMap,
             proxy.id,
             trafficMap,
             tagMap,
-            if (buildSelector) group!!.id else -1L
+            if (buildSelector) group.id else -1L
         )
     }
 

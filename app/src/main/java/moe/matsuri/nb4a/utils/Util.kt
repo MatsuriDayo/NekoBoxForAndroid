@@ -152,7 +152,7 @@ object Util {
         return dst
     }
 
-    fun mergeJSON(j: String, dst: MutableMap<String, Any?>) {
+    fun mergeJSON(dst: MutableMap<String, Any?>, j: String) {
         if (j.isBlank()) return
         val src = JavaUtil.gson.fromJson(j, dst.javaClass)
         mergeMap(dst, src)

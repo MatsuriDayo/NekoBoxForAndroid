@@ -39,6 +39,7 @@ import io.nekohasekai.sagernet.widget.AppListPreference
 import io.nekohasekai.sagernet.widget.ListListener
 import io.nekohasekai.sagernet.widget.OutboundPreference
 import kotlinx.parcelize.Parcelize
+import moe.matsuri.nb4a.ui.EditConfigPreference
 
 @Suppress("UNCHECKED_CAST")
 class RouteSettingsActivity(
@@ -57,6 +58,7 @@ class RouteSettingsActivity(
 
     fun RuleEntity.init() {
         DataStore.routeName = name
+        DataStore.serverConfig = config
         DataStore.routeDomain = domains
         DataStore.routeIP = ip
         DataStore.routePort = port
@@ -76,6 +78,7 @@ class RouteSettingsActivity(
 
     fun RuleEntity.serialize() {
         name = DataStore.routeName
+        config = DataStore.serverConfig
         domains = DataStore.routeDomain
         ip = DataStore.routeIP
         port = DataStore.routePort
@@ -96,12 +99,10 @@ class RouteSettingsActivity(
         }
     }
 
+    private lateinit var editConfigPreference: EditConfigPreference
+
     fun needSave(): Boolean {
-        if (!DataStore.dirty) return false
-        if (DataStore.routePackages.isBlank() && DataStore.routeDomain.isBlank() && DataStore.routeIP.isBlank() && DataStore.routePort.isBlank() && DataStore.routeSourcePort.isBlank() && DataStore.routeNetwork.isBlank() && DataStore.routeSource.isBlank() && DataStore.routeProtocol.isBlank()) {
-            return false
-        }
-        return true
+        return DataStore.dirty
     }
 
     fun PreferenceFragmentCompat.createPreferences(
@@ -109,6 +110,16 @@ class RouteSettingsActivity(
         rootKey: String?,
     ) {
         addPreferencesFromResource(R.xml.route_preferences)
+
+        editConfigPreference = findPreference(Key.SERVER_CONFIG)!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (::editConfigPreference.isInitialized) {
+            editConfigPreference.notifyChanged()
+        }
     }
 
     val selectProfileForAdd = registerForActivityResult(
@@ -163,7 +174,7 @@ class RouteSettingsActivity(
         }
     }
 
-    fun PreferenceFragmentCompat.displayPreferenceDialog(preference: Preference): Boolean {
+    fun displayPreferenceDialog(preference: Preference): Boolean {
         return false
     }
 

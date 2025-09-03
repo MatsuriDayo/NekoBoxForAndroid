@@ -12,6 +12,8 @@ import kotlinx.parcelize.Parcelize
 data class RuleEntity(
     @PrimaryKey(autoGenerate = true) var id: Long = 0L,
     var name: String = "",
+    @ColumnInfo(defaultValue = "")
+    var config: String = "",
     var userOrder: Long = 0L,
     var enabled: Boolean = false,
     var domains: String = "",
@@ -31,11 +33,12 @@ data class RuleEntity(
 
     fun mkSummary(): String {
         var summary = ""
+        if (config.isNotBlank()) summary += "[config]\n"
         if (domains.isNotBlank()) summary += "$domains\n"
         if (ip.isNotBlank()) summary += "$ip\n"
-        if (source.isNotBlank()) summary += "source: $source\n"
-        if (sourcePort.isNotBlank()) summary += "sourcePort: $sourcePort\n"
-        if (port.isNotBlank()) summary += "port: $port\n"
+        if (source.isNotBlank()) summary += "src ip: $source\n"
+        if (sourcePort.isNotBlank()) summary += "src port: $sourcePort\n"
+        if (port.isNotBlank()) summary += "dst port: $port\n"
         if (network.isNotBlank()) summary += "network: $network\n"
         if (protocol.isNotBlank()) summary += "protocol: $protocol\n"
         if (packages.isNotEmpty()) summary += app.getString(

@@ -6,11 +6,16 @@
         app:key="routeName"
         app:title="@string/route_name"
         app:useSimpleSummaryProvider="true" />
-    <io.nekohasekai.sagernet.widget.AppListPreference
-        app:icon="@drawable/ic_baseline_legend_toggle_24"
-        app:key="routePackages"
-        app:title="@string/apps" />
+    <moe.matsuri.nb4a.ui.EditConfigPreference
+        app:icon="@drawable/ic_baseline_layers_24"
+        app:key="serverConfig"
+        app:title="@string/custom_config"
+        app:useSimpleSummaryProvider="true" />
     <PreferenceCategory app:title="@string/cag_route">
+        <io.nekohasekai.sagernet.widget.AppListPreference
+            app:icon="@drawable/ic_baseline_legend_toggle_24"
+            app:key="routePackages"
+            app:title="@string/apps" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_domain_24"
             app:key="routeDomain"
@@ -19,19 +24,24 @@
         <EditTextPreference
             app:icon="@drawable/ic_baseline_add_road_24"
             app:key="routeIP"
-            app:title="ip"
+            app:title="dst ip"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:icon="@drawable/ic_maps_directions_boat"
             app:key="routePort"
-            app:title="port"
+            app:title="dst port"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_local_bar_24"
+            app:key="routeSource"
+            app:title="src ip"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_home_24"
             app:key="routeSourcePort"
-            app:title="sourcePort"
+            app:title="src port"
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/route_protocol_entry"
@@ -39,11 +49,6 @@
             app:icon="@drawable/ic_baseline_compare_arrows_24"
             app:key="routeNetwork"
             app:title="network"
-            app:useSimpleSummaryProvider="true" />
-        <EditTextPreference
-            app:icon="@drawable/ic_baseline_local_bar_24"
-            app:key="routeSource"
-            app:title="source"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_layers_24"
