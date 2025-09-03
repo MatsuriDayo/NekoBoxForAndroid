@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.Base64
 import libcore.StringBox
 import java.io.ByteArrayOutputStream
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Deflater
@@ -187,5 +189,12 @@ object Util {
             return b.value
         }
         return ""
+    }
+
+    fun decodeFilename(headerValue: String): String {
+        val regex = Regex("filename\\*=[^']*''(.+)")
+        val match = regex.find(headerValue)
+        val encoded = match?.groupValues?.get(1) ?: ""
+        return URLDecoder.decode(encoded, StandardCharsets.UTF_8.name())
     }
 }

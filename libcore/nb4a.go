@@ -34,7 +34,7 @@ func ForceGc() {
 
 func InitCore(process, cachePath, internalAssets, externalAssets string,
 	maxLogSizeKb int32, logEnable bool,
-	if1 NB4AInterface, if2 BoxPlatformInterface,
+	if1 NB4AInterface, if2 BoxPlatformInterface, if3 LocalDNSTransport,
 ) {
 	defer device.DeferPanicToError("InitCore", func(err error) { log.Println(err) })
 	isBgProcess = strings.HasSuffix(process, ":bg")
@@ -43,6 +43,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	intfNB4A = if1
 	intfBox = if2
 	useProcfs = intfBox.UseProcFS()
+	gLocalDNSTransport = &platformLocalDNSTransport{iif: if3}
 
 	// Working dir
 	tmp := filepath.Join(cachePath, "../no_backup")

@@ -25,6 +25,8 @@ type LocalDNSTransport interface {
 	Exchange(ctx *ExchangeContext, message []byte) error
 }
 
+var gLocalDNSTransport *platformLocalDNSTransport = nil
+
 type platformLocalDNSTransport struct {
 	iif LocalDNSTransport
 	tag string
