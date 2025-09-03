@@ -22,6 +22,9 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
     private lateinit var isProxyApps: SwitchPreference
 
+    private lateinit var globalCustomConfig: EditConfigPreference
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,6 +80,8 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
         val logLevel = findPreference<LongClickListPreference>(Key.LOG_LEVEL)!!
         val mtu = findPreference<MTUPreference>(Key.MTU)!!
+        globalCustomConfig = findPreference(Key.GLOBAL_CUSTOM_CONFIG)!!
+        globalCustomConfig.useConfigStore(Key.GLOBAL_CUSTOM_CONFIG)
 
         logLevel.dialogLayoutResource = R.layout.layout_loglevel_help
         logLevel.setOnPreferenceChangeListener { _, _ ->
@@ -162,7 +167,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         resolveDestination.onPreferenceChangeListener = reloadListener
         tunImplementation.onPreferenceChangeListener = reloadListener
         acquireWakeLock.onPreferenceChangeListener = reloadListener
-
+        globalCustomConfig.onPreferenceChangeListener = reloadListener
     }
 
     override fun onResume() {
@@ -170,6 +175,9 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
 
         if (::isProxyApps.isInitialized) {
             isProxyApps.isChecked = DataStore.proxyApps
+        }
+        if (::globalCustomConfig.isInitialized) {
+            globalCustomConfig.notifyChanged()
         }
     }
 

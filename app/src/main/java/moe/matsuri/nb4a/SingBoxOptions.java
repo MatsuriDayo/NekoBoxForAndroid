@@ -47,6 +47,24 @@ public class SingBoxOptions {
 
     }
 
+    public static final class CustomSingBoxOption extends SingBoxOption {
+
+        public transient String config;
+
+        public CustomSingBoxOption(String config) {
+            super();
+            this.config = config;
+        }
+
+        public Map<String, Object> getBasicMap() {
+            Map<String, Object> map = gsonSingbox.fromJson(config, Map.class);
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            return map;
+        }
+    }
+
     // 自定义序列化器
     public static class SingBoxOptionSerializer implements JsonSerializer<SingBoxOption> {
         @Override
@@ -61,7 +79,12 @@ public class SingBoxOptions {
                     },
                     TypeToken.get(src.getClass())
             );
-            Map<String, Object> map = gsonSingbox.fromJson(((TypeAdapter<SingBoxOption>) delegate).toJson(src), Map.class);
+            Map<String, Object> map;
+            if (src instanceof CustomSingBoxOption) {
+                map = ((CustomSingBoxOption) src).getBasicMap();
+            } else {
+                map = gsonSingbox.fromJson(((TypeAdapter<SingBoxOption>) delegate).toJson(src), Map.class);
+            }
             if (src._hack_config_map != null && !src._hack_config_map.isEmpty()) {
                 Util.INSTANCE.mergeMap(map, src._hack_config_map);
             }

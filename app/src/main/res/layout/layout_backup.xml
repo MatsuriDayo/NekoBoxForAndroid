@@ -5,6 +5,14 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <Button
+        android:id="@+id/reset_settings"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_settings"
+        android:textColor="?whiteOrTextPrimary" />
+
     <CheckBox
         android:id="@+id/backup_configurations"
         android:layout_width="wrap_content"

@@ -23,6 +23,7 @@ import io.nekohasekai.sagernet.databinding.LayoutBackupBinding
 import io.nekohasekai.sagernet.databinding.LayoutImportBinding
 import io.nekohasekai.sagernet.databinding.LayoutProgressBinding
 import io.nekohasekai.sagernet.ktx.*
+import kotlinx.coroutines.delay
 import moe.matsuri.nb4a.utils.Util
 import org.json.JSONArray
 import org.json.JSONObject
@@ -34,33 +35,53 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     override fun name0() = app.getString(R.string.backup)
 
     var content = ""
-    private val exportSettings = registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
-        if (data != null) {
-            runOnDefaultDispatcher {
-                try {
-                    requireActivity().contentResolver.openOutputStream(
-                        data
-                    )!!.bufferedWriter().use {
-                        it.write(content)
-                    }
-                    onMainDispatcher {
-                        snackbar(getString(R.string.action_export_msg)).show()
-                    }
-                } catch (e: Exception) {
-                    Logs.w(e)
-                    onMainDispatcher {
-                        snackbar(e.readableMessage).show()
+    private val exportSettings =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+            if (data != null) {
+                runOnDefaultDispatcher {
+                    try {
+                        requireActivity().contentResolver.openOutputStream(
+                            data
+                        )!!.bufferedWriter().use {
+                            it.write(content)
+                        }
+                        onMainDispatcher {
+                            snackbar(getString(R.string.action_export_msg)).show()
+                        }
+                    } catch (e: Exception) {
+                        Logs.w(e)
+                        onMainDispatcher {
+                            snackbar(e.readableMessage).show()
+                        }
                     }
                 }
-
             }
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = LayoutBackupBinding.bind(view)
+
+        binding.resetSettings.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm)
+                .setMessage(R.string.reset_settings)
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    runOnDefaultDispatcher {
+                        DataStore.configurationStore.reset()
+                        delay(500)
+                        runOnMainDispatcher {
+                            ProcessPhoenix.triggerRebirth(
+                                requireContext(),
+                                Intent(requireContext(), MainActivity::class.java)
+                            )
+                        }
+                    }
+                }
+                .show()
+        }
+
         binding.actionExport.setOnClickListener {
             runOnDefaultDispatcher {
                 content = doBackup(

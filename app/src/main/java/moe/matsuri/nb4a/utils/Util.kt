@@ -134,12 +134,12 @@ object Util {
             } else if (v is List<*>) {
                 if (k.startsWith("+")) {  // prepend
                     val dstKey = k.removePrefix("+")
-                    var currentList = (dst[dstKey] as List<*>).toMutableList()
+                    var currentList = (dst[dstKey] as? List<*>)?.toMutableList() ?: mutableListOf()
                     currentList = (v + currentList).toMutableList()
                     dst[dstKey] = currentList
                 } else if (k.endsWith("+")) {  // append
                     val dstKey = k.removeSuffix("+")
-                    var currentList = (dst[dstKey] as List<*>).toMutableList()
+                    var currentList = (dst[dstKey] as? List<*>)?.toMutableList() ?: mutableListOf()
                     currentList = (currentList + v).toMutableList()
                     dst[dstKey] = currentList
                 } else {

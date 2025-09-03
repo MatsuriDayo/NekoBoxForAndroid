@@ -35,6 +35,7 @@ import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSBean
 import moe.matsuri.nb4a.proxy.shadowtls.buildSingBoxOutboundShadowTLSBean
 import moe.matsuri.nb4a.utils.JavaUtil.gson
+import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -335,9 +336,7 @@ fun buildConfig(
                     // internal outbound
 
                     currentOutbound = when (bean) {
-                        is ConfigBean -> SingBoxOption().apply {
-                            _hack_custom_config = bean.config
-                        }
+                        is ConfigBean -> CustomSingBoxOption(bean.config)
 
                         is ShadowTLSBean -> // before StandardV2RayBean
                             buildSingBoxOutboundShadowTLSBean(bean)
@@ -367,7 +366,7 @@ fun buildConfig(
                             buildSingBoxOutboundAnyTLSBean(bean)
 
                         else -> throw IllegalStateException("can't reach")
-                    } as SingBoxOption
+                    }
 
                     // internal mux
                     if (!muxApplied) {
@@ -739,10 +738,12 @@ fun buildConfig(
             }
         }
 
-        _hack_custom_config = proxy.requireBean().customConfigJson
+        _hack_custom_config = DataStore.globalCustomConfig
     }.let {
+        val configMap = it.asMap()
+        Util.mergeJSON(configMap, proxy.requireBean().customConfigJson)
         ConfigBuildResult(
-            gson.toJson(it.asMap()),
+            gson.toJson(configMap),
             externalIndexMap,
             proxy.id,
             trafficMap,
