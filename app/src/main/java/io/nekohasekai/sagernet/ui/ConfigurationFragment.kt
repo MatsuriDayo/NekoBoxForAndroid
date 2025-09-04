@@ -1,8 +1,8 @@
 package io.nekohasekai.sagernet.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.OpenableColumns
@@ -92,12 +92,12 @@ import io.nekohasekai.sagernet.ui.profile.WireGuardSettingsActivity
 import io.nekohasekai.sagernet.widget.QRCodeDialog
 import io.nekohasekai.sagernet.widget.UndoSnackbarManager
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import moe.matsuri.nb4a.Protocols
@@ -106,7 +106,6 @@ import moe.matsuri.nb4a.proxy.anytls.AnyTLSSettingsActivity
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSSettingsActivity
 import okhttp3.internal.closeQuietly
-import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.UnknownHostException
@@ -115,6 +114,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipInputStream
 import kotlin.collections.set
+import androidx.core.net.toUri
+import moe.matsuri.nb4a.ui.ConnectionTestNotification
 
 class ConfigurationFragment @JvmOverloads constructor(
     val select: Boolean = false, val selectedItem: ProxyEntity? = null, val titleRes: Int = 0
@@ -160,6 +161,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 
     override fun onQueryTextSubmit(query: String): Boolean = false
 
+    @SuppressLint("DetachAndAttachSameFragment")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -317,7 +319,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         snackbar(getString(R.string.no_proxies_found_in_file)).show()
                     } else import(proxies)
                 } catch (e: SubscriptionFoundException) {
-                    (requireActivity() as MainActivity).importSubscription(Uri.parse(e.link))
+                    (requireActivity() as MainActivity).importSubscription(e.link.toUri())
                 } catch (e: Exception) {
                     Logs.w(e)
                     onMainDispatcher {
@@ -360,7 +362,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                             snackbar(getString(R.string.no_proxies_found_in_clipboard)).show()
                         } else import(proxies)
                     } catch (e: SubscriptionFoundException) {
-                        (requireActivity() as MainActivity).importSubscription(Uri.parse(e.link))
+                        (requireActivity() as MainActivity).importSubscription(e.link.toUri())
                     } catch (e: Exception) {
                         Logs.w(e)
 
@@ -597,15 +599,19 @@ class ConfigurationFragment @JvmOverloads constructor(
     inner class TestDialog {
         val binding = LayoutProgressListBinding.inflate(layoutInflater)
         val builder = MaterialAlertDialogBuilder(requireContext()).setView(binding.root)
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                cancel()
+            .setPositiveButton(R.string.minimize) { _, _ ->
+                minimize()
             }
-            .setOnDismissListener {
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
                 cancel()
             }
             .setCancelable(false)
 
         lateinit var cancel: () -> Unit
+        lateinit var minimize: () -> Unit
+
+        var notification: ConnectionTestNotification? = null
+
         val fragment by lazy { getCurrentGroupFragment() }
         val results = Collections.synchronizedList(mutableListOf<ProxyEntity?>())
         var proxyN = 0
@@ -615,10 +621,10 @@ class ConfigurationFragment @JvmOverloads constructor(
             results.add(profile)
         }
 
-        suspend fun update(profile: ProxyEntity) {
-            fragment?.configurationListView?.post {
-                val context = context ?: return@post
-                if (!isAdded) return@post
+        fun update(profile: ProxyEntity) {
+            runOnMainDispatcher {
+                val context = context ?: return@runOnMainDispatcher
+                if (!isAdded) return@runOnMainDispatcher
 
                 var profileStatusText: String? = null
                 var profileStatusColor = 0
@@ -669,38 +675,31 @@ class ConfigurationFragment @JvmOverloads constructor(
                     append("\n")
                 }
 
+                val progress = finishedN.addAndGet(1)
                 binding.nowTesting.text = text
-                binding.progress.text = "${finishedN.addAndGet(1)} / $proxyN"
+                binding.progress.text = "$progress / $proxyN"
+
+                notification?.updateNotification(progress, proxyN, progress >= proxyN)
             }
         }
 
     }
 
-    fun stopService() {
-        if (DataStore.serviceState.started) SagerNet.stopService()
-    }
-
     @OptIn(DelicateCoroutinesApi::class)
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun pingTest(icmpPing: Boolean) {
+        if (DataStore.runningTest) return else DataStore.runningTest = true
         val test = TestDialog()
-        val testJobs = mutableListOf<Job>()
         val dialog = test.builder.show()
+        val testJobs = mutableListOf<Job>()
+        val group = DataStore.currentGroup()
+
         val mainJob = runOnDefaultDispatcher {
-            if (DataStore.serviceState.started) {
-                stopService()
-                delay(500) // wait for service stop
-            }
-            val group = DataStore.currentGroup()
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
             test.proxyN = profilesUnfiltered.size
             val profiles = ConcurrentLinkedQueue(profilesUnfiltered)
-            val testPool = newFixedThreadPoolContext(
-                DataStore.connectionTestConcurrent,
-                "pingTest"
-            )
             repeat(DataStore.connectionTestConcurrent) {
-                testJobs.add(launch(testPool) {
+                testJobs.add(launch(Dispatchers.IO) {
                     while (isActive) {
                         val profile = profiles.poll() ?: break
 
@@ -727,7 +726,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         var address = profile.requireBean().serverAddress
                         if (!address.isIpAddress()) {
                             try {
-                                InetAddress.getAllByName(address).apply {
+                                SagerNet.underlyingNetwork!!.getAllByName(address).apply {
                                     if (isNotEmpty()) {
                                         address = this[0].hostAddress
                                     }
@@ -746,7 +745,9 @@ class ConfigurationFragment @JvmOverloads constructor(
                             if (icmpPing) {
                                 // removed
                             } else {
-                                val socket = Socket()
+                                val socket =
+                                    SagerNet.underlyingNetwork?.socketFactory?.createSocket()
+                                        ?: Socket()
                                 try {
                                     socket.soTimeout = 3000
                                     socket.bind(InetSocketAddress(0))
@@ -802,13 +803,13 @@ class ConfigurationFragment @JvmOverloads constructor(
             }
 
             testJobs.joinAll()
-            testPool.close()
 
-            onMainDispatcher {
-                dialog.dismiss()
+            runOnMainDispatcher {
+                test.cancel()
             }
         }
         test.cancel = {
+            dialog.dismiss()
             runOnDefaultDispatcher {
                 test.results.filterNotNull().forEach {
                     try {
@@ -820,27 +821,32 @@ class ConfigurationFragment @JvmOverloads constructor(
                 GroupManager.postReload(DataStore.currentGroupId())
                 mainJob.cancel()
                 testJobs.forEach { it.cancel() }
+                DataStore.runningTest = false
             }
+        }
+        test.minimize = {
+            test.notification = ConnectionTestNotification(
+                dialog.context,
+                "[${group.displayName()}] ${getString(R.string.connection_test)}"
+            )
+            dialog.hide()
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     fun urlTest() {
+        if (DataStore.runningTest) return else DataStore.runningTest = true
         val test = TestDialog()
         val dialog = test.builder.show()
         val testJobs = mutableListOf<Job>()
+        val group = DataStore.currentGroup()
 
         val mainJob = runOnDefaultDispatcher {
-            val group = DataStore.currentGroup()
             val profilesUnfiltered = SagerDatabase.proxyDao.getByGroup(group.id)
             test.proxyN = profilesUnfiltered.size
             val profiles = ConcurrentLinkedQueue(profilesUnfiltered)
-            val testPool = newFixedThreadPoolContext(
-                DataStore.connectionTestConcurrent,
-                "urlTest"
-            )
             repeat(DataStore.connectionTestConcurrent) {
-                testJobs.add(launch(testPool) {
+                testJobs.add(launch(Dispatchers.IO) {
                     val urlTest = UrlTest() // note: this is NOT in bg process
                     while (isActive) {
                         val profile = profiles.poll() ?: break
@@ -866,11 +872,12 @@ class ConfigurationFragment @JvmOverloads constructor(
 
             testJobs.joinAll()
 
-            onMainDispatcher {
-                dialog.dismiss()
+            runOnMainDispatcher {
+                test.cancel()
             }
         }
         test.cancel = {
+            dialog.dismiss()
             runOnDefaultDispatcher {
                 test.results.filterNotNull().forEach {
                     try {
@@ -882,7 +889,15 @@ class ConfigurationFragment @JvmOverloads constructor(
                 GroupManager.postReload(DataStore.currentGroupId())
                 mainJob.cancel()
                 testJobs.forEach { it.cancel() }
+                DataStore.runningTest = false
             }
+        }
+        test.minimize = {
+            test.notification = ConnectionTestNotification(
+                dialog.context,
+                "[${group.displayName()}] ${getString(R.string.connection_test)}"
+            )
+            dialog.hide()
         }
     }
 
@@ -1412,7 +1427,6 @@ class ConfigurationFragment @JvmOverloads constructor(
 
             fun reloadProfiles() {
                 var newProfiles = SagerDatabase.proxyDao.getByGroup(proxyGroup.id)
-                val subscription = proxyGroup.subscription
                 when (proxyGroup.order) {
                     GroupOrder.BY_NAME -> {
                         newProfiles = newProfiles.sortedBy { it.displayName() }

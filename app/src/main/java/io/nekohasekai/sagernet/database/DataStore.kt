@@ -17,7 +17,6 @@ import io.nekohasekai.sagernet.ktx.int
 import io.nekohasekai.sagernet.ktx.long
 import io.nekohasekai.sagernet.ktx.parsePort
 import io.nekohasekai.sagernet.ktx.string
-import io.nekohasekai.sagernet.ktx.stringSet
 import io.nekohasekai.sagernet.ktx.stringToInt
 import io.nekohasekai.sagernet.ktx.stringToIntIfExists
 import moe.matsuri.nb4a.TempDatabase
@@ -40,6 +39,10 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     // only in bg process
     var vpnService: VpnService? = null
     var baseService: BaseService.Interface? = null
+
+    // main
+
+    var runningTest = false
 
     fun currentGroupId(): Long {
         val currentSelected = configurationStore.getLong(Key.PROFILE_GROUP, -1)
