@@ -9,9 +9,10 @@ import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
 import android.view.MenuItem
 import android.view.View
-import android.widget.ScrollView
+import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.databinding.LayoutLogcatBinding
 import io.nekohasekai.sagernet.ktx.*
@@ -41,7 +42,6 @@ class LogcatFragment : ToolbarFragment(R.layout.layout_logcat),
         ViewCompat.setOnApplyWindowInsetsListener(binding.root, ListListener)
 
         reloadSession()
-        // TODO new logcat
     }
 
     private fun getColorForLine(line: String): ForegroundColorSpan {
@@ -76,8 +76,15 @@ class LogcatFragment : ToolbarFragment(R.layout.layout_logcat),
         }
         binding.textview.text = span
 
-        binding.scroolview.post {
-            binding.scroolview.fullScroll(ScrollView.FOCUS_DOWN)
+        // 阻止自动滚动/焦点干扰
+        binding.scroolview.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+        binding.textview.isFocusable = false
+        binding.textview.isFocusableInTouchMode = false
+        binding.textview.clearFocus()
+
+        // 等 textview 完成最终 layout 再滚动到底部
+        binding.textview.doOnLayout {
+            binding.scroolview.scrollTo(0, binding.textview.height)
         }
     }
 

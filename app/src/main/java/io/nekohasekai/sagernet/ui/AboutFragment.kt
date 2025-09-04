@@ -266,6 +266,7 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                         }
                     }
                 } catch (e: Exception) {
+                    Logs.w(e)
                     runOnMainDispatcher {
                         Toast.makeText(app, e.readableMessage, Toast.LENGTH_SHORT).show()
                     }

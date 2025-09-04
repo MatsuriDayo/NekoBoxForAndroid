@@ -248,16 +248,19 @@ fun Fragment.needReload() {
 
 fun Fragment.needRestart() {
     snackbar(R.string.need_restart).setAction(R.string.apply) {
+        triggerFullRestart(requireContext())
+    }.show()
+}
+
+fun triggerFullRestart(ctx: Context) {
+    runOnDefaultDispatcher {
         SagerNet.stopService()
-        val ctx = requireContext()
-        runOnDefaultDispatcher {
-            delay(500)
-            SagerDatabase.instance.close()
-            PublicDatabase.instance.close()
-            Executable.killAll(true)
+        delay(500)
+        Executable.killAll(true)
+        runOnMainDispatcher {
             ProcessPhoenix.triggerRebirth(ctx, Intent(ctx, MainActivity::class.java))
         }
-    }.show()
+    }
 }
 
 fun Context.getColour(@ColorRes colorRes: Int): Int {

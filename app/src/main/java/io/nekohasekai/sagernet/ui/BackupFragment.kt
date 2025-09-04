@@ -16,6 +16,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.bg.Executable
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.database.preference.KeyValuePair
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
@@ -65,19 +66,11 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
         binding.resetSettings.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm)
-                .setMessage(R.string.reset_settings)
+                .setMessage(R.string.reset_settings_message)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    runOnDefaultDispatcher {
-                        DataStore.configurationStore.reset()
-                        delay(500)
-                        runOnMainDispatcher {
-                            ProcessPhoenix.triggerRebirth(
-                                requireContext(),
-                                Intent(requireContext(), MainActivity::class.java)
-                            )
-                        }
-                    }
+                    DataStore.configurationStore.reset()
+                    triggerFullRestart(requireContext())
                 }
                 .show()
         }
@@ -251,9 +244,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                 import.backupRules.isChecked,
                                 import.backupSettings.isChecked
                             )
-                            ProcessPhoenix.triggerRebirth(
-                                requireContext(), Intent(requireContext(), MainActivity::class.java)
-                            )
+                            triggerFullRestart(requireContext())
                         }.onFailure {
                             Logs.w(it)
                             onMainDispatcher {

@@ -207,6 +207,7 @@ func (r *httpRequest) SetContentString(content string) {
 }
 
 func (r *httpRequest) Execute() (HTTPResponse, error) {
+	defer device.DeferPanicToError("http execute", func(err error) { log.Println(err) })
 	// full direct
 	if r.tryH3Direct && !r.trySocks5 {
 		return r.doH3Direct()
@@ -272,7 +273,7 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 			}
 			return echClient.Do(request)
 		},
-		// H3
+		// H3 HTTPS
 		func() (response *http.Response, err error) {
 			request := r.request.Clone(context.Background())
 			h3Client := &http.Client{
@@ -287,11 +288,13 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 		},
 	}
 
+	if r.request.URL.Scheme == "http" {
+		funcs = funcs[:1]
+	}
+
 	for i, f := range funcs {
 		go func(f requestFunc) {
-			defer device.DeferPanicToError("http", func(err error) {
-				log.Println(err)
-			})
+			defer device.DeferPanicToError("http", func(err error) { log.Println(err) })
 			defer func() {
 				if successCount.Load() == 0 {
 					if failedCount.Add(1) >= uint32(len(funcs)) {
@@ -317,17 +320,19 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 				mu.Lock()
 				finalErr = errors.Join(finalErr, fmt.Errorf("%s: %w", t, err))
 				mu.Unlock()
+				if rsp != nil && rsp.Body != nil {
+					rsp.Body.Close()
+				}
 				return
 			}
 
 			// 处理 HTTP 状态码
 			if rsp.StatusCode != http.StatusOK {
 				hr := &httpResponse{Response: rsp}
-				err = errors.Join(finalErr, fmt.Errorf("%s: %s", t, hr.errorString()))
+				err = fmt.Errorf("%s: %s", t, hr.errorString())
 				mu.Lock()
-				finalErr = err
+				finalErr = errors.Join(finalErr, err)
 				mu.Unlock()
-				rsp.Body.Close()
 				return
 			}
 
