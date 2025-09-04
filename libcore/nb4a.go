@@ -5,7 +5,7 @@ import (
 	"libcore/device"
 	"os"
 	"path/filepath"
-	"runtime"
+	"runtime/debug"
 	"strings"
 	_ "unsafe"
 
@@ -29,7 +29,7 @@ func NekoLogClear() {
 }
 
 func ForceGc() {
-	go runtime.GC()
+	go debug.FreeOSMemory()
 }
 
 func InitCore(process, cachePath, internalAssets, externalAssets string,
@@ -52,6 +52,8 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 
 	// sing-box fs
 	resourcePaths = append(resourcePaths, externalAssets)
+	externalAssetsPath = externalAssets
+	internalAssetsPath = internalAssets
 
 	// Set up log
 	if maxLogSizeKb < 50 {
@@ -68,9 +70,6 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	go func() {
 		defer device.DeferPanicToError("InitCore-go", func(err error) { log.Println(err) })
 		device.GoDebug(process)
-
-		externalAssetsPath = externalAssets
-		internalAssetsPath = internalAssets
 
 		// certs
 		pem, err := os.ReadFile(externalAssetsPath + "ca.pem")

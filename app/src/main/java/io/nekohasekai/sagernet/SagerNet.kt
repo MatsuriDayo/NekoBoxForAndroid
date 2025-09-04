@@ -54,10 +54,21 @@ class SagerNet : Application(),
     override fun onCreate() {
         super.onCreate()
 
-        System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler)
 
         if (isMainProcess || isBgProcess) {
+            externalAssets.mkdirs()
+            Seq.setContext(this)
+            Libcore.initCore(
+                process,
+                cacheDir.absolutePath + "/",
+                filesDir.absolutePath + "/",
+                externalAssets.absolutePath + "/",
+                DataStore.logBufSize,
+                DataStore.logLevel > 0,
+                nativeInterface, nativeInterface, LocalResolverImpl
+            )
+
             // fix multi process issue in Android 9+
             JavaUtil.handleWebviewDir(this)
 
@@ -67,21 +78,6 @@ class SagerNet : Application(),
             }
         }
 
-        Seq.setContext(this)
-        updateNotificationChannels()
-
-        // nb4a: init core
-        externalAssets.mkdirs()
-        Libcore.initCore(
-            process,
-            cacheDir.absolutePath + "/",
-            filesDir.absolutePath + "/",
-            externalAssets.absolutePath + "/",
-            DataStore.logBufSize,
-            DataStore.logLevel > 0,
-            nativeInterface, nativeInterface, LocalResolverImpl
-        )
-
         if (isMainProcess) {
             Theme.apply(this)
             Theme.applyNightTheme()
@@ -89,17 +85,22 @@ class SagerNet : Application(),
                 DefaultNetworkListener.start(this) {
                     underlyingNetwork = it
                 }
+
+                updateNotificationChannels()
             }
         }
 
-        if (BuildConfig.DEBUG) StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .detectLeakedRegistrationObjects()
-                .penaltyLog()
-                .build()
-        )
+        if (BuildConfig.DEBUG) {
+            System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectLeakedRegistrationObjects()
+                    .penaltyLog()
+                    .build()
+            )
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
