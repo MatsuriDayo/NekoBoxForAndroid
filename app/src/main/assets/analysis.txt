@@ -1,3 +1,0 @@
-domain:appcenter.ms
-domain:firebase.io
-domain:crashlytics.com
