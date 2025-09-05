@@ -202,7 +202,7 @@ class SagerNet : Application(),
 
         var underlyingNetwork: Network? = null
 
-        var appVersionNameForDisplay = lazy {
+        var appVersionNameForDisplay = {
             var n = BuildConfig.VERSION_NAME
             if (isPreview) {
                 n += " " + BuildConfig.PRE_VERSION_NAME
@@ -213,7 +213,7 @@ class SagerNet : Application(),
                 n += " DEBUG"
             }
             n
-        }
+        }()
     }
 
 }

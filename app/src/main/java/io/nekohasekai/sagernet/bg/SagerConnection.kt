@@ -32,6 +32,9 @@ class SagerConnection(
         const val CONNECTION_ID_TILE = 1
         const val CONNECTION_ID_MAIN_ACTIVITY_FOREGROUND = 2
         const val CONNECTION_ID_MAIN_ACTIVITY_BACKGROUND = 3
+        const val CONNECTION_ID_RESTART_BG = 4
+
+        var restartingApp = false
     }
 
     interface Callback {
@@ -124,7 +127,7 @@ class SagerConnection(
         } catch (e: RemoteException) {
             e.printStackTrace()
         }
-        callback!!.onServiceConnected(service)
+        callback?.onServiceConnected(service)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -137,7 +140,9 @@ class SagerConnection(
     override fun binderDied() {
         service = null
         callbackRegistered = false
-        callback?.also { runOnMainDispatcher { it.onBinderDied() } }
+        if (!restartingApp) {
+            callback?.also { runOnMainDispatcher { it.onBinderDied() } }
+        }
     }
 
     private fun unregisterCallback() {
@@ -149,7 +154,7 @@ class SagerConnection(
         callbackRegistered = false
     }
 
-    fun connect(context: Context, callback: Callback) {
+    fun connect(context: Context, callback: Callback?) {
         if (connectionActive) return
         connectionActive = true
         check(this.callback == null)

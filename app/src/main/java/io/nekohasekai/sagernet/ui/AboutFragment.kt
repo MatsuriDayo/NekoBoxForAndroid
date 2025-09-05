@@ -80,7 +80,7 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                             MaterialAboutActionItem.Builder()
                                 .icon(R.drawable.ic_baseline_update_24)
                                 .text(R.string.app_version)
-                                .subText(SagerNet.appVersionNameForDisplay.value)
+                                .subText(SagerNet.appVersionNameForDisplay)
                                 .setOnClickAction {
                                     requireContext().launchCustomTab(
                                         "https://github.com/MatsuriDayo/NekoBoxForAndroid/releases"
@@ -251,7 +251,7 @@ class AboutFragment : ToolbarFragment(R.layout.layout_about) {
                                 .setMessage(
                                     context.getString(
                                         R.string.update_dialog_message,
-                                        SagerNet.appVersionNameForDisplay.value,
+                                        SagerNet.appVersionNameForDisplay,
                                         releaseName
                                     )
                                 )

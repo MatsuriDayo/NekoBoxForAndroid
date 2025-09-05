@@ -105,6 +105,10 @@ class BaseService {
         override fun getProfileName(): String = data?.proxy?.displayProfileName ?: "Idle"
 
         override fun registerCallback(cb: ISagerNetServiceCallback, id: Int) {
+            if (id == SagerConnection.CONNECTION_ID_RESTART_BG) {
+                Runtime.getRuntime().exit(0)
+                return
+            }
             if (!callbackIdMap.contains(cb)) {
                 callbacks.register(cb)
             }
