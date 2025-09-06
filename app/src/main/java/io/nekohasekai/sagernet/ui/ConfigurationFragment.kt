@@ -110,7 +110,7 @@ import okhttp3.internal.closeQuietly
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.UnknownHostException
-import java.util.Collections
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipInputStream
@@ -608,22 +608,30 @@ class ConfigurationFragment @JvmOverloads constructor(
         lateinit var cancel: () -> Unit
         lateinit var minimize: () -> Unit
 
-        var dialogHidden = false
+        val dialogStatus = AtomicInteger(0) // 1: hidden 2: cancelled
         var notification: ConnectionTestNotification? = null
 
-        val results = Collections.synchronizedSet(mutableSetOf<ProxyEntity>())
+        val results: MutableSet<ProxyEntity> = ConcurrentHashMap.newKeySet()
         var proxyN = 0
         val finishedN = AtomicInteger(0)
 
         fun update(profile: ProxyEntity) {
-            results.add(profile)
+            if (dialogStatus.get() != 2) {
+                results.add(profile)
+            }
             runOnMainDispatcher {
                 val context = context ?: return@runOnMainDispatcher
+                val progress = finishedN.addAndGet(1)
+                val status = dialogStatus.get()
+                notification?.updateNotification(
+                    progress,
+                    proxyN,
+                    progress >= proxyN || status == 2
+                )
+                if (status >= 1) return@runOnMainDispatcher
                 if (!isAdded) return@runOnMainDispatcher
 
-                val progress = finishedN.addAndGet(1)
-                notification?.updateNotification(progress, proxyN, progress >= proxyN)
-                if (dialogHidden) return@runOnMainDispatcher
+                // refresh dialog
 
                 var profileStatusText: String? = null
                 var profileStatusColor = 0
@@ -797,8 +805,11 @@ class ConfigurationFragment @JvmOverloads constructor(
             }
         }
         test.cancel = {
+            test.dialogStatus.set(2)
             dialog.dismiss()
             runOnDefaultDispatcher {
+                mainJob.cancel()
+                testJobs.forEach { it.cancel() }
                 test.results.forEach {
                     try {
                         ProfileManager.updateProfile(it)
@@ -807,13 +818,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
                 GroupManager.postReload(DataStore.currentGroupId())
-                mainJob.cancel()
-                testJobs.forEach { it.cancel() }
                 DataStore.runningTest = false
             }
         }
         test.minimize = {
-            test.dialogHidden = true
+            test.dialogStatus.set(1)
             test.notification = ConnectionTestNotification(
                 dialog.context,
                 "[${group.displayName()}] ${getString(R.string.connection_test)}"
@@ -865,8 +874,11 @@ class ConfigurationFragment @JvmOverloads constructor(
             }
         }
         test.cancel = {
+            test.dialogStatus.set(2)
             dialog.dismiss()
             runOnDefaultDispatcher {
+                mainJob.cancel()
+                testJobs.forEach { it.cancel() }
                 test.results.forEach {
                     try {
                         ProfileManager.updateProfile(it)
@@ -875,13 +887,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
                 }
                 GroupManager.postReload(DataStore.currentGroupId())
-                mainJob.cancel()
-                testJobs.forEach { it.cancel() }
                 DataStore.runningTest = false
             }
         }
         test.minimize = {
-            test.dialogHidden = true
+            test.dialogStatus.set(1)
             test.notification = ConnectionTestNotification(
                 dialog.context,
                 "[${group.displayName()}] ${getString(R.string.connection_test)}"
