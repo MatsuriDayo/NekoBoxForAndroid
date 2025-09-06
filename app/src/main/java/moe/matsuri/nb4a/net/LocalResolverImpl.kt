@@ -6,16 +6,14 @@ import android.os.CancellationSignal
 import android.system.ErrnoException
 import androidx.annotation.RequiresApi
 import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.ktx.tryResumeWithException
+import io.nekohasekai.sagernet.ktx.Logs
+import io.nekohasekai.sagernet.ktx.runOnIoDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.runBlocking
 import libcore.ExchangeContext
 import libcore.LocalDNSTransport
 import java.net.InetAddress
 import java.net.UnknownHostException
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 object LocalResolverImpl : LocalDNSTransport {
 
@@ -27,110 +25,126 @@ object LocalResolverImpl : LocalDNSTransport {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     }
 
+    override fun networkHandle(): Long {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return SagerNet.underlyingNetwork?.networkHandle ?: 0
+        }
+        return 0
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun exchange(ctx: ExchangeContext, message: ByteArray) {
-        return runBlocking {
-            suspendCoroutine { continuation ->
-                val signal = CancellationSignal()
-                ctx.onCancel(signal::cancel)
-                val callback = object : DnsResolver.Callback<ByteArray> {
-                    override fun onAnswer(answer: ByteArray, rcode: Int) {
-                        // exchange don't generate rcode error
-                        ctx.rawSuccess(answer)
-                        continuation.resume(Unit)
-                    }
+        val signal = CancellationSignal()
+        ctx.onCancel(signal::cancel)
 
-                    override fun onError(error: DnsResolver.DnsException) {
-                        when (val cause = error.cause) {
-                            is ErrnoException -> {
-                                ctx.errnoCode(cause.errno)
-                                continuation.resume(Unit)
-                                return
-                            }
+        val callback = object : DnsResolver.Callback<ByteArray> {
+            override fun onAnswer(answer: ByteArray, rcode: Int) {
+                ctx.rawSuccess(answer)
+            }
+
+            override fun onError(error: DnsResolver.DnsException) {
+                val cause = error.cause
+                if (cause is ErrnoException) {
+                    ctx.errnoCode(cause.errno)
+                } else {
+                    Logs.w(error)
+                    ctx.errnoCode(114514)
+                }
+            }
+        }
+
+        DnsResolver.getInstance().rawQuery(
+            SagerNet.underlyingNetwork,
+            message,
+            DnsResolver.FLAG_NO_RETRY,
+            Dispatchers.IO.asExecutor(),
+            signal,
+            callback
+        )
+    }
+
+    override fun lookup(ctx: ExchangeContext, network: String, domain: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val signal = CancellationSignal()
+            ctx.onCancel(signal::cancel)
+
+            val callback = object : DnsResolver.Callback<Collection<InetAddress>> {
+                override fun onAnswer(answer: Collection<InetAddress>, rcode: Int) {
+                    try {
+                        if (rcode == 0) {
+                            ctx.success(answer.mapNotNull { it.hostAddress }.joinToString("\n"))
+                        } else {
+                            ctx.errorCode(rcode)
                         }
-                        continuation.tryResumeWithException(error)
+                    } catch (e: Exception) {
+                        Logs.w(e)
+                        ctx.errnoCode(114514)
                     }
                 }
-                DnsResolver.getInstance().rawQuery(
+
+                override fun onError(error: DnsResolver.DnsException) {
+                    try {
+                        val cause = error.cause
+                        if (cause is ErrnoException) {
+                            ctx.errnoCode(cause.errno)
+                        } else {
+                            Logs.w(error)
+                            ctx.errnoCode(114514)
+                        }
+                    } catch (e: Exception) {
+                        Logs.w(e)
+                        ctx.errnoCode(114514)
+                    }
+                }
+            }
+
+            val type = when {
+                network.endsWith("4") -> DnsResolver.TYPE_A
+                network.endsWith("6") -> DnsResolver.TYPE_AAAA
+                else -> null
+            }
+            if (type != null) {
+                DnsResolver.getInstance().query(
                     SagerNet.underlyingNetwork,
-                    message,
+                    domain,
+                    type,
+                    DnsResolver.FLAG_NO_RETRY,
+                    Dispatchers.IO.asExecutor(),
+                    signal,
+                    callback
+                )
+            } else {
+                DnsResolver.getInstance().query(
+                    SagerNet.underlyingNetwork,
+                    domain,
                     DnsResolver.FLAG_NO_RETRY,
                     Dispatchers.IO.asExecutor(),
                     signal,
                     callback
                 )
             }
-        }
-    }
-
-    override fun lookup(ctx: ExchangeContext, network: String, domain: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return runBlocking {
-                suspendCoroutine { continuation ->
-                    val signal = CancellationSignal()
-                    ctx.onCancel(signal::cancel)
-                    val callback = object : DnsResolver.Callback<Collection<InetAddress>> {
-                        override fun onAnswer(answer: Collection<InetAddress>, rcode: Int) {
-                            if (rcode == 0) {
-                                ctx.success((answer as Collection<InetAddress?>).mapNotNull { it?.hostAddress }
-                                    .joinToString("\n"))
-                            } else {
-                                ctx.errorCode(rcode)
-                            }
-                            continuation.resume(Unit)
-                        }
-
-                        override fun onError(error: DnsResolver.DnsException) {
-                            when (val cause = error.cause) {
-                                is ErrnoException -> {
-                                    ctx.errnoCode(cause.errno)
-                                    continuation.resume(Unit)
-                                    return
-                                }
-                            }
-                            continuation.tryResumeWithException(error)
-                        }
-                    }
-                    val type = when {
-                        network.endsWith("4") -> DnsResolver.TYPE_A
-                        network.endsWith("6") -> DnsResolver.TYPE_AAAA
-                        else -> null
-                    }
-                    if (type != null) {
-                        DnsResolver.getInstance().query(
-                            SagerNet.underlyingNetwork,
-                            domain,
-                            type,
-                            DnsResolver.FLAG_NO_RETRY,
-                            Dispatchers.IO.asExecutor(),
-                            signal,
-                            callback
-                        )
-                    } else {
-                        DnsResolver.getInstance().query(
-                            SagerNet.underlyingNetwork,
-                            domain,
-                            DnsResolver.FLAG_NO_RETRY,
-                            Dispatchers.IO.asExecutor(),
-                            signal,
-                            callback
-                        )
-                    }
-                }
-            }
         } else {
-            val answer = try {
-                val u = SagerNet.underlyingNetwork
-                if (u != null) {
-                    u.getAllByName(domain)
-                } else {
-                    InetAddress.getAllByName(domain)
+            runOnIoDispatcher {
+                // 老版本系统，继续用阻塞的 InetAddress
+                try {
+                    val u = SagerNet.underlyingNetwork
+                    val answer = if (u != null) {
+                        u.getAllByName(domain)
+                    } else {
+                        InetAddress.getAllByName(domain)
+                    }
+                    if (answer != null) {
+                        ctx.success(answer.mapNotNull { it.hostAddress }.joinToString("\n"))
+                    } else {
+                        ctx.errnoCode(114514)
+                    }
+                } catch (e: UnknownHostException) {
+                    ctx.errorCode(RCODE_NXDOMAIN)
+                } catch (e: Exception) {
+                    Logs.w(e)
+                    ctx.errnoCode(114514)
                 }
-            } catch (e: UnknownHostException) {
-                ctx.errorCode(RCODE_NXDOMAIN)
-                return
             }
-            ctx.success(answer.mapNotNull { it.hostAddress }.joinToString("\n"))
         }
     }
 

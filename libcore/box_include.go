@@ -114,10 +114,7 @@ func nekoboxAndroidDNSTransportRegistry(localTransport LocalDNSTransport) *dns.T
 		local.RegisterTransport(registry)
 	} else {
 		dns.RegisterTransport(registry, "local", func(ctx context.Context, logger log.ContextLogger, tag string, options option.LocalDNSServerOptions) (adapter.DNSTransport, error) {
-			return &platformLocalDNSTransport{
-				iif: localTransport,
-				tag: tag,
-			}, nil
+			return newPlatformTransport(localTransport, tag, options), nil
 		})
 	}
 
