@@ -86,7 +86,10 @@ class ConfigEditActivity : ThemedActivity() {
         }
 
         binding.actionTab.setOnClickListener {
-            binding.editor.insert(binding.editor.tab())
+            try {
+                binding.editor.insert(binding.editor.tab())
+            } catch (e: Exception) {
+            }
         }
         binding.actionUndo.setOnClickListener {
             try {
@@ -107,7 +110,12 @@ class ConfigEditActivity : ThemedActivity() {
         }
 
         val extendedKeyboard = findViewById<ExtendedKeyboard>(R.id.extended_keyboard)
-        extendedKeyboard.setKeyListener { char -> binding.editor.insert(char) }
+        extendedKeyboard.setKeyListener { char ->
+            try {
+                binding.editor.insert(char)
+            } catch (e: Exception) {
+            }
+        }
         extendedKeyboard.setHasFixedSize(true)
         extendedKeyboard.submitList("{},:_\"".map { it.toString() })
         extendedKeyboard.setBackgroundColor(getColorAttr(R.attr.primaryOrTextPrimary))

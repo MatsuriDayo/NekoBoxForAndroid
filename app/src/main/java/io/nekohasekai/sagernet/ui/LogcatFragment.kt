@@ -75,13 +75,7 @@ class LogcatFragment : ToolbarFragment(R.layout.layout_logcat),
             offset += line.length + 1
         }
         binding.textview.text = span
-
-        // 阻止自动滚动/焦点干扰
-        binding.scroolview.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
-        binding.textview.isFocusable = false
-        binding.textview.isFocusableInTouchMode = false
         binding.textview.clearFocus()
-
         // 等 textview 完成最终 layout 再滚动到底部
         binding.textview.doOnLayout {
             binding.scroolview.scrollTo(0, binding.textview.height)
