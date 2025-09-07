@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:text="@string/start"
-                        android:textColor="?primaryOrTextPrimary" />
+                        android:textColor="?colorPrimary" />
                 </LinearLayout>
 
             </LinearLayout>

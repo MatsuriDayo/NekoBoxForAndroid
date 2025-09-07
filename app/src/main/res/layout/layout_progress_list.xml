@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminate="true"
-        app:indicatorColor="?selectedColorPrimary" />
+        app:indicatorColor="?colorPrimary" />
 
     <TextView
         android:id="@+id/now_testing"
