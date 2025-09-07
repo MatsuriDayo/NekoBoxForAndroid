@@ -14,6 +14,7 @@ import (
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/sagernet/sing-box/nekoutils"
+	"github.com/sagernet/sing-box/option"
 	"golang.org/x/sys/unix"
 )
 
@@ -43,7 +44,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	intfNB4A = if1
 	intfBox = if2
 	useProcfs = intfBox.UseProcFS()
-	gLocalDNSTransport = &platformLocalDNSTransport{iif: if3}
+	gLocalDNSTransport = newPlatformTransport(if3, "", option.LocalDNSServerOptions{})
 
 	// Working dir
 	tmp := filepath.Join(cachePath, "../no_backup")
