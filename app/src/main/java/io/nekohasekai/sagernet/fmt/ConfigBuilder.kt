@@ -738,7 +738,7 @@ fun buildConfig(
             }
         }
 
-        _hack_custom_config = DataStore.globalCustomConfig
+        if (!forTest) _hack_custom_config = DataStore.globalCustomConfig
     }.let {
         val configMap = it.asMap()
         Util.mergeJSON(configMap, proxy.requireBean().customConfigJson)
