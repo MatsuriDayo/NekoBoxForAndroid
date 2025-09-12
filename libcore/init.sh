@@ -10,8 +10,9 @@ fi
 # Install gomobile
 if [ ! -f "$GOPATH/bin/gomobile-matsuri" ]; then
     git clone https://github.com/MatsuriDayo/gomobile.git
+    pushd gomobile
 	git checkout origin/master2
-    pushd gomobile/cmd
+    pushd cmd
     pushd gomobile
     go install -v
     popd
