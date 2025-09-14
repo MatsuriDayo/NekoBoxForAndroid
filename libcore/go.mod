@@ -9,9 +9,9 @@ require (
 	github.com/miekg/dns v1.1.67
 	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/sagernet/quic-go v0.52.0-beta.1
-	github.com/sagernet/sing v0.7.8
+	github.com/sagernet/sing v0.7.10
 	github.com/sagernet/sing-box v1.0.0 // replaced
-	github.com/sagernet/sing-tun v0.7.1-0.20250909064831-29d619807240
+	github.com/sagernet/sing-tun v0.7.2
 	github.com/ulikunitz/xz v0.5.11
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
 	golang.org/x/sys v0.35.0
