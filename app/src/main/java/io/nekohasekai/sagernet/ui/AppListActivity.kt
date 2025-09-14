@@ -287,17 +287,6 @@ class AppListActivity : ThemedActivity() {
                 }
                 Snackbar.make(binding.list, R.string.action_import_err, Snackbar.LENGTH_LONG).show()
             }
-
-            R.id.uninstall_all -> {
-                runOnDefaultDispatcher {
-                    proxiedUids.clear()
-                    DataStore.routePackages = ""
-                    apps = apps.sortedWith(compareBy({ !isProxiedApp(it) }, { it.name.toString() }))
-                    onMainDispatcher {
-                        appsAdapter.notifyItemRangeChanged(0, appsAdapter.itemCount, SWITCH)
-                    }
-                }
-            }
         }
         return super.onOptionsItemSelected(item)
     }
