@@ -1,4 +1,5 @@
 name: Release Build
+
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +12,7 @@ on:
       play:
         description: "Play: If want ignore"
         required: false
+
 jobs:
   libcore:
     name: Native Build (LibCore)
@@ -37,6 +39,7 @@ jobs:
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
+
   build:
     name: Build OSS APK
     runs-on: ubuntu-latest
@@ -76,6 +79,7 @@ jobs:
         with:
           name: APKs
           path: ${{ env.APK }}
+
   publish:
     name: Publish Release
     if: github.event.inputs.publish != 'y'
@@ -84,7 +88,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Donwload Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: APKs
@@ -97,6 +101,7 @@ jobs:
           mkdir apks
           find artifacts -name "*.apk" -exec cp {} apks \;
           ./ghr -delete -t "${{ github.token }}" -n "${{ github.event.inputs.tag }}" "${{ github.event.inputs.tag }}" apks
+
   play:
     name: Build Play Bundle
     if: github.event.inputs.play != 'y'
