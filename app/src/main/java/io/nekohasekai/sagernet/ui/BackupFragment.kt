@@ -654,51 +654,13 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                     import.backupRules.isChecked,
                                     import.backupSettings.isChecked
                                 )
-                                ProcessPhoenix.triggerRebirth(
-                                    activity, Intent(activity, MainActivity::class.java)
-                                )
+                                triggerFullRestart(requireContext())
                             }.onFailure {
                                 Logs.w(it)
                                 onMainDispatcher {
+                                    dialog.dismiss()
                                     MessageStore.showMessage(activity, it.readableMessage)
                                 }
-                            }
-
-        onMainDispatcher {
-            val import = LayoutImportBinding.inflate(layoutInflater)
-            if (!content.has("profiles")) {
-                import.backupConfigurations.isVisible = false
-            }
-            if (!content.has("rules")) {
-                import.backupRules.isVisible = false
-            }
-            if (!content.has("settings")) {
-                import.backupSettings.isVisible = false
-            }
-            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.backup_import)
-                .setView(import.root)
-                .setPositiveButton(R.string.backup_import) { _, _ ->
-                    SagerNet.stopService()
-
-                    val binding = LayoutProgressBinding.inflate(layoutInflater)
-                    binding.content.text = getString(R.string.backup_importing)
-                    val dialog = AlertDialog.Builder(requireContext())
-                        .setView(binding.root)
-                        .setCancelable(false)
-                        .show()
-                    runOnDefaultDispatcher {
-                        runCatching {
-                            finishImport(
-                                content,
-                                import.backupConfigurations.isChecked,
-                                import.backupRules.isChecked,
-                                import.backupSettings.isChecked
-                            )
-                            triggerFullRestart(requireContext())
-                        }.onFailure {
-                            Logs.w(it)
-                            onMainDispatcher {
-                                dialog.dismiss()
                             }
                         }
                     }
