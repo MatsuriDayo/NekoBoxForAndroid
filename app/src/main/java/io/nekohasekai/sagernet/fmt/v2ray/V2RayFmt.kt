@@ -595,7 +595,16 @@ fun buildSingBoxOutboundTLS(bean: StandardV2RayBean): OutboundTLSOptions? {
         enabled = true
         insecure = bean.allowInsecure || DataStore.globalAllowInsecure
         if (bean.sni.isNotBlank()) server_name = bean.sni
-        if (bean.alpn.isNotBlank()) alpn = bean.alpn.listByLineOrComma()
+        if (bean.alpn.isNotBlank()) {
+            // 当传输协议为WebSocket时，过滤掉h2和h3
+            val alpnList = bean.alpn.listByLineOrComma()
+            if (bean.type == "ws") {
+                val filtered = alpnList.filter { it == "http/1.1" }
+                if (filtered.isNotEmpty()) alpn = filtered
+            } else {
+                alpn = alpnList
+            }
+        }
         if (bean.certificates.isNotBlank()) certificate = bean.certificates
         var fp = bean.utlsFingerprint
         if (bean.realityPubKey.isNotBlank()) {
