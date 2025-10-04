@@ -87,7 +87,6 @@
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/share"
                         android:textColor="?whiteOrTextPrimary" />
 
@@ -96,7 +95,6 @@
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/action_export_file"
                         android:textColor="?whiteOrTextPrimary" />
 
@@ -152,7 +150,6 @@
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/webdav_settings"
                         android:textColor="?whiteOrTextPrimary" />
 
@@ -161,7 +158,6 @@
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/backup_to_webdav"
                         android:textColor="?whiteOrTextPrimary" />
 
