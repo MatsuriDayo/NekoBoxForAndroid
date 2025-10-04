@@ -3,24 +3,21 @@ package io.nekohasekai.sagernet.bg
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
-import android.text.TextUtils
 import io.nekohasekai.sagernet.ktx.Logs
 import java.io.File
 import java.io.IOException
+import androidx.core.text.isDigitsOnly
 
 object Executable {
     private val EXECUTABLES = setOf(
-        "libtrojan.so",
-        "libtrojan-go.so",
-        "libnaive.so",
-        "libtuic.so",
-        "libhysteria.so"
+        "libtrojan.so", "libtrojan-go.so", "libnaive.so", "libtuic.so", "libhysteria.so"
     )
 
     fun killAll(alsoKillBg: Boolean = false) {
-        for (process in File("/proc").listFiles { _, name -> TextUtils.isDigitsOnly(name) }
-            ?: return) {
-            val exe = File(try {
+        // kill bg may fail
+        for (process in File("/proc").listFiles { _, name -> name.isDigitsOnly() } ?: return) {
+            val exe = File(
+                try {
                 File(process, "cmdline").inputStream().bufferedReader().use {
                     it.readText()
                 }

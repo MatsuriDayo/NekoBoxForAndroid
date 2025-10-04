@@ -14,33 +14,6 @@ private val Project.android get() = extensions.getByName<ApplicationExtension>("
 
 private lateinit var metadata: Properties
 private lateinit var localProperties: Properties
-private lateinit var flavor: String
-
-fun Project.requireFlavor(): String {
-    if (::flavor.isInitialized) return flavor
-    if (gradle.startParameter.taskNames.isNotEmpty()) {
-        val taskName = gradle.startParameter.taskNames[0]
-        when {
-            taskName.contains("assemble") -> {
-                flavor = taskName.substringAfter("assemble")
-                return flavor
-            }
-
-            taskName.contains("install") -> {
-                flavor = taskName.substringAfter("install")
-                return flavor
-            }
-
-            taskName.contains("bundle") -> {
-                flavor = taskName.substringAfter("bundle")
-                return flavor
-            }
-        }
-    }
-
-    flavor = ""
-    return flavor
-}
 
 fun Project.requireMetadata(): Properties {
     if (!::metadata.isInitialized) {
@@ -156,8 +129,6 @@ fun Project.setupAppCommon() {
                     keyPassword = pwd
                 }
             }
-        } else if (requireFlavor().contains("(Oss|Expert|Play)Release".toRegex())) {
-            exitProcess(0)
         }
         buildTypes {
             val key = signingConfigs.findByName("release")
@@ -178,6 +149,7 @@ fun Project.setupApp() {
             applicationId = pkgName
             versionCode = verCode
             versionName = verName
+            buildConfigField("String", "PRE_VERSION_NAME", "\"\"")
         }
     }
     setupAppCommon()
@@ -209,14 +181,29 @@ fun Project.setupApp() {
             create("oss")
             create("fdroid")
             create("play")
+            create("preview") {
+                buildConfigField(
+                    "String",
+                    "PRE_VERSION_NAME",
+                    "\"${requireMetadata().getProperty("PRE_VERSION_NAME")}\""
+                )
+            }
         }
 
         applicationVariants.all {
             outputs.all {
                 this as BaseVariantOutputImpl
-                outputFileName = outputFileName.replace(project.name, "NekoBox-$versionName")
-                    .replace("-release", "")
-                    .replace("-oss", "")
+                val isPreview = outputFileName.contains("-preview")
+                outputFileName = if (isPreview) {
+                    outputFileName.replace(
+                        project.name,
+                        "NekoBox-" + requireMetadata().getProperty("PRE_VERSION_NAME")
+                    ).replace("-preview", "")
+                } else {
+                    outputFileName.replace(project.name, "NekoBox-$versionName")
+                        .replace("-release", "")
+                        .replace("-oss", "")
+                }
             }
         }
 

@@ -29,7 +29,7 @@
             app:title="@string/service_mode"
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
-            app:defaultValue="2"
+            app:defaultValue="0"
             app:entries="@array/tun_implementation"
             app:entryValues="@array/int_array_3"
             app:icon="@drawable/ic_baseline_flip_camera_android_24"
@@ -96,6 +96,11 @@
             app:icon="@drawable/ic_baseline_bug_report_24"
             app:key="logLevel"
             app:title="@string/log_level"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.EditConfigPreference
+            app:icon="@drawable/ic_baseline_layers_24"
+            app:key="globalCustomConfig"
+            app:title="@string/custom_config"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
@@ -221,6 +226,7 @@
             app:summary="@string/dns_routing_message"
             app:title="@string/enable_dns_routing" />
         <SwitchPreference
+            app:defaultValue="true"
             app:icon="@drawable/ic_action_lock"
             app:key="enableFakeDns"
             app:summary="@string/fakedns_message"

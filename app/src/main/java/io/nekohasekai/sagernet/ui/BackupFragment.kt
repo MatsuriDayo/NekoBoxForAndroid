@@ -16,6 +16,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.bg.Executable
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.database.preference.KeyValuePair
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
@@ -23,6 +24,7 @@ import io.nekohasekai.sagernet.databinding.LayoutBackupBinding
 import io.nekohasekai.sagernet.databinding.LayoutImportBinding
 import io.nekohasekai.sagernet.databinding.LayoutProgressBinding
 import io.nekohasekai.sagernet.ktx.*
+import kotlinx.coroutines.delay
 import moe.matsuri.nb4a.utils.Util
 import org.json.JSONArray
 import org.json.JSONObject
@@ -79,31 +81,45 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     override fun name0() = app.getString(R.string.backup)
 
     var content = ""
-    private val exportSettings = registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
-        if (data != null) {
-            runOnDefaultDispatcher {
-                try {
-                    requireActivity().contentResolver.openOutputStream(data)!!.use { os ->
-                        os.write(backupData)
-                    }
-                    onMainDispatcher {
-                        snackbar(getString(R.string.action_export_msg)).show()
-                    }
-                } catch (e: Exception) {
-                    Logs.w(e)
-                    onMainDispatcher {
-                        snackbar(e.readableMessage).show()
+    private val exportSettings =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+            if (data != null) {
+                runOnDefaultDispatcher {
+                    try {
+                        requireActivity().contentResolver.openOutputStream(
+                            data
+                        )!!.bufferedWriter().use {
+                            it.write(content)
+                        }
+                        onMainDispatcher {
+                            snackbar(getString(R.string.action_export_msg)).show()
+                        }
+                    } catch (e: Exception) {
+                        Logs.w(e)
+                        onMainDispatcher {
+                            snackbar(e.readableMessage).show()
+                        }
                     }
                 }
             }
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        binding = LayoutBackupBinding.bind(view)
-        
+
+        val binding = LayoutBackupBinding.bind(view)
+
+        binding.resetSettings.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm)
+                .setMessage(R.string.reset_settings_message)
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    DataStore.configurationStore.reset()
+                    triggerFullRestart(requireContext())
+                }
+                .show()
+        }
+
         binding.actionExport.setOnClickListener {
             runOnDefaultDispatcher {
                 backupData = doBackup(
@@ -648,6 +664,39 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                 }
                             }
 
+        onMainDispatcher {
+            val import = LayoutImportBinding.inflate(layoutInflater)
+            if (!content.has("profiles")) {
+                import.backupConfigurations.isVisible = false
+            }
+            if (!content.has("rules")) {
+                import.backupRules.isVisible = false
+            }
+            if (!content.has("settings")) {
+                import.backupSettings.isVisible = false
+            }
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.backup_import)
+                .setView(import.root)
+                .setPositiveButton(R.string.backup_import) { _, _ ->
+                    SagerNet.stopService()
+
+                    val binding = LayoutProgressBinding.inflate(layoutInflater)
+                    binding.content.text = getString(R.string.backup_importing)
+                    val dialog = AlertDialog.Builder(requireContext())
+                        .setView(binding.root)
+                        .setCancelable(false)
+                        .show()
+                    runOnDefaultDispatcher {
+                        runCatching {
+                            finishImport(
+                                content,
+                                import.backupConfigurations.isChecked,
+                                import.backupRules.isChecked,
+                                import.backupSettings.isChecked
+                            )
+                            triggerFullRestart(requireContext())
+                        }.onFailure {
+                            Logs.w(it)
                             onMainDispatcher {
                                 dialog.dismiss()
                             }

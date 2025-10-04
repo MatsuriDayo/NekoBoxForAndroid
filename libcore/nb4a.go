@@ -5,7 +5,7 @@ import (
 	"libcore/device"
 	"os"
 	"path/filepath"
-	"runtime"
+	"runtime/debug"
 	"strings"
 	_ "unsafe"
 
@@ -14,6 +14,7 @@ import (
 	"github.com/matsuridayo/libneko/neko_common"
 	"github.com/matsuridayo/libneko/neko_log"
 	"github.com/sagernet/sing-box/nekoutils"
+	"github.com/sagernet/sing-box/option"
 	"golang.org/x/sys/unix"
 )
 
@@ -29,12 +30,12 @@ func NekoLogClear() {
 }
 
 func ForceGc() {
-	go runtime.GC()
+	go debug.FreeOSMemory()
 }
 
 func InitCore(process, cachePath, internalAssets, externalAssets string,
 	maxLogSizeKb int32, logEnable bool,
-	if1 NB4AInterface, if2 BoxPlatformInterface,
+	if1 NB4AInterface, if2 BoxPlatformInterface, if3 LocalDNSTransport,
 ) {
 	defer device.DeferPanicToError("InitCore", func(err error) { log.Println(err) })
 	isBgProcess = strings.HasSuffix(process, ":bg")
@@ -43,6 +44,7 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	intfNB4A = if1
 	intfBox = if2
 	useProcfs = intfBox.UseProcFS()
+	gLocalDNSTransport = newPlatformTransport(if3, "", option.LocalDNSServerOptions{})
 
 	// Working dir
 	tmp := filepath.Join(cachePath, "../no_backup")
@@ -51,6 +53,8 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 
 	// sing-box fs
 	resourcePaths = append(resourcePaths, externalAssets)
+	externalAssetsPath = externalAssets
+	internalAssetsPath = internalAssets
 
 	// Set up log
 	if maxLogSizeKb < 50 {
@@ -67,9 +71,6 @@ func InitCore(process, cachePath, internalAssets, externalAssets string,
 	go func() {
 		defer device.DeferPanicToError("InitCore-go", func(err error) { log.Println(err) })
 		device.GoDebug(process)
-
-		externalAssetsPath = externalAssets
-		internalAssetsPath = internalAssets
 
 		// certs
 		pem, err := os.ReadFile(externalAssetsPath + "ca.pem")

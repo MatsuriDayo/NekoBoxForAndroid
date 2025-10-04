@@ -85,7 +85,7 @@ func (w *boxPlatformInterfaceWrapper) UsePlatformDefaultInterfaceMonitor() bool 
 }
 
 func (w *boxPlatformInterfaceWrapper) CreateDefaultInterfaceMonitor(l logger.Logger) tun.DefaultInterfaceMonitor {
-	return &interfaceMonitor{}
+	return &interfaceMonitorStub{}
 }
 
 func (w *boxPlatformInterfaceWrapper) UsePlatformInterfaceGetter() bool {
@@ -101,6 +101,10 @@ func (w *boxPlatformInterfaceWrapper) IncludeAllNetworks() bool {
 }
 
 func (w *boxPlatformInterfaceWrapper) SendNotification(notification *platform.Notification) error {
+	return nil
+}
+
+func (s *boxPlatformInterfaceWrapper) SystemCertificates() []string {
 	return nil
 }
 

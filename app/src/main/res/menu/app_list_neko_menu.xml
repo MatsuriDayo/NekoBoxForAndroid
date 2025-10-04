@@ -1,5 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/uninstall_all"
-        android:title="Uninstall All Plugins" />
-</menu>

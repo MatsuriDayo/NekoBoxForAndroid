@@ -14,6 +14,7 @@ import (
 
 	"github.com/matsuridayo/libneko/protect_server"
 	"github.com/matsuridayo/libneko/speedtest"
+	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/boxapi"
 	"github.com/sagernet/sing-box/experimental/libbox/platform"
 	"github.com/sagernet/sing-box/protocol/group"
@@ -78,12 +79,15 @@ type BoxInstance struct {
 	pauseManager pause.Manager
 }
 
-func NewSingBoxInstance(config string) (b *BoxInstance, err error) {
+func NewSingBoxInstance(config string, localTransport LocalDNSTransport) (b *BoxInstance, err error) {
 	defer device.DeferPanicToError("NewSingBoxInstance", func(err_ error) { err = err_ })
 
 	// create box context
 	ctx, cancel := context.WithCancel(context.Background())
-	ctx = box.Context(ctx, nekoboxAndroidInboundRegistry(), nekoboxAndroidOutboundRegistry(), nekoboxAndroidEndpointRegistry())
+	ctx = box.Context(ctx,
+		nekoboxAndroidInboundRegistry(), nekoboxAndroidOutboundRegistry(), nekoboxAndroidEndpointRegistry(),
+		nekoboxAndroidDNSTransportRegistry(localTransport), nekoboxAndroidServiceRegistry(),
+	)
 	ctx = service.ContextWithDefaultRegistry(ctx)
 	service.MustRegister[platform.Interface](ctx, boxPlatformInterfaceInstance)
 
@@ -182,11 +186,17 @@ func (b *BoxInstance) SetAsMain() {
 }
 
 func (b *BoxInstance) SetV2rayStats(outbounds string) {
+	b.access.Lock()
+	defer b.access.Unlock()
+	if b.v2api != nil {
+		log.Println("duplicate call of SetV2rayStats")
+		return
+	}
 	b.v2api = boxapi.NewSbV2rayServer(option.V2RayStatsServiceOptions{
 		Enabled:   true,
 		Outbounds: strings.Split(outbounds, "\n"),
 	})
-	b.Box.Router().SetNekoTracker(b.v2api.StatsService())
+	b.Box.Router().AppendTracker(b.v2api.StatsService())
 }
 
 func (b *BoxInstance) QueryStats(tag, direct string) int64 {
@@ -205,11 +215,23 @@ func (b *BoxInstance) SelectOutbound(tag string) bool {
 
 func UrlTest(i *BoxInstance, link string, timeout int32) (latency int32, err error) {
 	defer device.DeferPanicToError("box.UrlTest", func(err_ error) { err = err_ })
-	if i == nil {
-		// test current
-		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(mainInstance.Box), link, timeout, speedtest.UrlTestStandard_RTT)
+	var connectionTracker adapter.ConnectionTracker
+	// test i
+	if i != nil {
+		if i.v2api != nil {
+			connectionTracker = i.v2api.StatsService()
+		}
+		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(i.Box, connectionTracker), link, timeout, speedtest.UrlTestStandard_RTT)
 	}
-	return speedtest.UrlTest(boxapi.CreateProxyHttpClient(i.Box), link, timeout, speedtest.UrlTestStandard_RTT)
+	// test direct
+	if mainInstance == nil {
+		return speedtest.UrlTest(boxapi.CreateProxyHttpClient(nil, nil), link, timeout, speedtest.UrlTestStandard_RTT)
+	}
+	// test mainInstance
+	if mainInstance.v2api != nil {
+		connectionTracker = mainInstance.v2api.StatsService()
+	}
+	return speedtest.UrlTest(boxapi.CreateProxyHttpClient(mainInstance.Box, connectionTracker), link, timeout, speedtest.UrlTestStandard_RTT)
 }
 
 var protectCloser io.Closer

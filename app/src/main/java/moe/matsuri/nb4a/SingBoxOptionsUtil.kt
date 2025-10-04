@@ -161,6 +161,8 @@ fun SingBoxOptions.Rule_DefaultOptions.checkEmpty(): Boolean {
     if (port?.isNotEmpty() == true) return false
     if (port_range?.isNotEmpty() == true) return false
     if (source_ip_cidr?.isNotEmpty() == true) return false
+    //
+    if (!_hack_custom_config.isNullOrBlank()) return false
     return true
 }
 

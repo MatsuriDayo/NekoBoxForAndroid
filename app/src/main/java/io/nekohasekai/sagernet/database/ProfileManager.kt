@@ -200,18 +200,6 @@ object ProfileManager {
                     outbound = -2
                 )
             )
-            createRule(
-                RuleEntity(
-                    name = app.getString(R.string.route_opt_block_analysis),
-                    domains = app.assets.open("analysis.txt").use {
-                        it.bufferedReader()
-                            .readLines()
-                            .filter { it.isNotBlank() }
-                            .joinToString("\n")
-                    },
-                    outbound = -2,
-                )
-            )
             val fuckedCountry = mutableListOf("cn:中国")
             if (Locale.getDefault().country != Locale.CHINA.country) {
                 // 非中文用户

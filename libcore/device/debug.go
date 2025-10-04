@@ -13,9 +13,11 @@ func GoDebug(any interface{}) {
 	}
 }
 
-func DeferPanicToError(name string, err func(error)) {
+func DeferPanicToError(name string, onError func(error)) {
 	if r := recover(); r != nil {
-		s := fmt.Errorf("%s panic: %s\n%s", name, r, string(debug.Stack()))
-		err(s)
+		if onError != nil {
+			s := fmt.Errorf("%s panic: %s\n%s", name, r, string(debug.Stack()))
+			onError(s)
+		}
 	}
 }

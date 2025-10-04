@@ -272,7 +272,7 @@ fun HysteriaBean.canUseSingBox(): Boolean {
     return true
 }
 
-fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any> {
+fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): SingBoxOptions.SingBoxOption {
     return when (bean.protocolVersion) {
         1 -> SingBoxOptions.Outbound_HysteriaOptions().apply {
             type = "hysteria"
@@ -311,7 +311,7 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
                 insecure = bean.allowInsecure || DataStore.globalAllowInsecure
                 enabled = true
             }
-        }.asMap()
+        }
 
         2 -> SingBoxOptions.Outbound_Hysteria2Options().apply {
             type = "hysteria2"
@@ -350,9 +350,9 @@ fun buildSingBoxOutboundHysteriaBean(bean: HysteriaBean): MutableMap<String, Any
                 insecure = bean.allowInsecure || DataStore.globalAllowInsecure
                 enabled = true
             }
-        }.asMap()
+        }
 
-        else -> mutableMapOf("error_version" to bean.protocolVersion)
+        else -> error("error_version $bean.protocolVersion")
     }
 }
 

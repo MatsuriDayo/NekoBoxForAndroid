@@ -1,19 +1,97 @@
 package moe.matsuri.nb4a;
 
-import static moe.matsuri.nb4a.utils.JavaUtil.gson;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.ToNumberPolicy;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import moe.matsuri.nb4a.utils.Util;
 
 public class SingBoxOptions {
 
     // base
 
+    private static final Gson gsonSingbox = new GsonBuilder()
+            .registerTypeHierarchyAdapter(SingBoxOption.class, new SingBoxOptionSerializer())
+            .setPrettyPrinting()
+            .setNumberToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+            .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+            .setLenient()
+            .disableHtmlEscaping()
+            .create();
+
     public static class SingBoxOption {
+
+        public transient Map<String, Object> _hack_config_map; // 仍然用普通json方式合并，所以Object内不要使用 _hack
+
+        public transient String _hack_custom_config;
+
+        public SingBoxOption() {
+            _hack_config_map = new HashMap<>();
+        }
+
         public Map<String, Object> asMap() {
-            return gson.fromJson(gson.toJson(this), Map.class);
+            return gsonSingbox.fromJson(gsonSingbox.toJson(this), Map.class);
+        }
+
+    }
+
+    public static final class CustomSingBoxOption extends SingBoxOption {
+
+        public transient String config;
+
+        public CustomSingBoxOption(String config) {
+            super();
+            this.config = config;
+        }
+
+        public Map<String, Object> getBasicMap() {
+            Map<String, Object> map = gsonSingbox.fromJson(config, Map.class);
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            return map;
+        }
+    }
+
+    // 自定义序列化器
+    public static class SingBoxOptionSerializer implements JsonSerializer<SingBoxOption> {
+        @Override
+        public JsonElement serialize(SingBoxOption src, Type typeOfSrc, JsonSerializationContext context) {
+            // 拿到原始的 delegate（默认序列化器）
+            TypeAdapter<?> delegate = gsonSingbox.getDelegateAdapter(
+                    new TypeAdapterFactory() {
+                        @Override
+                        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                            return null; // 返回 null，表示只作为“跳过当前自定义”的 marker
+                        }
+                    },
+                    TypeToken.get(src.getClass())
+            );
+            Map<String, Object> map;
+            if (src instanceof CustomSingBoxOption) {
+                map = ((CustomSingBoxOption) src).getBasicMap();
+            } else {
+                map = gsonSingbox.fromJson(((TypeAdapter<SingBoxOption>) delegate).toJson(src), Map.class);
+            }
+            if (src._hack_config_map != null && !src._hack_config_map.isEmpty()) {
+                Util.INSTANCE.mergeMap(map, src._hack_config_map);
+            }
+            if (src._hack_custom_config != null && !src._hack_custom_config.isBlank()) {
+                Util.INSTANCE.mergeJSON(map, src._hack_custom_config);
+            }
+            return gsonSingbox.toJsonTree(map);
         }
     }
 
@@ -33,7 +111,7 @@ public class SingBoxOptions {
 
         public List<Inbound> inbounds;
 
-        public List<Map<String, Object>> outbounds;
+        public List<SingBoxOption> outbounds;
 
         public RouteOptions route;
 

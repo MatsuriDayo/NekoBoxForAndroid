@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.Base64
 import libcore.StringBox
 import java.io.ByteArrayOutputStream
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Deflater
@@ -132,12 +134,12 @@ object Util {
             } else if (v is List<*>) {
                 if (k.startsWith("+")) {  // prepend
                     val dstKey = k.removePrefix("+")
-                    var currentList = (dst[dstKey] as List<*>).toMutableList()
+                    var currentList = (dst[dstKey] as? List<*>)?.toMutableList() ?: mutableListOf()
                     currentList = (v + currentList).toMutableList()
                     dst[dstKey] = currentList
                 } else if (k.endsWith("+")) {  // append
                     val dstKey = k.removeSuffix("+")
-                    var currentList = (dst[dstKey] as List<*>).toMutableList()
+                    var currentList = (dst[dstKey] as? List<*>)?.toMutableList() ?: mutableListOf()
                     currentList = (currentList + v).toMutableList()
                     dst[dstKey] = currentList
                 } else {
@@ -150,7 +152,7 @@ object Util {
         return dst
     }
 
-    fun mergeJSON(j: String, dst: MutableMap<String, Any?>) {
+    fun mergeJSON(dst: MutableMap<String, Any?>, j: String) {
         if (j.isBlank()) return
         val src = JavaUtil.gson.fromJson(j, dst.javaClass)
         mergeMap(dst, src)
@@ -187,5 +189,12 @@ object Util {
             return b.value
         }
         return ""
+    }
+
+    fun decodeFilename(headerValue: String): String {
+        val regex = Regex("filename\\*=[^']*''(.+)")
+        val match = regex.find(headerValue)
+        val encoded = match?.groupValues?.get(1) ?: ""
+        return URLDecoder.decode(encoded, StandardCharsets.UTF_8.name())
     }
 }

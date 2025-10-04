@@ -58,6 +58,7 @@ object RawUpdater : GroupUpdater() {
 
             val response = Libcore.newHttpClient().apply {
                 trySocks5(DataStore.mixedPort)
+                tryH3Direct()
                 when (DataStore.appTLSVersion) {
                     "1.3" -> restrictedTLS()
                 }
@@ -73,6 +74,17 @@ object RawUpdater : GroupUpdater() {
 
             subscription.subscriptionUserinfo =
                 Util.getStringBox(response.getHeader("Subscription-Userinfo"))
+
+            // 修改默认名字
+            if (proxyGroup.name?.startsWith("Subscription #") == true) {
+                var remoteName = Util.getStringBox(response.getHeader("content-disposition"))
+                if (remoteName.isNotBlank()) {
+                    remoteName = Util.decodeFilename(remoteName)
+                    if (remoteName.isNotBlank()) {
+                        proxyGroup.name = remoteName
+                    }
+                }
+            }
         }
 
         val proxiesMap = LinkedHashMap<String, AbstractBean>()

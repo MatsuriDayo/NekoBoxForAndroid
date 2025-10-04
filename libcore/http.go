@@ -10,17 +10,26 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"libcore/device"
+	"libcore/ech"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"sync"
+	"sync/atomic"
+	"time"
 
+	"github.com/sagernet/quic-go"
+	"github.com/sagernet/quic-go/http3"
 	"github.com/sagernet/sing/common/metadata"
 	"github.com/sagernet/sing/protocol/socks"
 	"github.com/sagernet/sing/protocol/socks/socks5"
 )
+
+var errFailConnectSocks5 = errors.New("fail connect socks5")
 
 type HTTPClient interface {
 	RestrictedTLS()
@@ -28,6 +37,7 @@ type HTTPClient interface {
 	PinnedTLS12()
 	PinnedSHA256(sumHex string)
 	TrySocks5(port int32)
+	TryH3Direct()
 	KeepAlive()
 	NewRequest() HTTPRequest
 	Close()
@@ -58,16 +68,18 @@ var (
 )
 
 type httpClient struct {
-	tls       tls.Config
-	client    http.Client
-	transport http.Transport
+	tls           tls.Config
+	h1h2Transport http.Transport
+	h1h2Client    http.Client
+	trySocks5     bool
+	tryH3Direct   bool
 }
 
 func NewHttpClient() HTTPClient {
 	client := new(httpClient)
-	client.client.Transport = &client.transport
-	client.transport.TLSClientConfig = &client.tls
-	client.transport.DisableKeepAlives = true
+	client.h1h2Client.Transport = &client.h1h2Transport
+	client.h1h2Transport.TLSClientConfig = &client.tls
+	client.h1h2Transport.DisableKeepAlives = true
 	return client
 }
 
@@ -104,25 +116,36 @@ func (c *httpClient) PinnedSHA256(sumHex string) {
 
 func (c *httpClient) TrySocks5(port int32) {
 	dialer := new(net.Dialer)
-	c.transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
+	c.h1h2Transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
 		for {
 			socksConn, err := dialer.DialContext(ctx, "tcp", "127.0.0.1:"+strconv.Itoa(int(port)))
 			if err != nil {
+				if c.tryH3Direct {
+					return nil, errFailConnectSocks5
+				}
 				break
 			}
 			_, err = socks.ClientHandshake5(socksConn, socks5.CommandConnect, metadata.ParseSocksaddr(addr), "", "")
 			if err != nil {
+				if c.tryH3Direct {
+					return nil, errFailConnectSocks5
+				}
 				break
 			}
 			return socksConn, err
 		}
 		return dialer.DialContext(ctx, network, addr)
 	}
+	c.trySocks5 = true
+}
+
+func (c *httpClient) TryH3Direct() {
+	c.tryH3Direct = true
 }
 
 func (c *httpClient) KeepAlive() {
-	c.transport.ForceAttemptHTTP2 = true
-	c.transport.DisableKeepAlives = false
+	c.h1h2Transport.ForceAttemptHTTP2 = true
+	c.h1h2Transport.DisableKeepAlives = false
 }
 
 func (c *httpClient) NewRequest() HTTPRequest {
@@ -135,7 +158,7 @@ func (c *httpClient) NewRequest() HTTPRequest {
 }
 
 func (c *httpClient) Close() {
-	c.transport.CloseIdleConnections()
+	c.h1h2Transport.CloseIdleConnections()
 }
 
 type httpRequest struct {
@@ -184,8 +207,17 @@ func (r *httpRequest) SetContentString(content string) {
 }
 
 func (r *httpRequest) Execute() (HTTPResponse, error) {
-	response, err := r.client.Do(&r.request)
+	defer device.DeferPanicToError("http execute", func(err error) { log.Println(err) })
+	// full direct
+	if r.tryH3Direct && !r.trySocks5 {
+		return r.doH3Direct()
+	}
+	response, err := r.h1h2Client.Do(&r.request)
 	if err != nil {
+		// trySocks5 && tryH3Direct
+		if r.tryH3Direct && errors.Is(err, errFailConnectSocks5) {
+			return r.doH3Direct()
+		}
 		return nil, err
 	}
 	httpResp := &httpResponse{Response: response}
@@ -193,6 +225,133 @@ func (r *httpRequest) Execute() (HTTPResponse, error) {
 		return nil, errors.New(httpResp.errorString())
 	}
 	return httpResp, nil
+}
+
+type requestFunc func() (response *http.Response, err error)
+
+func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	successCh := make(chan *http.Response, 1)
+	var finalErr error
+	var failedCount atomic.Uint32
+	var successCount atomic.Uint32
+	var mu sync.Mutex
+
+	funcs := []requestFunc{
+		// 普通，不再重试 socks5
+		func() (response *http.Response, err error) {
+			request := r.request.Clone(context.Background())
+			h1h2Client := &http.Client{
+				Transport: &http.Transport{
+					DisableKeepAlives: true,
+				},
+			}
+			return h1h2Client.Do(request)
+		},
+		// ECH HTTPS
+		func() (response *http.Response, err error) {
+			request := r.request.Clone(context.Background())
+			echClient := &http.Client{
+				Transport: &http.Transport{
+					DialTLSContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+						var d net.Dialer
+						c, err := d.DialContext(ctx, network, addr)
+						if err != nil {
+							return c, err
+						}
+						domain := addr
+						if host, _, _ := net.SplitHostPort(addr); host != "" {
+							domain = host
+						}
+						echTls := ech.NewECHClientConfig(domain, &r.tls, gLocalDNSTransport)
+						return echTls.ClientHandshake(ctx, c)
+					},
+					DisableKeepAlives: true,
+				},
+			}
+			return echClient.Do(request)
+		},
+		// H3 HTTPS
+		func() (response *http.Response, err error) {
+			request := r.request.Clone(context.Background())
+			h3Client := &http.Client{
+				Transport: &http3.Transport{
+					TLSClientConfig: r.tls.Clone(),
+					QUICConfig: &quic.Config{
+						MaxIdleTimeout: time.Second,
+					},
+				},
+			}
+			return h3Client.Do(request)
+		},
+	}
+
+	if r.request.URL.Scheme == "http" {
+		funcs = funcs[:1]
+	}
+
+	for i, f := range funcs {
+		go func(f requestFunc) {
+			defer device.DeferPanicToError("http", func(err error) { log.Println(err) })
+			defer func() {
+				if successCount.Load() == 0 {
+					if failedCount.Add(1) >= uint32(len(funcs)) {
+						// 全部失败了
+						cancel()
+					}
+				}
+			}()
+
+			var t string
+			switch i {
+			case 0:
+				t = "h1h2"
+			case 1:
+				t = "ech"
+			case 2:
+				t = "h3"
+			}
+
+			// 执行HTTP请求
+			rsp, err := f()
+			if rsp == nil || err != nil {
+				mu.Lock()
+				finalErr = errors.Join(finalErr, fmt.Errorf("%s: %w", t, err))
+				mu.Unlock()
+				if rsp != nil && rsp.Body != nil {
+					rsp.Body.Close()
+				}
+				return
+			}
+
+			// 处理 HTTP 状态码
+			if rsp.StatusCode != http.StatusOK {
+				hr := &httpResponse{Response: rsp}
+				err = fmt.Errorf("%s: %s", t, hr.errorString())
+				mu.Lock()
+				finalErr = errors.Join(finalErr, err)
+				mu.Unlock()
+				return
+			}
+
+			select {
+			case successCh <- rsp:
+				// 第一个成功的请求，不要关闭 body
+				successCount.Add(1)
+			default:
+				rsp.Body.Close()
+			}
+		}(f)
+	}
+
+	select {
+	case result := <-successCh:
+		return &httpResponse{Response: result}, nil
+	case <-ctx.Done():
+		return nil, finalErr
+	}
 }
 
 type httpResponse struct {

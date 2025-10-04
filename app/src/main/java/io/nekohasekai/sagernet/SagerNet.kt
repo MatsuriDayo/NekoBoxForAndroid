@@ -20,6 +20,8 @@ import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ktx.Logs
+import io.nekohasekai.sagernet.ktx.isOss
+import io.nekohasekai.sagernet.ktx.isPreview
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.ui.MainActivity
 import io.nekohasekai.sagernet.utils.*
@@ -27,6 +29,7 @@ import kotlinx.coroutines.DEBUG_PROPERTY_NAME
 import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
 import libcore.Libcore
 import moe.matsuri.nb4a.NativeInterface
+import moe.matsuri.nb4a.net.LocalResolverImpl
 import moe.matsuri.nb4a.utils.JavaUtil
 import moe.matsuri.nb4a.utils.cleanWebview
 import java.io.File
@@ -51,10 +54,21 @@ class SagerNet : Application(),
     override fun onCreate() {
         super.onCreate()
 
-        System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler)
 
         if (isMainProcess || isBgProcess) {
+            externalAssets.mkdirs()
+            Seq.setContext(this)
+            Libcore.initCore(
+                process,
+                cacheDir.absolutePath + "/",
+                filesDir.absolutePath + "/",
+                externalAssets.absolutePath + "/",
+                DataStore.logBufSize,
+                DataStore.logLevel > 0,
+                nativeInterface, nativeInterface, LocalResolverImpl
+            )
+
             // fix multi process issue in Android 9+
             JavaUtil.handleWebviewDir(this)
 
@@ -64,21 +78,6 @@ class SagerNet : Application(),
             }
         }
 
-        Seq.setContext(this)
-        updateNotificationChannels()
-
-        // nb4a: init core
-        externalAssets.mkdirs()
-        Libcore.initCore(
-            process,
-            cacheDir.absolutePath + "/",
-            filesDir.absolutePath + "/",
-            externalAssets.absolutePath + "/",
-            DataStore.logBufSize,
-            DataStore.logLevel > 0,
-            nativeInterface, nativeInterface
-        )
-
         if (isMainProcess) {
             Theme.apply(this)
             Theme.applyNightTheme()
@@ -86,17 +85,22 @@ class SagerNet : Application(),
                 DefaultNetworkListener.start(this) {
                     underlyingNetwork = it
                 }
+
+                updateNotificationChannels()
             }
         }
 
-        if (BuildConfig.DEBUG) StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .detectLeakedRegistrationObjects()
-                .penaltyLog()
-                .build()
-        )
+        if (BuildConfig.DEBUG) {
+            System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectLeakedRegistrationObjects()
+                    .penaltyLog()
+                    .build()
+            )
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -176,6 +180,10 @@ class SagerNet : Application(),
                             "service-subscription",
                             application.getText(R.string.service_subscription),
                             NotificationManager.IMPORTANCE_DEFAULT
+                        ), NotificationChannel(
+                            "connection-test",
+                            application.getText(R.string.connection_test),
+                            NotificationManager.IMPORTANCE_DEFAULT
                         )
                     )
                 )
@@ -194,6 +202,18 @@ class SagerNet : Application(),
 
         var underlyingNetwork: Network? = null
 
+        var appVersionNameForDisplay = {
+            var n = BuildConfig.VERSION_NAME
+            if (isPreview) {
+                n += " " + BuildConfig.PRE_VERSION_NAME
+            } else if (!isOss) {
+                n += " ${BuildConfig.FLAVOR}"
+            }
+            if (BuildConfig.DEBUG) {
+                n += " DEBUG"
+            }
+            n
+        }()
     }
 
 }
