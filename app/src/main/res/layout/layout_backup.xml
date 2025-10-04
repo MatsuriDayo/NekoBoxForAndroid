@@ -73,14 +73,6 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/reset_settings"
-                        style="@style/Widget.AppCompat.Button.Colored"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/reset_settings"
-                        android:textColor="?whiteOrTextPrimary" />
-
                     <!-- 本地备份部分的按钮 -->
                     <Button
                         android:id="@+id/action_share"

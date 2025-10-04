@@ -109,17 +109,6 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
         val binding = LayoutBackupBinding.bind(view)
 
-        binding.resetSettings.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm)
-                .setMessage(R.string.reset_settings_message)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes) { _, _ ->
-                    DataStore.configurationStore.reset()
-                    triggerFullRestart(requireContext())
-                }
-                .show()
-        }
-
         binding.actionExport.setOnClickListener {
             runOnDefaultDispatcher {
                 backupData = doBackup(
