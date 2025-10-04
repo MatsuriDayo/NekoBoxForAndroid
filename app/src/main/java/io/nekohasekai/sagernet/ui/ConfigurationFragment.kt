@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.OpenableColumns
@@ -28,6 +29,7 @@ import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.size
+import kotlinx.coroutines.delay
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceDataStore
 import androidx.recyclerview.widget.ItemTouchHelper

@@ -398,9 +398,9 @@ fun buildConfig(
                         }
 
                         if (needGlobal && DataStore.enableTLSFragment) {
-                            val tlsOptions = currentOutbound["tls"] as? Map<String, Any>
+                            val tlsOptions = currentOutbound._hack_config_map["tls"] as? Map<*, *>
                             if (tlsOptions?.get("enabled") == true) {
-                                currentOutbound["detour"] = TAG_FRAGMENT
+                                currentOutbound._hack_config_map["detour"] = TAG_FRAGMENT
                             }
                         }
                     }
@@ -760,13 +760,13 @@ fun buildConfig(
         })
 
         if (DataStore.enableTLSFragment) {
-            var fragmentOutbound = Outbound().apply {
+            val fragmentOutbound = Outbound().apply {
                 tag = TAG_FRAGMENT
                 type = "direct"
-            }.asMap()
-            fragmentOutbound["fragment"] = Fragment().apply {
-                length = DataStore.fragmentLength
-                interval = DataStore.fragmentInterval
+                _hack_config_map["fragment"] = Fragment().apply {
+                    length = DataStore.fragmentLength
+                    interval = DataStore.fragmentInterval
+                }
             }
             outbounds.add(fragmentOutbound)
         }
