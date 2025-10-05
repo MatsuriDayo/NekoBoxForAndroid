@@ -81,28 +81,25 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
     override fun name0() = app.getString(R.string.backup)
 
     var content = ""
-    private val exportSettings =
-        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
-            if (data != null) {
-                runOnDefaultDispatcher {
-                    try {
-                        requireActivity().contentResolver.openOutputStream(
-                            data
-                        )!!.bufferedWriter().use {
-                            it.write(content)
-                        }
-                        onMainDispatcher {
-                            snackbar(getString(R.string.action_export_msg)).show()
-                        }
-                    } catch (e: Exception) {
-                        Logs.w(e)
-                        onMainDispatcher {
-                            snackbar(e.readableMessage).show()
-                        }
+    private val exportSettings = registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+        if (data != null) {
+            runOnDefaultDispatcher {
+                try {
+                    requireActivity().contentResolver.openOutputStream(data)!!.use { os ->
+                        os.write(backupData)
+                    }
+                    onMainDispatcher {
+                        snackbar(getString(R.string.action_export_msg)).show()
+                    }
+                } catch (e: Exception) {
+                    Logs.w(e)
+                    onMainDispatcher {
+                        snackbar(e.readableMessage).show()
                     }
                 }
             }
         }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -126,16 +123,16 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
         binding.actionShare.setOnClickListener {
             runOnDefaultDispatcher {
-                content = doBackup(
+                backupData = doBackup(
                     binding.backupConfigurations.isChecked,
                     binding.backupRules.isChecked,
                     binding.backupSettings.isChecked
-                ).toString(Charsets.UTF_8)
+                )
                 app.cacheDir.mkdirs()
                 val cacheFile = File(
                     app.cacheDir, "nekobox_backup_${Date().toLocaleString()}.json"
                 )
-                cacheFile.writeText(content)
+                cacheFile.writeBytes(backupData)
                 onMainDispatcher {
                     startActivity(
                         Intent.createChooser(
