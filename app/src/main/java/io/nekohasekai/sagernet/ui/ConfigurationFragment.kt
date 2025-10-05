@@ -384,24 +384,27 @@ class ConfigurationFragment @JvmOverloads constructor(
                 } else runOnDefaultDispatcher {
                     try {
                         val proxies = RawUpdater.parseRaw(text)
-                        if (!proxies.isNullOrEmpty()) {
-                            import(proxies)
-                        } else {
-                            val singleURI = Uri.parse(text)
-                            if (singleURI.scheme == "http" || singleURI.scheme == "https") {
-                                val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
-                                val subscription = SubscriptionBean()
-                                group.subscription = subscription
-                                subscription.link = text
-                                subscription.autoUpdate = false
-                                group.name = ""
-                                startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
-                                    putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
-                                    putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, text)
-                                })
-                            } else onMainDispatcher {
+                        if (proxies.isNullOrEmpty()) {
+                            onMainDispatcher {
                                 snackbar(getString(R.string.no_proxies_found_in_clipboard)).show()
                             }
+                        } else {
+                            import(proxies)
+                        }
+                    } catch (e: SubscriptionFoundException) {
+                        onMainDispatcher {
+                            val subscriptionLink = Uri.parse(e.link).getQueryParameter("url") ?: e.link
+                            
+                            val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
+                            val subscription = SubscriptionBean()
+                            group.subscription = subscription
+                            subscription.link = subscriptionLink
+                            subscription.autoUpdate = false
+                            group.name = ""
+                            startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
+                                putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
+                                putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, subscriptionLink)
+                            })
                         }
                     } catch (e: Exception) {
                         Logs.w(e)
