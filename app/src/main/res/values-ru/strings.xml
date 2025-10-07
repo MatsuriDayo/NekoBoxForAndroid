@@ -404,7 +404,7 @@
 <string name="sniff_routing">Перехватывать результат для Маршрутизации</string>
 <string name="speed">%s/с</string>
 <string name="speed_detail">Прокси ：%1$s↑ %2$s↓ 
-Прямой ：%3$s↑%4$s↓</string>
+\nПрямой ：%3$s↑%4$s↓</string>
 <string name="speed_interval">Интервал обновления уведомлений о скорости</string>
 <string name="ss_cat">Настройки Shadowsocks</string>
 <string name="ssh_auth_type_none">Без аутентификации</string>

@@ -8,8 +8,8 @@ require (
 	github.com/matsuridayo/libneko v1.0.0 // replaced
 	github.com/miekg/dns v1.1.67
 	github.com/oschwald/maxminddb-golang v1.13.1
-	github.com/sagernet/quic-go v0.52.0-beta.1
-	github.com/sagernet/sing v0.7.10
+	github.com/sagernet/quic-go v0.52.0-sing-box-mod.2
+	github.com/sagernet/sing v0.7.12
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	github.com/sagernet/sing-tun v0.7.2
 	github.com/ulikunitz/xz v0.5.11
@@ -20,7 +20,7 @@ require (
 require (
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
-	github.com/anytls/sing-anytls v0.0.8 // indirect
+	github.com/anytls/sing-anytls v0.0.11 // indirect
 	github.com/caddyserver/certmagic v0.23.0 // indirect
 	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/cretz/bine v0.2.0 // indirect
@@ -85,7 +85,3 @@ require (
 replace github.com/matsuridayo/libneko => ../../libneko
 
 replace github.com/sagernet/sing-box => ../../sing-box
-
-// replace github.com/sagernet/sing-quic => ../../sing-quic
-
-// replace github.com/sagernet/sing => ../../sing
