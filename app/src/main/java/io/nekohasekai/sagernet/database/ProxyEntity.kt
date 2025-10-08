@@ -27,6 +27,8 @@ import io.nekohasekai.sagernet.fmt.trojan_go.buildTrojanGoConfig
 import io.nekohasekai.sagernet.fmt.trojan_go.toUri
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.fmt.tuic.toUri
+import io.nekohasekai.sagernet.fmt.juicity.JuicityBean
+import io.nekohasekai.sagernet.fmt.juicity.toUri
 import io.nekohasekai.sagernet.fmt.v2ray.*
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.ktx.app
@@ -64,6 +66,7 @@ data class ProxyEntity(
     var naiveBean: NaiveBean? = null,
     var hysteriaBean: HysteriaBean? = null,
     var tuicBean: TuicBean? = null,
+    var juicityBean: JuicityBean? = null,
     var sshBean: SSHBean? = null,
     var wgBean: WireGuardBean? = null,
     var shadowTLSBean: ShadowTLSBean? = null,
@@ -90,6 +93,7 @@ data class ProxyEntity(
         const val TYPE_TUIC = 20
         const val TYPE_MIERU = 21
         const val TYPE_ANYTLS = 22
+        const val TYPE_JUICITY = 23
 
         const val TYPE_CONFIG = 998
         const val TYPE_NEKO = 999
@@ -172,6 +176,7 @@ data class ProxyEntity(
             TYPE_SSH -> sshBean = KryoConverters.sshDeserialize(byteArray)
             TYPE_WG -> wgBean = KryoConverters.wireguardDeserialize(byteArray)
             TYPE_TUIC -> tuicBean = KryoConverters.tuicDeserialize(byteArray)
+            TYPE_JUICITY -> juicityBean = KryoConverters.juicityDeserialize(byteArray)
             TYPE_SHADOWTLS -> shadowTLSBean = KryoConverters.shadowTLSDeserialize(byteArray)
             TYPE_ANYTLS -> anyTLSBean = KryoConverters.anyTLSDeserialize(byteArray)
             TYPE_CHAIN -> chainBean = KryoConverters.chainDeserialize(byteArray)
@@ -193,6 +198,7 @@ data class ProxyEntity(
         TYPE_SSH -> "SSH"
         TYPE_WG -> "WireGuard"
         TYPE_TUIC -> "TUIC"
+        TYPE_JUICITY -> "Juicity"
         TYPE_SHADOWTLS -> "ShadowTLS"
         TYPE_ANYTLS -> "AnyTLS"
         TYPE_CHAIN -> chainName
@@ -218,6 +224,7 @@ data class ProxyEntity(
             TYPE_SSH -> sshBean
             TYPE_WG -> wgBean
             TYPE_TUIC -> tuicBean
+            TYPE_JUICITY -> juicityBean
             TYPE_SHADOWTLS -> shadowTLSBean
             TYPE_ANYTLS -> anyTLSBean
             TYPE_CHAIN -> chainBean
@@ -256,6 +263,7 @@ data class ProxyEntity(
             is NaiveBean -> toUri()
             is HysteriaBean -> toUri()
             is TuicBean -> toUri()
+            is JuicityBean -> toUri()
             is AnyTLSBean -> toUri()
             is NekoBean -> ""
             else -> toUniversalLink()
@@ -355,6 +363,7 @@ data class ProxyEntity(
         sshBean = null
         wgBean = null
         tuicBean = null
+        juicityBean = null
         shadowTLSBean = null
         anyTLSBean = null
         chainBean = null
@@ -422,6 +431,11 @@ data class ProxyEntity(
                 tuicBean = bean
             }
 
+            is JuicityBean -> {
+                type = TYPE_JUICITY
+                juicityBean = bean
+            }
+
             is ShadowTLSBean -> {
                 type = TYPE_SHADOWTLS
                 shadowTLSBean = bean
@@ -467,6 +481,7 @@ data class ProxyEntity(
                 TYPE_SSH -> SSHSettingsActivity::class.java
                 TYPE_WG -> WireGuardSettingsActivity::class.java
                 TYPE_TUIC -> TuicSettingsActivity::class.java
+                TYPE_JUICITY -> JuicitySettingsActivity::class.java
                 TYPE_SHADOWTLS -> ShadowTLSSettingsActivity::class.java
                 TYPE_ANYTLS -> AnyTLSSettingsActivity::class.java
                 TYPE_CHAIN -> ChainSettingsActivity::class.java

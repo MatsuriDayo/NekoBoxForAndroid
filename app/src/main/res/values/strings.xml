@@ -225,6 +225,7 @@
     <string name="action_ssh" translatable="false">SSH</string>
     <string name="action_wireguard" translatable="false">WireGuard</string>
     <string name="action_tuic" translatable="false">TUIC</string>
+    <string name="action_juicity" translatable="false">Juicity</string>
     <string name="proxy_chain">Proxy Chain</string>
     <string name="custom_config">Custom Config</string>
     <string name="balancer">Balancer</string>
@@ -513,6 +514,8 @@
     <string name="tuic_congestion_controller">Congestion Controller</string>
     <string name="tuic_disable_sni">Disable SNI</string>
     <string name="tuic_reduce_rtt">Enable 0-RTT QUIC handshake</string>
+
+    <string name="pinned_certchain_sha256">Pinned Certificate SHA256</string>
 
     <string name="please_update">Your APP is too old (%s). And will stop working at %s. Please
         update!</string>

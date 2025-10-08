@@ -12,6 +12,7 @@ import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
 import io.nekohasekai.sagernet.fmt.socks.parseSOCKS
 import io.nekohasekai.sagernet.fmt.trojan.parseTrojan
 import io.nekohasekai.sagernet.fmt.tuic.parseTuic
+import io.nekohasekai.sagernet.fmt.juicity.parseJuicity
 import io.nekohasekai.sagernet.fmt.trojan_go.parseTrojanGo
 import io.nekohasekai.sagernet.fmt.v2ray.parseV2Ray
 import moe.matsuri.nb4a.proxy.anytls.parseAnytls
@@ -207,6 +208,13 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             Logs.d("Try parse TUIC link: $this")
             runCatching {
                 entities.add(parseTuic(this))
+            }.onFailure {
+                Logs.w(it)
+            }
+        } else if (startsWith("juicity://")) {
+            Logs.d("Try parse Juicity link: $this")
+            runCatching {
+                entities.add(parseJuicity(this))
             }.onFailure {
                 Logs.w(it)
             }

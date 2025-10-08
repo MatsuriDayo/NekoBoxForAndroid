@@ -230,6 +230,9 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var serverDisableSNI by profileCacheStore.boolean(Key.SERVER_DISABLE_SNI)
     var serverReduceRTT by profileCacheStore.boolean(Key.SERVER_REDUCE_RTT)
 
+    var serverUserId by profileCacheStore.string(Key.SERVER_USER_ID)
+    var serverPinnedCertChainSha256 by profileCacheStore.string(Key.SERVER_PINNED_CERT_CHAIN_SHA256)
+
     var routeName by profileCacheStore.string(Key.ROUTE_NAME)
     var routeDomain by profileCacheStore.string(Key.ROUTE_DOMAIN)
     var routeIP by profileCacheStore.string(Key.ROUTE_IP)

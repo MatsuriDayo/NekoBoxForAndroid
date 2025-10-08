@@ -4314,6 +4314,56 @@ public class SingBoxOptions {
 
     }
 
+    public static class Outbound_JuicityOptions extends Outbound {
+
+        // Generate note: nested type DialerOptions
+        public String detour;
+
+        public String bind_interface;
+
+        public String inet4_bind_address;
+
+        public String inet6_bind_address;
+
+        public String protect_path;
+
+        public Integer routing_mark;
+
+        public Boolean reuse_addr;
+
+        public Long connect_timeout;
+
+        public Boolean tcp_fast_open;
+
+        public Boolean tcp_multi_path;
+
+        public Boolean udp_fragment;
+
+        public String domain_strategy;
+
+        public Long fallback_delay;
+
+        // End of public DialerOptions ;
+
+        // Generate note: nested type ServerOptions
+        public String server;
+
+        public Integer server_port;
+
+        // End of public ServerOptions ;
+
+        public String uuid;
+
+        public String password;
+
+        public String network;
+
+        public String pin_cert_sha256;
+
+        public OutboundTLSOptions tls;
+
+    }
+
     public static class Outbound_Hysteria2Options extends Outbound {
 
         // Generate note: nested type DialerOptions

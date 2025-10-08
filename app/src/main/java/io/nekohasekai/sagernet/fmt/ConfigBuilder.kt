@@ -19,6 +19,8 @@ import io.nekohasekai.sagernet.fmt.ssh.SSHBean
 import io.nekohasekai.sagernet.fmt.ssh.buildSingBoxOutboundSSHBean
 import io.nekohasekai.sagernet.fmt.tuic.TuicBean
 import io.nekohasekai.sagernet.fmt.tuic.buildSingBoxOutboundTuicBean
+import io.nekohasekai.sagernet.fmt.juicity.JuicityBean
+import io.nekohasekai.sagernet.fmt.juicity.buildSingBoxOutboundJuicityBean
 import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
@@ -357,7 +359,7 @@ fun buildConfig(
                     // internal outbound
 
                     currentOutbound = when (bean) {
-                        is ConfigBean -> CustomSingBoxOption(bean.config)
+                        is ConfigBean -> CustomSingBoxOption(bean.config) as SingBoxOption
 
                         is ShadowTLSBean -> // before StandardV2RayBean
                             buildSingBoxOutboundShadowTLSBean(bean)
@@ -370,6 +372,9 @@ fun buildConfig(
 
                         is TuicBean ->
                             buildSingBoxOutboundTuicBean(bean)
+
+                        is JuicityBean ->
+                            buildSingBoxOutboundJuicityBean(bean)
 
                         is SOCKSBean ->
                             buildSingBoxOutboundSocksBean(bean)

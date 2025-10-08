@@ -130,6 +130,9 @@ object Key {
     const val SERVER_DISABLE_SNI = "serverDisableSNI"
     const val SERVER_REDUCE_RTT = "serverReduceRTT"
 
+    const val SERVER_USER_ID = "serverUserId"
+    const val SERVER_PINNED_CERT_CHAIN_SHA256 = "serverPinnedCertChainSha256"
+
     const val ROUTE_NAME = "routeName"
     const val ROUTE_DOMAIN = "routeDomain"
     const val ROUTE_IP = "routeIP"
