@@ -11,6 +11,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     public String uuid;
     public String encryption; // or VLESS flow
+    public String vlessEncryption; // VLESS ncryption
 
     //////// End of VMess & VLESS ////////
 
@@ -78,6 +79,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
         if (JavaUtil.isNullOrBlank(uuid)) uuid = "";
 
         if (JavaUtil.isNullOrBlank(encryption)) encryption = "";
+        if (JavaUtil.isNullOrBlank(vlessEncryption)) vlessEncryption = "";
 
         if (JavaUtil.isNullOrBlank(type)) type = "tcp";
         else if ("h2".equals(type)) type = "http";
@@ -122,10 +124,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(4);
+        output.writeInt(5);
         super.serialize(output);
         output.writeString(uuid);
         output.writeString(encryption);
+        output.writeString(vlessEncryption);
         if (this instanceof VMessBean) {
             output.writeInt(((VMessBean) this).alterId);
         }
@@ -193,6 +196,9 @@ public abstract class StandardV2RayBean extends AbstractBean {
         super.deserialize(input);
         uuid = input.readString();
         encryption = input.readString();
+        if (version >= 5) {
+            vlessEncryption = input.readString();
+        }
         if (this instanceof VMessBean) {
             ((VMessBean) this).alterId = input.readInt();
         }
@@ -284,6 +290,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
             muxConcurrency = input.readInt();
         }
 
+        // Note: xhttp fields are read in the switch case above when version >= 4
     }
 
     @Override

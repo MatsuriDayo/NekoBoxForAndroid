@@ -54,6 +54,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
 
     private val xhttpMode = pbm.add(PreferenceBinding(Type.Text, "xhttpMode"))
     private val xhttpExtra = pbm.add(PreferenceBinding(Type.Text, "xhttpExtra"))
+    private val vlessEncryption = pbm.add(PreferenceBinding(Type.Text, "vlessEncryption"))
 
     override fun StandardV2RayBean.init() {
         if (this is TrojanBean) {
@@ -110,6 +111,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         packetEncoding.preference.isVisible = isVmess || isVless
         alterId.preference.isVisible = isVmess
         encryption.preference.isVisible = isVmess || isVless
+        vlessEncryption.preference.isVisible = isVless
         username.preference.isVisible = isHttp
         password.preference.isVisible = isHttp
 

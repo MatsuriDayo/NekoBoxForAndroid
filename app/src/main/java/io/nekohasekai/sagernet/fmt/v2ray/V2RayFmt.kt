@@ -279,6 +279,13 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
         }
     }
 
+    // VLESS encryption (ML-KEM-768)
+    url.queryParameter("encryption")?.let {
+        if (isVLESS && it != "none") {
+            vlessEncryption = it
+        }
+    }
+
     url.queryParameter("fp")?.let {
         utlsFingerprint = it
     }
@@ -472,7 +479,13 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
         .addQueryParameter("type", type)
 
     if (isVLESS) {
-        builder.addQueryParameter("encryption", "none")
+        // Add encryption if configured
+        if (vlessEncryption.isNotBlank() && vlessEncryption != "none") {
+            builder.addQueryParameter("encryption", vlessEncryption)
+        } else {
+            builder.addQueryParameter("encryption", "none")
+        }
+
         if (encryption != "auto") builder.addQueryParameter("flow", encryption)
     }
 
@@ -642,11 +655,15 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
             if (bean.xhttpExtra.isNotBlank()) {
                 try {
                     val gson = Gson()
+                    // Convert base config to JSON
                     val baseJson = JSONObject(gson.toJson(baseConfig))
+                    // Parse extra config
                     val extraJson = JSONObject(bean.xhttpExtra)
+                    // Merge extra fields into base config (only allow download field)
                     if (extraJson.has("download")) {
                         baseJson.put("download", extraJson.get("download"))
                     }
+                    // Convert merged JSON back to object
                     return gson.fromJson(baseJson.toString(), V2RayTransportOptions_XHTTPOptions::class.java)
                 } catch (e: Exception) {
                     // If parsing fails, return base config
@@ -725,6 +742,9 @@ fun buildSingBoxOutboundStandardV2RayBean(bean: StandardV2RayBean): Outbound {
                 uuid = bean.uuid
                 if (bean.encryption.isNotBlank() && bean.encryption != "auto") {
                     flow = bean.encryption
+                }
+                if (bean.vlessEncryption.isNotBlank() && bean.vlessEncryption != "none") {
+                    encryption = bean.vlessEncryption
                 }
                 when (bean.packetEncoding) {
                     0 -> packet_encoding = ""

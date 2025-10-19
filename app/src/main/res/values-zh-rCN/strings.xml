@@ -553,4 +553,6 @@
     <string name="xhttp_mode">XHTTP 模式</string>
     <string name="xhttp_extra">XHTTP Extra</string>
     <string name="xhttp_settings">XHTTP 设置</string>
+    <string name="vless_encryption">加密方式</string>
+    <string name="vless_encryption_hint">mlkem768x25519plus.native.0rtt.KEY1.KEY2...</string>
 </resources>

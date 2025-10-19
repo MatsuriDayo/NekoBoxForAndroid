@@ -637,4 +637,6 @@
     <string name="xhttp_mode">XHTTP Mode</string>
     <string name="xhttp_extra">XHTTP Extra</string>
     <string name="xhttp_settings">XHTTP Settings</string>
+    <string name="vless_encryption">Encryption</string>
+    <string name="vless_encryption_hint">mlkem768x25519plus.native.0rtt.KEY1.KEY2...</string>
 </resources>
