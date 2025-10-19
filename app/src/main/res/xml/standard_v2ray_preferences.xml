@@ -96,6 +96,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="serverXhttpCategory"
+        app:title="@string/xhttp_settings">
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="auto"
+            app:entries="@array/xhttp_mode_entry"
+            app:entryValues="@array/xhttp_mode_value"
+            app:icon="@drawable/ic_baseline_stream_24"
+            app:key="xhttpMode"
+            app:title="@string/xhttp_mode"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_action_settings"
+            app:key="xhttpExtra"
+            app:title="@string/xhttp_extra"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="serverSecurityCategory"
         app:title="@string/security_settings">
         <EditTextPreference

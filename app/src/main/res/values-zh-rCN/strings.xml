@@ -548,4 +548,9 @@
     <string name="reset_settings">恢复默认设置</string>
     <string name="reset_settings_message">恢复默认设置，但节点、分组等数据将保留。如需完全清除数据，请在系统设置中直接清除应用数据。</string>
     <string name="minimize">最小化</string>
+    <string name="xhttp_host">XHTTP 主机</string>
+    <string name="xhttp_path">XHTTP 路径</string>
+    <string name="xhttp_mode">XHTTP 模式</string>
+    <string name="xhttp_extra">XHTTP Extra</string>
+    <string name="xhttp_settings">XHTTP 设置</string>
 </resources>

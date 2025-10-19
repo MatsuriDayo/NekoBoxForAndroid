@@ -4649,6 +4649,19 @@ public class SingBoxOptions {
 
     }
 
+    public static class V2RayTransportOptions_XHTTPOptions extends V2RayTransportOptions {
+
+        public String mode;
+
+        public String host;
+
+        public String path;
+
+        // Advanced field from extra config
+        public Map<String, Object> download;
+
+    }
+
     // sing-box Options 生成器已经坏了，以下是从 husi 抄的
 
     public static class Outbound_AnyTLSOptions extends Outbound {

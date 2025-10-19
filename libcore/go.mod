@@ -1,8 +1,8 @@
 module libcore
 
-go 1.23.1
+go 1.24
 
-toolchain go1.23.6
+toolchain go1.24.9
 
 require (
 	github.com/dyhkwong/sing-juicity v0.0.3
@@ -47,6 +47,7 @@ require (
 	github.com/metacubex/utls v1.8.0 // indirect
 	github.com/mholt/acmez/v3 v3.1.2 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
+	github.com/quic-go/quic-go v0.55.0 // indirect
 	github.com/sagernet/bbolt v0.0.0-20231014093535-ea5cb2fe9f0a // indirect
 	github.com/sagernet/cors v1.2.1 // indirect
 	github.com/sagernet/fswatch v0.1.1 // indirect

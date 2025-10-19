@@ -632,4 +632,9 @@
     <string name="reset_settings">Restore default settings</string>
     <string name="reset_settings_message">Restore default settings, but data such as nodes and groups will be retained. To completely clear data, clear application data directly in the system settings.</string>
     <string name="minimize">Minimize</string>
+    <string name="xhttp_host">XHTTP Host</string>
+    <string name="xhttp_path">XHTTP Path</string>
+    <string name="xhttp_mode">XHTTP Mode</string>
+    <string name="xhttp_extra">XHTTP Extra</string>
+    <string name="xhttp_settings">XHTTP Settings</string>
 </resources>
