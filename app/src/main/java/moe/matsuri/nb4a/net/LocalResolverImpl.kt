@@ -128,11 +128,11 @@ object LocalResolverImpl : LocalDNSTransport {
                 // 老版本系统，继续用阻塞的 InetAddress
                 try {
                     val u = SagerNet.underlyingNetwork
-                    val answer = if (u != null) {
-                        u.getAllByName(domain)
-                    } else {
-                        InetAddress.getAllByName(domain)
-                    }
+                    val answer = try {
+                        u?.getAllByName(domain)
+                    } catch (e: UnknownHostException) {
+                        null
+                    } ?: InetAddress.getAllByName(domain)
                     if (answer != null) {
                         ctx.success(answer.mapNotNull { it.hostAddress }.joinToString("\n"))
                     } else {
