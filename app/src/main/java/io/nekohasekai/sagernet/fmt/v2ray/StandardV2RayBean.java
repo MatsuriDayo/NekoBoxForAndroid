@@ -153,6 +153,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
             }
             case "grpc": {
                 output.writeString(path);
+                break;
             }
             case "httpupgrade": {
                 output.writeString(host);
@@ -223,6 +224,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
             }
             case "grpc": {
                 path = input.readString();
+                break;
             }
             case "httpupgrade": {
                 host = input.readString();
