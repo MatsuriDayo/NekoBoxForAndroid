@@ -224,6 +224,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
             }
             case "grpc": {
                 path = input.readString();
+                if (version < 4) {
+                    // 解决老版本数据的读取问题
+                    input.readString();
+                    input.readString();
+                }
                 break;
             }
             case "httpupgrade": {
