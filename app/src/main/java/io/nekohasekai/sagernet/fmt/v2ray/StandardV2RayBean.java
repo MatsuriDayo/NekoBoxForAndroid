@@ -232,9 +232,9 @@ public abstract class StandardV2RayBean extends AbstractBean {
                 break;
             }
             case "xhttp": {
-                host = input.readString();
-                path = input.readString();
                 if (version >= 4) {
+                    host = input.readString();
+                    path = input.readString();
                     xhttpMode = input.readString();
                     xhttpExtra = input.readString();
                 }
