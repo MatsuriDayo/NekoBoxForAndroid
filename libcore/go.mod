@@ -12,7 +12,7 @@ require (
 	github.com/sagernet/sing v0.7.12
 	github.com/sagernet/sing-box v1.0.0 // replaced
 	github.com/sagernet/sing-tun v0.7.2
-	github.com/ulikunitz/xz v0.5.11
+	github.com/ulikunitz/xz v0.5.15
 	golang.org/x/mobile v0.0.0-20231108233038-35478a0c49da
 	golang.org/x/sys v0.35.0
 )

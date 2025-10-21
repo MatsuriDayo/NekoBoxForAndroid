@@ -208,7 +208,6 @@
     <string name="action_trojan_go" translatable="false">Trojan Go</string>
     <string name="action_mieru" translatable="false">Mieru</string>
     <string name="action_naive" translatable="false">Naïve</string>
-    <string name="action_ping_tunnel" translatable="false">Ping Tunnel</string>
     <string name="action_hysteria" translatable="false">Hysteria</string>
     <string name="action_ssh" translatable="false">SSH</string>
     <string name="action_wireguard" translatable="false">WireGuard</string>
@@ -521,10 +520,7 @@
     <string name="enable_ech">فعال کردن ECH</string>
     <string name="enable_ech_sum">فعال کردن ECH</string>
     <string name="ech_settings">تنظیمات ECH</string>
-    <string name="pq_signature_schemes_enabled">فعال کردن پشتیبانی از امضای مجوز post-quantum همتا</string>
-    <string name="dynamic_record_sizing_disabled">اندازه تطبیقی ​​رکوردهای TLS را غیرفعال می‌کند</string>
     <string name="ech_config">پیکربندی ECH</string>
-    <string name="dynamic_record_sizing_sum">اگر فعال باشد، همیشه از بزرگترین اندازه رکورد TLS ممکن استفاده می‌شود. در صورت غیرفعال کردن، اندازه رکوردهای TLS ممکن است در تلاش برای بهبود تاخیر تنظیم شود.</string>
     <string name="http_upgrade_host">میزبان HTTPUpgrade</string>
     <string name="http_upgrade_path">مسیر HTTPUpgrade</string>
     <string name="update_current_subscription">به‌روزرسانی اشتراک این گروه</string>

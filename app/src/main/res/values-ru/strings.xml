@@ -460,7 +460,7 @@
 <string name="unsaved_changes_prompt">Есть несохраненные изменения. Сохранить?</string>
 <string name="update_all_subscription">Обновить все подписки</string>
 <string name="update_current_subscription">Обновить подписку текущей группы</string>
-<string name="update_dialog_message">Текущая версия: %1$s\nДоступная версия: %2$s\nХотите загрузить её?
+<string name="update_dialog_message">Текущая версия: %1$s\nДоступная версия: %2$s\nХотите загрузить её?</string>
 <string name="update_dialog_title">Доступна новая версия</string>
 <string name="update_settings">Обновить настройки</string>
 <string name="update_subscription_warning">Прокси-сервер не подключен, вы уверены, что хотите продолжить обновление?</string>
