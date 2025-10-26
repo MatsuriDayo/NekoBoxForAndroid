@@ -495,4 +495,6 @@
     <string name="reset_settings">恢复默认设置</string>
     <string name="reset_settings_message">恢复默认设置，但节点、分组等数据将保留。如需完全清除数据，请在系统设置中直接清除应用数据。</string>
     <string name="minimize">最小化</string>
+    <string name="app_list_permission_denied">无法读取已安装的应用。\n这通常是由于系统限制了应用的读取权限（例如某些中国厂商系统）。\n请在系统设置中授予权限。</string>
+    <string name="open_app_settings">打开系统设置</string>
 </resources>

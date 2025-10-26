@@ -184,7 +184,12 @@ class AppManagerActivity : ThemedActivity() {
             val adapter = binding.list.adapter as AppsAdapter
             withContext(Dispatchers.IO) { adapter.reload() }
             adapter.filter.filter(binding.search.text?.toString() ?: "")
-            binding.list.crossFadeFrom(loading)
+            if (apps.isEmpty()) {
+                binding.list.visibility = View.GONE
+                binding.appPlaceholder.root.crossFadeFrom(loading)
+            } else {
+                binding.list.crossFadeFrom(loading)
+            }
         }
     }
 
@@ -193,6 +198,14 @@ class AppManagerActivity : ThemedActivity() {
 
         binding = LayoutAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.appPlaceholder.openSettings.setOnClickListener {
+            val intent =
+                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = android.net.Uri.fromParts("package", packageName, null)
+                }
+            startActivity(intent)
+        }
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
