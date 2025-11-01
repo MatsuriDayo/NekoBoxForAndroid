@@ -88,6 +88,8 @@ replace github.com/matsuridayo/libneko => ../../libneko
 
 replace github.com/sagernet/sing-box => ../../sing-box
 
+replace github.com/sagernet/sing-vmess => github.com/starifly/sing-vmess v0.2.7-mod.4
+
 // replace github.com/sagernet/sing-quic => github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36
 // replace github.com/sagernet/sing-quic => ../../sing-quic
 
