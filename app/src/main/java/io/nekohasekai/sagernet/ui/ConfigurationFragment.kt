@@ -394,18 +394,22 @@ class ConfigurationFragment @JvmOverloads constructor(
                         }
                     } catch (e: SubscriptionFoundException) {
                         onMainDispatcher {
-                            val subscriptionLink = Uri.parse(e.link).getQueryParameter("url") ?: e.link
-                            
-                            val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
-                            val subscription = SubscriptionBean()
-                            group.subscription = subscription
-                            subscription.link = subscriptionLink
-                            subscription.autoUpdate = false
-                            group.name = ""
-                            startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
-                                putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
-                                putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, subscriptionLink)
-                            })
+                            if (e.link.startsWith("sn://")) {
+                                (requireActivity() as MainActivity).importSubscription(e.link.toUri())
+                            } else {
+                                val subscriptionLink = Uri.parse(e.link).getQueryParameter("url") ?: e.link
+
+                                val group = ProxyGroup(type = GroupType.SUBSCRIPTION)
+                                val subscription = SubscriptionBean()
+                                group.subscription = subscription
+                                subscription.link = subscriptionLink
+                                subscription.autoUpdate = false
+                                group.name = ""
+                                startActivity(Intent(requireContext(), GroupSettingsActivity::class.java).apply {
+                                    putExtra(GroupSettingsActivity.EXTRA_FROM_CLIPBOARD, true)
+                                    putExtra(GroupSettingsActivity.EXTRA_GROUP_SUBSCRIPTION_LINK, subscriptionLink)
+                                })
+                            }
                         }
                     } catch (e: Exception) {
                         Logs.w(e)
