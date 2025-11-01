@@ -204,7 +204,8 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 
                 // 使用英文格式的时间戳作为文件名，修改后缀为 .zip
                 val timestamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-                val fileName = "nekobox_backup_$timestamp.zip"
+                val version = BuildConfig.VERSION_NAME
+                val fileName = "nekobox_backup_${version}_$timestamp.zip"
                 
                 // 确保 baseUrl 是有效的 URL
                 if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
@@ -353,9 +354,9 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                     Logs.d("WebDAV restore - Directory listing: $responseBody")
                     
                     val patterns = listOf(
-                        """<D:href>[^<]*?nekobox_backup_\d{8}_\d{6}\.(json|zip)</D:href>""".toRegex(),
-                        """<d:href>[^<]*?nekobox_backup_\d{8}_\d{6}\.(json|zip)</d:href>""".toRegex(),
-                        """<href>[^<]*?nekobox_backup_\d{8}_\d{6}\.(json|zip)</href>""".toRegex()
+                        """<D:href>[^<]*?nekobox_backup_[^<]*?\d{8}_\d{6}\.(json|zip)</D:href>""".toRegex(),
+                        """<d:href>[^<]*?nekobox_backup_[^<]*?\d{8}_\d{6}\.(json|zip)</d:href>""".toRegex(),
+                        """<href>[^<]*?nekobox_backup_[^<]*?\d{8}_\d{6}\.(json|zip)</href>""".toRegex()
                     )
                     
                     val backupFiles = mutableListOf<String>()
@@ -365,7 +366,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                         matches.forEach { match ->
                             val href = match.value
                             Logs.d("WebDAV restore - Found backup file with pattern ${pattern.pattern}: $href")
-                            val fileName = """nekobox_backup_\d{8}_\d{6}\.(json|zip)""".toRegex()
+                            val fileName = """nekobox_backup_[^<]*?\d{8}_\d{6}\.(json|zip)""".toRegex()
                                 .find(href)?.value
                             if (fileName != null) {
                                 backupFiles.add(fileName)
@@ -375,8 +376,10 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                     }
                     
                     Logs.d("WebDAV restore - Found ${backupFiles.size} backup files: ${backupFiles.joinToString()}")
-                    
-                    backupFiles.maxByOrNull { it } ?: throw Exception("No backup found")
+
+                    backupFiles.maxByOrNull { fileName ->
+                        """(\d{8}_\d{6})""".toRegex().find(fileName)?.value ?: ""
+                    } ?: throw Exception("No backup found")
                 }
 
                 // 下载最新的备份文件
