@@ -524,15 +524,6 @@ fun buildConfig(
         if (!forTest && DataStore.globalMode) {
             // 全局模式下的规则处理
             
-            // DNS查询规则：DNS查询也通过代理
-            // if (enableDnsRouting && !useFakeDns) {
-            if (enableDnsRouting) {
-                route.rules.add(Rule_DefaultOptions().apply {
-                    protocol = listOf("dns")
-                    outbound = TAG_PROXY
-                })
-            }
-
             // 绕过内部网络（如果启用）
             if (DataStore.bypassLan) {
                 route.rules.add(Rule_DefaultOptions().apply {
@@ -543,7 +534,7 @@ fun buildConfig(
                         "10.0.0.0/8",
                         "192.168.0.0/16",
                         "169.254.0.0/16",
-                        "::/128",
+                        "::1/128",
                         "fc00::/7",
                         "fe80::/10"
                     )
@@ -560,6 +551,8 @@ fun buildConfig(
                 inbound = listOf(TAG_MIXED)
                 outbound = TAG_PROXY
             })
+
+            route.final_ = TAG_PROXY
         } else {
             // 应用用户规则
             for (rule in extraRules) {
@@ -917,4 +910,3 @@ fun buildConfig(
     }
 
 }
-
