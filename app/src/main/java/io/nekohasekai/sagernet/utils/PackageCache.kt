@@ -67,15 +67,6 @@ object PackageCache {
     operator fun get(uid: Int) = uidMap[uid]
     operator fun get(packageName: String) = packageMap[packageName]
 
-    suspend fun awaitLoad() {
-        if (::packageMap.isInitialized) {
-            return
-        }
-        loaded.withLock {
-            // just await
-        }
-    }
-
     fun awaitLoadSync() {
         if (::packageMap.isInitialized) {
             return

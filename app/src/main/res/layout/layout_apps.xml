@@ -153,4 +153,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/layout_apps_item" />
 
+    <include
+        android:id="@+id/app_placeholder"
+        layout="@layout/layout_app_placeholder" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

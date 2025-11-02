@@ -639,4 +639,6 @@
     <string name="xhttp_settings">XHTTP Settings</string>
     <string name="vless_encryption">Encryption</string>
     <string name="vless_encryption_hint">mlkem768x25519plus.native.0rtt.KEY1.KEY2...</string>
+    <string name="app_list_permission_denied">Unable to read installed apps.\nThis is usually because the system has restricted app read permissions.\nPlease grant permissions in the system settings.</string>
+    <string name="open_app_settings">Open System Settings</string>
 </resources>

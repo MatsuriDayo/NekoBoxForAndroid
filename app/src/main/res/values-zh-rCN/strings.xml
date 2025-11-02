@@ -555,4 +555,6 @@
     <string name="xhttp_settings">XHTTP 设置</string>
     <string name="vless_encryption">加密方式</string>
     <string name="vless_encryption_hint">mlkem768x25519plus.native.0rtt.KEY1.KEY2...</string>
+    <string name="app_list_permission_denied">无法读取已安装的应用。\n这通常是由于系统限制了应用的读取权限（例如某些中国厂商系统）。\n请在系统设置中授予权限。</string>
+    <string name="open_app_settings">打开系统设置</string>
 </resources>

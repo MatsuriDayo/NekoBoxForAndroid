@@ -2,7 +2,6 @@ package io.nekohasekai.sagernet.ui
 
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -45,6 +44,11 @@ import kotlin.coroutines.coroutineContext
 class AppListActivity : ThemedActivity() {
     companion object {
         private const val SWITCH = "switch"
+
+        private val cachedApps
+            get() = PackageCache.installedPackages.toMutableMap().apply {
+                remove(BuildConfig.APPLICATION_ID)
+            }
     }
 
     private class ProxiedApp(
@@ -96,7 +100,8 @@ class AppListActivity : ThemedActivity() {
         var filteredApps = apps
 
         suspend fun reload() {
-            apps = getCachedApps().mapNotNull { (packageName, packageInfo) ->
+            PackageCache.reload()
+            apps = cachedApps.mapNotNull { (packageName, packageInfo) ->
                 coroutineContext[Job]!!.ensureActive()
                 packageInfo.applicationInfo?.let { ProxiedApp(packageManager, it, packageName) }
             }.sortedWith(compareBy({ !isProxiedApp(it) }, { it.name.toString() }))
@@ -156,7 +161,7 @@ class AppListActivity : ThemedActivity() {
 
     private fun initProxiedUids(str: String = DataStore.routePackages) {
         proxiedUids.clear()
-        val apps = getCachedApps()
+        val apps = cachedApps
         for (line in str.lineSequence()) {
             val app = (apps[line] ?: continue)
             val uid = app.applicationInfo?.uid ?: continue
@@ -174,14 +179,12 @@ class AppListActivity : ThemedActivity() {
             val adapter = binding.list.adapter as AppsAdapter
             withContext(Dispatchers.IO) { adapter.reload() }
             adapter.filter.filter(binding.search.text?.toString() ?: "")
-            binding.list.crossFadeFrom(loading)
-        }
-    }
-
-    fun getCachedApps(): MutableMap<String, PackageInfo> {
-        val packages = PackageCache.installedPackages
-        return packages.toMutableMap().apply {
-            remove(BuildConfig.APPLICATION_ID)
+            if (apps.isEmpty()) {
+                binding.list.visibility = View.GONE
+                binding.appPlaceholder.root.crossFadeFrom(loading)
+            } else {
+                binding.list.crossFadeFrom(loading)
+            }
         }
     }
 
@@ -190,6 +193,14 @@ class AppListActivity : ThemedActivity() {
 
         binding = LayoutAppListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.appPlaceholder.openSettings.setOnClickListener {
+            val intent =
+                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = android.net.Uri.fromParts("package", packageName, null)
+                }
+            startActivity(intent)
+        }
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {

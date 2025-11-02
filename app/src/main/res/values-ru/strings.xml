@@ -75,6 +75,9 @@
 <string name="chain_settings">Настройки цепочки</string>
 <string name="character_counter_content_description">Введено символов: %1$d из %2$d</string>
 <string name="character_counter_overflowed_content_description">Превышено ограничение на количество символов (%1$d из %2$d)</string>
+<string name="check_update_no">Обновления не найдены.</string>
+<string name="check_update_preview">Проверить наличие обновлений предварительной версии</string>
+<string name="check_update_release">Проверить наличие обновлений релизнойной версии</string>
 <string name="circular_reference">Циклическая ссылка</string>
 <string name="circular_reference_sum">Маршрут не может содержать сам себя.</string>
 <string name="clear_logcat">Очистить журнал</string>
@@ -250,6 +253,7 @@
 <string name="menu_traffic">Трафик</string>
 <string name="metered">Подсказка о соединении с лимитным тарифным планом</string>
 <string name="metered_summary">Подсказывать системе, что VPN следует рассматривать как сеть с лимитным тарифным планом</string>
+<string name="minimize">Свернуть</string>
 <string name="missing_plugin">Отсутствующий плагин</string>
 <string name="move">Переместить</string>
 <string name="mtrl_badge_numberless_content_description">Новое уведомление</string>
@@ -319,6 +323,7 @@
 <string name="port_transproxy">Транспрокси-порт</string>
 <string name="prefer">Предпочитать</string>
 <string name="preference_copied">Текст "%1$s" скопирован в буфер обмена</string>
+<string name="preview_version_hint">Это приложение является предварительной версией и может содержать множество проблем. Если вы не хотите тестировать его, скачайте релизную версию с GitHub!</string>
 <string name="profile_config">Конфигурация профиля</string>
 <string name="profile_empty">Пожалуйста, выберите профиль</string>
 <string name="profile_import">Импортировать профиль</string>
@@ -342,6 +347,8 @@
 <string name="remote_dns">Удаленный DNS</string>
 <string name="remove_duplicate">Удалить дубликаты серверов</string>
 <string name="reset_connections">Сбросить соединения</string>
+<string name="reset_settings">Восстановить настройки по умолчанию</string>
+<string name="reset_settings_message">Восстановить настройки по умолчанию, такие данные, как узлы и группы, будут сохранены. Для полной очистки данных, очистите данные приложения непосредственно в системных настройках.</string>
 <string name="resolve_destination">Определить адрес назначения</string>
 <string name="resolve_destination_summary">Если адрес назначения является доменом, то он передается в соответствии с правилом IPv6.</string>
 <string name="route_add">Создать маршрут</string>
@@ -404,7 +411,7 @@
 <string name="sniff_routing">Перехватывать результат для Маршрутизации</string>
 <string name="speed">%s/с</string>
 <string name="speed_detail">Прокси ：%1$s↑ %2$s↓ 
-Прямой ：%3$s↑%4$s↓</string>
+\nПрямой ：%3$s↑%4$s↓</string>
 <string name="speed_interval">Интервал обновления уведомлений о скорости</string>
 <string name="ss_cat">Настройки Shadowsocks</string>
 <string name="ssh_auth_type_none">Без аутентификации</string>
@@ -453,6 +460,8 @@
 <string name="unsaved_changes_prompt">Есть несохраненные изменения. Сохранить?</string>
 <string name="update_all_subscription">Обновить все подписки</string>
 <string name="update_current_subscription">Обновить подписку текущей группы</string>
+<string name="update_dialog_message">Текущая версия: %1$s\nДоступная версия: %2$s\nХотите загрузить её?</string>
+<string name="update_dialog_title">Доступна новая версия</string>
 <string name="update_settings">Обновить настройки</string>
 <string name="update_subscription_warning">Прокси-сервер не подключен, вы уверены, что хотите продолжить обновление?</string>
 <string name="update_when_connected_only">Обновлять только при подключении</string>
