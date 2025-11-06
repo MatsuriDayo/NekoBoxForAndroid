@@ -659,9 +659,19 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
                     val baseJson = JSONObject(gson.toJson(baseConfig))
                     // Parse extra config
                     val extraJson = JSONObject(bean.xhttpExtra)
-                    // Merge extra fields into base config (only allow download field)
-                    if (extraJson.has("download")) {
-                        baseJson.put("download", extraJson.get("download"))
+                    // Merge extra fields into base config
+                    val allowedKeys = arrayOf(
+                        "download",
+                        "xmux",
+                        "x_padding_bytes",
+                        "no_grpc_header",
+                        "sc_max_each_post_bytes",
+                        "sc_min_posts_interval_ms"
+                    )
+                    allowedKeys.forEach { key ->
+                        if (extraJson.has(key)) {
+                            baseJson.put(key, extraJson.get(key))
+                        }
                     }
                     // Convert merged JSON back to object
                     return gson.fromJson(baseJson.toString(), V2RayTransportOptions_XHTTPOptions::class.java)
