@@ -43,12 +43,114 @@ https://matsuridayo.github.io
 * AnyTLS
 * ShadowTLS
 * TUIC
-* JUICITY
+* Juicity
 * Hysteria 1/2
 * WireGuard
 * Trojan-Go (trojan-go-plugin)
 * NaïveProxy (naive-plugin)
 * Mieru (mieru-plugin)
+
+<details>
+<summary>XHTTP Extra TLS配置示例</summary>
+
+<pre><code class="language-json">
+{
+	"x_padding_bytes": "0-0",
+	"sc_max_each_post_bytes": "0-0",
+	"sc_min_posts_interval_ms": "0-0",
+	"sc_stream_up_server_secs": "0-0",
+	"xmux": {
+		"max_concurrency": "0-1",
+		"max_connections": "0-1",
+		"c_max_reuse_times": "0-1",
+		"h_max_request_times": "0-1",
+		"h_max_reusable_secs": "0-1",
+		"h_keep_alive_period": 60
+	},
+	"download": {
+		"mode": "auto",
+		"host": "b.yourdomain.com",
+		"path": "/xhttp",
+		"x_padding_bytes": "0-0",
+		"sc_max_each_post_bytes": "0-0",
+		"sc_min_posts_interval_ms": "0-0",
+		"sc_stream_up_server_secs": "0-0",
+		"xmux": {
+			"max_concurrency": "0-1",
+			"max_connections": "0-1",
+			"c_max_reuse_times": "0-1",
+			"h_max_request_times": "0-1",
+			"h_max_reusable_secs": "0-1",
+			"h_keep_alive_period": 60
+		},
+		"server": "$(ip_or_domain_of_your_cdn)",
+		"server_port": 443,
+		"tls": {
+			"enabled": true,
+			"server_name": "b.yourdomain.com",
+			"alpn": "h2",
+			"utls": {
+				"enabled": true,
+				"fingerprint": "chrome"
+			}
+		}
+	}
+}
+</code></pre>
+</details>
+
+<details>
+<summary>XHTTP Extra Reality配置示例</summary>
+
+<pre><code class="language-json">
+{
+	"x_padding_bytes": "0-0",
+	"sc_max_each_post_bytes": "0-0",
+	"sc_min_posts_interval_ms": "0-0",
+	"sc_stream_up_server_secs": "0-0",
+	"xmux": {
+		"max_concurrency": "0-1",
+		"max_connections": "0-1",
+		"c_max_reuse_times": "0-1",
+		"h_max_request_times": "0-1",
+		"h_max_reusable_secs": "0-1",
+		"h_keep_alive_period": 60
+	},
+	"download": {
+		"mode": "",
+		"host": "example.com",
+		"path": "/xhttp",
+		"x_padding_bytes": "0-0",
+		"sc_max_each_post_bytes": "0-0",
+		"sc_min_posts_interval_ms": "0-0",
+		"sc_stream_up_server_secs": "0-0",
+		"xmux": {
+			"max_concurrency": "0-1",
+			"max_connections": "0-1",
+			"c_max_reuse_times": "0-1",
+			"h_max_request_times": "0-1",
+			"h_max_reusable_secs": "0-1",
+			"h_keep_alive_period": 60
+		},
+		"server": "$(ip_or_domain_of_your_cdn)",
+		"server_port": 443,
+		"tls": {
+			"enabled": true,
+			"server_name": "example.com",
+			"reality": {
+				"enabled": true,
+				"public_key": "$(your_publicKey)",
+				"short_id": "$(your_shortId)"
+			},
+			"utls": {
+				"enabled": true,
+				"fingerprint": "chrome"
+			}
+		}
+	}
+}
+</code></pre>
+</details>
 
 请到[这里](https://matsuridayo.github.io/nb4a-plugin/)下载插件以获得完整的代理支持.
 
