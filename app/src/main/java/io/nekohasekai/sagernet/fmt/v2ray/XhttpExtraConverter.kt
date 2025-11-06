@@ -84,20 +84,23 @@ object XhttpExtraConverter {
                     singBoxDown.put("tls", tls)
                 }
 
-                xrayDown.optJSONObject("xhttpSettings")?.optJSONObject("extra")?.let { extraXmux ->
-                    val downXmux = JSONObject()
-                    convertField(extraXmux, downXmux, "maxConcurrency", "max_concurrency")
-                    convertField(extraXmux, downXmux, "maxConnections", "max_connections")
-                    convertField(extraXmux, downXmux, "cMaxReuseTimes", "c_max_reuse_times")
-                    convertField(extraXmux, downXmux, "hMaxRequestTimes", "h_max_request_times")
-                    convertField(extraXmux, downXmux, "hMaxReusableSecs", "h_max_reusable_secs")
-                    convertField(extraXmux, downXmux, "hKeepAlivePeriod", "h_keep_alive_period")
-                    if (downXmux.length() > 0) singBoxDown.put("xmux", downXmux)
+                xrayDown.optJSONObject("xhttpSettings")?.optJSONObject("extra")?.let { extra ->
+                    if (extra.has("xmux")) {
+                        val xrayXmux = extra.getJSONObject("xmux")
+                        val downXmux = JSONObject()
+                        convertField(xrayXmux, downXmux, "maxConcurrency", "max_concurrency")
+                        convertField(xrayXmux, downXmux, "maxConnections", "max_connections")
+                        convertField(xrayXmux, downXmux, "cMaxReuseTimes", "c_max_reuse_times")
+                        convertField(xrayXmux, downXmux, "hMaxRequestTimes", "h_max_request_times")
+                        convertField(xrayXmux, downXmux, "hMaxReusableSecs", "h_max_reusable_secs")
+                        convertField(xrayXmux, downXmux, "hKeepAlivePeriod", "h_keep_alive_period")
+                        if (downXmux.length() > 0) singBoxDown.put("xmux", downXmux)
+                    }
 
-                    convertField(extraXmux, singBoxDown, "xPaddingBytes", "x_padding_bytes")
-                    convertField(extraXmux, singBoxDown, "scMaxEachPostBytes", "sc_max_each_post_bytes")
-                    convertField(extraXmux, singBoxDown, "scMinPostsIntervalMs", "sc_min_posts_interval_ms")
-                    convertField(extraXmux, singBoxDown, "noGRPCHeader", "no_grpc_header")
+                    convertField(extra, singBoxDown, "xPaddingBytes", "x_padding_bytes")
+                    convertField(extra, singBoxDown, "scMaxEachPostBytes", "sc_max_each_post_bytes")
+                    convertField(extra, singBoxDown, "scMinPostsIntervalMs", "sc_min_posts_interval_ms")
+                    convertField(extra, singBoxDown, "noGRPCHeader", "no_grpc_header")
                 }
 
                 if (singBoxDown.length() > 0) singBox.put("download", singBoxDown)
