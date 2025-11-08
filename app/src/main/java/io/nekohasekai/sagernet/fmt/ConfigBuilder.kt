@@ -401,12 +401,13 @@ fun buildConfig(
                             muxApplied = true
                             currentOutbound._hack_config_map["multiplex"] = muxObj.asMap()
                         }
+                    }
 
-                        if (needGlobal && DataStore.enableTLSFragment) {
-                            val tlsOptions = currentOutbound._hack_config_map["tls"] as? Map<*, *>
-                            if (tlsOptions?.get("enabled") == true) {
-                                currentOutbound._hack_config_map["detour"] = TAG_FRAGMENT
-                            }
+                    if (needGlobal && DataStore.enableTLSFragment) {
+                        val outboundMap = currentOutbound.asMap()
+                        val tlsOptions = outboundMap["tls"] as? Map<*, *>
+                        if (tlsOptions?.get("enabled") == true) {
+                            currentOutbound._hack_config_map["detour"] = TAG_FRAGMENT
                         }
                     }
                 }
@@ -764,7 +765,7 @@ fun buildConfig(
                 _hack_config_map["fragment"] = Fragment().apply {
                     length = DataStore.fragmentLength
                     interval = DataStore.fragmentInterval
-                }
+                }.asMap()
             }
             outbounds.add(fragmentOutbound)
         }
