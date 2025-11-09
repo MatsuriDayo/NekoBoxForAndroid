@@ -40,7 +40,7 @@ https://matsuridayo.github.io
 * VMess
 * Trojan
 * VLESS
-* AnyTLS
+* AnyTLS/AnyReality
 * ShadowTLS
 * TUIC
 * Juicity
@@ -53,6 +53,7 @@ https://matsuridayo.github.io
 <details>
 <summary>XHTTP Extra TLS配置示例</summary>
 
+除了`download`参数，其它参数包括`xmux`完全可以不用配置。
 <pre><code class="language-json">
 {
 	"x_padding_bytes": "0-0",
@@ -102,6 +103,7 @@ https://matsuridayo.github.io
 <details>
 <summary>XHTTP Extra Reality配置示例</summary>
 
+除了`download`参数，其它参数包括`xmux`完全可以不用配置。
 <pre><code class="language-json">
 {
 	"x_padding_bytes": "0-0",
@@ -184,11 +186,7 @@ contact us to add it.
 
 USDT TRC20
 
-`TRhnA7SXE5Sap5gSG3ijxRmdYFiD4KRhPs`
-
-XMR
-
-`49bwESYQjoRL3xmvTcjZKHEKaiGywjLYVQJMUv79bXonGiyDCs8AzE3KiGW2ytTybBCpWJUvov8SjZZEGg66a4e59GXa6k5`
+`TFVcx36pVLuCWLbWiMdT5KP2PsfQ2SJVEZ`
 
 </details>
 
