@@ -23,7 +23,18 @@ fun buildSingBoxOutboundAnyTLSBean(bean: AnyTLSBean): SingBoxOptions.Outbound_An
             bean.certificates.blankAsNull()?.let {
                 certificate = it
             }
-            bean.utlsFingerprint.blankAsNull()?.let {
+            var fingerprint = bean.utlsFingerprint.blankAsNull()
+            if (!bean.realityPubKey.isNullOrBlank()) {
+                reality = SingBoxOptions.OutboundRealityOptions().apply {
+                    enabled = true
+                    public_key = bean.realityPubKey
+                    short_id = bean.realityShortId
+                }
+                if (fingerprint.isNullOrBlank()) {
+                    fingerprint = "chrome"
+                }
+            }
+            fingerprint?.let {
                 utls = SingBoxOptions.OutboundUTLSOptions().apply {
                     enabled = true
                     fingerprint = it
@@ -57,6 +68,12 @@ fun AnyTLSBean.toUri(): String {
     if (!utlsFingerprint.isNullOrBlank()) {
         builder.addQueryParameter("fp", utlsFingerprint)
     }
+    if (!realityPubKey.isNullOrBlank()) {
+        builder.addQueryParameter("pbk", realityPubKey)
+    }
+    if (!realityShortId.isNullOrBlank()) {
+        builder.addQueryParameter("sid", realityShortId)
+    }
     return builder.toLink("anytls")
 }
 
@@ -76,6 +93,12 @@ fun parseAnytls(url: String): AnyTLSBean {
         }
         link.queryParameter("fp")?.let {
             utlsFingerprint = it
+        }
+        link.queryParameter("pbk")?.let {
+            realityPubKey = it
+        }
+        link.queryParameter("sid")?.let {
+            realityShortId = it
         }
     }
 }

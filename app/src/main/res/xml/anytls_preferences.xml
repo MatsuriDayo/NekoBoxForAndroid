@@ -29,10 +29,6 @@
             app:key="sni"
             app:title="@string/sni"
             app:useSimpleSummaryProvider="true" />
-        <SwitchPreference
-            app:icon="@drawable/ic_notification_enhanced_encryption"
-            app:key="allowInsecure"
-            app:title="@string/allow_insecure" />
         <EditTextPreference
             app:icon="@drawable/ic_baseline_legend_toggle_24"
             app:key="alpn"
@@ -43,6 +39,13 @@
             app:key="certificates"
             app:title="@string/certificates"
             app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/ic_notification_enhanced_encryption"
+            app:key="allowInsecure"
+            app:title="@string/allow_insecure" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/tls_camouflage_settings">
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue=""
             app:entries="@array/utls_fingerprint_entry"
@@ -50,6 +53,16 @@
             app:icon="@drawable/ic_baseline_fingerprint_24"
             app:key="utlsFingerprint"
             app:title="@string/utls_fingerprint"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_vpn_key_24"
+            app:key="realityPubKey"
+            app:title="Reality Public Key"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="realityShortId"
+            app:title="Reality ShortId"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

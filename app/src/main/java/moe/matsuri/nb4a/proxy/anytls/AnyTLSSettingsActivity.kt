@@ -25,6 +25,8 @@ class AnyTLSSettingsActivity : ProfileSettingsActivity<AnyTLSBean>() {
     private val certificates = pbm.add(PreferenceBinding(Type.Text, "certificates"))
     private val allowInsecure = pbm.add(PreferenceBinding(Type.Bool, "allowInsecure"))
     private val utlsFingerprint = pbm.add(PreferenceBinding(Type.Text, "utlsFingerprint"))
+    private val realityPubKey = pbm.add(PreferenceBinding(Type.Text, "realityPubKey"))
+    private val realityShortId = pbm.add(PreferenceBinding(Type.Text, "realityShortId"))
 
     override fun AnyTLSBean.init() {
         pbm.writeToCacheAll(this)

@@ -500,6 +500,10 @@ object RawUpdater : GroupUpdater() {
                                         val alpn = (opt.value as? (List<String>))
                                         bean.alpn = alpn?.joinToString("\n")
                                     }
+                                    "reality-pub-key", "public-key" -> bean.realityPubKey =
+                                        opt.value.toString()
+                                    "reality-short-id", "short-id" -> bean.realityShortId =
+                                        opt.value.toString()
                                 }
                             }
                             proxies.add(bean)
