@@ -49,16 +49,20 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <TextView
-                        android:id="@+id/profile_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textStyle="bold"
-                        tools:text="@string/profile_name" />
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:breakStrategy="simple"
+                    android:hyphenationFrequency="none"
+                    android:lineBreakStyle="loose"
+                    android:lineBreakWordStyle="phrase"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_name" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
