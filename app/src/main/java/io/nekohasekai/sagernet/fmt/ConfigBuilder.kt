@@ -224,7 +224,7 @@ fun buildConfig(
                 mtu = DataStore.mtu
                 domain_strategy = genDomainStrategy(DataStore.resolveDestination)
                 auto_route = true
-                strict_route = true
+                strict_route = DataStore.strictRoute
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
                 when (ipv6Mode) {

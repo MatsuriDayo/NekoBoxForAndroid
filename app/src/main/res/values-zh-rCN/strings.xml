@@ -288,6 +288,7 @@
     <string name="tile_title">开关</string>
     <string name="append_http_proxy">追加 HTTP 代理至 VPN</string>
     <string name="append_http_proxy_sum">浏览器 / 一些支持的应用 将直接使用 HTTP 代理, 而不经过虚拟网卡设备 (Android 10+)</string>
+    <string name="strict_route">严格路由</string>
     <string name="connection_test_icmp_ping_unavailable">ICMPing 不可用</string>
     <string name="protocol_settings">协议设置</string>
     <string name="trojan_provider">Trojan 提供程序</string>
