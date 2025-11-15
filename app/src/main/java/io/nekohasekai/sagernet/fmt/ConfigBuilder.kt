@@ -69,12 +69,13 @@ fun buildConfig(
     if (proxy.type == TYPE_CONFIG) {
         val bean = proxy.requireBean() as ConfigBean
         if (bean.type == 0) {
+            val tagProxy = proxy.displayName()
             return ConfigBuildResult(
                 bean.config,
                 listOf(),
                 proxy.id, //
-                mapOf(TAG_PROXY to listOf(proxy)), //
-                mapOf(proxy.id to TAG_PROXY), //
+                mapOf(tagProxy to listOf(proxy)), //
+                mapOf(proxy.id to tagProxy), //
                 -1L
             )
         }
@@ -83,7 +84,7 @@ fun buildConfig(
     val trafficMap = HashMap<String, List<ProxyEntity>>()
     val tagMap = HashMap<Long, String>()
     val globalOutbounds = HashMap<Long, String>()
-    val selectorNames = ArrayList<String>()
+    val readableNames = mutableSetOf(TAG_DIRECT, TAG_BYPASS, TAG_BLOCK, TAG_FRAGMENT, TAG_MIXED, TAG_PROXY)
     val group = SagerDatabase.groupDao.getById(proxy.groupId)
 
     fun ProxyEntity.resolveChainInternal(): MutableList<ProxyEntity> {
@@ -101,14 +102,13 @@ fun buildConfig(
         return mutableListOf(this)
     }
 
-    fun selectorName(name_: String): String {
+    fun readableTag(name_: String): String {
         var name = name_
         var count = 0
-        while (selectorNames.contains(name)) {
+        while (!readableNames.add(name)) {
             count++
             name = "$name_-$count"
         }
-        selectorNames.add(name)
         return name
     }
 
@@ -311,14 +311,8 @@ fun buildConfig(
                     bypassDNSBeans += proxyEntity.requireBean()
                 }
 
-                // last profile set as "proxy"
-                if (chainId == 0L && index == 0) {
-                    tagOut = TAG_PROXY
-                }
-
-                // selector human readable name
-                if (buildSelector && index == 0) {
-                    tagOut = selectorName(bean.displayName())
+                if (index == 0) {
+                    tagOut = readableTag(bean.displayName())
                 }
 
 
@@ -514,12 +508,15 @@ fun buildConfig(
                 outbounds = tagMap.values.toList()
             })
         } else {
-            buildChain(0, proxy)
+            val mainTag = buildChain(0, proxy)
+            tagMap[proxy.id] = mainTag
         }
         // build outbounds from route item
         extraProxies.forEach { (key, p) ->
             tagMap[key] = buildChain(key, p)
         }
+
+        val mainProxyTag = (if (buildSelector) TAG_PROXY else tagMap[proxy.id]) ?: TAG_PROXY
 
         // 在应用用户规则之前检查全局模式
         if (!forTest && DataStore.globalMode) {
@@ -545,15 +542,15 @@ fun buildConfig(
 
             route.rules.add(Rule_DefaultOptions().apply {
                 inbound = listOf("tun-in")
-                outbound = TAG_PROXY
+                outbound = mainProxyTag
             })
 
             route.rules.add(Rule_DefaultOptions().apply {
                 inbound = listOf(TAG_MIXED)
-                outbound = TAG_PROXY
+                outbound = mainProxyTag
             })
 
-            route.final_ = TAG_PROXY
+            route.final_ = mainProxyTag
         } else {
             // 应用用户规则
             for (rule in extraRules) {
@@ -719,10 +716,10 @@ fun buildConfig(
                     }
 
                     outbound = when (val outId = rule.outbound) {
-                        0L -> TAG_PROXY
+                        0L -> mainProxyTag
                         -1L -> TAG_BYPASS
                         -2L -> TAG_BLOCK
-                        else -> if (outId == proxy.id) TAG_PROXY else tagMap[outId] ?: ""
+                        else -> if (outId == proxy.id) mainProxyTag else tagMap[outId] ?: ""
                     }
 
                     _hack_custom_config = rule.config
