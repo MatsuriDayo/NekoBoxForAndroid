@@ -77,7 +77,7 @@
 <string name="character_counter_overflowed_content_description">Превышено ограничение на количество символов (%1$d из %2$d)</string>
 <string name="check_update_no">Обновления не найдены.</string>
 <string name="check_update_preview">Проверить наличие обновлений предварительной версии</string>
-<string name="check_update_release">Проверить наличие обновлений релизнойной версии</string>
+<string name="check_update_release">Проверить наличие обновлений релизной версии</string>
 <string name="circular_reference">Циклическая ссылка</string>
 <string name="circular_reference_sum">Маршрут не может содержать сам себя.</string>
 <string name="clear_logcat">Очистить журнал</string>
