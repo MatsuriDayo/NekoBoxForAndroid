@@ -23,6 +23,8 @@ import io.nekohasekai.sagernet.fmt.juicity.JuicityBean
 import io.nekohasekai.sagernet.fmt.juicity.buildSingBoxOutboundJuicityBean
 import io.nekohasekai.sagernet.fmt.v2ray.StandardV2RayBean
 import io.nekohasekai.sagernet.fmt.v2ray.buildSingBoxOutboundStandardV2RayBean
+import io.nekohasekai.sagernet.fmt.shadowsocksr.ShadowsocksRBean
+import io.nekohasekai.sagernet.fmt.shadowsocksr.buildSingBoxOutboundShadowsocksRBean
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.fmt.wireguard.buildSingBoxOutboundWireguardBean
 import io.nekohasekai.sagernet.ktx.isIpAddress
@@ -375,6 +377,9 @@ fun buildConfig(
 
                         is ShadowsocksBean ->
                             buildSingBoxOutboundShadowsocksBean(bean)
+
+                        is ShadowsocksRBean ->
+                            buildSingBoxOutboundShadowsocksRBean(bean)
 
                         is WireGuardBean ->
                             buildSingBoxOutboundWireguardBean(bean)

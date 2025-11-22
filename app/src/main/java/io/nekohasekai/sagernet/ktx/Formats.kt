@@ -9,6 +9,7 @@ import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria2
 import io.nekohasekai.sagernet.fmt.naive.parseNaive
 import io.nekohasekai.sagernet.fmt.parseUniversal
 import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
+import io.nekohasekai.sagernet.fmt.shadowsocksr.parseShadowsocksR
 import io.nekohasekai.sagernet.fmt.socks.parseSOCKS
 import io.nekohasekai.sagernet.fmt.trojan.parseTrojan
 import io.nekohasekai.sagernet.fmt.tuic.parseTuic
@@ -180,6 +181,13 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             Logs.d("Try parse shadowsocks link: $this")
             runCatching {
                 entities.add(parseShadowsocks(this))
+            }.onFailure {
+                Logs.w(it)
+            }
+        } else if (startsWith("ssr://")) {
+            Logs.d("Try parse shadowsocksr link: $this")
+            runCatching {
+                entities.add(parseShadowsocksR(this))
             }.onFailure {
                 Logs.w(it)
             }

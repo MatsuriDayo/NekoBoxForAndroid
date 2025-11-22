@@ -90,6 +90,7 @@ import io.nekohasekai.sagernet.ui.profile.MieruSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.NaiveSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.SSHSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.ShadowsocksSettingsActivity
+import io.nekohasekai.sagernet.ui.profile.ShadowsocksRSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.SocksSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.TrojanGoSettingsActivity
 import io.nekohasekai.sagernet.ui.profile.TrojanSettingsActivity
@@ -434,6 +435,10 @@ class ConfigurationFragment @JvmOverloads constructor(
 
             R.id.action_new_ss -> {
                 startActivity(Intent(requireActivity(), ShadowsocksSettingsActivity::class.java))
+            }
+
+            R.id.action_new_ssr -> {
+                startActivity(Intent(requireActivity(), ShadowsocksRSettingsActivity::class.java))
             }
 
             R.id.action_new_vmess -> {

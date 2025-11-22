@@ -9,6 +9,8 @@ import io.nekohasekai.sagernet.fmt.hysteria.HysteriaBean
 import io.nekohasekai.sagernet.fmt.hysteria.parseHysteria1Json
 import io.nekohasekai.sagernet.fmt.shadowsocks.ShadowsocksBean
 import io.nekohasekai.sagernet.fmt.shadowsocks.parseShadowsocks
+import io.nekohasekai.sagernet.fmt.shadowsocksr.ShadowsocksRBean
+import io.nekohasekai.sagernet.fmt.shadowsocksr.parseShadowsocksR
 import io.nekohasekai.sagernet.fmt.socks.SOCKSBean
 import io.nekohasekai.sagernet.fmt.trojan.TrojanBean
 import io.nekohasekai.sagernet.fmt.trojan_go.parseTrojanGo
@@ -299,6 +301,25 @@ object RawUpdater : GroupUpdater() {
                                 method = clashCipher(proxy["cipher"] as String)
                                 plugin = ssPlugin.joinToString(";")
                                 name = proxy["name"]?.toString()
+                            })
+                        }
+
+                        "ssr" -> {
+                            proxies.add(ShadowsocksRBean().apply {
+                                for (opt in proxy) {
+                                    if (opt.value == null) continue
+                                    when (opt.key) {
+                                        "name" -> name = opt.value.toString()
+                                        "server" -> serverAddress = opt.value as String
+                                        "port" -> serverPort = opt.value.toString().toInt()
+                                        "cipher" -> method = clashCipher(opt.value as String)
+                                        "password" -> password = opt.value.toString()
+                                        "obfs" -> obfs = opt.value as String
+                                        "protocol" -> protocol = opt.value as String
+                                        "obfs-param" -> obfsParam = opt.value.toString()
+                                        "protocol-param" -> protocolParam = opt.value.toString()
+                                    }
+                                }
                             })
                         }
 
@@ -805,6 +826,10 @@ object RawUpdater : GroupUpdater() {
             when {
                 json.has("server") && (json.has("up") || json.has("up_mbps")) -> {
                     return listOf(json.parseHysteria1Json())
+                }
+
+                json.has("method") && json.has("obfs") && json.has("protocol") -> {
+                    return listOf(json.parseShadowsocksR())
                 }
 
                 json.has("method") -> {

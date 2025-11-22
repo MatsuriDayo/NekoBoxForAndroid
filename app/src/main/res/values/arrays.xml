@@ -186,10 +186,10 @@
     </string-array>
 
     <string-array name="ss_enc_method_value">
+        <item>none</item>
         <item>2022-blake3-aes-128-gcm</item>
         <item>2022-blake3-aes-256-gcm</item>
         <item>2022-blake3-chacha20-poly1305</item>
-        <item>none</item>
         <item>aes-128-gcm</item>
         <item>aes-192-gcm</item>
         <item>aes-256-gcm</item>
@@ -204,6 +204,64 @@
         <item>rc4-md5</item>
         <item>chacha20-ietf</item>
         <item>xchacha20</item>
+    </string-array>
+
+    <string-array name="ssr_enc_method_value">
+        <item>none</item>
+        <item>aes-128-ctr</item>
+        <item>aes-192-ctr</item>
+        <item>aes-256-ctr</item>
+        <item>aes-128-cfb</item>
+        <item>aes-192-cfb</item>
+        <item>aes-256-cfb</item>
+        <item>aes-128-cfb8</item>
+        <item>aes-192-cfb8</item>
+        <item>aes-256-cfb8</item>
+        <item>aes-128-ofb</item>
+        <item>aes-192-ofb</item>
+        <item>aes-256-ofb</item>
+        <item>camellia-128-cfb</item>
+        <item>camellia-192-cfb</item>
+        <item>camellia-256-cfb</item>
+        <item>camellia-128-cfb8</item>
+        <item>camellia-192-cfb8</item>
+        <item>camellia-256-cfb8</item>
+        <item>rc4-md5</item>
+        <item>rc4-md5-6</item>
+        <item>rc4</item>
+        <item>bf-cfb</item>
+        <item>cast5-cfb</item>
+        <item>des-cfb</item>
+        <item>idea-cfb</item>
+        <item>rc2-cfb</item>
+        <item>seed-cfb</item>
+        <item>chacha20-ietf</item>
+        <item>xchacha20</item>
+        <item>chacha20</item>
+        <item>xsalsa20</item>
+        <item>salsa20</item>
+        <item>table</item>
+        <item>rabbit</item>
+        <item>hc128</item>
+        <item>zuc128</item>
+    </string-array>
+
+    <string-array name="ssr_protocol_value">
+        <item>origin</item>
+        <item>auth_sha1_v4</item>
+        <item>auth_aes128_sha1</item>
+        <item>auth_aes128_md5</item>
+        <item>auth_chain_a</item>
+        <item>auth_chain_b</item>
+    </string-array>
+
+    <string-array name="ssr_obfs_value">
+        <item>plain</item>
+        <item>http_simple</item>
+        <item>http_post</item>
+        <item>tls1.2_ticket_auth</item>
+        <item>tls1.2_ticket_fastauth</item>
+        <item>random_head</item>
     </string-array>
 
     <string-array name="service_modes">

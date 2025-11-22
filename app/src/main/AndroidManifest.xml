@@ -158,6 +158,9 @@
             android:name="io.nekohasekai.sagernet.ui.profile.ShadowsocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
+            android:name="io.nekohasekai.sagernet.ui.profile.ShadowsocksRSettingsActivity"
+            android:configChanges="uiMode" />
+        <activity
             android:name="io.nekohasekai.sagernet.ui.profile.VMessSettingsActivity"
             android:configChanges="uiMode" />
         <activity

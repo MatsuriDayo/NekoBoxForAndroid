@@ -1,0 +1,60 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:icon="@drawable/ic_social_emoji_symbols"
+        app:key="profileName"
+        app:title="@string/profile_name"
+        app:useSimpleSummaryProvider="true" />
+
+    <PreferenceCategory app:title="@string/proxy_cat">
+        <EditTextPreference
+            app:icon="@drawable/ic_hardware_router"
+            app:key="serverAddress"
+            app:title="@string/server_address"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_maps_directions_boat"
+            app:key="serverPort"
+            app:title="@string/server_port"
+            app:useSimpleSummaryProvider="true" />
+
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:entries="@array/ssr_enc_method_value"
+            app:entryValues="@array/ssr_enc_method_value"
+            app:icon="@drawable/ic_notification_enhanced_encryption"
+            app:key="serverMethod"
+            app:title="@string/enc_method"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_settings_password"
+            app:key="serverPassword"
+            app:title="@string/password" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:entries="@array/ssr_protocol_value"
+            app:entryValues="@array/ssr_protocol_value"
+            app:icon="@drawable/ic_baseline_compare_arrows_24"
+            app:key="serverProtocol"
+            app:title="@string/protocol"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_format_align_left_24"
+            app:key="serverProtocolParam"
+            app:title="@string/protocol_param"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:entries="@array/ssr_obfs_value"
+            app:entryValues="@array/ssr_obfs_value"
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="serverObfs"
+            app:title="@string/obfs"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_format_align_left_24"
+            app:key="serverObfsParam"
+            app:title="@string/obfs_param"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

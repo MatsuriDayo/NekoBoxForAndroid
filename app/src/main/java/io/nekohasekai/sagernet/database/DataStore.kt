@@ -200,6 +200,8 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     var serverProtocol by profileCacheStore.string(Key.SERVER_PROTOCOL)
     var serverObfs by profileCacheStore.string(Key.SERVER_OBFS)
+    var serverProtocolParam by profileCacheStore.string(Key.SERVER_PROTOCOL_PARAM)
+    var serverObfsParam by profileCacheStore.string(Key.SERVER_OBFS_PARAM)
 
     var serverNetwork by profileCacheStore.string(Key.SERVER_NETWORK)
     var serverHost by profileCacheStore.string(Key.SERVER_HOST)

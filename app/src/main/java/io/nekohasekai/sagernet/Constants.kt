@@ -94,6 +94,9 @@ object Key {
     const val SERVER_PROTOCOL = "serverProtocol"
     const val SERVER_OBFS = "serverObfs"
 
+    const val SERVER_PROTOCOL_PARAM = "serverProtocolParam"
+    const val SERVER_OBFS_PARAM = "serverObfsParam"
+
     const val SERVER_NETWORK = "serverNetwork"
     const val SERVER_HOST = "serverHost"
     const val SERVER_PATH = "serverPath"
