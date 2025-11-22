@@ -8,9 +8,9 @@ sing-box / universal proxy toolchain for Android.
 
 一款使用 sing-box 的 Android 通用代理软件.
 
-> 免责声明：本项目仅供个人学习和交流，请不要将其用于非法目的，请不要在生产环境中使用。请于下载后24小时内删除所有相关内容，勿用于长期存储或传播。
+> 免责声明：本项目仅供个人学习和代码测试，请不要将其用于非法目的，请不要在生产环境中使用。请于下载后24小时内删除所有相关内容，勿用于长期存储或传播。
 > 
-> Disclaimer: This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment. Please delete all related content within 24 hours after downloading and do not use it for long-term storage or dissemination.
+> Disclaimer: This project is only for personal learning and code testing, please do not use it for illegal purposes, please do not use it in a production environment. Please delete all related content within 24 hours after downloading and do not use it for long-term storage or dissemination.
 
 ## 下载 / Downloads
 
