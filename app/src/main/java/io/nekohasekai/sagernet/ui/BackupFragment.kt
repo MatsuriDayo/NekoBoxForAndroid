@@ -47,6 +47,7 @@ import java.util.zip.ZipInputStream
 import java.util.concurrent.TimeUnit
 import java.util.zip.Deflater
 import java.io.BufferedOutputStream
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
@@ -197,25 +198,35 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 isWebDAVBackup = false
                 
                 val client = OkHttpClient()
-                
+
                 // 规范化 URL
                 val baseUrl = DataStore.webdavServer!!.trimEnd('/')
                 val path = DataStore.webdavPath?.trim('/')?.takeIf { it.isNotEmpty() } ?: "Nekobox"
-                
+
                 // 使用英文格式的时间戳作为文件名，修改后缀为 .zip
                 val timestamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
                 val version = BuildConfig.VERSION_NAME
                 val fileName = "nekobox_backup_${version}_$timestamp.zip"
-                
+
                 // 确保 baseUrl 是有效的 URL
                 if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
                     throw Exception("Invalid server URL: must start with http:// or https://")
                 }
-                
-                // 构建完整的 URL 路径
-                val dirUrl = "$baseUrl/${path.trim('/')}"
-                val fileUrl = "$dirUrl/$fileName"
-                
+
+                // 使用 HttpUrl 构建路径，避免 # 等特殊字符被当作 fragment
+                val baseHttpUrl = baseUrl.toHttpUrlOrNull()
+                    ?: throw Exception("Invalid server URL: $baseUrl")
+
+                val dirUrl = baseHttpUrl.newBuilder().apply {
+                    path.split('/').filter { it.isNotEmpty() }.forEach { segment ->
+                        addPathSegment(segment)
+                    }
+                }.build()
+
+                val fileUrl = dirUrl.newBuilder()
+                    .addPathSegment(fileName)
+                    .build()
+
                 Logs.d("WebDAV backup - Directory URL: $dirUrl")
                 Logs.d("WebDAV backup - File URL: $fileUrl")
 
@@ -327,8 +338,20 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 val client = OkHttpClient()
                 val baseUrl = DataStore.webdavServer!!.trimEnd('/')
                 val path = DataStore.webdavPath?.trim('/')?.takeIf { it.isNotEmpty() } ?: "Nekobox"
-                val dirUrl = "$baseUrl/${path.trim('/')}"
-                
+
+                if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
+                    throw Exception("Invalid server URL: must start with http:// or https://")
+                }
+
+                val baseHttpUrl = baseUrl.toHttpUrlOrNull()
+                    ?: throw Exception("Invalid server URL: $baseUrl")
+
+                val dirUrl = baseHttpUrl.newBuilder().apply {
+                    path.split('/').filter { it.isNotEmpty() }.forEach { segment ->
+                        addPathSegment(segment)
+                    }
+                }.build()
+
                 Logs.d("WebDAV restore - Directory URL: $dirUrl")
 
                 // 先列出目录内容找到最新的备份文件
@@ -383,7 +406,9 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 }
 
                 // 下载最新的备份文件
-                val fileUrl = "$dirUrl/$latestBackup"
+                val fileUrl = dirUrl.newBuilder()
+                    .addPathSegment(latestBackup)
+                    .build()
                 Logs.d("WebDAV restore - File URL: $fileUrl")
 
                 val getRequest = Request.Builder()

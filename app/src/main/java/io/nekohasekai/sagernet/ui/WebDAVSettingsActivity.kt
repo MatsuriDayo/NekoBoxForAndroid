@@ -2,6 +2,7 @@ package io.nekohasekai.sagernet.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.text.InputType
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 class WebDAVSettingsActivity : ThemedActivity() {
     
@@ -92,9 +94,11 @@ class WebDAVSettingsActivity : ThemedActivity() {
             findPreference<EditTextPreference>("webdavPassword")?.apply {
                 setOnBindEditTextListener { editText ->
                     editText.setSingleLine()
+                    editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                     editText.setSelection(editText.text.length)
                 }
-                summary = "********"
+                // 使用与其他密码字段一致的隐藏摘要样式
+                summaryProvider = GroupSettingsActivity.PasswordSummaryProvider
             }
             
             findPreference<EditTextPreference>("webdavPath")?.apply {
@@ -160,8 +164,17 @@ class WebDAVSettingsActivity : ThemedActivity() {
                     // 如果认证成功，再测试目录操作
                     val path = (DataStore.webdavPath ?: "").trim('/')
                     if (path.isNotBlank()) {
+                        val baseHttpUrl = server.toHttpUrlOrNull()
+                            ?: throw Exception(getString(R.string.webdav_server_not_found))
+
+                        val dirUrl = baseHttpUrl.newBuilder().apply {
+                            path.split('/').filter { it.isNotEmpty() }.forEach { segment ->
+                                addPathSegment(segment)
+                            }
+                        }.build()
+
                         val dirRequest = Request.Builder()
-                            .url("${url}${if (url.toString().endsWith("/")) "" else "/"}$path")
+                            .url(dirUrl)
                             .method("MKCOL", null)
                             .apply {
                                 val credentials = Credentials.basic(

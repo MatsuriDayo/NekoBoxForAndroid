@@ -18,8 +18,7 @@
         android:key="webdavPassword"
         android:title="@string/webdav_password"
         android:singleLine="true"
-        android:password="true"
-        android:summary="********" />
+        app:dialogLayout="@layout/layout_password_dialog" />
 
     <EditTextPreference
         android:key="webdavPath"
