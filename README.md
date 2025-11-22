@@ -37,6 +37,7 @@ https://matsuridayo.github.io
 * HTTP(S)
 * SSH
 * Shadowsocks
+* ShadowsocksR
 * VMess
 * Trojan
 * VLESS
