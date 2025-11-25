@@ -4669,6 +4669,28 @@ public class SingBoxOptions {
 
     }
 
+    public static class V2RayTransportOptions_KCPOptions extends V2RayTransportOptions {
+
+        public Integer mtu;
+
+        public Integer tti;
+
+        public Integer uplink_capacity;
+
+        public Integer downlink_capacity;
+
+        public Boolean congestion;
+
+        public Integer read_buffer_size;
+
+        public Integer write_buffer_size;
+
+        public String header_type;
+
+        public String seed;
+
+    }
+
     // sing-box Options 生成器已经坏了，以下是从 husi 抄的
 
     public static class Outbound_AnyTLSOptions extends Outbound {

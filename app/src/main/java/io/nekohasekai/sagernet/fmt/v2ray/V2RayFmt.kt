@@ -13,6 +13,10 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.json.JSONObject
 
+private val supportedKcpHeaderType = arrayOf(
+    "none", "srtp", "utp", "wechat-video", "dtls", "wireguard"
+)
+
 data class VmessQRCode(
     var v: String = "",
     var ps: String = "",
@@ -209,6 +213,16 @@ fun StandardV2RayBean.parseDuckSoft(url: HttpUrl) {
             }
             url.queryParameter("path")?.let {
                 path = it
+            }
+        }
+
+        "kcp" -> {
+            url.queryParameter("seed")?.let {
+                mKcpSeed = it
+            }
+            url.queryParameter("headerType")?.let {
+                if (it !in supportedKcpHeaderType) error("unsupported headerType")
+                headerType = it
             }
         }
 
@@ -511,6 +525,15 @@ fun StandardV2RayBean.toUriVMessVLESSTrojan(isTrojan: Boolean): String {
             }
         }
 
+        "kcp" -> {
+            if (headerType.isNotBlank() && headerType != "none") {
+                builder.addQueryParameter("headerType", headerType)
+            }
+            if (mKcpSeed.isNotBlank()) {
+                builder.addQueryParameter("seed", mKcpSeed)
+            }
+        }
+
         "xhttp" -> {
             if (host.isNotBlank()) {
                 builder.addQueryParameter("host", host)
@@ -607,6 +630,23 @@ fun buildSingBoxOutboundStreamSettings(bean: StandardV2RayBean): V2RayTransportO
 
                 if (bean.earlyDataHeaderName.isNotBlank()) {
                     early_data_header_name = bean.earlyDataHeaderName
+                }
+            }
+        }
+
+        "kcp" -> {
+            return V2RayTransportOptions_KCPOptions().apply {
+                type = "kcp"
+                mtu = 1350
+                tti = 50
+                uplink_capacity = 12
+                downlink_capacity = 100
+                congestion = false
+                read_buffer_size = 1
+                write_buffer_size = 1
+                header_type = bean.headerType.takeIf { it.isNotBlank() } ?: "none"
+                if (bean.mKcpSeed.isNotBlank()) {
+                    seed = bean.mKcpSeed
                 }
             }
         }

@@ -317,12 +317,22 @@
 
     <string-array name="networks_value">
         <item>tcp</item>
+        <item>kcp</item>
         <item>ws</item>
         <item>http</item>
         <item>quic</item>
         <item>grpc</item>
         <item>httpupgrade</item>
         <item>xhttp</item>
+    </string-array>
+
+    <string-array name="kcp_headers_value">
+        <item>none</item>
+        <item>srtp</item>
+        <item>utp</item>
+        <item>wechat-video</item>
+        <item>dtls</item>
+        <item>wireguard</item>
     </string-array>
 
     <string-array name="xhttp_mode_entry">

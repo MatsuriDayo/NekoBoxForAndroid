@@ -54,6 +54,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
     public String xhttpMode;
     public String xhttpExtra;
 
+    // --------------------------------------- kcp
+
+    public String mKcpSeed;
+    public String headerType;
+
     // --------------------------------------- ech
 
     public Boolean enableECH;
@@ -120,11 +125,14 @@ public abstract class StandardV2RayBean extends AbstractBean {
 
         if (JavaUtil.isNullOrBlank(xhttpMode)) xhttpMode = "auto";
         if (JavaUtil.isNullOrBlank(xhttpExtra)) xhttpExtra = "";
+
+        if (JavaUtil.isNullOrBlank(mKcpSeed)) mKcpSeed = "";
+        if (JavaUtil.isNullOrBlank(headerType)) headerType = "none";
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(5);
+        output.writeInt(6);
         super.serialize(output);
         output.writeString(uuid);
         output.writeString(encryption);
@@ -165,6 +173,11 @@ public abstract class StandardV2RayBean extends AbstractBean {
                 output.writeString(path);
                 output.writeString(xhttpMode);
                 output.writeString(xhttpExtra);
+                break;
+            }
+            case "kcp": {
+                output.writeString(mKcpSeed);
+                output.writeString(headerType);
                 break;
             }
         }
@@ -245,6 +258,13 @@ public abstract class StandardV2RayBean extends AbstractBean {
                 }
                 break;
             }
+            case "kcp": {
+                if (version >= 6) {
+                    mKcpSeed = input.readString();
+                    headerType = input.readString();
+                }
+                break;
+            }
         }
 
         security = input.readString();
@@ -298,6 +318,7 @@ public abstract class StandardV2RayBean extends AbstractBean {
         }
 
         // Note: xhttp fields are read in the switch case above when version >= 4
+        // Note: kcp fields are read in the switch case above when version >= 6
     }
 
     @Override

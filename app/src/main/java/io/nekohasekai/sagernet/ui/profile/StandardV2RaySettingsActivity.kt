@@ -56,6 +56,10 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val xhttpExtra = pbm.add(PreferenceBinding(Type.Text, "xhttpExtra"))
     private val vlessEncryption = pbm.add(PreferenceBinding(Type.Text, "vlessEncryption"))
 
+    // KCP
+    private val mKcpSeed = pbm.add(PreferenceBinding(Type.Text, "mKcpSeed"))
+    private val headerType = pbm.add(PreferenceBinding(Type.Text, "headerType"))
+
     override fun StandardV2RayBean.init() {
         if (this is TrojanBean) {
             this@StandardV2RaySettingsActivity.uuid.fieldName = "password"
@@ -156,6 +160,8 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private fun updateView(network: String) {
         host.preference.isVisible = false
         path.preference.isVisible = false
+        mKcpSeed.preference.isVisible = false
+        headerType.preference.isVisible = false
         wsCategory.isVisible = false
         xhttpCategory.isVisible = false
 
@@ -163,6 +169,11 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
             "tcp" -> {
                 host.preference.setTitle(R.string.http_host)
                 path.preference.setTitle(R.string.http_path)
+            }
+
+            "kcp" -> {
+                mKcpSeed.preference.isVisible = true
+                headerType.preference.isVisible = true
             }
 
             "http" -> {

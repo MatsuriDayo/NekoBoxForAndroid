@@ -76,6 +76,20 @@
             app:title="@string/http_path"
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="none"
+            app:entries="@array/kcp_headers_value"
+            app:entryValues="@array/kcp_headers_value"
+            app:icon="@drawable/ic_baseline_texture_24"
+            app:key="headerType"
+            app:title="@string/kcp_header_type"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_baseline_format_align_left_24"
+            app:key="mKcpSeed"
+            app:title="@string/kcp_seed"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:entries="@array/transport_layer_encryption_value"
             app:entryValues="@array/transport_layer_encryption_value"
             app:icon="@drawable/ic_baseline_layers_24"
