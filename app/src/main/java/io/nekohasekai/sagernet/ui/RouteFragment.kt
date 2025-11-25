@@ -287,6 +287,7 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
                 itemView.setOnClickListener {
                     enableSwitch.performClick()
                 }
+                enableSwitch.setOnCheckedChangeListener(null)
                 enableSwitch.isChecked = rule.enabled
                 enableSwitch.setOnCheckedChangeListener { _, isChecked ->
                     runOnDefaultDispatcher {
