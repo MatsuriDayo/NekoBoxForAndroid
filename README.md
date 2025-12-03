@@ -59,8 +59,8 @@ https://matsuridayo.github.io
 	"sc_min_posts_interval_ms": "0-0",
 	"sc_stream_up_server_secs": "0-0",
 	"xmux": {
-		"max_concurrency": "0-1",
-		"max_connections": "0-1",
+		"max_concurrency": "16-32",
+		"max_connections": "0-0",
 		"c_max_reuse_times": "0-1",
 		"h_max_request_times": "0-1",
 		"h_max_reusable_secs": "0-1",
@@ -75,8 +75,8 @@ https://matsuridayo.github.io
 		"sc_min_posts_interval_ms": "0-0",
 		"sc_stream_up_server_secs": "0-0",
 		"xmux": {
-			"max_concurrency": "0-1",
-			"max_connections": "0-1",
+			"max_concurrency": "16-32",
+			"max_connections": "0-0",
 			"c_max_reuse_times": "0-1",
 			"h_max_request_times": "0-1",
 			"h_max_reusable_secs": "0-1",
@@ -108,15 +108,15 @@ https://matsuridayo.github.io
 	"sc_min_posts_interval_ms": "0-0",
 	"sc_stream_up_server_secs": "0-0",
 	"xmux": {
-		"max_concurrency": "0-1",
-		"max_connections": "0-1",
+		"max_concurrency": "16-32",
+		"max_connections": "0-0",
 		"c_max_reuse_times": "0-1",
 		"h_max_request_times": "0-1",
 		"h_max_reusable_secs": "0-1",
 		"h_keep_alive_period": 60
 	},
 	"download": {
-		"mode": "",
+		"mode": "auto",
 		"host": "example.com",
 		"path": "/xhttp",
 		"x_padding_bytes": "0-0",
@@ -124,8 +124,8 @@ https://matsuridayo.github.io
 		"sc_min_posts_interval_ms": "0-0",
 		"sc_stream_up_server_secs": "0-0",
 		"xmux": {
-			"max_concurrency": "0-1",
-			"max_connections": "0-1",
+			"max_concurrency": "16-32",
+			"max_connections": "0-0",
 			"c_max_reuse_times": "0-1",
 			"h_max_request_times": "0-1",
 			"h_max_reusable_secs": "0-1",
