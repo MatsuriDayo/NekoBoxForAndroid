@@ -61,10 +61,10 @@ https://matsuridayo.github.io
 	"xmux": {
 		"max_concurrency": "16-32",
 		"max_connections": "0-0",
-		"c_max_reuse_times": "0-1",
-		"h_max_request_times": "0-1",
-		"h_max_reusable_secs": "0-1",
-		"h_keep_alive_period": 60
+		"c_max_reuse_times": "0-0",
+		"h_max_request_times": "600-900",
+		"h_max_reusable_secs": "1800-3000",
+		"h_keep_alive_period": 0
 	},
 	"download": {
 		"mode": "auto",
@@ -77,10 +77,10 @@ https://matsuridayo.github.io
 		"xmux": {
 			"max_concurrency": "16-32",
 			"max_connections": "0-0",
-			"c_max_reuse_times": "0-1",
-			"h_max_request_times": "0-1",
-			"h_max_reusable_secs": "0-1",
-			"h_keep_alive_period": 60
+			"c_max_reuse_times": "0-0",
+			"h_max_request_times": "600-900",
+			"h_max_reusable_secs": "1800-3000",
+			"h_keep_alive_period": 0
 		},
 		"server": "$(ip_or_domain_of_your_cdn)",
 		"server_port": 443,
@@ -110,10 +110,10 @@ https://matsuridayo.github.io
 	"xmux": {
 		"max_concurrency": "16-32",
 		"max_connections": "0-0",
-		"c_max_reuse_times": "0-1",
-		"h_max_request_times": "0-1",
-		"h_max_reusable_secs": "0-1",
-		"h_keep_alive_period": 60
+		"c_max_reuse_times": "0-0",
+		"h_max_request_times": "600-900",
+		"h_max_reusable_secs": "1800-3000",
+		"h_keep_alive_period": 0
 	},
 	"download": {
 		"mode": "auto",
@@ -126,10 +126,10 @@ https://matsuridayo.github.io
 		"xmux": {
 			"max_concurrency": "16-32",
 			"max_connections": "0-0",
-			"c_max_reuse_times": "0-1",
-			"h_max_request_times": "0-1",
-			"h_max_reusable_secs": "0-1",
-			"h_keep_alive_period": 60
+			"c_max_reuse_times": "0-0",
+			"h_max_request_times": "600-900",
+			"h_max_reusable_secs": "1800-3000",
+			"h_keep_alive_period": 0
 		},
 		"server": "$(ip_or_domain_of_your_cdn)",
 		"server_port": 443,
