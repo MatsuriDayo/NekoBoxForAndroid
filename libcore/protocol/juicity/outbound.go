@@ -3,8 +3,8 @@ package juicity
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"crypto/x509"
-  "crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"net"
@@ -16,12 +16,12 @@ import (
 	"github.com/sagernet/sing-box/common/tls"
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/log"
+	"github.com/sagernet/sing-box/option"
 	"github.com/sagernet/sing/common/bufio"
 	E "github.com/sagernet/sing/common/exceptions"
 	"github.com/sagernet/sing/common/logger"
 	M "github.com/sagernet/sing/common/metadata"
 	N "github.com/sagernet/sing/common/network"
-	"github.com/sagernet/sing-box/option"
 
 	"github.com/dyhkwong/sing-juicity"
 	"github.com/gofrs/uuid/v5"
@@ -156,18 +156,16 @@ func tryDecodeBase64(raw string) ([]byte, error) {
 	return nil, E.Cause(E.Errors(errors...), "try decoding base64")
 }
 
-// Simple implementation of cert chain hash - you may need to adjust this
-func certChainHash(rawCerts [][]byte) (hash []byte) {
-	// This is a simplified implementation. You might need to implement
-	// the exact hash calculation method used by juicity
-	// For now, return the first cert's hash as placeholder
-	// if len(rawCerts) > 0 {
-	// 	return rawCerts[0][:32] // simplified
-	// }
-	// return nil
-  for _, cert := range rawCerts {
-    sum := sha256.Sum256(cert)
-    hash = append(hash, sum[:]...)
-  }
-  return
+func certChainHash(rawCerts [][]byte) []byte {
+	var chainHash []byte
+	for _, cert := range rawCerts {
+		certHash := sha256.Sum256(cert)
+		if chainHash == nil {
+			chainHash = certHash[:]
+		} else {
+			newHash := sha256.Sum256(append(chainHash, certHash[:]...))
+			chainHash = newHash[:]
+		}
+	}
+	return chainHash
 }

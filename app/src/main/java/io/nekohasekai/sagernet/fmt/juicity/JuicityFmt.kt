@@ -6,7 +6,9 @@ import io.nekohasekai.sagernet.ktx.toLink
 import io.nekohasekai.sagernet.ktx.urlSafe
 import moe.matsuri.nb4a.SingBoxOptions
 import moe.matsuri.nb4a.SingBoxOptions.Outbound_JuicityOptions
+import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import java.util.Base64
 
 fun parseJuicity(url: String): JuicityBean {
     val link = url.replace("juicity://", "https://").toHttpUrlOrNull() ?: error(
@@ -23,7 +25,9 @@ fun parseJuicity(url: String): JuicityBean {
             sni = it
         }
         link.queryParameter("pinned_certchain_sha256")?.let {
-            pinnedCertchainSha256 = it
+            normalizePinnedCertChainHash(it)?.let { hash ->
+                pinnedCertchainSha256 = hash
+            }
         }
         link.queryParameter("allow_insecure")?.let {
             if (it == "1" || it == "true") allowInsecure = true
@@ -38,7 +42,9 @@ fun JuicityBean.toUri(): String {
         builder.addQueryParameter("sni", sni)
     }
     if (pinnedCertchainSha256.isNotBlank()) {
-        builder.addQueryParameter("pinned_certchain_sha256", pinnedCertchainSha256)
+        normalizePinnedCertChainHash(pinnedCertchainSha256.listByLineOrComma().firstOrNull())?.let {
+            builder.addQueryParameter("pinned_certchain_sha256", it)
+        }
     }
     if (allowInsecure) {
         builder.addQueryParameter("allow_insecure", "1")
@@ -68,7 +74,18 @@ fun buildSingBoxOutboundJuicityBean(bean: JuicityBean): Outbound_JuicityOptions 
         }
 
         if (bean.pinnedCertchainSha256.isNotBlank()) {
-            pin_cert_sha256 = bean.pinnedCertchainSha256
+            normalizePinnedCertChainHash(bean.pinnedCertchainSha256.listByLineOrComma().firstOrNull())?.let {
+                pin_cert_sha256 = it
+            }
         }
+    }
+}
+
+private fun normalizePinnedCertChainHash(rawHash: String?): String? {
+    val certChainHash = rawHash?.replace(":", "")?.takeIf { it.isNotEmpty() } ?: return null
+    return when {
+        certChainHash.length == 64 -> Base64.getUrlEncoder()
+            .encodeToString(certChainHash.chunked(2).map { chunk -> chunk.toInt(16).toByte() }.toByteArray())
+        else -> certChainHash.replace('/', '_').replace('+', '-')
     }
 }
