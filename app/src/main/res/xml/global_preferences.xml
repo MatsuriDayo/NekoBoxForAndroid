@@ -37,7 +37,7 @@
             app:title="@string/tun_implementation"
             app:useSimpleSummaryProvider="true" />
         <moe.matsuri.nb4a.ui.MTUPreference
-            app:defaultValue="9000"
+            app:defaultValue="1500"
             app:entries="@array/mtu_select"
             app:entryValues="@array/mtu_select"
             app:icon="@drawable/baseline_public_24"
