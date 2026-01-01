@@ -165,6 +165,8 @@ object Key {
     const val SUBSCRIPTION_USER_AGENT = "subscriptionUserAgent"
     const val SUBSCRIPTION_AUTO_UPDATE = "subscriptionAutoUpdate"
     const val SUBSCRIPTION_AUTO_UPDATE_DELAY = "subscriptionAutoUpdateDelay"
+    const val SUBSCRIPTION_FILTER_MODE = "subscriptionFilterMode"
+    const val SUBSCRIPTION_FILTER_REGEX = "subscriptionFilterRegex"
 
     //
 
@@ -206,6 +208,12 @@ object GroupOrder {
     const val ORIGIN = 0
     const val BY_NAME = 1
     const val BY_DELAY = 2
+}
+
+object SubscriptionFilterMode {
+    const val DISABLED = 0
+    const val INCLUDE = 1
+    const val EXCLUDE = 2
 }
 
 object Action {

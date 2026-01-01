@@ -303,6 +303,11 @@
     <string name="force_resolve">强制解析</string>
     <string name="force_resolve_sum">更新时解析所有域名到 IP 地址. 如果可能, 主机与服务器名称指示值将被自动覆盖</string>
     <string name="deduplication_sum">更新时移除重复配置</string>
+    <string name="filter">过滤</string>
+    <string name="filter_disabled">不过滤</string>
+    <string name="filter_include">包含</string>
+    <string name="filter_exclude">排除</string>
+    <string name="filter_regex">过滤（正则表达式）</string>
     <string name="raw">原始</string>
     <string name="update_settings">更新设置</string>
     <string name="auto_update">自动更新</string>

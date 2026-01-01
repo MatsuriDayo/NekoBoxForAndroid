@@ -2,6 +2,7 @@ package io.nekohasekai.sagernet.group
 
 import android.annotation.SuppressLint
 import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.SubscriptionFilterMode
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.fmt.AbstractBean
 import io.nekohasekai.sagernet.fmt.http.HttpBean
@@ -105,6 +106,18 @@ object RawUpdater : GroupUpdater() {
         proxies = proxiesMap.values.toList()
 
         if (subscription.forceResolve) forceResolve(proxies, proxyGroup.id)
+
+        val filterMode = subscription.filterMode ?: SubscriptionFilterMode.DISABLED
+        val filterRegex = subscription.filterRegex ?: ""
+        if (filterMode != SubscriptionFilterMode.DISABLED && filterRegex.isNotBlank()) {
+            val regex = filterRegex.toRegex()
+            proxies = when (filterMode) {
+                SubscriptionFilterMode.INCLUDE -> proxies.filter { regex.containsMatchIn(it.displayName()) }
+                SubscriptionFilterMode.EXCLUDE -> proxies.filterNot { regex.containsMatchIn(it.displayName()) }
+                else -> proxies
+            }
+            Logs.d("After filter (mode=$filterMode): ${proxies.size}")
+        }
 
         val exists = SagerDatabase.proxyDao.getByGroup(proxyGroup.id)
         val duplicate = ArrayList<String>()

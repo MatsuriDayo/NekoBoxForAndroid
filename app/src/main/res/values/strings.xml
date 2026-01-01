@@ -358,6 +358,11 @@
     <string name="force_resolve_sum">Resolve all domain names to IP addresses when updating. Host
         and SNI will be automatically appended if possible</string>
     <string name="deduplication_sum">Remove duplicate configurations when updating</string>
+    <string name="filter">Filter</string>
+    <string name="filter_disabled">Disabled</string>
+    <string name="filter_include">Include</string>
+    <string name="filter_exclude">Exclude</string>
+    <string name="filter_regex">Filter (Regex)</string>
     <string name="raw">Raw</string>
     <string name="update_settings">Update Settings</string>
     <string name="auto_update">Auto Update</string>

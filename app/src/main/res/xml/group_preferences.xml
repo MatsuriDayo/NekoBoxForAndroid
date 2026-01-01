@@ -63,6 +63,21 @@
             app:summary="@string/deduplication_sum"
             app:title="@string/deduplication" />
 
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="0"
+            app:entries="@array/filter_modes"
+            app:entryValues="@array/int_array_3"
+            app:icon="@drawable/ic_baseline_filter_list_24"
+            app:key="subscriptionFilterMode"
+            app:title="@string/filter"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_filter_list_24"
+            app:key="subscriptionFilterRegex"
+            app:title="@string/filter_regex"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

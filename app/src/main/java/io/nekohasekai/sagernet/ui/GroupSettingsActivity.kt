@@ -21,6 +21,7 @@ import io.nekohasekai.sagernet.GroupType
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.SubscriptionFilterMode
 import io.nekohasekai.sagernet.database.*
 import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
 import io.nekohasekai.sagernet.group.GroupUpdater
@@ -61,6 +62,8 @@ class GroupSettingsActivity(
         DataStore.subscriptionUserAgent = subscription.customUserAgent
         DataStore.subscriptionAutoUpdate = subscription.autoUpdate
         DataStore.subscriptionAutoUpdateDelay = subscription.autoUpdateDelay
+        DataStore.subscriptionFilterMode = subscription.filterMode
+        DataStore.subscriptionFilterRegex = subscription.filterRegex
     }
 
     fun ProxyGroup.serialize() {
@@ -82,6 +85,8 @@ class GroupSettingsActivity(
                 customUserAgent = DataStore.subscriptionUserAgent
                 autoUpdate = DataStore.subscriptionAutoUpdate
                 autoUpdateDelay = DataStore.subscriptionAutoUpdateDelay
+                filterMode = DataStore.subscriptionFilterMode
+                filterRegex = DataStore.subscriptionFilterRegex
             }
         }
     }
@@ -160,6 +165,20 @@ class GroupSettingsActivity(
         }
         subscriptionAutoUpdate.setOnPreferenceChangeListener { _, newValue ->
             subscriptionAutoUpdateDelay.isEnabled = (newValue as Boolean)
+            true
+        }
+
+        val subscriptionFilterMode =
+            findPreference<SimpleMenuPreference>(Key.SUBSCRIPTION_FILTER_MODE)!!
+        val subscriptionFilterRegex =
+            findPreference<EditTextPreference>(Key.SUBSCRIPTION_FILTER_REGEX)!!
+
+        fun updateFilterMode(filterMode: Int = DataStore.subscriptionFilterMode) {
+            subscriptionFilterRegex.isVisible = filterMode != SubscriptionFilterMode.DISABLED
+        }
+        updateFilterMode()
+        subscriptionFilterMode.setOnPreferenceChangeListener { _, newValue ->
+            updateFilterMode((newValue as String).toInt())
             true
         }
     }

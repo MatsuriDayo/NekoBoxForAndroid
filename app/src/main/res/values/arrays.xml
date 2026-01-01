@@ -504,6 +504,12 @@
         <item>@string/group_order_by_delay</item>
     </string-array>
 
+    <string-array name="filter_modes">
+        <item>@string/filter_disabled</item>
+        <item>@string/filter_include</item>
+        <item>@string/filter_exclude</item>
+    </string-array>
+
     <string-array name="ssh_auth_type">
         <item>@string/ssh_auth_type_none</item>
         <item>@string/password</item>
