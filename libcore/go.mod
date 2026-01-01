@@ -51,7 +51,6 @@ require (
 	github.com/metacubex/utls v1.8.3 // indirect
 	github.com/mholt/acmez/v3 v3.1.2 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
-	github.com/quic-go/quic-go v0.55.0 // indirect
 	github.com/sagernet/bbolt v0.0.0-20231014093535-ea5cb2fe9f0a // indirect
 	github.com/sagernet/cors v1.2.1 // indirect
 	github.com/sagernet/fswatch v0.1.1 // indirect
@@ -94,7 +93,7 @@ replace github.com/matsuridayo/libneko => ../../libneko
 
 replace github.com/sagernet/sing-box => ../../sing-box
 
-replace github.com/sagernet/sing-vmess => github.com/starifly/sing-vmess v0.2.7-mod.4
+replace github.com/sagernet/sing-vmess => github.com/starifly/sing-vmess v0.2.7-mod.9
 
 // replace github.com/sagernet/sing-quic => github.com/matsuridayo/sing-quic v0.0.0-20241009042333-b49ce60d9b36
 // replace github.com/sagernet/sing-quic => ../../sing-quic
