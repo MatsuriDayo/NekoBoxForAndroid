@@ -19,6 +19,11 @@ public class ShadowsocksBean extends AbstractBean {
 
     public Boolean sUoT;
 
+    public Boolean enableMux;
+    public Boolean muxPadding;
+    public Integer muxType;
+    public Integer muxConcurrency;
+
     @Override
     public void initializeDefaultValues() {
         super.initializeDefaultValues();
@@ -28,16 +33,26 @@ public class ShadowsocksBean extends AbstractBean {
         if (password == null) password = "";
         if (plugin == null) plugin = "";
         if (sUoT == null) sUoT = false;
+
+        if (enableMux == null) enableMux = false;
+        if (muxPadding == null) muxPadding = false;
+        if (muxType == null) muxType = 0;
+        if (muxConcurrency == null) muxConcurrency = 8;
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(2);
+        output.writeInt(3);
         super.serialize(output);
         output.writeString(method);
         output.writeString(password);
         output.writeString(plugin);
         output.writeBoolean(sUoT);
+        // v3
+        output.writeBoolean(enableMux);
+        output.writeBoolean(muxPadding);
+        output.writeInt(muxType);
+        output.writeInt(muxConcurrency);
     }
 
     @Override
@@ -48,6 +63,13 @@ public class ShadowsocksBean extends AbstractBean {
         password = input.readString();
         plugin = input.readString();
         sUoT = input.readBoolean();
+        
+        if (version >= 3) {
+            enableMux = input.readBoolean();
+            muxPadding = input.readBoolean();
+            muxType = input.readInt();
+            muxConcurrency = input.readInt();
+        }
     }
 
     @Override
@@ -55,6 +77,10 @@ public class ShadowsocksBean extends AbstractBean {
         if (!(other instanceof ShadowsocksBean)) return;
         ShadowsocksBean bean = ((ShadowsocksBean) other);
         bean.sUoT = sUoT;
+        bean.enableMux = enableMux;
+        bean.muxPadding = muxPadding;
+        bean.muxType = muxType;
+        bean.muxConcurrency = muxConcurrency;
     }
 
     @NotNull

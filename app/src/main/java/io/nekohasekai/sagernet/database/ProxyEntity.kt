@@ -354,6 +354,17 @@ data class ProxyEntity(
                 }
             }
 
+            TYPE_SS -> MultiplexOptions().apply {
+                enabled = ssBean!!.enableMux
+                padding = ssBean!!.muxPadding
+                max_streams = ssBean!!.muxConcurrency
+                protocol = when (ssBean!!.muxType) {
+                    1 -> "smux"
+                    2 -> "yamux"
+                    else -> "h2mux"
+                }
+            }
+
             else -> null
         }
     }
