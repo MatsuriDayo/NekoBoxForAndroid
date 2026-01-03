@@ -16,8 +16,12 @@ sing-box / universal proxy toolchain for Android.
 
 **Google Play 版本自 2024 年 5 月起已被第三方控制，为非开源版本，请不要下载。**
 
+**对于PC端，请使用[NekoBox](https://github.com/qr243vbi/nekobox)，该软件是从nekoray分叉而来的。**
+
 **The Google Play version has been controlled by a third party since May 2024 and is a non-open
 source version. Please do not download it.**
+
+**For PC, please, use [NekoBox](https://github.com/qr243vbi/nekobox), which is forked from nekoray.**
 
 ## 更新日志 & Telegram 发布频道 / Changelog & Telegram Channel
 
