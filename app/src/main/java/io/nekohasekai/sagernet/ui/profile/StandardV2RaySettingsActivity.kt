@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
@@ -54,6 +55,9 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val muxMode = pbm.add(PreferenceBinding(Type.TextToInt, "muxMode"))
     private val muxMaxConnections = pbm.add(PreferenceBinding(Type.TextToInt, "muxMaxConnections"))
     private val muxMinStreams = pbm.add(PreferenceBinding(Type.TextToInt, "muxMinStreams"))
+    private val muxBrutal = pbm.add(PreferenceBinding(Type.Bool, "muxBrutal"))
+    private val muxBrutalUpMbps = pbm.add(PreferenceBinding(Type.TextToInt, "muxBrutalUpMbps"))
+    private val muxBrutalDownMbps = pbm.add(PreferenceBinding(Type.TextToInt, "muxBrutalDownMbps"))
 
     private val xhttpMode = pbm.add(PreferenceBinding(Type.Text, "xhttpMode"))
     private val xhttpExtra = pbm.add(PreferenceBinding(Type.Text, "xhttpExtra"))
@@ -168,6 +172,20 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
                 true
             }
         }
+
+        muxBrutal.preference.apply {
+            updateMuxBrutal(muxBrutal.readBoolFromCache())
+            this as SwitchPreference
+            setOnPreferenceChangeListener { _, newValue ->
+                updateMuxBrutal(newValue as Boolean)
+                true
+            }
+        }
+    }
+
+    private fun updateMuxBrutal(enabled: Boolean) {
+        muxBrutalUpMbps.preference.isVisible = enabled
+        muxBrutalDownMbps.preference.isVisible = enabled
     }
 
     private fun updateMuxMode(mode: Int) {

@@ -226,6 +226,22 @@
             app:icon="@drawable/baseline_developer_board_24"
             app:key="muxPadding"
             app:title="@string/padding" />
+        <SwitchPreference
+            app:icon="@drawable/ic_baseline_speed_24"
+            app:key="muxBrutal"
+            app:title="@string/mux_brutal" />
+        <EditTextPreference
+            app:defaultValue="100"
+            app:icon="@drawable/ic_baseline_upload_24"
+            app:key="muxBrutalUpMbps"
+            app:title="@string/mux_brutal_up_mbps"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="100"
+            app:icon="@drawable/ic_baseline_download_24"
+            app:key="muxBrutalDownMbps"
+            app:title="@string/mux_brutal_down_mbps"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -180,6 +180,9 @@
     <string name="mux_mode_connections">Connections</string>
     <string name="mux_max_connections">Max Connections</string>
     <string name="mux_min_streams">Min Streams</string>
+    <string name="mux_brutal">TCP Brutal</string>
+    <string name="mux_brutal_up_mbps">Upload (Mbps)</string>
+    <string name="mux_brutal_down_mbps">Download (Mbps)</string>
     <string name="tcp_keep_alive_interval">TCP keep active packet delivery interval</string>
     <string name="proxied_apps">Apps VPN mode</string>
     <string name="proxied_apps_summary">Configure VPN mode for selected apps</string>

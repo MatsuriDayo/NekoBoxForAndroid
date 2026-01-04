@@ -26,6 +26,9 @@ public class ShadowsocksBean extends AbstractBean {
     public Integer muxMode;         // 0: max_streams, 1: connections
     public Integer muxMaxConnections;
     public Integer muxMinStreams;
+    public Boolean muxBrutal;
+    public Integer muxBrutalUpMbps;
+    public Integer muxBrutalDownMbps;
 
     @Override
     public void initializeDefaultValues() {
@@ -44,11 +47,14 @@ public class ShadowsocksBean extends AbstractBean {
         if (muxMode == null) muxMode = 0;
         if (muxMaxConnections == null) muxMaxConnections = 4;
         if (muxMinStreams == null) muxMinStreams = 4;
+        if (muxBrutal == null) muxBrutal = false;
+        if (muxBrutalUpMbps == null) muxBrutalUpMbps = 100;
+        if (muxBrutalDownMbps == null) muxBrutalDownMbps = 100;
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(4);
+        output.writeInt(5);
         super.serialize(output);
         output.writeString(method);
         output.writeString(password);
@@ -63,6 +69,10 @@ public class ShadowsocksBean extends AbstractBean {
         output.writeInt(muxMode);
         output.writeInt(muxMaxConnections);
         output.writeInt(muxMinStreams);
+        // v5
+        output.writeBoolean(muxBrutal);
+        output.writeInt(muxBrutalUpMbps);
+        output.writeInt(muxBrutalDownMbps);
     }
 
     @Override
@@ -86,6 +96,12 @@ public class ShadowsocksBean extends AbstractBean {
             muxMaxConnections = input.readInt();
             muxMinStreams = input.readInt();
         }
+        // v5
+        if (version >= 5) {
+            muxBrutal = input.readBoolean();
+            muxBrutalUpMbps = input.readInt();
+            muxBrutalDownMbps = input.readInt();
+        }
     }
 
     @Override
@@ -100,6 +116,9 @@ public class ShadowsocksBean extends AbstractBean {
         bean.muxMode = muxMode;
         bean.muxMaxConnections = muxMaxConnections;
         bean.muxMinStreams = muxMinStreams;
+        bean.muxBrutal = muxBrutal;
+        bean.muxBrutalUpMbps = muxBrutalUpMbps;
+        bean.muxBrutalDownMbps = muxBrutalDownMbps;
     }
 
     @NotNull

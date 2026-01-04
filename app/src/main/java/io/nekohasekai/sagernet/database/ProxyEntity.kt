@@ -35,6 +35,7 @@ import io.nekohasekai.sagernet.fmt.v2ray.*
 import io.nekohasekai.sagernet.fmt.wireguard.WireGuardBean
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ui.profile.*
+import moe.matsuri.nb4a.SingBoxOptions.BrutalOptions
 import moe.matsuri.nb4a.SingBoxOptions.MultiplexOptions
 import moe.matsuri.nb4a.proxy.anytls.AnyTLSBean
 import moe.matsuri.nb4a.proxy.anytls.AnyTLSSettingsActivity
@@ -347,6 +348,13 @@ data class ProxyEntity(
                 } else {
                     max_streams = vmessBean!!.muxConcurrency
                 }
+                if (vmessBean!!.muxBrutal == true) {
+                    brutal = BrutalOptions().apply {
+                        enabled = true
+                        up_mbps = vmessBean!!.muxBrutalUpMbps
+                        down_mbps = vmessBean!!.muxBrutalDownMbps
+                    }
+                }
             }
 
             TYPE_TROJAN -> MultiplexOptions().apply {
@@ -364,6 +372,13 @@ data class ProxyEntity(
                 } else {
                     max_streams = trojanBean!!.muxConcurrency
                 }
+                if (trojanBean!!.muxBrutal == true) {
+                    brutal = BrutalOptions().apply {
+                        enabled = true
+                        up_mbps = trojanBean!!.muxBrutalUpMbps
+                        down_mbps = trojanBean!!.muxBrutalDownMbps
+                    }
+                }
             }
 
             TYPE_SS -> MultiplexOptions().apply {
@@ -380,6 +395,13 @@ data class ProxyEntity(
                     min_streams = ssBean!!.muxMinStreams
                 } else {
                     max_streams = ssBean!!.muxConcurrency
+                }
+                if (ssBean!!.muxBrutal == true) {
+                    brutal = BrutalOptions().apply {
+                        enabled = true
+                        up_mbps = ssBean!!.muxBrutalUpMbps
+                        down_mbps = ssBean!!.muxBrutalDownMbps
+                    }
                 }
             }
 

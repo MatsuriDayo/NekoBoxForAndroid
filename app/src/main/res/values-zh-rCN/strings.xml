@@ -187,6 +187,9 @@
     <string name="mux_mode_connections">连接数</string>
     <string name="mux_max_connections">最大连接数</string>
     <string name="mux_min_streams">最小流数</string>
+    <string name="mux_brutal">TCP Brutal 拥塞控制算法</string>
+    <string name="mux_brutal_up_mbps">上传带宽 (Mbps)</string>
+    <string name="mux_brutal_down_mbps">下载带宽 (Mbps)</string>
     <string name="ws_host">WebSocket 主机</string>
     <string name="ws_path">WebSocket 路径</string>
     <string name="http_host">HTTP 主机</string>
