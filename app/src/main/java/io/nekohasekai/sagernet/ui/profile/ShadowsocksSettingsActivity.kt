@@ -11,6 +11,8 @@ import moe.matsuri.nb4a.proxy.PreferenceBinding
 import moe.matsuri.nb4a.proxy.PreferenceBindingManager
 import moe.matsuri.nb4a.proxy.Type
 
+import moe.matsuri.nb4a.ui.SimpleMenuPreference
+
 class ShadowsocksSettingsActivity : ProfileSettingsActivity<ShadowsocksBean>() {
 
     override fun createEntity() = ShadowsocksBean()
@@ -29,6 +31,9 @@ class ShadowsocksSettingsActivity : ProfileSettingsActivity<ShadowsocksBean>() {
     private val enableMux = pbm.add(PreferenceBinding(Type.Bool, "enableMux"))
     private val muxType = pbm.add(PreferenceBinding(Type.TextToInt, "muxType"))
     private val muxConcurrency = pbm.add(PreferenceBinding(Type.TextToInt, "muxConcurrency"))
+    private val muxMode = pbm.add(PreferenceBinding(Type.TextToInt, "muxMode"))
+    private val muxMaxConnections = pbm.add(PreferenceBinding(Type.TextToInt, "muxMaxConnections"))
+    private val muxMinStreams = pbm.add(PreferenceBinding(Type.TextToInt, "muxMinStreams"))
     private val muxPadding = pbm.add(PreferenceBinding(Type.Bool, "muxPadding"))
 
     override fun ShadowsocksBean.init() {
@@ -61,6 +66,25 @@ class ShadowsocksSettingsActivity : ProfileSettingsActivity<ShadowsocksBean>() {
             this as EditTextPreference
             summaryProvider = PasswordSummaryProvider
         }
+
+        // Mux mode visibility control
+        muxMode.preference.apply {
+            updateMuxMode(muxMode.readIntFromCache())
+            this as SimpleMenuPreference
+            setOnPreferenceChangeListener { _, newValue ->
+                updateMuxMode((newValue as String).toInt())
+                true
+            }
+        }
+    }
+
+    private fun updateMuxMode(mode: Int) {
+        // mode 0: max_streams mode - show muxConcurrency, hide muxMaxConnections/muxMinStreams
+        // mode 1: connections mode - hide muxConcurrency, show muxMaxConnections/muxMinStreams
+        val isMaxStreamsMode = mode == 0
+        muxConcurrency.preference.isVisible = isMaxStreamsMode
+        muxMaxConnections.preference.isVisible = !isMaxStreamsMode
+        muxMinStreams.preference.isVisible = !isMaxStreamsMode
     }
 
 }

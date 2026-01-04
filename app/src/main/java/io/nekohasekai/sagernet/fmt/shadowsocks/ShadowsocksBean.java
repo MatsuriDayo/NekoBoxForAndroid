@@ -22,7 +22,10 @@ public class ShadowsocksBean extends AbstractBean {
     public Boolean enableMux;
     public Boolean muxPadding;
     public Integer muxType;
-    public Integer muxConcurrency;
+    public Integer muxConcurrency;  // max_streams
+    public Integer muxMode;         // 0: max_streams, 1: connections
+    public Integer muxMaxConnections;
+    public Integer muxMinStreams;
 
     @Override
     public void initializeDefaultValues() {
@@ -38,11 +41,14 @@ public class ShadowsocksBean extends AbstractBean {
         if (muxPadding == null) muxPadding = false;
         if (muxType == null) muxType = 0;
         if (muxConcurrency == null) muxConcurrency = 8;
+        if (muxMode == null) muxMode = 0;
+        if (muxMaxConnections == null) muxMaxConnections = 4;
+        if (muxMinStreams == null) muxMinStreams = 4;
     }
 
     @Override
     public void serialize(ByteBufferOutput output) {
-        output.writeInt(3);
+        output.writeInt(4);
         super.serialize(output);
         output.writeString(method);
         output.writeString(password);
@@ -53,6 +59,10 @@ public class ShadowsocksBean extends AbstractBean {
         output.writeBoolean(muxPadding);
         output.writeInt(muxType);
         output.writeInt(muxConcurrency);
+        // v4
+        output.writeInt(muxMode);
+        output.writeInt(muxMaxConnections);
+        output.writeInt(muxMinStreams);
     }
 
     @Override
@@ -63,12 +73,18 @@ public class ShadowsocksBean extends AbstractBean {
         password = input.readString();
         plugin = input.readString();
         sUoT = input.readBoolean();
-        
+
         if (version >= 3) {
             enableMux = input.readBoolean();
             muxPadding = input.readBoolean();
             muxType = input.readInt();
             muxConcurrency = input.readInt();
+        }
+        // v4
+        if (version >= 4) {
+            muxMode = input.readInt();
+            muxMaxConnections = input.readInt();
+            muxMinStreams = input.readInt();
         }
     }
 
@@ -81,6 +97,9 @@ public class ShadowsocksBean extends AbstractBean {
         bean.muxPadding = muxPadding;
         bean.muxType = muxType;
         bean.muxConcurrency = muxConcurrency;
+        bean.muxMode = muxMode;
+        bean.muxMaxConnections = muxMaxConnections;
+        bean.muxMinStreams = muxMinStreams;
     }
 
     @NotNull

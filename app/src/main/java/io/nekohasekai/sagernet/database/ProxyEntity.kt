@@ -335,33 +335,51 @@ data class ProxyEntity(
             TYPE_VMESS -> MultiplexOptions().apply {
                 enabled = vmessBean!!.enableMux
                 padding = vmessBean!!.muxPadding
-                max_streams = vmessBean!!.muxConcurrency
                 protocol = when (vmessBean!!.muxType) {
                     1 -> "smux"
                     2 -> "yamux"
                     else -> "h2mux"
+                }
+                // muxMode 0: max_streams mode, 1: connections mode
+                if (vmessBean!!.muxMode == 1) {
+                    max_connections = vmessBean!!.muxMaxConnections
+                    min_streams = vmessBean!!.muxMinStreams
+                } else {
+                    max_streams = vmessBean!!.muxConcurrency
                 }
             }
 
             TYPE_TROJAN -> MultiplexOptions().apply {
                 enabled = trojanBean!!.enableMux
                 padding = trojanBean!!.muxPadding
-                max_streams = trojanBean!!.muxConcurrency
                 protocol = when (trojanBean!!.muxType) {
                     1 -> "smux"
                     2 -> "yamux"
                     else -> "h2mux"
+                }
+                // muxMode 0: max_streams mode, 1: connections mode
+                if (trojanBean!!.muxMode == 1) {
+                    max_connections = trojanBean!!.muxMaxConnections
+                    min_streams = trojanBean!!.muxMinStreams
+                } else {
+                    max_streams = trojanBean!!.muxConcurrency
                 }
             }
 
             TYPE_SS -> MultiplexOptions().apply {
                 enabled = ssBean!!.enableMux
                 padding = ssBean!!.muxPadding
-                max_streams = ssBean!!.muxConcurrency
                 protocol = when (ssBean!!.muxType) {
                     1 -> "smux"
                     2 -> "yamux"
                     else -> "h2mux"
+                }
+                // muxMode 0: max_streams mode, 1: connections mode
+                if (ssBean!!.muxMode == 1) {
+                    max_connections = ssBean!!.muxMaxConnections
+                    min_streams = ssBean!!.muxMinStreams
+                } else {
+                    max_streams = ssBean!!.muxConcurrency
                 }
             }
 

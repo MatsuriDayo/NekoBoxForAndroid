@@ -51,6 +51,9 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     private val muxPadding = pbm.add(PreferenceBinding(Type.Bool, "muxPadding"))
     private val muxType = pbm.add(PreferenceBinding(Type.TextToInt, "muxType"))
     private val muxConcurrency = pbm.add(PreferenceBinding(Type.TextToInt, "muxConcurrency"))
+    private val muxMode = pbm.add(PreferenceBinding(Type.TextToInt, "muxMode"))
+    private val muxMaxConnections = pbm.add(PreferenceBinding(Type.TextToInt, "muxMaxConnections"))
+    private val muxMinStreams = pbm.add(PreferenceBinding(Type.TextToInt, "muxMinStreams"))
 
     private val xhttpMode = pbm.add(PreferenceBinding(Type.Text, "xhttpMode"))
     private val xhttpExtra = pbm.add(PreferenceBinding(Type.Text, "xhttpExtra"))
@@ -155,6 +158,25 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
                 true
             }
         }
+
+        // Mux mode visibility control
+        muxMode.preference.apply {
+            updateMuxMode(muxMode.readIntFromCache())
+            this as SimpleMenuPreference
+            setOnPreferenceChangeListener { _, newValue ->
+                updateMuxMode((newValue as String).toInt())
+                true
+            }
+        }
+    }
+
+    private fun updateMuxMode(mode: Int) {
+        // mode 0: max_streams mode - show muxConcurrency, hide muxMaxConnections/muxMinStreams
+        // mode 1: connections mode - hide muxConcurrency, show muxMaxConnections/muxMinStreams
+        val isMaxStreamsMode = mode == 0
+        muxConcurrency.preference.isVisible = isMaxStreamsMode
+        muxMaxConnections.preference.isVisible = !isMaxStreamsMode
+        muxMinStreams.preference.isVisible = !isMaxStreamsMode
     }
 
     private fun updateView(network: String) {

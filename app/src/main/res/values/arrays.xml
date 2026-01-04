@@ -547,6 +547,11 @@
         <item>yamux</item>
     </string-array>
 
+    <string-array name="mux_mode">
+        <item>@string/mux_mode_max_streams</item>
+        <item>@string/mux_mode_connections</item>
+    </string-array>
+
     <string-array name="dns_network_select">
         <item>auto</item>
         <item>prefer_ipv6</item>

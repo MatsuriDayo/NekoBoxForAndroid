@@ -174,7 +174,12 @@
     <string name="mux_sum">Mux is designed to reduce TCP handshake latency, not to increase
         connection throughput. Using Mux to watch videos, download or speed test is usually counter
         productive. If the server does not support it, you will not be able to access the Internet.</string>
-    <string name="mux_concurrency">Mux Concurrent Connections</string>
+    <string name="mux_concurrency">Max Streams</string>
+    <string name="mux_mode">Mode</string>
+    <string name="mux_mode_max_streams">Max Streams</string>
+    <string name="mux_mode_connections">Connections</string>
+    <string name="mux_max_connections">Max Connections</string>
+    <string name="mux_min_streams">Min Streams</string>
     <string name="tcp_keep_alive_interval">TCP keep active packet delivery interval</string>
     <string name="proxied_apps">Apps VPN mode</string>
     <string name="proxied_apps_summary">Configure VPN mode for selected apps</string>

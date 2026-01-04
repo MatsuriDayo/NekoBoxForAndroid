@@ -68,11 +68,31 @@
             app:key="muxType"
             app:title="@string/mux_type"
             app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:defaultValue="0"
+            app:entries="@array/mux_mode"
+            app:entryValues="@array/int_array_2"
+            app:icon="@drawable/ic_baseline_tune_24"
+            app:key="muxMode"
+            app:title="@string/mux_mode"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             app:defaultValue="8"
             app:icon="@drawable/ic_baseline_low_priority_24"
             app:key="muxConcurrency"
             app:title="@string/mux_concurrency"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="4"
+            app:icon="@drawable/ic_baseline_low_priority_24"
+            app:key="muxMaxConnections"
+            app:title="@string/mux_max_connections"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="4"
+            app:icon="@drawable/ic_baseline_low_priority_24"
+            app:key="muxMinStreams"
+            app:title="@string/mux_min_streams"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference
             app:icon="@drawable/baseline_developer_board_24"
