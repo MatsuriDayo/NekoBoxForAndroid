@@ -605,6 +605,9 @@ data class ProxyEntity(
         @Update
         fun updateProxy(proxies: List<ProxyEntity>): Int
 
+        @Query("UPDATE proxy_entities SET rx = :rx, tx = :tx WHERE id = :proxyId")
+        fun updateTraffic(proxyId: Long, rx: Long, tx: Long): Int
+
         @Insert
         fun addProxy(proxy: ProxyEntity): Long
 

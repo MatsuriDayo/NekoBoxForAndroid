@@ -97,6 +97,10 @@ object ProfileManager {
         }
     }
 
+    suspend fun updateTraffic(profileId: Long, rx: Long, tx: Long) {
+        SagerDatabase.proxyDao.updateTraffic(profileId, rx, tx)
+    }
+
     suspend fun deleteProfile2(groupId: Long, profileId: Long) {
         if (SagerDatabase.proxyDao.deleteById(profileId) == 0) return
         if (DataStore.selectedProxy == profileId) {

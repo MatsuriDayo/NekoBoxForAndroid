@@ -31,7 +31,7 @@ class TrafficLooper
                 val item = idMap[ent.id] ?: return@forEach
                 ent.rx = item.rx
                 ent.tx = item.tx
-                ProfileManager.updateProfile(ent) // update DB
+                ProfileManager.updateTraffic(ent.id, ent.rx, ent.tx)
                 traffic[ent.id] = TrafficData(
                     id = ent.id,
                     rx = ent.rx,
@@ -67,7 +67,7 @@ class TrafficLooper
                     it.rx = rx
                     it.tx = tx
                     runOnDefaultDispatcher {
-                        ProfileManager.updateProfile(it) // update DB
+                        ProfileManager.updateTraffic(it.id, it.rx, it.tx)
                     }
                 }
             }
