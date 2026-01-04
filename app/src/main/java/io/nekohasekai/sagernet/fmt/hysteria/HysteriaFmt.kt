@@ -41,7 +41,7 @@ fun parseHysteria1(url: String): HysteriaBean {
             downloadMbps = it.toIntOrNull() ?: downloadMbps
         }
         link.queryParameter("alpn")?.also {
-            alpn = it
+            if (it != "none") alpn = it
         }
         link.queryParameter("obfsParam")?.also {
             obfuscation = it
@@ -193,7 +193,7 @@ fun JSONObject.parseHysteria1Json(): HysteriaBean {
             }
         }
         sni = getStr("server_name")
-        alpn = getStr("alpn")
+        getStr("alpn")?.also { if (it != "none") alpn = it }
         allowInsecure = getBool("insecure")
 
         streamReceiveWindow = getIntNya("recv_window_conn")
