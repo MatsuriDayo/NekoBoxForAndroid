@@ -100,6 +100,8 @@
     <string name="menu_traffic">Трафік</string>
     <string name="tile_title">Перамыкач</string>
     <string name="quick_toggle">Пераключыць</string>
+    <string name="quick_enable">Уключыць</string>
+    <string name="quick_disable">Выключыць</string>
     <string name="group_default">Разгрупаваны</string>
     <string name="document">Дакумент</string>
     <string name="theme">Тэма</string>

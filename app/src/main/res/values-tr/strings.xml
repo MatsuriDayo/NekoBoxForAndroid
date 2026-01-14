@@ -71,6 +71,8 @@
     <string name="tile_title">Değiştirici</string>
     <string name="group_name">Grup adı</string>
     <string name="quick_toggle">Aç/Kapat</string>
+    <string name="quick_enable">Etkinleştir</string>
+    <string name="quick_disable">Devre Dışı Bırak</string>
     <string name="group_default">Gruplandırılmamış</string>
     <string name="document">Döküman</string>
     <string name="theme">Tema</string>

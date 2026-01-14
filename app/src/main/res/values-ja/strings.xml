@@ -35,6 +35,8 @@
     <string name="group_name">グループ名</string>
     <string name="tile_title">スイッチャー</string>
     <string name="quick_toggle">トグル</string>
+    <string name="quick_enable">有効化</string>
+    <string name="quick_disable">無効化</string>
     <string name="group_default">グループ化されていない</string>
     <string name="document">ドキュメント（英語）</string>
     <string name="theme">テーマ</string>

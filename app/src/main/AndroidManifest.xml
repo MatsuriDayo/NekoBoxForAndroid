@@ -222,6 +222,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="io.nekohasekai.sagernet.ui.QuickEnableShortcut"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/quick_enable"
+            android:launchMode="singleTask"
+            android:process=":bg"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="io.nekohasekai.sagernet.ui.QuickDisableShortcut"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/quick_disable"
+            android:launchMode="singleTask"
+            android:process=":bg"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
             android:name="io.nekohasekai.sagernet.ui.AppManagerActivity"
             android:configChanges="uiMode"
             android:excludeFromRecents="true"

@@ -11,6 +11,26 @@
             android:targetPackage="moe.nb4a" />
     </shortcut>
     <shortcut
+        android:icon="@drawable/ic_qu_shadowsocks_launcher"
+        android:shortcutId="enable"
+        android:shortcutLongLabel="@string/quick_enable"
+        android:shortcutShortLabel="@string/quick_enable">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="io.nekohasekai.sagernet.ui.QuickEnableShortcut"
+            android:targetPackage="moe.nb4a" />
+    </shortcut>
+    <shortcut
+        android:icon="@drawable/ic_qu_shadowsocks_launcher"
+        android:shortcutId="disable"
+        android:shortcutLongLabel="@string/quick_disable"
+        android:shortcutShortLabel="@string/quick_disable">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="io.nekohasekai.sagernet.ui.QuickDisableShortcut"
+            android:targetPackage="moe.nb4a" />
+    </shortcut>
+    <shortcut
         android:icon="@drawable/ic_qu_camera_launcher"
         android:shortcutId="scan"
         android:shortcutLongLabel="@string/add_profile_methods_scan_qr_code"

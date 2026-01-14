@@ -23,6 +23,8 @@
     <string name="group_name">أسم المجموعة</string>
     <string name="tile_title">الجلاد</string>
     <string name="quick_toggle">تبديل</string>
+    <string name="quick_enable">تمكين</string>
+    <string name="quick_disable">تعطيل</string>
     <string name="group_default">غير مجمعة</string>
     <string name="document">وثيقة</string>
     <string name="theme">موضوع</string>
