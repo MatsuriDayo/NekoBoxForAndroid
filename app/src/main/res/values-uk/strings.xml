@@ -17,6 +17,8 @@
     <string name="document">Документація</string>
     <string name="group_default">Без групи</string>
     <string name="quick_toggle">Перемикач</string>
+    <string name="quick_enable">Увімкнути</string>
+    <string name="quick_disable">Вимкнути</string>
     <string name="tile_title">Перемикач</string>
     <string name="menu_traffic">Трафік</string>
     <string name="menu_dashboard">Панель керування sing-box</string>

@@ -9,6 +9,8 @@
     <string name="project">프로젝트</string>
     <string name="app_desc">코틀린에 기록 된 안드로이드에 대한 보편적 인 프록시 도구 체인.</string>
     <string name="quick_toggle">비녀장</string>
+    <string name="quick_enable">활성화</string>
+    <string name="quick_disable">비활성화</string>
     <string name="group_default">그룹 해제</string>
     <string name="document">문서</string>
     <string name="theme">테마</string>

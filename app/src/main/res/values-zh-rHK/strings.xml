@@ -75,6 +75,8 @@
     <string name="password_opt">密碼（可選）</string>
     <string name="start">開始</string>
     <string name="quick_toggle">切換</string>
+    <string name="quick_enable">啟用</string>
+    <string name="quick_disable">停用</string>
     <string name="group_edit">編輯</string>
     <string name="cag_ws">WebSocket 設定</string>
     <string name="show_direct_speed">顯示直連速度</string>

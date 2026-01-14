@@ -57,6 +57,8 @@
     <string name="group_update">Mettre à jour</string>
     <string name="group_name">Nom du groupe</string>
     <string name="quick_toggle">Basculer</string>
+    <string name="quick_enable">Activer</string>
+    <string name="quick_disable">Désactiver</string>
     <string name="group_default">Dégroupé</string>
     <string name="document">Document</string>
     <string name="theme">Thème</string>

@@ -5,6 +5,8 @@
     <string name="group_name">Gruppen name</string>
     <string name="tile_title">Umschalter</string>
     <string name="quick_toggle">Umschalten</string>
+    <string name="quick_enable">Aktivieren</string>
+    <string name="quick_disable">Deaktivieren</string>
     <string name="group_default">Ungruppiert</string>
     <string name="document">Dokument</string>
     <string name="theme">Style</string>

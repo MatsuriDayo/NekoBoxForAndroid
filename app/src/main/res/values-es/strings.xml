@@ -14,7 +14,9 @@
     <string name="theme">Tema</string> 
     <string name="document">Documento</string> 
     <string name="group_default">Desagrupado</string> 
-    <string name="quick_toggle">Alternar</string> 
+    <string name="quick_toggle">Alternar</string>
+    <string name="quick_enable">Habilitar</string>
+    <string name="quick_disable">Deshabilitar</string>
     <string name="tile_title">Conmutador</string> 
     <string name="menu_traffic">Tráfico</string> 
     <!-- externel --> 
