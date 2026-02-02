@@ -161,7 +161,9 @@ object RawUpdater : GroupUpdater() {
             if (toReplace.contains(name)) {
                 val entity = toReplace[name]!!
                 val existsBean = entity.requireBean()
-                existsBean.applyFeatureSettings(bean)
+                // 更新订阅，保留自定义覆写设置
+                bean.customOutboundJson = existsBean.customOutboundJson
+                bean.customConfigJson = existsBean.customConfigJson
                 when {
                     existsBean != bean -> {
                         changed++

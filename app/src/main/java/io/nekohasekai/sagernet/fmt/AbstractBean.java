@@ -144,8 +144,4 @@ public abstract class AbstractBean extends Serializable {
     public String toString() {
         return getClass().getSimpleName() + " " + JavaUtil.gson.toJson(this);
     }
-
-    public void applyFeatureSettings(AbstractBean other) {
-    }
-
 }

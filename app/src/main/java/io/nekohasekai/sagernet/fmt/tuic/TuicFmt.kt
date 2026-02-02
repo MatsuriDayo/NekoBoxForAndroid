@@ -17,10 +17,20 @@ fun parseTuic(url: String): TuicBean {
         protocolVersion = 5
 
         name = link.fragment
-        uuid = link.username
-        token = link.password
         serverAddress = link.host
         serverPort = link.port
+
+        val rawUser = link.username
+        val rawPass = link.password
+
+        if (rawUser.contains(":")) {
+            val parts = rawUser.split(":", limit = 2)
+            uuid = parts[0]
+            token = parts.getOrElse(1) { "" }
+        } else {
+            uuid = rawUser
+            token = rawPass
+        }
 
         link.queryParameter("sni")?.let {
             sni = it

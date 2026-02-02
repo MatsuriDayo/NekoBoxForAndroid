@@ -151,17 +151,6 @@ public class HysteriaBean extends AbstractBean {
     }
 
     @Override
-    public void applyFeatureSettings(AbstractBean other) {
-        if (!(other instanceof HysteriaBean)) return;
-        HysteriaBean bean = ((HysteriaBean) other);
-        bean.uploadMbps = uploadMbps;
-        bean.downloadMbps = downloadMbps;
-        bean.allowInsecure = allowInsecure;
-        bean.disableMtuDiscovery = disableMtuDiscovery;
-        bean.hopInterval = hopInterval;
-    }
-
-    @Override
     public String displayAddress() {
         return NetsKt.wrapIPV6Host(serverAddress) + ":" + serverPorts;
     }

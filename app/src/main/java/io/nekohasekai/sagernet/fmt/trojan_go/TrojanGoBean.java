@@ -146,15 +146,6 @@ public class TrojanGoBean extends AbstractBean {
         }
     }
 
-    @Override
-    public void applyFeatureSettings(AbstractBean other) {
-        if (!(other instanceof TrojanGoBean)) return;
-        TrojanGoBean bean = ((TrojanGoBean) other);
-        if (allowInsecure) {
-            bean.allowInsecure = true;
-        }
-    }
-
     @NotNull
     @Override
     public TrojanGoBean clone() {

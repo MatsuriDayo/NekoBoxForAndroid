@@ -258,21 +258,6 @@ public abstract class StandardV2RayBean extends AbstractBean {
         }
     }
 
-    @Override
-    public void applyFeatureSettings(AbstractBean other) {
-        if (!(other instanceof StandardV2RayBean)) return;
-        StandardV2RayBean bean = ((StandardV2RayBean) other);
-        bean.allowInsecure = allowInsecure;
-        bean.utlsFingerprint = utlsFingerprint;
-        bean.packetEncoding = packetEncoding;
-        bean.enableECH = enableECH;
-        bean.echConfig = echConfig;
-        bean.enableMux = enableMux;
-        bean.muxPadding = muxPadding;
-        bean.muxType = muxType;
-        bean.muxConcurrency = muxConcurrency;
-    }
-
     public boolean isVLESS() {
         if (this instanceof VMessBean) {
             Integer aid = ((VMessBean) this).alterId;
