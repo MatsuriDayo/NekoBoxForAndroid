@@ -342,6 +342,8 @@
 <string name="proxy_cat">Настройки сервера</string>
 <string name="proxy_chain">Прокси-цепочка</string>
 <string name="quick_toggle">Переключить</string>
+<string name="quick_enable">Включить</string>
+<string name="quick_disable">Выключить</string>
 <string name="reboot_required">Не удалось запустить службу VPN. Возможно, вам потребуется перезагрузить устройство.</string>
 <string name="release_wake_lock">Отключить WakeLock</string>
 <string name="remote_dns">Удаленный DNS</string>

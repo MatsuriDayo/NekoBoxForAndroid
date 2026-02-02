@@ -476,12 +476,17 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                         used += toLong()
                     }
                     val total = get("total=([0-9]+)")?.toLong() ?: 0
+                    val remain = total - used
                     if (used > 0 || total > 0) {
-                        text += getString(
-                            R.string.subscription_traffic,
-                            used.toBytesString(),
-                            (total - used).toBytesString()
-                        )
+                        text += if (remain > 0) {
+                            getString(
+                                R.string.subscription_traffic,
+                                used.toBytesString(),
+                                remain.toBytesString()
+                            )
+                        } else {
+                            getString(R.string.subscription_used, used.toBytesString())
+                        }
                     }
                     get("expire=([0-9]+)")?.apply {
                         text += "\n"

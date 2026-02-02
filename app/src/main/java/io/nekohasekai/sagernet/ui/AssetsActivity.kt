@@ -211,7 +211,12 @@ class AssetsActivity : ThemedActivity() {
 
             val localVersion = if (file.isFile) {
                 if (versionFile.isFile) {
-                    versionFile.readText().trim()
+                    try {
+                        versionFile.readText().trim()
+                    } catch (e: Throwable) {
+                        snackbar(e.readableMessage)
+                        "<unknown>"
+                    }
                 } else {
                     "Unknown-" + DateFormat.getDateFormat(app).format(Date(file.lastModified()))
                 }

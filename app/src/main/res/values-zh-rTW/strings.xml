@@ -11,6 +11,8 @@
     <string name="menu_group">群組</string>
     <string name="menu_about">關於</string>
     <string name="quick_toggle">切換</string>
+    <string name="quick_enable">啟用</string>
+    <string name="quick_disable">停用</string>
     <!-- group -->
     <string name="group_name">群組名稱</string>
     <string name="group_update">更新</string>

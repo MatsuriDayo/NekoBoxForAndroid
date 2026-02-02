@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +50,16 @@ public class ConfigBean extends InternalBean {
     }
 
     public String displayType() {
-        return type == 0 ? "sing-box config" : "sing-box outbound";
+        if (type != null && type == 1 && JavaUtil.isNotBlank(config)) {
+            try {
+                JsonObject json = JavaUtil.gson.fromJson(config, JsonObject.class);
+                if (json != null && json.has("type")) {
+                    return json.get("type").getAsString() + " (sing-box)";
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return type != null && type == 0 ? "sing-box config" : "sing-box outbound";
     }
 
     @NotNull

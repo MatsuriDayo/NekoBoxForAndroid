@@ -17,6 +17,8 @@
     <string name="document">مستندات</string>
     <string name="group_default">گروه پیش‌فرض</string>
     <string name="quick_toggle">تغییر وضعیت</string>
+    <string name="quick_enable">فعال‌سازی</string>
+    <string name="quick_disable">غیرفعال‌سازی</string>
     <string name="tile_title">سوییچر</string>
     <string name="menu_traffic">ترافیک</string>
     <string name="menu_dashboard">sing-box تنظیمات</string>

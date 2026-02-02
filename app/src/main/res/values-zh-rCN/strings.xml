@@ -12,6 +12,8 @@
     <string name="menu_about">关于</string>
     <string name="group_default">未分组</string>
     <string name="quick_toggle">切换</string>
+    <string name="quick_enable">启用</string>
+    <string name="quick_disable">禁用</string>
     <!-- group -->
     <string name="group_name">分组名</string>
     <string name="group_update">更新</string>
