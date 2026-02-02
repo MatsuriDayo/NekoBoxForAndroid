@@ -240,17 +240,7 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 	var mu sync.Mutex
 
 	funcs := []requestFunc{
-		// 普通，不再重试 socks5
-		func() (response *http.Response, err error) {
-			request := r.request.Clone(context.Background())
-			h1h2Client := &http.Client{
-				Transport: &http.Transport{
-					DisableKeepAlives: true,
-				},
-			}
-			return h1h2Client.Do(request)
-		},
-		// ECH HTTPS
+		// Http(s) With Ech
 		func() (response *http.Response, err error) {
 			request := r.request.Clone(context.Background())
 			echClient := &http.Client{
@@ -266,7 +256,7 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 							domain = host
 						}
 						echTls := ech.NewECHClientConfig(domain, &r.tls, gLocalDNSTransport)
-						return echTls.ClientHandshake(ctx, c)
+						return echTls.Client(ctx, c)
 					},
 					DisableKeepAlives: true,
 				},
@@ -307,10 +297,8 @@ func (r *httpRequest) doH3Direct() (HTTPResponse, error) {
 			var t string
 			switch i {
 			case 0:
-				t = "h1h2"
+				t = "http(s)"
 			case 1:
-				t = "ech"
-			case 2:
 				t = "h3"
 			}
 

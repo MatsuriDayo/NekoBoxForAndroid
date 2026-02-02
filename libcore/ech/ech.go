@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/base64"
+	"log"
 	"net"
 	"os"
 
@@ -29,21 +30,16 @@ func NewECHClientConfig(domain string, tlsConfig *tls.Config, localDnsTransport 
 	}
 }
 
-// ClientHandshake 封装 TLS 握手
-func (s *ECHClientConfig) ClientHandshake(ctx context.Context, conn net.Conn) (*tls.Conn, error) {
-	tlsConn, err := s.fetchAndHandshake(ctx, conn)
+func (s *ECHClientConfig) Client(ctx context.Context, conn net.Conn) (*tls.Conn, error) {
+	err := s.fetchEchKeys(ctx, conn)
 	if err != nil {
-		return nil, err
+		// allow empty ech keys
+		log.Println("fetchEchKeys:", err)
 	}
-	err = tlsConn.HandshakeContext(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return tlsConn, nil
+	return tls.Client(conn, s.Config), nil
 }
 
-// fetchAndHandshake 查询 ECHConfigList 并完成 TLS 连接
-func (s *ECHClientConfig) fetchAndHandshake(ctx context.Context, conn net.Conn) (*tls.Conn, error) {
+func (s *ECHClientConfig) fetchEchKeys(ctx context.Context, conn net.Conn) error {
 	message := &mDNS.Msg{
 		MsgHdr: mDNS.MsgHdr{
 			RecursionDesired: true,
@@ -57,14 +53,14 @@ func (s *ECHClientConfig) fetchAndHandshake(ctx context.Context, conn net.Conn) 
 		},
 	}
 	if s.localDnsTransport == nil {
-		return nil, os.ErrInvalid
+		return os.ErrInvalid
 	}
 	response, err := s.localDnsTransport.Exchange(ctx, message)
 	if err != nil {
-		return nil, exceptions.Cause(err, "fetch ECH config list")
+		return exceptions.Cause(err, "fetch ECH config list")
 	}
 	if response.Rcode != mDNS.RcodeSuccess {
-		return nil, exceptions.Cause(dns.RcodeError(response.Rcode), "fetch ECH config list")
+		return exceptions.Cause(dns.RcodeError(response.Rcode), "fetch ECH config list")
 	}
 	for _, rr := range response.Answer {
 		switch resource := rr.(type) {
@@ -79,5 +75,5 @@ func (s *ECHClientConfig) fetchAndHandshake(ctx context.Context, conn net.Conn) 
 			}
 		}
 	}
-	return tls.Client(conn, s.Config), nil
+	return nil
 }

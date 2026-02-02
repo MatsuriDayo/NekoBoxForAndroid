@@ -477,6 +477,15 @@ object RawUpdater : GroupUpdater() {
                                             }
                                         }
                                     }
+
+                                    "ech-opts" -> (opt.value as? Map<String, Any?>)?.also {
+                                        for (echOpt in it) {
+                                            when (echOpt.key) {
+                                                "enable" -> bean.enableECH =
+                                                    echOpt.value.toString() == "true"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             proxies.add(bean)
