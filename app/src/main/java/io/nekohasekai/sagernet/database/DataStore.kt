@@ -155,6 +155,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     val persistAcrossReboot by configurationStore.boolean(Key.PERSIST_ACROSS_REBOOT) { false }
 
     var appendHttpProxy by configurationStore.boolean(Key.APPEND_HTTP_PROXY)
+    var requireProxyInVPN by configurationStore.boolean(Key.REQUIRE_PROXY_IN_VPN)
     var connectionTestURL by configurationStore.string(Key.CONNECTION_TEST_URL) { CONNECTION_TEST_URL }
     var connectionTestConcurrent by configurationStore.int("connectionTestConcurrent") { 5 }
     var alwaysShowAddress by configurationStore.boolean(Key.ALWAYS_SHOW_ADDRESS)

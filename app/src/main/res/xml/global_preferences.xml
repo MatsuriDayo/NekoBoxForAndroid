@@ -189,6 +189,11 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/inbound_settings">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="requireProxyInVPN"
+            app:summary="@string/require_proxy_in_vpn_sum"
+            app:title="@string/require_proxy_in_vpn" />
         <EditTextPreference
             app:icon="@drawable/ic_maps_directions_boat"
             app:key="mixedPort"

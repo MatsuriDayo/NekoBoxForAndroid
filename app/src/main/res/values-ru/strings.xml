@@ -39,6 +39,8 @@
 <string name="app_name_long">NekoBox для Android</string>
 <string name="app_tls_version">Минимальная версия TLS протокола</string>
 <string name="app_version">Версия</string>
+<string name="require_proxy_in_vpn">Локальный прокси в режиме VPN</string>
+<string name="require_proxy_in_vpn_sum">Открывает локальный SOCKS/HTTP прокси-порт наряду с TUN-интерфейсом. Отключено по умолчанию для предотвращения обнаружения VPN через открытые порты.</string>
 <string name="append_http_proxy">Добавить HTTP-прокси к VPN</string>
 <string name="append_http_proxy_sum">HTTP-прокси будет использоваться напрямую из (браузера / некоторых поддерживаемых приложений), без использования виртуального сетевого интерфейса (Android 10+)</string>
 <string name="apply">Применить</string>

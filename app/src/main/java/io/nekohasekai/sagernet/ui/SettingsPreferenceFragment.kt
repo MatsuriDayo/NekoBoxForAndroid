@@ -61,6 +61,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             Theme.applyNightTheme()
             true
         }
+        val requireProxyInVPN = findPreference<SwitchPreference>(Key.REQUIRE_PROXY_IN_VPN)!!
         val mixedPort = findPreference<EditTextPreference>(Key.MIXED_PORT)!!
         val serviceMode = findPreference<Preference>(Key.SERVICE_MODE)!!
         val allowAccess = findPreference<Preference>(Key.ALLOW_ACCESS)!!
@@ -148,6 +149,7 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
 
+        requireProxyInVPN.onPreferenceChangeListener = reloadListener
         mixedPort.onPreferenceChangeListener = reloadListener
         appendHttpProxy.onPreferenceChangeListener = reloadListener
         showDirectSpeed.onPreferenceChangeListener = reloadListener
