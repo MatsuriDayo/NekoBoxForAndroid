@@ -20,6 +20,7 @@ import io.nekohasekai.sagernet.ktx.string
 import io.nekohasekai.sagernet.ktx.stringToInt
 import io.nekohasekai.sagernet.ktx.stringToIntIfExists
 import moe.matsuri.nb4a.TempDatabase
+import moe.matsuri.nb4a.utils.Util
 
 object DataStore : OnPreferenceDataStoreChangeListener {
 
@@ -128,10 +129,16 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var mixedPort: Int
         get() = getLocalPort(Key.MIXED_PORT, 2080)
         set(value) = saveLocalPort(Key.MIXED_PORT, value)
+    var mixedUsername by configurationStore.string(Key.MIXED_USERNAME) { "User" }
+    var mixedPassword by configurationStore.string(Key.MIXED_PASSWORD) { Util.generateCryptoSecurePassword() }
 
     fun initGlobal() {
         if (configurationStore.getString(Key.MIXED_PORT) == null) {
             mixedPort = mixedPort
+        }
+
+        if (configurationStore.getString(Key.MIXED_PASSWORD) == null) {
+            mixedPassword = Util.generateCryptoSecurePassword()
         }
     }
 

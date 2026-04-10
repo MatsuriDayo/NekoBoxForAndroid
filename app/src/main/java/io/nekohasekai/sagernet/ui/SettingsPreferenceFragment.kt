@@ -62,6 +62,8 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
         val mixedPort = findPreference<EditTextPreference>(Key.MIXED_PORT)!!
+        val mixedUsername = findPreference<EditTextPreference>(Key.MIXED_USERNAME)!!
+        val mixedPassword = findPreference<EditTextPreference>(Key.MIXED_PASSWORD)!!
         val serviceMode = findPreference<Preference>(Key.SERVICE_MODE)!!
         val allowAccess = findPreference<Preference>(Key.ALLOW_ACCESS)!!
         val appendHttpProxy = findPreference<SwitchPreference>(Key.APPEND_HTTP_PROXY)!!
@@ -149,6 +151,8 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         mixedPort.onPreferenceChangeListener = reloadListener
+        mixedUsername.onPreferenceChangeListener = reloadListener
+        mixedPassword.onPreferenceChangeListener = reloadListener
         appendHttpProxy.onPreferenceChangeListener = reloadListener
         showDirectSpeed.onPreferenceChangeListener = reloadListener
         trafficSniffing.onPreferenceChangeListener = reloadListener
