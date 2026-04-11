@@ -170,6 +170,9 @@ object DataStore : OnPreferenceDataStoreChangeListener {
 
     // old cache, DO NOT ADD
 
+    var inboundSocksUsername by configurationStore.string("inboundSocksUsername")
+    var inboundSocksPassword by configurationStore.string("inboundSocksPassword")
+
     var dirty by profileCacheStore.boolean(Key.PROFILE_DIRTY)
     var editingId by profileCacheStore.long(Key.PROFILE_ID)
     var editingGroup by profileCacheStore.long(Key.PROFILE_GROUP)

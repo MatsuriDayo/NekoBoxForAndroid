@@ -232,6 +232,15 @@ fun buildConfig(
                 domain_strategy = genDomainStrategy(DataStore.resolveDestination)
                 sniff = needSniff
                 sniff_override_destination = needSniffOverride
+
+                val inboundUser = DataStore.inboundSocksUsername
+                val inboundPass = DataStore.inboundSocksPassword
+                if (!inboundUser.isNullOrBlank() && !inboundPass.isNullOrBlank()) {
+                    users = listOf(User().apply {
+                        username = inboundUser
+                        password = inboundPass
+                    })
+                }
             })
         }
 

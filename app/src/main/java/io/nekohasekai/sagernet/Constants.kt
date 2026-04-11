@@ -1,6 +1,6 @@
 package io.nekohasekai.sagernet
 
-const val CONNECTION_TEST_URL = "http://cp.cloudflare.com/"
+const val CONNECTION_TEST_URL = "https://cp.cloudflare.com/"
 
 object Key {
 

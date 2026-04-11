@@ -194,6 +194,16 @@
             app:key="mixedPort"
             app:title="@string/port_proxy"
             app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_person_24"
+            app:key="inboundSocksUsername"
+            app:title="Local SOCKS Username"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:dialogLayout="@layout/layout_password_dialog"
+            app:icon="@drawable/ic_settings_password"
+            app:key="inboundSocksPassword"
+            app:title="Local SOCKS Password" />
         <SwitchPreference
             app:defaultValue="false"
             app:key="appendHttpProxy"
@@ -208,7 +218,7 @@
 
     <PreferenceCategory app:title="@string/cag_misc">
         <moe.matsuri.nb4a.ui.UrlTestPreference
-            app:defaultValue="http://cp.cloudflare.com/"
+            app:defaultValue="https://cp.cloudflare.com/"
             app:icon="@drawable/ic_baseline_cast_connected_24"
             app:key="connectionTestURL"
             app:title="@string/connection_test_url"

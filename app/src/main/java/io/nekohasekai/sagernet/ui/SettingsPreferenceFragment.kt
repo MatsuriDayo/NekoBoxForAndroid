@@ -62,6 +62,8 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
         val mixedPort = findPreference<EditTextPreference>(Key.MIXED_PORT)!!
+        val inboundSocksUsername = findPreference<EditTextPreference>("inboundSocksUsername")!!
+        val inboundSocksPassword = findPreference<EditTextPreference>("inboundSocksPassword")!!
         val serviceMode = findPreference<Preference>(Key.SERVICE_MODE)!!
         val allowAccess = findPreference<Preference>(Key.ALLOW_ACCESS)!!
         val appendHttpProxy = findPreference<SwitchPreference>(Key.APPEND_HTTP_PROXY)!!
@@ -111,6 +113,10 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         mixedPort.setOnBindEditTextListener(EditTextPreferenceModifiers.Port)
+
+        inboundSocksPassword.summaryProvider = LocalPasswordSummaryProvider
+        inboundSocksUsername.onPreferenceChangeListener = reloadListener
+        inboundSocksPassword.onPreferenceChangeListener = reloadListener
 
         val metedNetwork = findPreference<Preference>(Key.METERED_NETWORK)!!
         if (Build.VERSION.SDK_INT < 28) {
@@ -178,6 +184,19 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
         }
         if (::globalCustomConfig.isInitialized) {
             globalCustomConfig.notifyChanged()
+        }
+    }
+
+    companion object {
+        object LocalPasswordSummaryProvider : Preference.SummaryProvider<EditTextPreference> {
+            override fun provideSummary(preference: EditTextPreference): CharSequence {
+                val text = preference.text
+                return if (text.isNullOrBlank()) {
+                    preference.context.getString(androidx.preference.R.string.not_set)
+                } else {
+                    "\u2022".repeat(text.length)
+                }
+            }
         }
     }
 
