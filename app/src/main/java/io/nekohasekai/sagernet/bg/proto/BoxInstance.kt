@@ -56,6 +56,8 @@ abstract class BoxInstance(
         buildConfig()
         for ((chain) in config.externalIndex) {
             chain.entries.forEachIndexed { index, (port, profile) ->
+                val creds = config.localProxyCredentials[port] ?: error("No local proxy credentials for port $port")
+                val (localProxyUsername, localProxyPassword) = creds
                 when (val bean = profile.requireBean()) {
                     is TrojanGoBean -> {
                         initPlugin("trojan-go-plugin")
@@ -69,7 +71,7 @@ abstract class BoxInstance(
 
                     is NaiveBean -> {
                         initPlugin("naive-plugin")
-                        pluginConfigs[port] = profile.type to bean.buildNaiveConfig(port)
+                        pluginConfigs[port] = profile.type to bean.buildNaiveConfig(port, localProxyUsername, localProxyPassword)
                     }
 
                     is HysteriaBean -> {

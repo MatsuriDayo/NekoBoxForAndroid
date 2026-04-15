@@ -288,8 +288,11 @@ data class ProxyEntity(
                             }
 
                             is NaiveBean -> {
+                                val localProxyCredentials = config.localProxyCredentials[port]
+                                val localProxyUsername = localProxyCredentials?.first ?: ""
+                                val localProxyPassword = localProxyCredentials?.second ?: ""
                                 append("\n\n")
-                                append(bean.buildNaiveConfig(port))
+                                append(bean.buildNaiveConfig(port, localProxyUsername, localProxyPassword))
                             }
 
                             is HysteriaBean -> {

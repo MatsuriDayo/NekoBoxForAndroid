@@ -55,6 +55,7 @@ class ConfigBuildResult(
     var trafficMap: Map<String, List<ProxyEntity>>,
     var profileTagMap: Map<Long, String>,
     val selectorGroupId: Long,
+    val localProxyCredentials: Map<Int, Pair<String, String>>,
 ) {
     data class IndexEntity(var chain: LinkedHashMap<Int, ProxyEntity>)
 }
@@ -62,7 +63,8 @@ class ConfigBuildResult(
 fun buildConfig(
     proxy: ProxyEntity, forTest: Boolean = false, forExport: Boolean = false
 ): ConfigBuildResult {
-
+    val localProxyCredentials = HashMap<Int, Pair<String, String>>()
+    
     if (proxy.type == TYPE_CONFIG) {
         val bean = proxy.requireBean() as ConfigBean
         if (bean.type == 0) {
@@ -72,7 +74,8 @@ fun buildConfig(
                 proxy.id, //
                 mapOf(TAG_PROXY to listOf(proxy)), //
                 mapOf(proxy.id to TAG_PROXY), //
-                -1L
+                -1L,
+                localProxyCredentials
             )
         }
     }
@@ -224,15 +227,23 @@ fun buildConfig(
                     }
                 }
             })
-            inbounds.add(Inbound_MixedOptions().apply {
-                type = "mixed"
-                tag = TAG_MIXED
-                listen = bind
-                listen_port = DataStore.mixedPort
-                domain_strategy = genDomainStrategy(DataStore.resolveDestination)
-                sniff = needSniff
-                sniff_override_destination = needSniffOverride
-            })
+            if (DataStore.enableMixed) {
+                inbounds.add(Inbound_MixedOptions().apply {
+                    type = "mixed"
+                    tag = TAG_MIXED
+                    listen = bind
+                    listen_port = DataStore.mixedPort
+                    domain_strategy = genDomainStrategy(DataStore.resolveDestination)
+                    sniff = needSniff
+                    sniff_override_destination = needSniffOverride
+                    users = listOf(
+                        User().apply {
+                            username = DataStore.mixedUsername
+                            password = DataStore.mixedPassword
+                        },
+                    )
+                })
+            }
         }
 
         outbounds = mutableListOf()
@@ -326,11 +337,16 @@ fun buildConfig(
 
                 if (proxyEntity.needExternal()) { // externel outbound
                     val localPort = mkPort()
+                    val localProxyUsername = Util.generateCryptoSecurePassword()
+                    val localProxyPassword = Util.generateCryptoSecurePassword()
                     externalChainMap[localPort] = proxyEntity
+                    localProxyCredentials[localPort] = localProxyUsername to localProxyPassword
                     currentOutbound = Outbound_SocksOptions().apply {
                         type = "socks"
                         server = LOCALHOST
                         server_port = localPort
+                        username = localProxyUsername
+                        password = localProxyPassword
                     }
                 } else {
                     // internal outbound
@@ -748,7 +764,8 @@ fun buildConfig(
             proxy.id,
             trafficMap,
             tagMap,
-            if (buildSelector) group.id else -1L
+            if (buildSelector) group.id else -1L,
+            localProxyCredentials
         )
     }
 

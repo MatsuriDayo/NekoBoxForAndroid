@@ -27,6 +27,10 @@
 <string name="ads">Реклама</string>
 <string name="allow_access">Разрешить подключения из локальной сети</string>
 <string name="allow_access_sum">Привязать входящие серверы к 0.0.0.0</string>
+<string name="proxy_username">Логин</string>
+<string name="proxy_password">Пароль</string>
+<string name="enable_mixed">Включить прокси SOCKS5</string>
+<string name="enable_mixed_sum">Использование прокси SOCKS5 может раскрыть внешний IP VPN-сервера</string>
 <string name="allow_insecure">Разрешить небезопасное подключение</string>
 <string name="allow_insecure_on_request_sum">Отключить проверку сертификатов при обновлении подписок</string>
 <string name="allow_insecure_sum">Отключить проверку сертификата. При включении эта функция настолько же безопасна как передача пароля в открытом виде</string>

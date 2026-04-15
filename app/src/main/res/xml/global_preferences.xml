@@ -189,11 +189,26 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/inbound_settings">
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="enableMixed"
+            app:summary="@string/enable_mixed_sum"
+            app:title="@string/enable_mixed" />
         <EditTextPreference
             app:icon="@drawable/ic_maps_directions_boat"
             app:key="mixedPort"
             app:title="@string/port_proxy"
             app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="User"
+            app:key="mixedUsername"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/proxy_username" />
+        <EditTextPreference
+            app:icon="@drawable/ic_settings_password"
+            app:key="mixedPassword"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/proxy_password" />
         <SwitchPreference
             app:defaultValue="false"
             app:key="appendHttpProxy"

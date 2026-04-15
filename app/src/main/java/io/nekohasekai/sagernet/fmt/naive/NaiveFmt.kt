@@ -5,6 +5,7 @@ import io.nekohasekai.sagernet.fmt.LOCALHOST
 import io.nekohasekai.sagernet.ktx.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONObject
+import android.net.Uri
 
 fun parseNaive(link: String): NaiveBean {
     val proto = link.substringAfter("+").substringBefore(":")
@@ -54,7 +55,7 @@ fun NaiveBean.toUri(proxyOnly: Boolean = false): String {
     return builder.toLink(if (proxyOnly) proto else "naive+$proto", false)
 }
 
-fun NaiveBean.buildNaiveConfig(port: Int): String {
+fun NaiveBean.buildNaiveConfig(port: Int, localProxyUsername: String, localProxyPassword: String): String {
     return JSONObject().apply {
         // process ipv6
         finalAddress = finalAddress.wrapIPV6Host()
@@ -75,7 +76,10 @@ fun NaiveBean.buildNaiveConfig(port: Int): String {
             }
         }
 
-        put("listen", "socks://$LOCALHOST:$port")
+        val usernameEnc = Uri.encode(localProxyUsername)
+        val passwordEnc = Uri.encode(localProxyPassword)
+
+        put("listen", "socks://$usernameEnc:$passwordEnc@$LOCALHOST:$port")
         put("proxy", toUri(true))
         if (extraHeaders.isNotBlank()) {
             put("extra-headers", extraHeaders.split("\n").joinToString("\r\n"))
