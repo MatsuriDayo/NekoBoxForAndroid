@@ -342,6 +342,19 @@
             android:name="androidx.room.MultiInstanceInvalidationService"
             android:process=":bg" />
 
+        <receiver
+            android:name="io.nekohasekai.sagernet.widget.ProxyToggleWidget"
+            android:exported="false"
+            android:label="@string/widget_name"
+            android:process=":bg">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_proxy_toggle_info" />
+        </receiver>
+
     </application>
 
 </manifest>

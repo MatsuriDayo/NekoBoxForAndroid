@@ -20,6 +20,14 @@
     <string name="quick_enable">Enable</string>
     <string name="quick_disable">Disable</string>
     <string name="tile_title">Switcher</string>
+    <!-- widget -->
+    <string name="widget_name">Proxy Toggle</string>
+    <string name="widget_description">One-click proxy toggle</string>
+    <string name="widget_toggle_proxy">Toggle proxy</string>
+    <string name="widget_status_connected">Connected</string>
+    <string name="widget_status_connecting">Connecting…</string>
+    <string name="widget_status_stopping">Stopping…</string>
+    <string name="widget_status_stopped">Stopped</string>
     <string name="menu_traffic">Traffic</string>
     <string name="menu_dashboard">sing-box Dashboard</string>
     <!-- externel -->
