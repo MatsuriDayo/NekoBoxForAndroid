@@ -184,4 +184,5 @@ object Action {
 
     // const val SWITCH_WAKE_LOCK = "io.nekohasekai.sagernet.SWITCH_WAKELOCK"
     const val RESET_UPSTREAM_CONNECTIONS = "moe.nb4a.RESET_UPSTREAM_CONNECTIONS"
+    const val WIDGET_UPDATE = "io.nekohasekai.sagernet.WIDGET_UPDATE"
 }

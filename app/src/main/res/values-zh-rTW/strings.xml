@@ -201,6 +201,14 @@
 \n%s</string>
     <string name="group_diff">差異（%s）</string>
     <string name="tile_title">切換器</string>
+    <!-- 桌面小工具 -->
+    <string name="widget_name">代理開關</string>
+    <string name="widget_description">一鍵切換代理開關</string>
+    <string name="widget_toggle_proxy">切換代理</string>
+    <string name="widget_status_connected">已連接</string>
+    <string name="widget_status_connecting">連接中…</string>
+    <string name="widget_status_stopping">停止中…</string>
+    <string name="widget_status_stopped">已斷開</string>
     <string name="group_default">未分組</string>
     <string name="version_x">版本 (%s)</string>
     <string name="extra_headers">額外標頭</string>
