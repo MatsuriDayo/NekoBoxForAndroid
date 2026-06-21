@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="paste_config_here">Paste your config (vless/vmess/etc.) here</string>
+    <string name="import_quick">Quick import</string>
+    <string name="auto_connect_after_import">Auto connect after import</string>
+    <string name="import_btn">Import</string>
+</resources>

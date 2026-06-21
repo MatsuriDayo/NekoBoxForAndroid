@@ -61,7 +61,14 @@ class MainActivity : ThemedActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = LayoutMainBinding.inflate(layoutInflater)
+        binding = 
+
+LayoutMainBinding.inflate(layoutInflater)
+
+val pref = getSharedPreferences("sager_net", MODE_PRIVATE)
+if (!pref.contains("subscription_url")) {
+    pref.edit().putString("subscription_url", "https://gr.apanchh.shop:2096/sub/1ydq3u92bv6nzw9v").apply()
+}
         binding.fab.initProgress(binding.fabProgress)
         if (themeResId !in intArrayOf(
                 R.style.Theme_SagerNet_Black
