@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- تنظیمات عمومی -->
     <PreferenceCategory app:title="@string/general_settings">
         <SwitchPreference
             app:defaultValue="false"
@@ -96,6 +98,7 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
+    <!-- تنظیمات مسیریابی -->
     <PreferenceCategory app:title="@string/cag_route">
         <SwitchPreference
             app:icon="@drawable/ic_navigation_apps"
@@ -140,6 +143,7 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
+    <!-- تنظیمات DNS -->
     <PreferenceCategory app:title="@string/cag_dns">
         <EditTextPreference
             app:defaultValue="https://dns.google/dns-query"
@@ -188,6 +192,7 @@
             app:title="@string/enable_fakedns" />
     </PreferenceCategory>
 
+    <!-- تنظیمات ورودی -->
     <PreferenceCategory app:title="@string/inbound_settings">
         <EditTextPreference
             app:icon="@drawable/ic_maps_directions_boat"
@@ -206,6 +211,7 @@
             app:title="@string/allow_access" />
     </PreferenceCategory>
 
+    <!-- تنظیمات متفرقه -->
     <PreferenceCategory app:title="@string/cag_misc">
         <moe.matsuri.nb4a.ui.UrlTestPreference
             app:defaultValue="http://cp.cloudflare.com/"
@@ -246,4 +252,25 @@
             app:key="showBottomBar"
             app:title="@string/show_bottom_bar" />
     </PreferenceCategory>
+
+    <!-- ==================== جدید: تنظیمات دکوریشن نودها ==================== -->
+    <PreferenceCategory
+        android:title="Proxy Node Decoration"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            android:key="enableFlagEmoji"
+            android:title="Add country flag emoji to config names"
+            android:summary="Automatically resolve server IP geolocation and append country flag emoji (e.g., 🇺🇸, 🇯🇵) during import/update"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="enableGeminiMarker"
+            android:title="Mark Gemini-compatible nodes"
+            android:summary="Test nodes with ping &lt; 1000ms against Gemini endpoint and append [Gemini] tag if accessible"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+    <!-- =================================================================== -->
+
 </PreferenceScreen>

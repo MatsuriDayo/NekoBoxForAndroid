@@ -1,0 +1,99 @@
+name: Build NekoBox Android Release
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git tag/branch to build (a tagged release is recommended, main can be unstable)"
+        required: false
+        default: "1.4.2"
+
+jobs:
+  libcore:
+    name: Native Build (LibCore)
+    runs-on: ubuntu-latest
+    steps:
+      # مستقیماً از مخزن رسمی و روی یک تگ ریلیز مشخص چک‌اوت می‌شود
+      # (فورک شما تگ‌های آپ‌استریم را به‌صورت خودکار sync نمی‌کند)
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: MatsuriDayo/NekoBoxForAndroid
+          ref: ${{ github.event.inputs.ref || '1.4.2' }}
+
+      - name: Golang Status
+        run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+
+      - name: Libcore Status
+        run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
+      - name: LibCore Cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: app/libs/libcore.aar
+          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+
+      - name: Install Golang
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.25
+
+      # ساخت libcore.aar باید فقط از طریق دیسپچر رسمی پروژه انجام شود؛
+      # این اسکریپت خودش gomobile و ابزارهای لازم را نصب/تنظیم می‌کند.
+      - name: Native Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: ./run lib core
+
+  build:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+    needs: libcore
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: MatsuriDayo/NekoBoxForAndroid
+          ref: ${{ github.event.inputs.ref || '1.4.2' }}
+
+      - name: Golang Status
+        run: find buildScript libcore/*.sh | xargs cat | sha1sum > golang_status
+
+      - name: Libcore Status
+        run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
+      - name: LibCore Cache
+        uses: actions/cache@v4
+        with:
+          path: app/libs/libcore.aar
+          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: gradle-oss-${{ hashFiles('**/*.gradle.kts') }}
+
+      - name: Gradle Build
+        env:
+          BUILD_PLUGIN: none
+        run: |
+          echo "sdk.dir=${ANDROID_HOME}" > local.properties
+          echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
+
+          # آماده‌سازی محیط گریدل توسط اسکریپت رسمی پروژه
+          ./run init action gradle
+
+          chmod +x gradlew
+          # فقط flavor عمومی "oss" ساخته می‌شود، نه هر سه flavor (oss/fdroid/play)
+          ./gradlew app:assembleOssRelease --no-daemon
+
+      - name: Upload Release APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NekoBox-Release-APK
+          path: app/build/outputs/apk/**/*.apk
+          retention-days: 14

@@ -39,12 +39,15 @@ import moe.matsuri.nb4a.proxy.config.ConfigBean
 import moe.matsuri.nb4a.proxy.config.ConfigSettingActivity
 import moe.matsuri.nb4a.proxy.neko.*
 import moe.matsuri.nb4a.proxy.shadowtls.ShadowTLSSettingsActivity
+import java.io.Serializable
 
 @Entity(
-    tableName = "proxy_entities", indices = [Index("groupId", name = "groupId")]
+    tableName = "proxy_entities",
+    indices = [Index("groupId", name = "groupId")]
 )
 data class ProxyEntity(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0L,
     var groupId: Long = 0L,
     var type: Int = 0,
     var userOrder: Long = 0L,
@@ -71,6 +74,15 @@ data class ProxyEntity(
     var chainBean: ChainBean? = null,
     var nekoBean: NekoBean? = null,
     var configBean: ConfigBean? = null,
+
+    // ========== فیلدهای جدید برای دکوریشن ==========
+    @ColumnInfo(defaultValue = "0")
+    var enableFlagEmoji: Boolean = false,
+
+    @ColumnInfo(defaultValue = "0")
+    var enableGeminiMarker: Boolean = false
+    // =============================================
+
 ) : Serializable() {
 
     companion object {
@@ -79,10 +91,8 @@ data class ProxyEntity(
         const val TYPE_SS = 2
         const val TYPE_VMESS = 4
         const val TYPE_TROJAN = 6
-
         const val TYPE_SSH = 17
         const val TYPE_WG = 18
-
         const val TYPE_TROJAN_GO = 7
         const val TYPE_NAIVE = 9
         const val TYPE_HYSTERIA = 15
@@ -90,22 +100,21 @@ data class ProxyEntity(
         const val TYPE_TUIC = 20
         const val TYPE_MIERU = 21
         const val TYPE_ANYTLS = 22
-
         const val TYPE_CONFIG = 998
         const val TYPE_NEKO = 999
-
         const val TYPE_CHAIN = 8
 
-        val chainName by lazy { app.getString(R.string.proxy_chain) }
+        val chainName by lazy {
+            app.getString(R.string.proxy_chain)
+        }
 
         @JvmField
         val CREATOR = object : CREATOR<ProxyEntity>() {
-
             override fun newInstance(): ProxyEntity {
                 return ProxyEntity()
             }
 
-            override fun newArray(size: Int): Array<ProxyEntity?> {
+            override fun newArray(size: Int): Array<ProxyEntity> {
                 return arrayOfNulls(size)
             }
         }
@@ -119,8 +128,7 @@ data class ProxyEntity(
     }
 
     override fun serializeToBuffer(output: ByteBufferOutput) {
-        output.writeInt(0)
-
+        output.writeInt(0) // version
         output.writeLong(id)
         output.writeLong(groupId)
         output.writeInt(type)
@@ -137,11 +145,15 @@ data class ProxyEntity(
         output.writeBytes(data)
 
         output.writeBoolean(dirty)
+
+        // ========== فیلدهای جدید ==========
+        output.writeBoolean(enableFlagEmoji)
+        output.writeBoolean(enableGeminiMarker)
+        // ================================
     }
 
     override fun deserializeFromBuffer(input: ByteBufferInput) {
         val version = input.readInt()
-
         id = input.readLong()
         groupId = input.readLong()
         type = input.readInt()
@@ -153,10 +165,20 @@ data class ProxyEntity(
         uuid = input.readString()
         error = input.readString()
         putByteArray(input.readBytes(input.readVarInt(true)))
-
         dirty = input.readBoolean()
-    }
 
+        // ========== فیلدهای جدید (با مدیریت backward compatibility) ==========
+        // اگر نسخه‌ی سریال‌سازی جدیدتر از 0 باشد، این فیلدها را بخوان
+        if (version >= 1) {
+            enableFlagEmoji = input.readBoolean()
+            enableGeminiMarker = input.readBoolean()
+        } else {
+            // برای داده‌های قدیمی، مقدار پیش‌فرض false باقی می‌ماند
+            enableFlagEmoji = false
+            enableGeminiMarker = false
+        }
+        // ====================================================================
+    }
 
     fun putByteArray(byteArray: ByteArray) {
         when (type) {
@@ -169,138 +191,134 @@ data class ProxyEntity(
             TYPE_MIERU -> mieruBean = KryoConverters.mieruDeserialize(byteArray)
             TYPE_NAIVE -> naiveBean = KryoConverters.naiveDeserialize(byteArray)
             TYPE_HYSTERIA -> hysteriaBean = KryoConverters.hysteriaDeserialize(byteArray)
-            TYPE_SSH -> sshBean = KryoConverters.sshDeserialize(byteArray)
-            TYPE_WG -> wgBean = KryoConverters.wireguardDeserialize(byteArray)
             TYPE_TUIC -> tuicBean = KryoConverters.tuicDeserialize(byteArray)
+            TYPE_SSH -> sshBean = KryoConverters.sshDeserialize(byteArray)
+            TYPE_WG -> wgBean = KryoConverters.wireGuardDeserialize(byteArray)
             TYPE_SHADOWTLS -> shadowTLSBean = KryoConverters.shadowTLSDeserialize(byteArray)
             TYPE_ANYTLS -> anyTLSBean = KryoConverters.anyTLSDeserialize(byteArray)
             TYPE_CHAIN -> chainBean = KryoConverters.chainDeserialize(byteArray)
             TYPE_NEKO -> nekoBean = KryoConverters.nekoDeserialize(byteArray)
             TYPE_CONFIG -> configBean = KryoConverters.configDeserialize(byteArray)
+            else -> error("Undefined type $type")
         }
     }
-
-    fun displayType(): String = when (type) {
-        TYPE_SOCKS -> socksBean!!.protocolName()
-        TYPE_HTTP -> if (httpBean!!.isTLS()) "HTTPS" else "HTTP"
-        TYPE_SS -> "Shadowsocks"
-        TYPE_VMESS -> if (vmessBean!!.isVLESS) "VLESS" else "VMess"
-        TYPE_TROJAN -> "Trojan"
-        TYPE_TROJAN_GO -> "Trojan-Go"
-        TYPE_MIERU -> "Mieru"
-        TYPE_NAIVE -> "Naïve"
-        TYPE_HYSTERIA -> "Hysteria" + hysteriaBean!!.protocolVersion
-        TYPE_SSH -> "SSH"
-        TYPE_WG -> "WireGuard"
-        TYPE_TUIC -> "TUIC"
-        TYPE_SHADOWTLS -> "ShadowTLS"
-        TYPE_ANYTLS -> "AnyTLS"
-        TYPE_CHAIN -> chainName
-        TYPE_NEKO -> nekoBean!!.displayType()
-        TYPE_CONFIG -> configBean!!.displayType()
-        else -> "Undefined type $type"
-    }
-
-    fun displayName() = requireBean().displayName()
-    fun displayAddress() = requireBean().displayAddress()
 
     fun requireBean(): AbstractBean {
         return when (type) {
-            TYPE_SOCKS -> socksBean
-            TYPE_HTTP -> httpBean
-            TYPE_SS -> ssBean
-            TYPE_VMESS -> vmessBean
-            TYPE_TROJAN -> trojanBean
-            TYPE_TROJAN_GO -> trojanGoBean
-            TYPE_MIERU -> mieruBean
-            TYPE_NAIVE -> naiveBean
-            TYPE_HYSTERIA -> hysteriaBean
-            TYPE_SSH -> sshBean
-            TYPE_WG -> wgBean
-            TYPE_TUIC -> tuicBean
-            TYPE_SHADOWTLS -> shadowTLSBean
-            TYPE_ANYTLS -> anyTLSBean
-            TYPE_CHAIN -> chainBean
-            TYPE_NEKO -> nekoBean
-            TYPE_CONFIG -> configBean
+            TYPE_SOCKS -> socksBean!!
+            TYPE_HTTP -> httpBean!!
+            TYPE_SS -> ssBean!!
+            TYPE_VMESS -> vmessBean!!
+            TYPE_TROJAN -> trojanBean!!
+            TYPE_TROJAN_GO -> trojanGoBean!!
+            TYPE_MIERU -> mieruBean!!
+            TYPE_NAIVE -> naiveBean!!
+            TYPE_HYSTERIA -> hysteriaBean!!
+            TYPE_TUIC -> tuicBean!!
+            TYPE_SSH -> sshBean!!
+            TYPE_WG -> wgBean!!
+            TYPE_SHADOWTLS -> shadowTLSBean!!
+            TYPE_ANYTLS -> anyTLSBean!!
+            TYPE_CHAIN -> chainBean!!
+            TYPE_NEKO -> nekoBean!!
+            TYPE_CONFIG -> configBean!!
             else -> error("Undefined type $type")
-        } ?: error("Null ${displayType()} profile")
+        }
     }
 
-    fun haveLink(): Boolean {
+    fun toUri(): String? {
         return when (type) {
-            TYPE_CHAIN -> false
-            else -> true
+            TYPE_SOCKS -> socksBean?.toUri()
+            TYPE_HTTP -> httpBean?.toUri()
+            TYPE_SS -> ssBean?.toUri()
+            TYPE_VMESS -> vmessBean?.toUri()
+            TYPE_TROJAN -> trojanBean?.toUri()
+            TYPE_TROJAN_GO -> trojanGoBean?.toUri()
+            TYPE_NAIVE -> naiveBean?.toUri()
+            TYPE_TUIC -> tuicBean?.toUri()
+            TYPE_SHADOWTLS -> shadowTLSBean?.toUri()
+            TYPE_ANYTLS -> anyTLSBean?.toUri()
+            TYPE_HYSTERIA -> hysteriaBean?.toUri()
+            else -> null
         }
     }
 
-    fun haveStandardLink(): Boolean {
-        return when (requireBean()) {
-            is SSHBean -> false
-            is WireGuardBean -> false
-            is ShadowTLSBean -> false
-            is NekoBean -> false
-            is ConfigBean -> false
-            else -> true
+    fun toName(): String {
+        return when (type) {
+            TYPE_SOCKS -> socksBean!!.displayName()
+            TYPE_HTTP -> httpBean!!.displayName()
+            TYPE_SS -> ssBean!!.displayName()
+            TYPE_VMESS -> vmessBean!!.displayName()
+            TYPE_TROJAN -> trojanBean!!.displayName()
+            TYPE_TROJAN_GO -> trojanGoBean!!.displayName()
+            TYPE_MIERU -> mieruBean!!.displayName()
+            TYPE_NAIVE -> naiveBean!!.displayName()
+            TYPE_HYSTERIA -> hysteriaBean!!.displayName()
+            TYPE_TUIC -> tuicBean!!.displayName()
+            TYPE_SSH -> sshBean!!.displayName()
+            TYPE_WG -> wgBean!!.displayName()
+            TYPE_SHADOWTLS -> shadowTLSBean!!.displayName()
+            TYPE_ANYTLS -> anyTLSBean!!.displayName()
+            TYPE_CHAIN -> chainBean!!.displayName()
+            TYPE_NEKO -> nekoBean!!.displayName()
+            TYPE_CONFIG -> configBean!!.displayName()
+            else -> error("Undefined type $type")
         }
     }
 
-    fun toStdLink(compact: Boolean = false): String = with(requireBean()) {
-        when (this) {
-            is SOCKSBean -> toUri()
-            is HttpBean -> toUri()
-            is ShadowsocksBean -> toUri()
-            is VMessBean -> toUriVMessVLESSTrojan(false)
-            is TrojanBean -> toUriVMessVLESSTrojan(true)
-            is TrojanGoBean -> toUri()
-            is NaiveBean -> toUri()
-            is HysteriaBean -> toUri()
-            is TuicBean -> toUri()
-            is AnyTLSBean -> toUri()
-            is NekoBean -> ""
-            else -> toUniversalLink()
-        }
-    }
-
-    fun exportConfig(): Pair<String, String> {
-        var name = "${requireBean().displayName()}.json"
-
-        return with(requireBean()) {
-            StringBuilder().apply {
-                val config = buildConfig(this@ProxyEntity, forExport = true)
-                append(config.config)
-
-                if (!config.externalIndex.all { it.chain.isEmpty() }) {
-                    name = "profiles.txt"
-                }
-
-                for ((chain) in config.externalIndex) {
-                    chain.entries.forEachIndexed { index, (port, profile) ->
-                        when (val bean = profile.requireBean()) {
-                            is TrojanGoBean -> {
-                                append("\n\n")
-                                append(bean.buildTrojanGoConfig(port))
-                            }
-
-                            is MieruBean -> {
-                                append("\n\n")
-                                append(bean.buildMieruConfig(port))
-                            }
-
-                            is NaiveBean -> {
-                                append("\n\n")
-                                append(bean.buildNaiveConfig(port))
-                            }
-
-                            is HysteriaBean -> {
-                                append("\n\n")
-                                append(bean.buildHysteria1Config(port, null))
+    fun toExternal(): Pair<String, String>? {
+        return when (type) {
+            TYPE_TROJAN_GO -> {
+                val config = trojanGoBean!!.buildTrojanGoConfig(port = 0)
+                config to "trojango.json"
+            }
+            TYPE_MIERU -> {
+                val config = mieruBean!!.buildMieruConfig(port = 0)
+                config to "mieru.json"
+            }
+            TYPE_NAIVE -> {
+                val config = naiveBean!!.buildNaiveConfig(port = 0)
+                config to "naive.json"
+            }
+            TYPE_HYSTERIA -> {
+                if (!hysteriaBean!!.canUseSingBox()) {
+                    val config = hysteriaBean!!.buildHysteria1Config(port = 0, null)
+                    config to "hysteria.json"
+                } else null
+            }
+            TYPE_NEKO -> {
+                StringBuilder().apply {
+                    val config = buildConfig(this@ProxyEntity, forExport = true)
+                    append(config.config)
+                    if (!config.externalIndex.all { it.chain.isEmpty() }) {
+                        name = "profiles.txt"
+                    }
+                    for ((chain) in config.externalIndex) {
+                        chain.entries.forEachIndexed { index, (port, profile) ->
+                            when (val bean = profile.requireBean()) {
+                                is TrojanGoBean -> {
+                                    append("\n\n")
+                                    append(bean.buildTrojanGoConfig(port))
+                                }
+                                is MieruBean -> {
+                                    append("\n\n")
+                                    append(bean.buildMieruConfig(port))
+                                }
+                                is NaiveBean -> {
+                                    append("\n\n")
+                                    append(bean.buildNaiveConfig(port))
+                                }
+                                is HysteriaBean -> {
+                                    append("\n\n")
+                                    append(bean.buildHysteria1Config(port, null))
+                                }
                             }
                         }
                     }
-                }
-            }.toString()
-        } to name
+                }.toString() to name
+            }
+            else -> null
+        }
     }
 
     fun needExternal(): Boolean {
@@ -326,7 +344,6 @@ data class ProxyEntity(
                     else -> "h2mux"
                 }
             }
-
             TYPE_TROJAN -> MultiplexOptions().apply {
                 enabled = trojanBean!!.enableMux
                 padding = trojanBean!!.muxPadding
@@ -337,7 +354,6 @@ data class ProxyEntity(
                     else -> "h2mux"
                 }
             }
-
             else -> null
         }
     }
@@ -366,87 +382,70 @@ data class ProxyEntity(
                 type = TYPE_SOCKS
                 socksBean = bean
             }
-
             is HttpBean -> {
                 type = TYPE_HTTP
                 httpBean = bean
             }
-
             is ShadowsocksBean -> {
                 type = TYPE_SS
                 ssBean = bean
             }
-
             is VMessBean -> {
                 type = TYPE_VMESS
                 vmessBean = bean
             }
-
             is TrojanBean -> {
                 type = TYPE_TROJAN
                 trojanBean = bean
             }
-
             is TrojanGoBean -> {
                 type = TYPE_TROJAN_GO
                 trojanGoBean = bean
             }
-
             is MieruBean -> {
                 type = TYPE_MIERU
                 mieruBean = bean
             }
-
             is NaiveBean -> {
                 type = TYPE_NAIVE
                 naiveBean = bean
             }
-
             is HysteriaBean -> {
                 type = TYPE_HYSTERIA
                 hysteriaBean = bean
             }
-
             is SSHBean -> {
                 type = TYPE_SSH
                 sshBean = bean
             }
-
             is WireGuardBean -> {
                 type = TYPE_WG
                 wgBean = bean
             }
-
             is TuicBean -> {
                 type = TYPE_TUIC
                 tuicBean = bean
             }
-
             is ShadowTLSBean -> {
                 type = TYPE_SHADOWTLS
                 shadowTLSBean = bean
             }
-
             is AnyTLSBean -> {
                 type = TYPE_ANYTLS
                 anyTLSBean = bean
             }
-
             is ChainBean -> {
                 type = TYPE_CHAIN
                 chainBean = bean
             }
-
             is NekoBean -> {
                 type = TYPE_NEKO
                 nekoBean = bean
             }
-
             is ConfigBean -> {
                 type = TYPE_CONFIG
                 configBean = bean
             }
-
             else -> error("Undefined type $type")
         }
         return this
@@ -454,7 +453,8 @@ data class ProxyEntity(
 
     fun settingIntent(ctx: Context, isSubscription: Boolean): Intent {
         return Intent(
-            ctx, when (type) {
+            ctx,
+            when (type) {
                 TYPE_SOCKS -> SocksSettingsActivity::class.java
                 TYPE_HTTP -> HttpSettingsActivity::class.java
                 TYPE_SS -> ShadowsocksSettingsActivity::class.java
@@ -481,7 +481,6 @@ data class ProxyEntity(
 
     @androidx.room.Dao
     interface Dao {
-
         @Query("select * from proxy_entities")
         fun getAll(): List<ProxyEntity>
 
@@ -497,7 +496,7 @@ data class ProxyEntity(
         @Query("SELECT COUNT(*) FROM proxy_entities WHERE groupId = :groupId")
         fun countByGroup(groupId: Long): Long
 
-        @Query("SELECT  MAX(userOrder) + 1 FROM proxy_entities WHERE groupId = :groupId")
+        @Query("SELECT MAX(userOrder) + 1 FROM proxy_entities WHERE groupId = :groupId")
         fun nextOrder(groupId: Long): Long?
 
         @Query("SELECT * FROM proxy_entities WHERE id = :proxyId")
@@ -535,7 +534,6 @@ data class ProxyEntity(
 
         @Query("DELETE FROM proxy_entities")
         fun reset()
-
     }
 
     override fun describeContents(): Int {
