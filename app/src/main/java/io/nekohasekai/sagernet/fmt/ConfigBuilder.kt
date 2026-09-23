@@ -611,6 +611,7 @@ fun buildConfig(
         for (freedom in arrayOf(TAG_DIRECT, TAG_BYPASS)) outbounds.add(Outbound().apply {
             tag = freedom
             type = "direct"
+            _hack_config_map["network_strategy"] = "default"
         })
 
         // Bypass Lookup for the first profile

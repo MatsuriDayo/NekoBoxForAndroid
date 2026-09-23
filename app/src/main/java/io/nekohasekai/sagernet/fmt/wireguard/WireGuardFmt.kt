@@ -29,6 +29,7 @@ fun genReserved(anyStr: String): String {
 fun buildSingBoxOutboundWireguardBean(bean: WireGuardBean): SingBoxOptions.Outbound_WireGuardOptions {
     return SingBoxOptions.Outbound_WireGuardOptions().apply {
         type = "wireguard"
+        detour = "direct"  // required due to upstream bug: SagerNet/sing-box#3390
         server = bean.serverAddress
         server_port = bean.serverPort
         local_address = bean.localAddress.listByLineOrComma()
