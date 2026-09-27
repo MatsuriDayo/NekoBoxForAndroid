@@ -133,7 +133,22 @@ class SettingsPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
 
-        serviceMode.setOnPreferenceChangeListener { _, _ ->
+        // check root for tproxy/redir
+        val hasRoot = try {
+            val proc = Runtime.getRuntime().exec(arrayOf("su", "-c", "id"))
+            val output = proc.inputStream.bufferedReader().readText()
+            proc.waitFor() == 0 && output.contains("uid=0")
+        } catch (_: Exception) { false }
+
+        serviceMode.setOnPreferenceChangeListener { _, newValue ->
+            val mode = newValue as String
+            if (mode == io.nekohasekai.sagernet.Key.MODE_REDIR && !hasRoot) {
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                    .setMessage(R.string.service_mode_root_unavailable)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+                return@setOnPreferenceChangeListener false
+            }
             if (DataStore.serviceState.started) SagerNet.stopService()
             true
         }

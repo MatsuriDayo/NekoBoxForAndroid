@@ -51,6 +51,9 @@
     <!-- misc -->
     <string name="service_mode">Service Mode</string>
     <string name="service_mode_proxy">Proxy only</string>
+    <string name="service_mode_redir">Redirect (TCP, root)</string>
+    <string name="service_mode_tproxy">TProxy (TCP+UDP, root)</string>
+    <string name="service_mode_root_unavailable">TProxy/Redirect require root</string>
     <string name="service_mode_vpn" translatable="false">VPN</string>
     <string name="port_proxy">Proxy Port</string>
     <string name="port_http">HTTP Proxy Port</string>
@@ -140,10 +143,21 @@
     <string name="metered_summary">Hint system to treat VPN as metered</string>
     <string name="menu_route">Route</string>
     <string name="route_add">Create Route</string>
+    <string name="route_srs_name">SRS Rule Set Name</string>
+    <string name="route_srs_url">SRS Rule Set URL</string>
+    <string name="route_srs_downloading">Downloading rule set file…</string>
+    <string name="route_srs_download_success">Rule set downloaded successfully: %s</string>
+    <string name="route_srs_download_failed">Rule set download failed: %s</string>
+    <string name="route_srs_name_empty">Please enter a rule set file name first</string>
+    <string name="route_srs_type">SRS Rule Set Type</string>
+    <string name="route_srs_auto_update">Auto update SRS rule set</string>
+    <string name="route_srs_auto_update_summary">Update every 24 hours when enabled</string>
+    <string name="route_final">Final</string>
+    <string name="route_final_title">Default Outbound (Final)</string>
     <string name="delete_route_prompt">Are you sure you want to remove this route?</string>
     <string name="route_name">Route Name</string>
     <string name="route_proxy">Proxy</string>
-    <string name="route_bypass">Bypass</string>
+    <string name="route_bypass">Direct</string>
     <string name="route_block">Block</string>
     <string name="route_profile">Select Profile…</string>
     <string name="empty_route">Empty Route</string>

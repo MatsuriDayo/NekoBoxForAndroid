@@ -39,7 +39,10 @@ import moe.matsuri.nb4a.utils.Util
 import moe.matsuri.nb4a.utils.listByLineOrComma
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
-const val TAG_MIXED = "mixed-in"
+const val TAG_MIXED  = "mixed-in"
+const val TAG_REDIR  = "redir-in"
+const val TAG_TPROXY = "tproxy-in"
+const val TAG_DNS_IN = "dns-in"
 
 const val TAG_PROXY = "proxy"
 const val TAG_DIRECT = "direct"
@@ -132,7 +135,10 @@ fun buildConfig(
     val userDNSRuleList = mutableListOf<DNSRule_DefaultOptions>()
     val domainListDNSDirectForce = mutableListOf<String>()
     val bypassDNSBeans = hashSetOf<AbstractBean>()
-    val isVPN = DataStore.serviceMode == Key.MODE_VPN
+    val isVPN       = DataStore.serviceMode == Key.MODE_VPN
+    val isRedir      = DataStore.serviceMode == Key.MODE_REDIR
+    val isTproxy     = DataStore.serviceMode == Key.MODE_TPROXY
+    val isTransProxy = isRedir || isTproxy
     val bind = if (!forTest && DataStore.allowAccess) "0.0.0.0" else LOCALHOST
     val remoteDns = DataStore.remoteDns.split("\n")
         .mapNotNull { dns -> dns.trim().takeIf { it.isNotBlank() && !it.startsWith("#") } }
@@ -224,14 +230,63 @@ fun buildConfig(
                     }
                 }
             })
+            if (isRedir) {
+                inbounds.add(Inbound_RedirectOptions().apply {
+                    type = "redirect"
+                    tag = TAG_REDIR
+                    listen = "127.0.0.1"
+                    listen_port = DataStore.tproxyPort
+                    // standalone sing-box 1.13+ removed inbound sniff/domain_strategy
+                    if (!isTransProxy) {
+                        sniff = needSniff
+                        sniff_override_destination = needSniffOverride
+                    }
+                })
+                // DNS inbound — receives redirected port-53 traffic from iptables
+                inbounds.add(Inbound_DirectOptions().apply {
+                    type = "direct"
+                    tag = TAG_DNS_IN
+                    listen = "127.0.0.1"
+                    listen_port = 10336
+                    if (!isTransProxy) {
+                        sniff = needSniff
+                        sniff_override_destination = needSniffOverride
+                    }
+                })
+            }
+            if (isTproxy) {
+                inbounds.add(Inbound_TProxyOptions().apply {
+                    type = "tproxy"
+                    tag = TAG_TPROXY
+                    listen = "127.0.0.1"
+                    listen_port = DataStore.tproxyPort
+                    if (!isTransProxy) {
+                        sniff = needSniff
+                        sniff_override_destination = needSniffOverride
+                    }
+                })
+                inbounds.add(Inbound_DirectOptions().apply {
+                    type = "direct"
+                    tag = TAG_DNS_IN
+                    listen = "127.0.0.1"
+                    listen_port = 10336
+                    if (!isTransProxy) {
+                        sniff = needSniff
+                        sniff_override_destination = needSniffOverride
+                    }
+                })
+            }
             inbounds.add(Inbound_MixedOptions().apply {
                 type = "mixed"
                 tag = TAG_MIXED
                 listen = bind
                 listen_port = DataStore.mixedPort
-                domain_strategy = genDomainStrategy(DataStore.resolveDestination)
-                sniff = needSniff
-                sniff_override_destination = needSniffOverride
+                // VPN/proxy (libcore) still accepts legacy fields; standalone does not
+                if (!isTransProxy) {
+                    domain_strategy = genDomainStrategy(DataStore.resolveDestination)
+                    sniff = needSniff
+                    sniff_override_destination = needSniffOverride
+                }
             })
         }
 
@@ -242,6 +297,11 @@ fun buildConfig(
             auto_detect_interface = true
             rules = mutableListOf()
             rule_set = mutableListOf()
+            // redir/tproxy mode: mark sing-box outbound packets so iptables can skip them.
+            // Without this, sing-box's own outgoing connections hit the OUTPUT chain rules,
+            // get redirected back into the inbound, and loop forever.
+            // We use mark 100 (0x64) — distinct from the tproxy redirect mark 200 (0xc8).
+            if (isTransProxy) default_mark = 0x64
         }
 
         // returns outbound tag
@@ -512,6 +572,15 @@ fun buildConfig(
 
                 if (rule_set != null) generateRuleSet(rule_set, ruleSets)
 
+                // 追加用户配置的 srs 规则集
+                if (rule.srsName.isNotBlank()) {
+                    val srsInput = rule.srsName.trim()
+                    generateRuleSet(listOf(srsInput), ruleSets)
+                    if (rule_set == null) rule_set = mutableListOf()
+                    // tag 与 generateRuleSet 保持一致：统一去掉 .srs 后缀
+                    rule_set.add(srsInput.removeSuffix(".srs"))
+                }
+
                 if (rule.port.isNotBlank()) {
                     port = mutableListOf<Int>()
                     port_range = mutableListOf<String>()
@@ -548,6 +617,11 @@ fun buildConfig(
                     return DNSRule_DefaultOptions().apply {
                         if (uidList.isNotEmpty()) user_id = uidList
                         domainList?.let { makeSingBoxRule(it) }
+                        // srs domain 规则集：把 tag 加入 DNS rule 的 rule_set
+                        if (rule.srsType == "domain" && rule.srsName.isNotBlank()) {
+                            val srsTag = rule.srsName.trim().removeSuffix(".srs")
+                            rule_set = mutableListOf(srsTag)
+                        }
                     }
                 }
 
@@ -557,7 +631,7 @@ fun buildConfig(
                     }
 
                     0L -> {
-                        if (useFakeDns) userDNSRuleList += makeDnsRuleObj().apply {
+                        if (useFakeDns && isVPN) userDNSRuleList += makeDnsRuleObj().apply {
                             server = "dns-fake"
                             inbound = listOf("tun-in")
                         }
@@ -570,6 +644,17 @@ fun buildConfig(
                         userDNSRuleList += makeDnsRuleObj().apply {
                             server = "dns-block"
                             disable_cache = true
+                        }
+                    }
+
+                    else -> {
+                        // 选择配置... 实际走代理，DNS 同样走远程
+                        if (useFakeDns && isVPN) userDNSRuleList += makeDnsRuleObj().apply {
+                            server = "dns-fake"
+                            inbound = listOf("tun-in")
+                        }
+                        userDNSRuleList += makeDnsRuleObj().apply {
+                            server = "dns-remote"
                         }
                     }
                 }
@@ -606,6 +691,16 @@ fun buildConfig(
         // 对 rule_set tag 去重
         if (route.rule_set != null) {
             route.rule_set = route.rule_set.distinctBy { it.tag }
+        }
+
+        // 设置 route final（tagMap 已完整构建）
+        route.final_ = when (DataStore.routeFinal) {
+            "-1" -> TAG_BYPASS
+            "0"  -> TAG_PROXY
+            else -> {
+                val id = DataStore.routeFinal.toLongOrNull() ?: 0L
+                if (id == proxy.id) TAG_PROXY else tagMap[id] ?: TAG_PROXY
+            }
         }
 
         for (freedom in arrayOf(TAG_DIRECT, TAG_BYPASS)) outbounds.add(Outbound().apply {
@@ -673,7 +768,10 @@ fun buildConfig(
             })
         }
 
-        dns.final_ = if (forTest) "dns-direct" else "dns-remote"
+        dns.final_ = if (forTest) "dns-direct" else when (DataStore.routeFinal) {
+            "-1" -> "dns-direct"   // final=直连 → 直连DNS
+            else -> "dns-remote"   // final=代理/选择配置 → 远程DNS
+        }
 
         // dns object user rules
         if (enableDnsRouting) {
@@ -685,6 +783,12 @@ fun buildConfig(
         if (forTest) {
             dns.rules = listOf()
         } else {
+            // standalone (redir/tproxy): migrate inbound sniff → route action (sing-box 1.13+)
+            if (isTransProxy && needSniff) {
+                route.rules.add(0, Rule_DefaultOptions().apply {
+                    action = "sniff"
+                })
+            }
             // built-in DNS rules
             route.rules.add(0, Rule_DefaultOptions().apply {
                 protocol = listOf("dns")
@@ -718,7 +822,7 @@ fun buildConfig(
                     tag = "dns-fake"
                     strategy = "ipv4_only"
                 })
-                dns.rules.add(DNSRule_DefaultOptions().apply {
+                if (isVPN) dns.rules.add(DNSRule_DefaultOptions().apply {
                     inbound = listOf("tun-in")
                     server = "dns-fake"
                     disable_cache = true

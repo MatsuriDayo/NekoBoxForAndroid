@@ -2,6 +2,7 @@ package io.nekohasekai.sagernet.bg.proto
 
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.bg.SingBoxBinary
 import io.nekohasekai.sagernet.bg.ServiceNotification
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.ktx.Logs
@@ -47,11 +48,15 @@ class ProxyInstance(profile: ProxyEntity, var service: BaseService.Interface? = 
     }
 
     override fun launch() {
-        box.setAsMain()
-        super.launch() // start box
-        runOnDefaultDispatcher {
-            looper = service?.let { TrafficLooper(it.data, this) }
-            looper?.start()
+        if (!SingBoxBinary.isStandaloneMode()) {
+            box.setAsMain()
+        }
+        super.launch() // start box or standalone binary
+        if (!SingBoxBinary.isStandaloneMode()) {
+            runOnDefaultDispatcher {
+                looper = service?.let { TrafficLooper(it.data, this) }
+                looper?.start()
+            }
         }
     }
 

@@ -23,8 +23,9 @@ class SagerConnection(
     companion object {
         val serviceClass
             get() = when (DataStore.serviceMode) {
-                Key.MODE_PROXY -> ProxyService::class
-                Key.MODE_VPN -> VpnService::class
+                Key.MODE_PROXY  -> ProxyService::class
+                Key.MODE_VPN    -> VpnService::class
+                Key.MODE_REDIR, Key.MODE_TPROXY -> TransProxyService::class
                 else -> throw UnknownError()
             }.java
 

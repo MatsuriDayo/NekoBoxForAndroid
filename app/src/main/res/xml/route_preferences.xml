@@ -55,6 +55,29 @@
             app:key="routeProtocol"
             app:title="protocol"
             app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_rule_folder_24"
+            app:key="routeSrsName"
+            app:title="@string/route_srs_name"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_rule_folder_24"
+            app:key="routeSrsUrl"
+            app:title="@string/route_srs_url"
+            app:useSimpleSummaryProvider="true" />
+        <moe.matsuri.nb4a.ui.SimpleMenuPreference
+            app:entries="@array/srs_type_entry"
+            app:entryValues="@array/srs_type_value"
+            app:icon="@drawable/ic_baseline_rule_folder_24"
+            app:key="routeSrsType"
+            app:title="@string/route_srs_type"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            app:icon="@drawable/ic_baseline_rule_folder_24"
+            app:key="routeSrsAutoUpdate"
+            app:title="@string/route_srs_auto_update"
+            app:summary="@string/route_srs_auto_update_summary"
+            app:defaultValue="false" />
         <io.nekohasekai.sagernet.widget.OutboundPreference
             app:icon="@drawable/ic_hardware_router"
             app:key="routeOutbound"

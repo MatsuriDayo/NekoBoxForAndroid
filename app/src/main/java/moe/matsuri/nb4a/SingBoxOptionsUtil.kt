@@ -1,5 +1,6 @@
 package moe.matsuri.nb4a
 
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
 import moe.matsuri.nb4a.SingBoxOptions.RuleSet
 
@@ -88,6 +89,19 @@ fun generateRuleSet(ruleSetString: List<String>, ruleSet: MutableList<RuleSet>) 
                     tag = it
                     format = "binary"
                     path = it
+                })
+            }
+
+            else -> {
+                // 用户自定义 srs 文件：自动补 .srs 后缀，tag 统一用不带后缀的名字
+                val fileName = if (it.endsWith(".srs")) it else "$it.srs"
+                val tag = fileName.removeSuffix(".srs")
+                val srsFile = java.io.File(SagerNet.application.externalAssets, fileName)
+                ruleSet.add(RuleSet().apply {
+                    type = "local"
+                    this.tag = tag
+                    format = "binary"
+                    path = srsFile.absolutePath
                 })
             }
         }

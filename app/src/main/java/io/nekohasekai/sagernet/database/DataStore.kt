@@ -129,6 +129,10 @@ object DataStore : OnPreferenceDataStoreChangeListener {
         get() = getLocalPort(Key.MIXED_PORT, 2080)
         set(value) = saveLocalPort(Key.MIXED_PORT, value)
 
+    var tproxyPort: Int
+        get() = getLocalPort(Key.TPROXY_PORT, 1536)
+        set(value) = saveLocalPort(Key.TPROXY_PORT, value)
+
     fun initGlobal() {
         if (configurationStore.getString(Key.MIXED_PORT) == null) {
             mixedPort = mixedPort
@@ -228,6 +232,13 @@ object DataStore : OnPreferenceDataStoreChangeListener {
     var routeOutbound by profileCacheStore.stringToInt(Key.ROUTE_OUTBOUND)
     var routeOutboundRule by profileCacheStore.long(Key.ROUTE_OUTBOUND + "Long")
     var routePackages by profileCacheStore.string(Key.ROUTE_PACKAGES)
+    var routeSrsName by profileCacheStore.string(Key.ROUTE_SRS_NAME)
+    var routeSrsUrl  by profileCacheStore.string(Key.ROUTE_SRS_URL)
+    var routeSrsType by profileCacheStore.string(Key.ROUTE_SRS_TYPE)
+    var routeSrsAutoUpdate by profileCacheStore.boolean(Key.ROUTE_SRS_AUTO_UPDATE)
+
+    // 全局 route final，存持久化 store，默认代理(0)
+    var routeFinal by configurationStore.string(Key.ROUTE_FINAL) { "0" }
 
     var frontProxy by profileCacheStore.long(Key.GROUP_FRONT_PROXY + "Long")
     var landingProxy by profileCacheStore.long(Key.GROUP_LANDING_PROXY + "Long")

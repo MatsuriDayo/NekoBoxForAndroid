@@ -1,0 +1,94 @@
+#!/system/bin/sh
+# NekoBox Redirect script (TCP only transparent proxy via REDIRECT)
+# Requires root. App UID is passed as $APP_UID, port as $TPROXY_PORT.
+
+TPROXY_PORT="${TPROXY_PORT:-1536}"
+DNS_PORT="${DNS_PORT:-10336}"
+APP_UID="${APP_UID:-0}"
+SING_MARK=100        # default_mark set in sing-box route config (0x64) — anti-loop
+CHAIN="NEKOBOX_RD"
+CHAIN_DNS="NEKOBOX_DNS"
+
+log() { echo "[nekobox.redir] $*" >&2; }
+
+start() {
+    log "Starting Redirect rules (port=$TPROXY_PORT dns=$DNS_PORT uid=$APP_UID)"
+
+    # ---- DNS REDIRECT (nat) → sing-box dns-in ----
+    iptables -t nat -N $CHAIN_DNS 2>/dev/null
+    iptables -t nat -F $CHAIN_DNS
+    # skip sing-box's own DNS queries (marked with default_mark)
+    iptables -t nat -A $CHAIN_DNS -m mark --mark $SING_MARK -j RETURN
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        iptables -t nat -A $CHAIN_DNS -m owner --uid-owner $APP_UID -j RETURN
+    fi
+    iptables -t nat -A $CHAIN_DNS -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -A $CHAIN_DNS -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -I OUTPUT    -j $CHAIN_DNS
+    iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+
+    # ---- nat PREROUTING: REDIRECT 到 127.0.0.1:port（本机 loopback）----
+    iptables -t nat -N $CHAIN 2>/dev/null
+    iptables -t nat -F $CHAIN
+
+    # skip sing-box outbound packets — core anti-loop rule
+    iptables -t nat -A $CHAIN -m mark --mark $SING_MARK -j RETURN
+    iptables -t nat -A $CHAIN -d 127.0.0.0/8     -j RETURN
+    iptables -t nat -A $CHAIN -d 10.0.0.0/8      -j RETURN
+    iptables -t nat -A $CHAIN -d 172.16.0.0/12   -j RETURN
+    iptables -t nat -A $CHAIN -d 192.168.0.0/16  -j RETURN
+    iptables -t nat -A $CHAIN -d 169.254.0.0/16  -j RETURN
+    iptables -t nat -A $CHAIN -d 224.0.0.0/4     -j RETURN
+    iptables -t nat -A $CHAIN -d 240.0.0.0/4     -j RETURN
+
+    # REDIRECT 到本机 port（内核自动转到 127.0.0.1）
+    iptables -t nat -A $CHAIN -p tcp -j REDIRECT --to-ports $TPROXY_PORT
+
+    iptables -t nat -I PREROUTING -p tcp -j $CHAIN
+
+    # ---- OUTPUT: 本机 TCP 流量也走代理，排除 App 自身 ----
+    iptables -t nat -N ${CHAIN}_OUT 2>/dev/null
+    iptables -t nat -F ${CHAIN}_OUT
+
+    # skip sing-box outbound packets — core anti-loop rule
+    iptables -t nat -A ${CHAIN}_OUT -m mark --mark $SING_MARK -j RETURN
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        iptables -t nat -A ${CHAIN}_OUT -m owner --uid-owner $APP_UID -j RETURN
+    fi
+    iptables -t nat -A ${CHAIN}_OUT -d 127.0.0.0/8    -j RETURN
+    iptables -t nat -A ${CHAIN}_OUT -d 10.0.0.0/8     -j RETURN
+    iptables -t nat -A ${CHAIN}_OUT -d 172.16.0.0/12  -j RETURN
+    iptables -t nat -A ${CHAIN}_OUT -d 192.168.0.0/16 -j RETURN
+    iptables -t nat -A ${CHAIN}_OUT -p tcp -j REDIRECT --to-ports $TPROXY_PORT
+
+    iptables -t nat -I OUTPUT -p tcp -j ${CHAIN}_OUT
+
+    log "Redirect rules applied"
+}
+
+stop() {
+    log "Removing Redirect rules"
+
+    iptables -t nat -D OUTPUT    -j $CHAIN_DNS 2>/dev/null || true
+    iptables -t nat -D PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    iptables -t nat -D PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    iptables -t nat -F $CHAIN_DNS 2>/dev/null || true
+    iptables -t nat -X $CHAIN_DNS 2>/dev/null || true
+
+    iptables -t nat -D PREROUTING -p tcp -j $CHAIN 2>/dev/null || true
+    iptables -t nat -F $CHAIN 2>/dev/null || true
+    iptables -t nat -X $CHAIN 2>/dev/null || true
+
+    iptables -t nat -D OUTPUT -p tcp -j ${CHAIN}_OUT 2>/dev/null || true
+    iptables -t nat -F ${CHAIN}_OUT 2>/dev/null || true
+    iptables -t nat -X ${CHAIN}_OUT 2>/dev/null || true
+
+    log "Redirect rules removed"
+}
+
+case "$1" in
+    start) start ;;
+    stop)  stop  ;;
+    *) echo "Usage: $0 {start|stop}"; exit 1 ;;
+esac

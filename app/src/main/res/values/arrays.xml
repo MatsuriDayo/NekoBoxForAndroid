@@ -209,16 +209,27 @@
     <string-array name="service_modes">
         <item>@string/service_mode_vpn</item>
         <item>@string/service_mode_proxy</item>
-        <!--
-                <item>@string/service_mode_transproxy</item>
-        -->
+        <item>@string/service_mode_redir</item>
+        <item>@string/service_mode_tproxy</item>
     </string-array>
     <string-array name="service_mode_values">
         <item>vpn</item>
         <item>proxy</item>
-        <!--
-                <item>transproxy</item>
-        -->
+        <item>redir</item>
+        <item>tproxy</item>
+    </string-array>
+
+
+    <string-array name="srs_type_entry">
+        <item>未设置</item>
+        <item>domain</item>
+        <item>ip</item>
+    </string-array>
+
+    <string-array name="srs_type_value">
+        <item></item>
+        <item>domain</item>
+        <item>ip</item>
     </string-array>
 
     <string-array name="route_protocol_entry">

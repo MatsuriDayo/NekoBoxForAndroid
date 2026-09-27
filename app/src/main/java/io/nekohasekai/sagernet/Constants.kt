@@ -15,6 +15,9 @@ object Key {
     const val SERVICE_MODE = "serviceMode"
     const val MODE_VPN = "vpn"
     const val MODE_PROXY = "proxy"
+    const val MODE_REDIR  = "redir"
+    const val MODE_TPROXY = "tproxy"
+    const val TPROXY_PORT = "tproxyPort"
 
     const val GLOBAL_CUSTOM_CONFIG = "globalCustomConfig"
 
@@ -129,6 +132,11 @@ object Key {
     const val ROUTE_PROTOCOL = "routeProtocol"
     const val ROUTE_OUTBOUND = "routeOutbound"
     const val ROUTE_PACKAGES = "routePackages"
+    const val ROUTE_SRS_NAME = "routeSrsName"
+    const val ROUTE_SRS_URL  = "routeSrsUrl"
+    const val ROUTE_SRS_TYPE = "routeSrsType"
+    const val ROUTE_SRS_AUTO_UPDATE = "routeSrsAutoUpdate"
+    const val ROUTE_FINAL   = "routeFinal"
 
     const val GROUP_NAME = "groupName"
     const val GROUP_TYPE = "groupType"

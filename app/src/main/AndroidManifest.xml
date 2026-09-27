@@ -280,6 +280,13 @@
             tools:ignore="ForegroundServicePermission" />
 
         <service
+            android:name="io.nekohasekai.sagernet.bg.TransProxyService"
+            android:exported="false"
+            android:foregroundServiceType="systemExempted"
+            android:process=":bg"
+            tools:ignore="ForegroundServicePermission" />
+
+        <service
             android:name="io.nekohasekai.sagernet.bg.VpnService"
             android:exported="false"
             android:foregroundServiceType="systemExempted"

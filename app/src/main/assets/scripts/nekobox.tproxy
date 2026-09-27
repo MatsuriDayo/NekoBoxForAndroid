@@ -1,0 +1,193 @@
+#!/system/bin/sh
+# NekoBox TProxy script (TCP+UDP transparent proxy via TPROXY)
+# Requires root. Env: APP_UID, TPROXY_PORT, DNS_PORT
+# Supports both IPv4 and IPv6 (symmetric rules).
+
+TPROXY_PORT="${TPROXY_PORT:-1536}"
+DNS_PORT="${DNS_PORT:-10336}"
+APP_UID="${APP_UID:-0}"
+MARK_VALUE=200
+TABLE_ID=200
+SING_MARK=100        # default_mark set in sing-box route config (0x64)
+CHAIN="NEKOBOX_TP"
+CHAIN_DNS="NEKOBOX_DNS"
+CHAIN6="NEKOBOX_TP6"
+CHAIN6_DNS="NEKOBOX_DNS6"
+CHAIN6_OUT="NEKOBOX_TP6_OUT"
+
+log() { echo "[nekobox.tproxy] $*" >&2; }
+
+start() {
+    log "Starting TProxy rules (port=$TPROXY_PORT dns=$DNS_PORT uid=$APP_UID)"
+
+    # ------------------------------------------------------------------ IPv4 routing
+    # marked packets go to loopback
+    ip rule add fwmark $MARK_VALUE table $TABLE_ID pref $TABLE_ID 2>/dev/null || true
+    ip route add local 0.0.0.0/0 dev lo table $TABLE_ID 2>/dev/null || true
+    echo 1 > /proc/sys/net/ipv4/ip_forward 2>/dev/null || true
+
+    # ------------------------------------------------------------------ IPv6 routing (best-effort)
+    ip -6 rule add fwmark $MARK_VALUE table $TABLE_ID pref $TABLE_ID 2>/dev/null || true
+    ip -6 route add local ::/0 dev lo table $TABLE_ID 2>/dev/null || true
+    echo 1 > /proc/sys/net/ipv6/conf/all/forwarding 2>/dev/null || true
+
+    # ================================================================ IPv4 DNS REDIRECT (nat)
+    iptables -t nat -N $CHAIN_DNS 2>/dev/null
+    iptables -t nat -F $CHAIN_DNS
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        iptables -t nat -A $CHAIN_DNS -m owner --uid-owner $APP_UID -j RETURN
+    fi
+    iptables -t nat -A $CHAIN_DNS -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -A $CHAIN_DNS -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -I OUTPUT -j $CHAIN_DNS
+    iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+    iptables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT
+
+    # ================================================================ IPv6 DNS REDIRECT (nat) — best-effort
+    # Some ROMs lack ip6tables nat support; ignore failures so IPv4 still works.
+    ip6tables -t nat -N $CHAIN6_DNS 2>/dev/null || true
+    ip6tables -t nat -F $CHAIN6_DNS 2>/dev/null || true
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        ip6tables -t nat -A $CHAIN6_DNS -m owner --uid-owner $APP_UID -j RETURN 2>/dev/null || true
+    fi
+    ip6tables -t nat -A $CHAIN6_DNS -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    ip6tables -t nat -A $CHAIN6_DNS -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    ip6tables -t nat -I OUTPUT -j $CHAIN6_DNS 2>/dev/null || true
+    ip6tables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    ip6tables -t nat -I PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+
+    # ================================================================ IPv4 mangle PREROUTING → TPROXY
+    iptables -t mangle -N $CHAIN 2>/dev/null
+    iptables -t mangle -F $CHAIN
+
+    # skip packets already marked by sing-box (default_mark=SING_MARK) — avoids loopback
+    iptables -t mangle -A $CHAIN -m mark --mark $SING_MARK -j RETURN
+    iptables -t mangle -A $CHAIN -d 127.0.0.0/8     -j RETURN
+    iptables -t mangle -A $CHAIN -d 10.0.0.0/8      -j RETURN
+    iptables -t mangle -A $CHAIN -d 172.16.0.0/12   -j RETURN
+    iptables -t mangle -A $CHAIN -d 192.168.0.0/16  -j RETURN
+    iptables -t mangle -A $CHAIN -d 169.254.0.0/16  -j RETURN
+    iptables -t mangle -A $CHAIN -d 224.0.0.0/4     -j RETURN
+    iptables -t mangle -A $CHAIN -d 240.0.0.0/4     -j RETURN
+
+    iptables -t mangle -A $CHAIN -p tcp -j TPROXY --on-ip 127.0.0.1 --on-port $TPROXY_PORT --tproxy-mark $MARK_VALUE
+    iptables -t mangle -A $CHAIN -p udp -j TPROXY --on-ip 127.0.0.1 --on-port $TPROXY_PORT --tproxy-mark $MARK_VALUE
+
+    iptables -t mangle -I PREROUTING -p tcp -j $CHAIN
+    iptables -t mangle -I PREROUTING -p udp -j $CHAIN
+
+    # ================================================================ IPv6 mangle PREROUTING → TPROXY (best-effort)
+    ip6tables -t mangle -N $CHAIN6 2>/dev/null || true
+    ip6tables -t mangle -F $CHAIN6 2>/dev/null || true
+
+    ip6tables -t mangle -A $CHAIN6 -m mark --mark $SING_MARK -j RETURN 2>/dev/null || true
+    # loopback
+    ip6tables -t mangle -A $CHAIN6 -d ::1/128        -j RETURN 2>/dev/null || true
+    # link-local (NDP/RA/MLD must stay native)
+    ip6tables -t mangle -A $CHAIN6 -d fe80::/10      -j RETURN 2>/dev/null || true
+    # ULA / private
+    ip6tables -t mangle -A $CHAIN6 -d fc00::/7       -j RETURN 2>/dev/null || true
+    # multicast
+    ip6tables -t mangle -A $CHAIN6 -d ff00::/8       -j RETURN 2>/dev/null || true
+
+    ip6tables -t mangle -A $CHAIN6 -p tcp -j TPROXY --on-ip ::1 --on-port $TPROXY_PORT --tproxy-mark $MARK_VALUE 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6 -p udp -j TPROXY --on-ip ::1 --on-port $TPROXY_PORT --tproxy-mark $MARK_VALUE 2>/dev/null || true
+
+    ip6tables -t mangle -I PREROUTING -p tcp -j $CHAIN6 2>/dev/null || true
+    ip6tables -t mangle -I PREROUTING -p udp -j $CHAIN6 2>/dev/null || true
+
+    # ================================================================ IPv4 OUTPUT: mark local traffic
+    iptables -t mangle -N ${CHAIN}_OUT 2>/dev/null
+    iptables -t mangle -F ${CHAIN}_OUT
+
+    # skip sing-box's own outbound packets (marked with default_mark) — core anti-loop rule
+    iptables -t mangle -A ${CHAIN}_OUT -m mark --mark $SING_MARK -j RETURN
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        iptables -t mangle -A ${CHAIN}_OUT -m owner --uid-owner $APP_UID -j RETURN
+    fi
+    iptables -t mangle -A ${CHAIN}_OUT -d 127.0.0.0/8    -j RETURN
+    iptables -t mangle -A ${CHAIN}_OUT -d 10.0.0.0/8     -j RETURN
+    iptables -t mangle -A ${CHAIN}_OUT -d 172.16.0.0/12  -j RETURN
+    iptables -t mangle -A ${CHAIN}_OUT -d 192.168.0.0/16 -j RETURN
+    iptables -t mangle -A ${CHAIN}_OUT -p tcp -j MARK --set-mark $MARK_VALUE
+    iptables -t mangle -A ${CHAIN}_OUT -p udp -j MARK --set-mark $MARK_VALUE
+
+    iptables -t mangle -I OUTPUT -p tcp -j ${CHAIN}_OUT
+    iptables -t mangle -I OUTPUT -p udp -j ${CHAIN}_OUT
+
+    # ================================================================ IPv6 OUTPUT: mark local traffic (best-effort)
+    ip6tables -t mangle -N $CHAIN6_OUT 2>/dev/null || true
+    ip6tables -t mangle -F $CHAIN6_OUT 2>/dev/null || true
+
+    ip6tables -t mangle -A $CHAIN6_OUT -m mark --mark $SING_MARK -j RETURN 2>/dev/null || true
+    if [ -n "$APP_UID" ] && [ "$APP_UID" != "0" ]; then
+        ip6tables -t mangle -A $CHAIN6_OUT -m owner --uid-owner $APP_UID -j RETURN 2>/dev/null || true
+    fi
+    ip6tables -t mangle -A $CHAIN6_OUT -d ::1/128   -j RETURN 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6_OUT -d fe80::/10 -j RETURN 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6_OUT -d fc00::/7  -j RETURN 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6_OUT -d ff00::/8  -j RETURN 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6_OUT -p tcp -j MARK --set-mark $MARK_VALUE 2>/dev/null || true
+    ip6tables -t mangle -A $CHAIN6_OUT -p udp -j MARK --set-mark $MARK_VALUE 2>/dev/null || true
+
+    ip6tables -t mangle -I OUTPUT -p tcp -j $CHAIN6_OUT 2>/dev/null || true
+    ip6tables -t mangle -I OUTPUT -p udp -j $CHAIN6_OUT 2>/dev/null || true
+
+    log "TProxy rules applied (IPv4 + IPv6)"
+}
+
+stop() {
+    log "Removing TProxy rules"
+
+    # ---- IPv4 nat DNS ----
+    iptables -t nat -D OUTPUT -j $CHAIN_DNS 2>/dev/null || true
+    iptables -t nat -D PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    iptables -t nat -D PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    iptables -t nat -F $CHAIN_DNS 2>/dev/null || true
+    iptables -t nat -X $CHAIN_DNS 2>/dev/null || true
+
+    # ---- IPv6 nat DNS ----
+    ip6tables -t nat -D OUTPUT -j $CHAIN6_DNS 2>/dev/null || true
+    ip6tables -t nat -D PREROUTING -p udp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    ip6tables -t nat -D PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports $DNS_PORT 2>/dev/null || true
+    ip6tables -t nat -F $CHAIN6_DNS 2>/dev/null || true
+    ip6tables -t nat -X $CHAIN6_DNS 2>/dev/null || true
+
+    # ---- IPv4 mangle PREROUTING ----
+    iptables -t mangle -D PREROUTING -p tcp -j $CHAIN 2>/dev/null || true
+    iptables -t mangle -D PREROUTING -p udp -j $CHAIN 2>/dev/null || true
+    iptables -t mangle -F $CHAIN 2>/dev/null || true
+    iptables -t mangle -X $CHAIN 2>/dev/null || true
+
+    # ---- IPv6 mangle PREROUTING ----
+    ip6tables -t mangle -D PREROUTING -p tcp -j $CHAIN6 2>/dev/null || true
+    ip6tables -t mangle -D PREROUTING -p udp -j $CHAIN6 2>/dev/null || true
+    ip6tables -t mangle -F $CHAIN6 2>/dev/null || true
+    ip6tables -t mangle -X $CHAIN6 2>/dev/null || true
+
+    # ---- IPv4 mangle OUTPUT ----
+    iptables -t mangle -D OUTPUT -p tcp -j ${CHAIN}_OUT 2>/dev/null || true
+    iptables -t mangle -D OUTPUT -p udp -j ${CHAIN}_OUT 2>/dev/null || true
+    iptables -t mangle -F ${CHAIN}_OUT 2>/dev/null || true
+    iptables -t mangle -X ${CHAIN}_OUT 2>/dev/null || true
+
+    # ---- IPv6 mangle OUTPUT ----
+    ip6tables -t mangle -D OUTPUT -p tcp -j $CHAIN6_OUT 2>/dev/null || true
+    ip6tables -t mangle -D OUTPUT -p udp -j $CHAIN6_OUT 2>/dev/null || true
+    ip6tables -t mangle -F $CHAIN6_OUT 2>/dev/null || true
+    ip6tables -t mangle -X $CHAIN6_OUT 2>/dev/null || true
+
+    # ---- routing tables ----
+    ip rule del fwmark $MARK_VALUE table $TABLE_ID pref $TABLE_ID 2>/dev/null || true
+    ip route del local 0.0.0.0/0 dev lo table $TABLE_ID 2>/dev/null || true
+    ip -6 rule del fwmark $MARK_VALUE table $TABLE_ID pref $TABLE_ID 2>/dev/null || true
+    ip -6 route del local ::/0 dev lo table $TABLE_ID 2>/dev/null || true
+
+    log "TProxy rules removed (IPv4 + IPv6)"
+}
+
+case "$1" in
+    start) start ;;
+    stop)  stop  ;;
+    *) echo "Usage: $0 {start|stop}"; exit 1 ;;
+esac

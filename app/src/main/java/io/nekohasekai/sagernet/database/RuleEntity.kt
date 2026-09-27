@@ -25,6 +25,16 @@ data class RuleEntity(
     var protocol: String = "",
     var outbound: Long = 0,
     var packages: Set<String> = emptySet(),
+    @ColumnInfo(defaultValue = "")
+    var srsName: String = "",
+    @ColumnInfo(defaultValue = "")
+    var srsUrl: String = "",
+    @ColumnInfo(defaultValue = "")
+    var srsType: String = "",  // "" = 未设置, "domain" = 域名规则集, "ip" = IP规则集
+    @ColumnInfo(defaultValue = "0")
+    var srsAutoUpdate: Boolean = false,  // 是否自动更新规则集
+    @ColumnInfo(defaultValue = "0")
+    var srsLastUpdated: Long = 0L,       // 上次更新时间（秒）
 ) : Parcelable {
 
     fun displayName(): String {
@@ -44,6 +54,7 @@ data class RuleEntity(
         if (packages.isNotEmpty()) summary += app.getString(
             R.string.apps_message, packages.size
         ) + "\n"
+        if (srsName.isNotBlank()) summary += "srs: $srsName" + (if (srsType.isNotBlank()) "[$srsType]" else "") + "\n"
         val lines = summary.trim().split("\n")
         return if (lines.size > 3) {
             lines.subList(0, 3).joinToString("\n", postfix = "\n...")

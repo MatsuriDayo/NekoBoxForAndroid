@@ -1,0 +1,177 @@
+name: Build Core
+on:
+  workflow_dispatch:
+
+jobs:
+  libcore:
+    name: Native Build (LibCore)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Golang Status
+        run: find buildScript libcore/*.sh | sort | xargs cat | sha1sum > golang_status
+
+      - name: Libcore Status
+        run: git ls-files libcore | xargs cat | sha1sum > libcore_status
+
+      - name: LibCore Cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: app/libs/libcore.aar
+          key: ${{ hashFiles('.github/workflows/*', 'golang_status', 'libcore_status') }}
+
+      - name: Install Golang
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.25
+
+      - name: Native Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: ./run lib core
+
+      - name: Upload libcore.aar artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcore-aar
+          path: app/libs/libcore.aar
+
+  # Build standalone sing-box binaries (disguised as .so) for root redir/tproxy mode.
+  # Source: aazz77/singbox-slim, tags aligned with andriod-slim.yml.
+  singbox-binary:
+    name: sing-box ${{ matrix.abi }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { abi: arm64-v8a,    goarch: arm64, ndk_triple: aarch64-linux-android23 }
+          - { abi: armeabi-v7a,  goarch: arm,   ndk_triple: armv7a-linux-androideabi23, goarm: "7" }
+          - { abi: x86_64,       goarch: amd64, ndk_triple: x86_64-linux-android23 }
+          - { abi: x86,          goarch: "386", ndk_triple: i686-linux-android23 }
+    steps:
+      - name: Checkout singbox-slim
+        uses: actions/checkout@v4
+        with:
+          repository: aazz77/singbox-slim
+          # Pin when needed: ref: <commit-or-tag>
+          fetch-depth: 1
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.12"
+          cache: false
+
+      - name: Cache Go modules
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/go/pkg/mod
+          key: go-mod-singbox-slim-${{ hashFiles('go.sum') }}
+          restore-keys: go-mod-singbox-slim-
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r28
+          link-to-sdk: true
+
+      - name: Set build tags
+        run: |
+          set -xeuo pipefail
+          # Slim tags (same as andriod-slim.yml): no wireguard/tailscale/ccm/ocm/dhcp/acme/naive
+          TAGS="with_gvisor,with_quic,with_utls,with_clash_api,badlinkname,tfogo_checklinkname0"
+          echo "BUILD_TAGS=${TAGS}" >> "${GITHUB_ENV}"
+          echo "LDFLAGS_SHARED=$(cat release/LDFLAGS)" >> "${GITHUB_ENV}"
+          echo "SB_VERSION=nekobox-$(date -u +%Y%m%d)" >> "${GITHUB_ENV}"
+
+      - name: Build sing-box binary
+        run: |
+          set -xeuo pipefail
+          go install -v ./cmd/internal/build
+          export CC="${{ matrix.ndk_triple }}-clang"
+          export CXX="${CC}++"
+          mkdir -p dist
+          EXTRA_ENV=""
+          if [ -n "${{ matrix.goarm || '' }}" ]; then
+            export GOARM="${{ matrix.goarm }}"
+          fi
+          GOOS=android GOARCH=${{ matrix.goarch }} build go build -v -trimpath \
+            -o "dist/libsingbox.so" \
+            -tags "${BUILD_TAGS}" \
+            -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${SB_VERSION}' ${LDFLAGS_SHARED} -s -w -buildid=" \
+            ./cmd/sing-box
+          file dist/libsingbox.so
+          ls -lh dist/libsingbox.so
+        env:
+          CGO_ENABLED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libsingbox-${{ matrix.abi }}
+          path: dist/libsingbox.so
+
+  release:
+    name: Publish libcore-latest
+    runs-on: ubuntu-latest
+    needs:
+      - libcore
+      - singbox-binary
+    permissions:
+      contents: write
+    steps:
+      - name: Download libcore.aar
+        uses: actions/download-artifact@v4
+        with:
+          name: libcore-aar
+          path: release-files
+
+      - name: Download sing-box binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: libsingbox-*
+          path: release-files/so
+          merge-multiple: false
+
+      - name: Layout release files
+        run: |
+          set -xeuo pipefail
+          mkdir -p release-out
+          cp release-files/libcore.aar release-out/
+          # artifact layout: release-files/so/libsingbox-<abi>/libsingbox.so
+          for d in release-files/so/libsingbox-*; do
+            abi="${d##*/libsingbox-}"
+            cp "$d/libsingbox.so" "release-out/libsingbox-${abi}.so"
+          done
+          ls -lh release-out/
+
+      - name: Upload to Release (libcore-latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: libcore-latest
+          name: LibCore Latest
+          body: |
+            - `libcore.aar` — VPN / system-proxy core (JNI)
+            - `libsingbox-*.so` — standalone sing-box binaries for root redir/tproxy (from aazz77/singbox-slim)
+
+            ABI mapping:
+            | file | ABI |
+            |------|-----|
+            | libsingbox-arm64-v8a.so | arm64-v8a |
+            | libsingbox-armeabi-v7a.so | armeabi-v7a |
+            | libsingbox-x86_64.so | x86_64 |
+            | libsingbox-x86.so | x86 |
+          files: |
+            release-out/libcore.aar
+            release-out/libsingbox-arm64-v8a.so
+            release-out/libsingbox-armeabi-v7a.so
+            release-out/libsingbox-x86_64.so
+            release-out/libsingbox-x86.so
+          make_latest: false
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

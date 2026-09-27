@@ -40,6 +40,9 @@
     <!-- misc -->
     <string name="service_mode">运行模式</string>
     <string name="service_mode_proxy">仅代理</string>
+    <string name="service_mode_redir">Redirect（仅 TCP，需要 root）</string>
+    <string name="service_mode_tproxy">TProxy（TCP+UDP，需要 root）</string>
+    <string name="service_mode_root_unavailable">TProxy/Redirect 需要 root 权限</string>
     <string name="port_proxy">代理端口</string>
     <string name="port_http">HTTP 代理端口</string>
     <string name="port_local_dns">本地 DNS 端口</string>
@@ -172,7 +175,7 @@
     <string name="apply">应用</string>
     <string name="license">授权协议</string>
     <string name="route_proxy">代理</string>
-    <string name="route_bypass">绕过</string>
+    <string name="route_bypass">直连</string>
     <string name="route_block">屏蔽</string>
     <string name="route_opt_bypass_lan">绕过局域网地址</string>
     <string name="route_opt_block_ads">屏蔽广告</string>
@@ -210,6 +213,17 @@
     <string name="mux_sum">多路复用是为了减少 TCP 的握手延迟而设计, 而非提高连接的吞吐量. 用于看视频、下载或者测速通常都有反效果。如果服务器不支持，则无法上网。</string>
     <string name="tcp_keep_alive_interval">TCP 保持活跃数据包发送间隔</string>
     <string name="route_add">新建路由规则</string>
+    <string name="route_srs_name">srs规则集文件名</string>
+    <string name="route_srs_url">srs规则集链接</string>
+    <string name="route_srs_downloading">正在下载规则集文件…</string>
+    <string name="route_srs_download_success">规则集下载成功：%s</string>
+    <string name="route_srs_download_failed">规则集下载失败：%s</string>
+    <string name="route_srs_name_empty">请先填写规则集文件名</string>
+    <string name="route_srs_type">srs规则集类型</string>
+    <string name="route_srs_auto_update">srs规则集自动更新</string>
+    <string name="route_srs_auto_update_summary">开启后默认每 24 小时更新一次</string>
+    <string name="route_final">Final</string>
+    <string name="route_final_title">默认出站 (Final)</string>
     <string name="delete_route_prompt">您确定要移除此路由吗\?</string>
     <string name="route_name">路由名称</string>
     <string name="route_profile">选择配置…</string>

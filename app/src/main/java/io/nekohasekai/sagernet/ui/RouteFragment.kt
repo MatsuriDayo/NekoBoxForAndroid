@@ -17,6 +17,9 @@ import io.nekohasekai.sagernet.database.RuleEntity
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.databinding.LayoutEmptyRouteBinding
 import io.nekohasekai.sagernet.databinding.LayoutRouteItemBinding
+import android.app.Activity
+import io.nekohasekai.sagernet.databinding.LayoutRouteFinalBinding
+import androidx.activity.result.contract.ActivityResultContracts
 import io.nekohasekai.sagernet.ktx.*
 import io.nekohasekai.sagernet.widget.ListListener
 import io.nekohasekai.sagernet.widget.UndoSnackbarManager
@@ -27,6 +30,19 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
     lateinit var ruleListView: RecyclerView
     lateinit var ruleAdapter: RuleAdapter
     lateinit var undoManager: UndoSnackbarManager<RuleEntity>
+
+    val selectProfileForFinal = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val profileId = result.data?.getLongExtra(ProfileSelectActivity.EXTRA_PROFILE_ID, 0L) ?: 0L
+            if (profileId > 0L) {
+                DataStore.routeFinal = profileId.toString()
+                ruleAdapter.notifyItemChanged(ruleAdapter.itemCount - 1)
+                runOnDefaultDispatcher { needReload() }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +66,7 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
             override fun getSwipeDirs(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-            ) = if (viewHolder is RuleAdapter.DocumentHolder) {
+            ) = if (viewHolder is RuleAdapter.DocumentHolder || viewHolder is RuleAdapter.FinalHolder) {
                 0
             } else {
                 super.getSwipeDirs(recyclerView, viewHolder)
@@ -59,7 +75,7 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
             override fun getDragDirs(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
-            ) = if (viewHolder is RuleAdapter.DocumentHolder) {
+            ) = if (viewHolder is RuleAdapter.DocumentHolder || viewHolder is RuleAdapter.FinalHolder) {
                 0
             } else {
                 super.getDragDirs(recyclerView, viewHolder)
@@ -75,7 +91,7 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder,
             ): Boolean {
-                return if (target is RuleAdapter.DocumentHolder) {
+                return if (target is RuleAdapter.DocumentHolder || target is RuleAdapter.FinalHolder) {
                     false
                 } else {
                     ruleAdapter.move(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
@@ -147,20 +163,23 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
             parent: ViewGroup,
             viewType: Int,
         ): RecyclerView.ViewHolder {
-            return if (viewType == 0) {
-                DocumentHolder(LayoutEmptyRouteBinding.inflate(layoutInflater, parent, false))
-            } else {
-                RuleHolder(LayoutRouteItemBinding.inflate(layoutInflater, parent, false))
+            return when (viewType) {
+                0 -> DocumentHolder(LayoutEmptyRouteBinding.inflate(layoutInflater, parent, false))
+                2 -> FinalHolder(LayoutRouteFinalBinding.inflate(layoutInflater, parent, false))
+                else -> RuleHolder(LayoutRouteItemBinding.inflate(layoutInflater, parent, false))
             }
         }
 
         override fun getItemViewType(position: Int): Int {
             if (position == 0) return 0
+            if (position == itemCount - 1) return 2  // FinalHolder
             return 1
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (holder is DocumentHolder) {
+                holder.bind()
+            } else if (holder is FinalHolder) {
                 holder.bind()
             } else if (holder is RuleHolder) {
                 holder.bind(ruleList[position - 1])
@@ -168,11 +187,12 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
         }
 
         override fun getItemCount(): Int {
-            return ruleList.size + 1
+            return ruleList.size + 2  // +1 DocumentHolder(top) +1 FinalHolder(bottom)
         }
 
         override fun getItemId(position: Int): Long {
             if (position == 0) return 0L
+            if (position == itemCount - 1) return -999L  // FinalHolder
             return ruleList[position - 1].id
         }
 
@@ -258,6 +278,66 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
                 ruleList.clear()
                 ruleAdapter.notifyDataSetChanged()
                 needReload()
+            }
+        }
+
+        inner class FinalHolder(private val binding: LayoutRouteFinalBinding) : RecyclerView.ViewHolder(binding.root) {
+            fun bind() {
+                val outboundText = when (DataStore.routeFinal) {
+                    "-1" -> getString(R.string.route_bypass)
+                    else -> getString(R.string.route_proxy)  // 其余情况显示代理（含选择配置）
+                }
+                // 实际选择配置...时显示节点名
+                val finalVal = DataStore.routeFinal
+                binding.finalOutbound.text = when {
+                    finalVal == "0" -> getString(R.string.route_proxy)
+                    finalVal == "-1" -> getString(R.string.route_bypass)
+                    else -> {
+                        val profile = SagerDatabase.proxyDao.getById(finalVal.toLongOrNull() ?: 0L)
+                        profile?.displayName() ?: getString(R.string.route_proxy)
+                    }
+                }
+                itemView.setOnClickListener {
+                    showFinalDialog()
+                }
+            }
+
+            private fun showFinalDialog() {
+                val entries = arrayOf(
+                    getString(R.string.route_proxy),
+                    getString(R.string.route_bypass),
+                    getString(R.string.route_profile)
+                )
+                val current = when (DataStore.routeFinal) {
+                    "-1" -> 1
+                    "0"  -> 0
+                    else -> 2  // 选择配置...
+                }
+                MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.route_final_title)
+                    .setSingleChoiceItems(entries, current) { dialog, which ->
+                        when (which) {
+                            0 -> {
+                                DataStore.routeFinal = "0"
+                                bind()
+                                runOnDefaultDispatcher { needReload() }
+                                dialog.dismiss()
+                            }
+                            1 -> {
+                                DataStore.routeFinal = "-1"
+                                bind()
+                                runOnDefaultDispatcher { needReload() }
+                                dialog.dismiss()
+                            }
+                            2 -> {
+                                dialog.dismiss()
+                                selectProfileForFinal.launch(
+                                    Intent(activity, ProfileSelectActivity::class.java)
+                                )
+                            }
+                        }
+                    }
+                    .show()
             }
         }
 
