@@ -133,7 +133,7 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
     private lateinit var selectedGroup: ProxyGroup
 
     private val exportProfiles =
-        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+        registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { data ->
             if (data != null) {
                 runOnDefaultDispatcher {
                     val profiles = SagerDatabase.proxyDao.getByGroup(selectedGroup.id)
@@ -352,7 +352,7 @@ class GroupFragment : ToolbarFragment(R.layout.layout_group),
                         val links = profiles.joinToString("\n") { it.toStdLink(compact = true) }
                         onMainDispatcher {
                             SagerNet.trySetPrimaryClip(links)
-                            snackbar(getString(R.string.copy_toast_msg)).show()
+                            snackbar(getString(androidx.browser.R.string.copy_toast_msg)).show()
                         }
                     }
                 }

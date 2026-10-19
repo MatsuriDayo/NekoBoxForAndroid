@@ -46,7 +46,7 @@ open class SimpleMenuPreference
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        val mSpinner = holder.itemView.findViewById<Spinner>(R.id.spinner)
+        val mSpinner = holder.itemView.findViewById<Spinner>(androidx.preference.R.id.spinner)
         mSpinner.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
     }
 

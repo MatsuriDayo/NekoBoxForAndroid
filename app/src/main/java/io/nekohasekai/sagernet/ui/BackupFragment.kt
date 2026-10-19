@@ -29,7 +29,14 @@ import moe.matsuri.nb4a.utils.Util
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+
+private val backupFileNameFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
+
+private fun backupFileName() =
+    "nekobox_backup_${LocalDateTime.now().format(backupFileNameFormatter)}.json"
 
 class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
@@ -37,7 +44,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
 
     var content = ""
     private val exportSettings =
-        registerForActivityResult(ActivityResultContracts.CreateDocument()) { data ->
+        registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { data ->
             if (data != null) {
                 runOnDefaultDispatcher {
                     try {
@@ -84,7 +91,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 )
                 onMainDispatcher {
                     startFilesForResult(
-                        exportSettings, "nekobox_backup_${Date().toLocaleString()}.json"
+                        exportSettings, backupFileName()
                     )
                 }
             }
@@ -99,7 +106,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 )
                 app.cacheDir.mkdirs()
                 val cacheFile = File(
-                    app.cacheDir, "nekobox_backup_${Date().toLocaleString()}.json"
+                    app.cacheDir, backupFileName()
                 )
                 cacheFile.writeText(content)
                 onMainDispatcher {
@@ -111,7 +118,9 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                                     Intent.EXTRA_STREAM, FileProvider.getUriForFile(
                                         app, BuildConfig.APPLICATION_ID + ".cache", cacheFile
                                     )
-                                ), app.getString(R.string.abc_shareactionprovider_share_with)
+                                ), app.getString(
+                                    androidx.appcompat.R.string.abc_shareactionprovider_share_with
+                                )
                         )
                     )
                 }
@@ -300,7 +309,7 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
                 val parcel = Parcel.obtain()
                 parcel.unmarshall(data, 0, data.size)
                 parcel.setDataPosition(0)
-                rules.add(ParcelizeBridge.createRule(parcel))
+                rules.add(ParcelizeBridge.create(parcel, RuleEntity.CREATOR))
                 parcel.recycle()
             }
             SagerDatabase.rulesDao.reset()

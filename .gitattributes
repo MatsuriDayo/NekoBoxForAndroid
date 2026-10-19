@@ -1,0 +1,2 @@
+# Mail-format patches preserve upstream context and signature whitespace.
+buildScript/lib/core/patches/*.patch -whitespace

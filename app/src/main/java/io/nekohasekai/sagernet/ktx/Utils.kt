@@ -119,11 +119,16 @@ fun Context.listenForPackageChanges(onetime: Boolean = true, callback: () -> Uni
             if (onetime) context.unregisterReceiver(this)
         }
     }.apply {
-        registerReceiver(this, IntentFilter().apply {
-            addAction(Intent.ACTION_PACKAGE_ADDED)
-            addAction(Intent.ACTION_PACKAGE_REMOVED)
-            addDataScheme("package")
-        })
+        ContextCompat.registerReceiver(
+            this@listenForPackageChanges,
+            this,
+            IntentFilter().apply {
+                addAction(Intent.ACTION_PACKAGE_ADDED)
+                addAction(Intent.ACTION_PACKAGE_REMOVED)
+                addDataScheme("package")
+            },
+            ContextCompat.RECEIVER_EXPORTED,
+        )
     }
 
 /**

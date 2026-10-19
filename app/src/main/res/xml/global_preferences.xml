@@ -112,7 +112,7 @@
         <moe.matsuri.nb4a.ui.SimpleMenuPreference
             app:defaultValue="1"
             app:entries="@array/traffic_sniffing_values"
-            app:entryValues="@array/int_array_3"
+            app:entryValues="@array/int_array_2"
             app:icon="@drawable/ic_baseline_manage_search_24"
             app:key="trafficSniffing"
             app:title="@string/traffic_sniffing"

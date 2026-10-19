@@ -8,7 +8,8 @@ import io.nekohasekai.sagernet.R
 
 class LongClickMenuPreference
 @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = R.attr.dropdownPreferenceStyle
+    context: Context, attrs: AttributeSet? = null,
+    defStyle: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
 ) : SimpleMenuPreference(context, attrs, defStyle, 0) {
     private var mLongClickListener: View.OnLongClickListener? = null
 

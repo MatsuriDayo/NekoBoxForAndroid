@@ -2,16 +2,17 @@ package moe.matsuri.nb4a;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.Strictness;
 import com.google.gson.ToNumberPolicy;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,15 @@ public class SingBoxOptions {
 
     // base
 
+    private static final TypeAdapterFactory singBoxOptionAdapterFactory =
+            new SingBoxOptionTypeAdapterFactory();
+
     private static final Gson gsonSingbox = new GsonBuilder()
-            .registerTypeHierarchyAdapter(SingBoxOption.class, new SingBoxOptionSerializer())
+            .registerTypeAdapterFactory(singBoxOptionAdapterFactory)
             .setPrettyPrinting()
             .setNumberToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
             .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-            .setLenient()
+            .setStrictness(Strictness.LENIENT)
             .disableHtmlEscaping()
             .create();
 
@@ -65,33 +69,38 @@ public class SingBoxOptions {
         }
     }
 
-    // 自定义序列化器
-    public static class SingBoxOptionSerializer implements JsonSerializer<SingBoxOption> {
+    public static class SingBoxOptionTypeAdapterFactory implements TypeAdapterFactory {
         @Override
-        public JsonElement serialize(SingBoxOption src, Type typeOfSrc, JsonSerializationContext context) {
-            // 拿到原始的 delegate（默认序列化器）
-            TypeAdapter<?> delegate = gsonSingbox.getDelegateAdapter(
-                    new TypeAdapterFactory() {
-                        @Override
-                        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-                            return null; // 返回 null，表示只作为“跳过当前自定义”的 marker
-                        }
-                    },
-                    TypeToken.get(src.getClass())
-            );
-            Map<String, Object> map;
-            if (src instanceof CustomSingBoxOption) {
-                map = ((CustomSingBoxOption) src).getBasicMap();
-            } else {
-                map = gsonSingbox.fromJson(((TypeAdapter<SingBoxOption>) delegate).toJson(src), Map.class);
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!SingBoxOption.class.isAssignableFrom(type.getRawType())) {
+                return null;
             }
-            if (src._hack_config_map != null && !src._hack_config_map.isEmpty()) {
-                Util.INSTANCE.mergeMap(map, src._hack_config_map);
-            }
-            if (src._hack_custom_config != null && !src._hack_custom_config.isBlank()) {
-                Util.INSTANCE.mergeJSON(map, src._hack_custom_config);
-            }
-            return gsonSingbox.toJsonTree(map);
+
+            TypeAdapter<T> delegate = gson.getDelegateAdapter(this, type);
+            return new TypeAdapter<T>() {
+                @Override
+                public void write(JsonWriter out, T value) throws IOException {
+                    SingBoxOption option = (SingBoxOption) value;
+                    Map<String, Object> map;
+                    if (option instanceof CustomSingBoxOption) {
+                        map = ((CustomSingBoxOption) option).getBasicMap();
+                    } else {
+                        map = gson.fromJson(delegate.toJsonTree(value), Map.class);
+                    }
+                    if (option._hack_config_map != null && !option._hack_config_map.isEmpty()) {
+                        Util.INSTANCE.mergeMap(map, option._hack_config_map);
+                    }
+                    if (option._hack_custom_config != null && !option._hack_custom_config.isBlank()) {
+                        Util.INSTANCE.mergeJSON(map, option._hack_custom_config);
+                    }
+                    gson.toJson(map, Map.class, out);
+                }
+
+                @Override
+                public T read(JsonReader in) throws IOException {
+                    return delegate.read(in);
+                }
+            }.nullSafe();
         }
     }
 
@@ -112,6 +121,8 @@ public class SingBoxOptions {
         public List<Inbound> inbounds;
 
         public List<SingBoxOption> outbounds;
+
+        public List<SingBoxOption> endpoints;
 
         public RouteOptions route;
 
@@ -312,8 +323,6 @@ public class SingBoxOptions {
 
         public Boolean reverse_mapping;
 
-        public DNSFakeIPOptions fakeip;
-
         // Generate note: nested type DNSClientOptions
         public String strategy;
 
@@ -329,20 +338,60 @@ public class SingBoxOptions {
 
     public static class DNSServerOptions extends SingBoxOption {
 
+        public String type;
         public String tag;
-
-        public String address;
-
-        public String address_resolver;
-
-        public String address_strategy;
-
-        public Long address_fallback_delay;
-
-        public String strategy;
-
+        public String server;
+        public Integer server_port;
+        public String path;
+        public String domain_resolver;
         public String detour;
+        public String inet4_range;
+        public String inet6_range;
 
+        public static DNSServerOptions fromAddress(String address, String tag,
+                                                    String detour, String resolver) {
+            DNSServerOptions options = new DNSServerOptions();
+            options.tag = tag;
+            options.detour = detour;
+            options.domain_resolver = resolver;
+            if ("local".equals(address)) {
+                options.type = "local";
+                return options;
+            }
+            String uriAddress = address;
+            if (!address.contains("://")) {
+                if (address.indexOf(':') != address.lastIndexOf(':') && !address.startsWith("[")) {
+                    uriAddress = "[" + address + "]";
+                }
+                uriAddress = "udp://" + uriAddress;
+            }
+            URI uri = URI.create(uriAddress);
+            options.type = uri.getScheme();
+            switch (options.type) {
+                case "udp": case "tcp": case "tls": case "quic": case "https": case "h3":
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported DNS transport: " + options.type);
+            }
+            options.server = uri.getHost();
+            if (options.server == null || uri.getUserInfo() != null || uri.getFragment() != null) {
+                throw new IllegalArgumentException("Invalid DNS server address");
+            }
+            if (options.server.startsWith("[")) {
+                options.server = options.server.substring(1, options.server.length() - 1);
+            }
+            if (uri.getPort() > 65535 || uri.getPort() == 0) {
+                throw new IllegalArgumentException("Invalid DNS server port");
+            }
+            if (uri.getPort() != -1) options.server_port = uri.getPort();
+            if ("https".equals(options.type) || "h3".equals(options.type)) {
+                options.path = uri.getRawPath();
+                if (uri.getRawQuery() != null) options.path += "?" + uri.getRawQuery();
+            } else if ((uri.getRawPath() != null && !uri.getRawPath().isEmpty()) || uri.getRawQuery() != null) {
+                throw new IllegalArgumentException("DNS transport does not support a URL path");
+            }
+            return options;
+        }
     }
 
     public static class DNSClientOptions extends SingBoxOption {
@@ -354,16 +403,6 @@ public class SingBoxOptions {
         public Boolean disable_expire;
 
         public Boolean independent_cache;
-
-    }
-
-    public static class DNSFakeIPOptions extends SingBoxOption {
-
-        public Boolean enabled;
-
-        public String inet4_range;
-
-        public String inet6_range;
 
     }
 
@@ -1054,6 +1093,8 @@ public class SingBoxOptions {
         public String final_;
 
         public Boolean find_process;
+
+        public String default_domain_resolver;
 
         public Boolean auto_detect_interface;
 
@@ -2804,6 +2845,9 @@ public class SingBoxOptions {
         public Integer mtu;
 
         // Generate note: Listable
+        public List<String> address;
+
+        // Generate note: Listable
         public List<String> inet4_address;
 
         // Generate note: Listable
@@ -3916,6 +3960,52 @@ public class SingBoxOptions {
 
     }
 
+    public static class Endpoint_WireGuardOptions extends Outbound {
+
+        // Generate note: nested type DialerOptions
+        public String detour;
+
+        public String bind_interface;
+
+        public String protect_path;
+
+        public Boolean tcp_fast_open;
+
+        public String domain_strategy;
+
+        public Boolean system;
+
+        public String name;
+
+        public List<String> address;
+
+        public String private_key;
+
+        public List<EndpointWireGuardPeer> peers;
+
+        public Integer workers;
+
+        public Integer mtu;
+
+    }
+
+    public static class EndpointWireGuardPeer extends SingBoxOption {
+
+        public String address;
+
+        public Integer port;
+
+        public String public_key;
+
+        public String pre_shared_key;
+
+        public List<String> allowed_ips;
+
+        // Generate note: Base64 String
+        public String reserved;
+
+    }
+
     public static class Outbound_HysteriaOptions extends Outbound {
 
         // Generate note: nested type DialerOptions
@@ -4456,6 +4546,8 @@ public class SingBoxOptions {
 
         public String outbound;
 
+        public String strategy;
+
     }
 
     public static class DNSRule_DefaultOptions extends DNSRule {
@@ -4527,6 +4619,12 @@ public class SingBoxOptions {
         public String clash_mode;
 
         public Boolean invert;
+
+        public String action;
+
+        public String rcode;
+
+        public String strategy;
 
         public String server;
 

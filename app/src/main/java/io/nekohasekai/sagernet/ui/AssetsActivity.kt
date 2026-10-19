@@ -6,6 +6,7 @@ import android.text.format.DateFormat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -56,6 +57,8 @@ class AssetsActivity : ThemedActivity() {
         binding.refreshLayout.setColorSchemeColors(getColorAttr(R.attr.primaryOrTextPrimary))
 
         undoManager = UndoSnackbarManager(this, adapter)
+
+        onBackPressedDispatcher.addCallback(this) { finish() }
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.START
@@ -335,10 +338,6 @@ class AssetsActivity : ThemedActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
-    }
-
-    override fun onBackPressed() {
-        finish()
     }
 
     override fun onResume() {

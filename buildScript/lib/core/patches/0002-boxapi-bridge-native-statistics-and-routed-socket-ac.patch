@@ -1,0 +1,254 @@
+From 73a484aec07a405269d7ad3925801491e03a52f8 Mon Sep 17 00:00:00 2001
+From: honglei <jhonglei@gmail.com>
+Date: Mon, 19 Oct 2026 17:14:55 +0800
+Subject: [PATCH 2/5] boxapi: bridge native statistics and routed socket
+ accounting
+
+---
+ boxapi/go_http.go                  | 30 ++++++++++++
+ boxapi/go_net.go                   | 32 ++++++++++++
+ boxapi/v2ray_server.go             | 32 ++++++++++++
+ boxapi/v2ray_stats_service.go      | 32 ++++++++++++
+ boxapi/v2ray_stats_service_test.go | 79 ++++++++++++++++++++++++++++++
+ 5 files changed, 205 insertions(+)
+ create mode 100644 boxapi/go_http.go
+ create mode 100644 boxapi/go_net.go
+ create mode 100644 boxapi/v2ray_server.go
+ create mode 100644 boxapi/v2ray_stats_service.go
+ create mode 100644 boxapi/v2ray_stats_service_test.go
+
+diff --git a/boxapi/go_http.go b/boxapi/go_http.go
+new file mode 100644
+index 000000000..3cba5ebce
+--- /dev/null
++++ b/boxapi/go_http.go
+@@ -0,0 +1,30 @@
++package boxapi
++
++import (
++	"context"
++	"net"
++	"net/http"
++	"time"
++
++	box "github.com/sagernet/sing-box"
++	"github.com/sagernet/sing-box/adapter"
++)
++
++func CreateProxyHttpClient(box *box.Box, tracker adapter.ConnectionTracker) *http.Client {
++	transport := &http.Transport{
++		TLSHandshakeTimeout:   time.Second * 3,
++		ResponseHeaderTimeout: time.Second * 3,
++	}
++
++	if box != nil {
++		transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
++			return DialContext(ctx, box, tracker, network, addr)
++		}
++	}
++
++	client := &http.Client{
++		Transport: transport,
++	}
++
++	return client
++}
+diff --git a/boxapi/go_net.go b/boxapi/go_net.go
+new file mode 100644
+index 000000000..285957c71
+--- /dev/null
++++ b/boxapi/go_net.go
+@@ -0,0 +1,32 @@
++package boxapi
++
++import (
++	"context"
++	"net"
++
++	box "github.com/sagernet/sing-box"
++	"github.com/sagernet/sing-box/adapter"
++	"github.com/sagernet/sing-box/common/dialer"
++	"github.com/sagernet/sing/common/bufio"
++	"github.com/sagernet/sing/common/metadata"
++	N "github.com/sagernet/sing/common/network"
++)
++
++func DialContext(ctx context.Context, box *box.Box, tracker adapter.ConnectionTracker, network, addr string) (net.Conn, error) {
++	defOutboundTag := box.Outbound().Default().Tag()
++	conn, err := dialer.NewDetour(box.Outbound(), defOutboundTag, true).DialContext(ctx, network, metadata.ParseSocksaddr(addr))
++	if err != nil {
++		return nil, err
++	}
++	if tracker != nil {
++		flow := tracker.RoutedFlow(ctx, adapter.InboundContext{}, nil, box.Outbound().Default())
++		if flow != nil {
++			// This is an outgoing socket: writes upload and reads download.
++			conn = bufio.NewCounterConn(conn,
++				[]N.CountFunc{func(n int64) { flow.CountReverse(int(n)) }},
++				[]N.CountFunc{func(n int64) { flow.CountForward(int(n)) }},
++			)
++		}
++	}
++	return conn, nil
++}
+diff --git a/boxapi/v2ray_server.go b/boxapi/v2ray_server.go
+new file mode 100644
+index 000000000..a97e0af5c
+--- /dev/null
++++ b/boxapi/v2ray_server.go
+@@ -0,0 +1,32 @@
++package boxapi
++
++import (
++	"context"
++
++	"github.com/sagernet/sing-box/adapter"
++	"github.com/sagernet/sing-box/option"
++)
++
++type SbV2rayServer struct {
++	ss *SbStatsService
++}
++
++func NewSbV2rayServer(options option.V2RayStatsServiceOptions) *SbV2rayServer {
++	return &SbV2rayServer{
++		ss: NewSbStatsService(options),
++	}
++}
++
++func (s *SbV2rayServer) Start() error                            { return nil }
++func (s *SbV2rayServer) Close() error                            { return nil }
++func (s *SbV2rayServer) StatsService() adapter.ConnectionTracker { return s.ss }
++
++// NekoRay style API
++
++func (s *SbV2rayServer) QueryStats(name string) int64 {
++	value, err := s.ss.GetStats(context.TODO(), name, true)
++	if err == nil {
++		return value
++	}
++	return 0
++}
+diff --git a/boxapi/v2ray_stats_service.go b/boxapi/v2ray_stats_service.go
+new file mode 100644
+index 000000000..a26b1aa05
+--- /dev/null
++++ b/boxapi/v2ray_stats_service.go
+@@ -0,0 +1,32 @@
++package boxapi
++
++import (
++	"context"
++
++	"github.com/sagernet/sing-box/experimental/v2rayapi"
++	"github.com/sagernet/sing-box/option"
++)
++
++// SbStatsService preserves the Neko query API while using sing-box accounting.
++type SbStatsService struct {
++	*v2rayapi.StatsService
++}
++
++func NewSbStatsService(options option.V2RayStatsServiceOptions) *SbStatsService {
++	stats := v2rayapi.NewStatsService(options)
++	if stats == nil {
++		return nil
++	}
++	return &SbStatsService{StatsService: stats}
++}
++
++func (s *SbStatsService) GetStats(ctx context.Context, name string, reset bool) (int64, error) {
++	response, err := s.StatsService.GetStats(ctx, &v2rayapi.GetStatsRequest{
++		Name:   name,
++		Reset_: reset,
++	})
++	if err != nil {
++		return 0, err
++	}
++	return response.GetStat().GetValue(), nil
++}
+diff --git a/boxapi/v2ray_stats_service_test.go b/boxapi/v2ray_stats_service_test.go
+new file mode 100644
+index 000000000..f7eeb9fc3
+--- /dev/null
++++ b/boxapi/v2ray_stats_service_test.go
+@@ -0,0 +1,79 @@
++package boxapi
++
++import (
++	"context"
++	"io"
++	"net"
++	"testing"
++	"time"
++
++	box "github.com/sagernet/sing-box"
++	"github.com/sagernet/sing-box/include"
++	"github.com/sagernet/sing-box/option"
++)
++
++func TestOutgoingConnectionStats(t *testing.T) {
++	listener, err := net.Listen("tcp", "127.0.0.1:0")
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer listener.Close()
++	serverDone := make(chan error, 1)
++	go func() {
++		conn, err := listener.Accept()
++		if err != nil {
++			serverDone <- err
++			return
++		}
++		defer conn.Close()
++		conn.SetDeadline(time.Now().Add(5 * time.Second))
++		_, err = io.ReadFull(conn, make([]byte, 5))
++		if err == nil {
++			_, err = conn.Write([]byte("ack"))
++		}
++		serverDone <- err
++	}()
++	instance, err := box.New(box.Options{
++		Context: include.Context(context.Background()),
++		Options: option.Options{Outbounds: []option.Outbound{{Type: "direct", Tag: "proxy"}}},
++	})
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer instance.Close()
++	stats := NewSbStatsService(option.V2RayStatsServiceOptions{Enabled: true, Outbounds: []string{"proxy"}})
++	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
++	defer cancel()
++	conn, err := DialContext(ctx, instance, stats, "tcp", listener.Addr().String())
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer conn.Close()
++	conn.SetDeadline(time.Now().Add(5 * time.Second))
++	if _, err = conn.Write([]byte("hello")); err != nil {
++		t.Fatal(err)
++	}
++	if _, err = io.ReadFull(conn, make([]byte, 3)); err != nil {
++		t.Fatal(err)
++	}
++	if err = <-serverDone; err != nil {
++		t.Fatal(err)
++	}
++	for direction, expected := range map[string]int64{"uplink": 5, "downlink": 3} {
++		name := "outbound>>>proxy>>>traffic>>>" + direction
++		value, err := stats.GetStats(ctx, name, true)
++		if err != nil || value != expected {
++			t.Fatalf("%s: got %d, %v; want %d", direction, value, err, expected)
++		}
++		value, err = stats.GetStats(ctx, name, false)
++		if err != nil || value != 0 {
++			t.Fatalf("%s after reset: got %d, %v", direction, value, err)
++		}
++	}
++}
++
++func TestDisabledStats(t *testing.T) {
++	if NewSbStatsService(option.V2RayStatsServiceOptions{}) != nil {
++		t.Fatal("disabled stats must be nil")
++	}
++}

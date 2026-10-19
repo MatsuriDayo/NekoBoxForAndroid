@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Core 1.19.0 requires compile SDK 37; this release targets stable API 36.1. -->
+    <issue id="GradleDependency">
+        <ignore regexp="A newer version of androidx\.core:core-ktx than 1\.18\.0 is available: 1\.19\.0" />
+    </issue>
+</lint>

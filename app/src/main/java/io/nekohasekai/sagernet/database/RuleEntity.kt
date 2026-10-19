@@ -1,13 +1,13 @@
 package io.nekohasekai.sagernet.database
 
+import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.*
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.app
-import kotlinx.parcelize.Parcelize
+import java.util.LinkedHashSet
 
 @Entity(tableName = "rules")
-@Parcelize
 @TypeConverters(StringCollectionConverter::class)
 data class RuleEntity(
     @PrimaryKey(autoGenerate = true) var id: Long = 0L,
@@ -26,6 +26,26 @@ data class RuleEntity(
     var outbound: Long = 0,
     var packages: Set<String> = emptySet(),
 ) : Parcelable {
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(id)
+        parcel.writeString(name)
+        parcel.writeString(config)
+        parcel.writeLong(userOrder)
+        parcel.writeInt(if (enabled) 1 else 0)
+        parcel.writeString(domains)
+        parcel.writeString(ip)
+        parcel.writeString(port)
+        parcel.writeString(sourcePort)
+        parcel.writeString(network)
+        parcel.writeString(source)
+        parcel.writeString(protocol)
+        parcel.writeLong(outbound)
+        parcel.writeInt(packages.size)
+        packages.forEach(parcel::writeString)
+    }
 
     fun displayName(): String {
         return name.takeIf { it.isNotBlank() } ?: "Rule $id"
@@ -106,5 +126,36 @@ data class RuleEntity(
 
     }
 
+    companion object {
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<RuleEntity> {
+            override fun createFromParcel(parcel: Parcel): RuleEntity {
+                val id = parcel.readLong()
+                val name = requireNotNull(parcel.readString())
+                val config = requireNotNull(parcel.readString())
+                val userOrder = parcel.readLong()
+                val enabled = parcel.readInt() != 0
+                val domains = requireNotNull(parcel.readString())
+                val ip = requireNotNull(parcel.readString())
+                val port = requireNotNull(parcel.readString())
+                val sourcePort = requireNotNull(parcel.readString())
+                val network = requireNotNull(parcel.readString())
+                val source = requireNotNull(parcel.readString())
+                val protocol = requireNotNull(parcel.readString())
+                val outbound = parcel.readLong()
+                val packageCount = parcel.readInt()
+                val packages = LinkedHashSet<String>(packageCount)
+                repeat(packageCount) {
+                    packages += requireNotNull(parcel.readString())
+                }
+                return RuleEntity(
+                    id, name, config, userOrder, enabled, domains, ip, port, sourcePort,
+                    network, source, protocol, outbound, packages
+                )
+            }
+
+            override fun newArray(size: Int): Array<RuleEntity?> = arrayOfNulls(size)
+        }
+    }
 
 }

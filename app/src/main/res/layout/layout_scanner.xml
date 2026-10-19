@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.king.zxing.ViewfinderView
+    <com.king.view.viewfinderview.ViewfinderView
         android:id="@+id/viewfinderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/zxl_flashlight_margin_top"
-        android:src="@drawable/zxl_flashlight_selector" />
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_baseline_wb_sunny_24"
+        android:tint="@color/scanner_flashlight_tint" />
 </FrameLayout>

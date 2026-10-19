@@ -12,7 +12,8 @@ import io.nekohasekai.sagernet.R
 
 class MTUPreference
 @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = R.attr.dropdownPreferenceStyle
+    context: Context, attrs: AttributeSet? = null,
+    defStyle: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
 ) : ListPreference(context, attrs, defStyle, 0) {
 
     init {

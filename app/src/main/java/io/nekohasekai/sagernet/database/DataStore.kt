@@ -23,6 +23,13 @@ import moe.matsuri.nb4a.TempDatabase
 
 object DataStore : OnPreferenceDataStoreChangeListener {
 
+    fun migrateLegacySettings() {
+        val oldTrafficSniffing = trafficSniffing
+        if (oldTrafficSniffing !in 0..1) {
+            trafficSniffing = if (oldTrafficSniffing > 0) 1 else 0
+        }
+    }
+
     // share service state in main & bg process
     @Volatile
     var serviceState = BaseService.State.Idle

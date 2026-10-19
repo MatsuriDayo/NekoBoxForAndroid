@@ -14,14 +14,38 @@ import io.nekohasekai.sagernet.ktx.Logs
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.utils.PackageCache
+import io.nekohasekai.sagernet.utils.DefaultNetworkListener
+import kotlinx.coroutines.runBlocking
 import libcore.BoxPlatformInterface
+import libcore.InterfaceUpdateListener
 import libcore.Libcore
 import libcore.NB4AInterface
 import java.net.InetSocketAddress
+import java.net.NetworkInterface
+import java.net.SocketException
 
 class NativeInterface : BoxPlatformInterface, NB4AInterface {
 
     //  libbox interface
+
+    override fun startDefaultInterfaceMonitor(id: Long, listener: InterfaceUpdateListener) {
+        runBlocking {
+            DefaultNetworkListener.start(id) { network ->
+                val name = network?.let { SagerNet.connectivity.getLinkProperties(it)?.interfaceName }
+                try {
+                    val intf = name?.let { NetworkInterface.getByName(it) }
+                    listener.updateDefaultInterface(name.orEmpty(), intf?.index ?: -1, intf?.mtu ?: 0)
+                } catch (error: SocketException) {
+                    Logs.w(error)
+                    listener.updateDefaultInterface("", -1, 0)
+                }
+            }
+        }
+    }
+
+    override fun closeDefaultInterfaceMonitor(id: Long) {
+        runBlocking { DefaultNetworkListener.stop(id) }
+    }
 
     override fun autoDetectInterfaceControl(fd: Int) {
         DataStore.vpnService?.protect(fd)
@@ -70,9 +94,15 @@ class NativeInterface : BoxPlatformInterface, NB4AInterface {
     // TODO: 'getter for connectionInfo: WifiInfo!' is deprecated
     override fun wifiState(): String {
         val wifiManager =
-            app.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val connectionInfo = wifiManager.connectionInfo
-        return "${connectionInfo.ssid},${connectionInfo.bssid}"
+            app.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+                ?: return ""
+        return try {
+            val connectionInfo = wifiManager.connectionInfo
+            "${connectionInfo.ssid},${connectionInfo.bssid}"
+        } catch (e: SecurityException) {
+            Logs.w(e)
+            ""
+        }
     }
 
     // nb4a interface

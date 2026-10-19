@@ -1,2 +1,6 @@
-export COMMIT_SING_BOX="aed32ee3066cdbc7d471e3e0415c5134088962df"
+export REPOSITORY_SING_BOX="https://github.com/SagerNet/sing-box.git"
+export COMMIT_SING_BOX="7054cac5124465ffdb145870d7c01885566711b1"
+export REPOSITORY_LIBNEKO="https://github.com/MatsuriDayo/libneko.git"
 export COMMIT_LIBNEKO="1c47a3af71990a7b2192e03292b4d246c308ef0b"
+export REPOSITORY_GOMOBILE="https://github.com/MatsuriDayo/gomobile.git"
+export COMMIT_GOMOBILE="17d6af34f6bd6d7e1e428e0c652c8b54a46bda4f"

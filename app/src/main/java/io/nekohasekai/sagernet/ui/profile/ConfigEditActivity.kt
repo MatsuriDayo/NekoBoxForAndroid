@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -138,6 +139,15 @@ class ConfigEditActivity : ThemedActivity() {
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root, ListListener)
+
+        onBackPressedDispatcher.addCallback(this) {
+            if (dirty) {
+                UnsavedChangesDialogFragment().apply { key() }
+                    .show(supportFragmentManager, null)
+            } else {
+                finish()
+            }
+        }
     }
 
     fun formatText(): String? {
@@ -163,11 +173,6 @@ class ConfigEditActivity : ThemedActivity() {
             }
             finish()
         }
-    }
-
-    override fun onBackPressed() {
-        if (dirty) UnsavedChangesDialogFragment().apply { key() }
-            .show(supportFragmentManager, null) else super.onBackPressed()
     }
 
     override fun onSupportNavigateUp(): Boolean {

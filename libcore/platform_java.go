@@ -12,6 +12,8 @@ type NB4AInterface interface {
 }
 
 type BoxPlatformInterface interface {
+	StartDefaultInterfaceMonitor(id int64, listener InterfaceUpdateListener) error
+	CloseDefaultInterfaceMonitor(id int64) error
 	AutoDetectInterfaceControl(fd int32) error
 	OpenTun(singTunOptionsJson, tunPlatformOptionsJson string) (int, error)
 	UseProcFS() bool

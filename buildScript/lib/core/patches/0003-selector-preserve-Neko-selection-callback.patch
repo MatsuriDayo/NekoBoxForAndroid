@@ -1,0 +1,42 @@
+From 23a96f3006cc0e538c7286c7d1e798fb81508810 Mon Sep 17 00:00:00 2001
+From: honglei <jhonglei@gmail.com>
+Date: Mon, 19 Oct 2026 17:14:55 +0800
+Subject: [PATCH 3/5] selector: preserve Neko selection callback
+
+---
+ nekoutils/callback.go      | 3 +++
+ protocol/group/selector.go | 4 ++++
+ 2 files changed, 7 insertions(+)
+ create mode 100644 nekoutils/callback.go
+
+diff --git a/nekoutils/callback.go b/nekoutils/callback.go
+new file mode 100644
+index 000000000..97f561236
+--- /dev/null
++++ b/nekoutils/callback.go
+@@ -0,0 +1,3 @@
++package nekoutils
++
++var Selector_OnProxySelected func(selectorTag string, tag string)
+diff --git a/protocol/group/selector.go b/protocol/group/selector.go
+index c3aaec5a9..f6b8c4f76 100644
+--- a/protocol/group/selector.go
++++ b/protocol/group/selector.go
+@@ -10,6 +10,7 @@ import (
+ 	"github.com/sagernet/sing-box/common/urltest"
+ 	C "github.com/sagernet/sing-box/constant"
+ 	"github.com/sagernet/sing-box/log"
++	"github.com/sagernet/sing-box/nekoutils"
+ 	"github.com/sagernet/sing-box/option"
+ 	"github.com/sagernet/sing/common"
+ 	E "github.com/sagernet/sing/common/exceptions"
+@@ -149,6 +150,9 @@ func (s *Selector) SelectOutbound(tag string) bool {
+ 	if s.history != nil {
+ 		s.history.NotifyUpdated()
+ 	}
++	if nekoutils.Selector_OnProxySelected != nil {
++		nekoutils.Selector_OnProxySelected(s.Tag(), tag)
++	}
+ 	return true
+ }
+ 

@@ -24,7 +24,14 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.25
+          go-version: '1.26.5'
+          cache-dependency-path: libcore/go.sum
+      - name: Set up Android SDK
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: android-actions/setup-android@v4.0.1
+      - name: Install Android NDK
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: sdkmanager 'ndk;29.0.14206865'
       - name: Native Build
         if: steps.cache.outputs.cache-hit != 'true'
         run: ./run lib core
@@ -51,12 +58,15 @@ jobs:
         with:
           path: ~/.gradle
           key: gradle-oss-${{ hashFiles('**/*.gradle.kts') }}
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4.0.1
+      - name: Install Android build tools
+        run: sdkmanager "platforms;android-37.0" "build-tools;36.1.0"
       - name: Gradle Build
         env:
           BUILD_PLUGIN: none
         run: |
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          echo "ndk.dir=${ANDROID_HOME}/ndk/25.0.8775105" >> local.properties
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           ./run init action gradle
           ./gradlew app:assemblePreviewRelease

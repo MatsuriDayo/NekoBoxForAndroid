@@ -1,0 +1,22 @@
+From b4252fc42d54b364593aa8a513615e8bd9824a84 Mon Sep 17 00:00:00 2001
+From: honglei <jhonglei@gmail.com>
+Date: Mon, 19 Oct 2026 17:14:55 +0800
+Subject: [PATCH 1/5] cache: keep Neko cache-file compatibility
+
+---
+ box.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/box.go b/box.go
+index ba5eff387..3bdfc559f 100644
+--- a/box.go
++++ b/box.go
+@@ -151,7 +151,7 @@ func New(options Options) (*Box, error) {
+ 	var needCacheFile bool
+ 	var needClashAPI bool
+ 	var needV2RayAPI bool
+-	if experimentalOptions.CacheFile != nil && experimentalOptions.CacheFile.Enabled || options.PlatformLogWriter != nil {
++	if experimentalOptions.CacheFile != nil && experimentalOptions.CacheFile.Enabled {
+ 		needCacheFile = true
+ 	}
+ 	if experimentalOptions.ClashAPI != nil {
