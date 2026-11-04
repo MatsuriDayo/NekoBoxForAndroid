@@ -28,9 +28,11 @@ import org.ini4j.Ini
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
-import org.yaml.snakeyaml.TypeDescription
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.SafeConstructor
 import org.yaml.snakeyaml.error.YAMLException
+import org.yaml.snakeyaml.nodes.Tag
 import java.io.StringReader
 import androidx.core.net.toUri
 
@@ -234,9 +236,18 @@ object RawUpdater : GroupUpdater() {
 
             try {
 
-                val yaml = Yaml().apply {
-                    addTypeDescription(TypeDescription(String::class.java, "str"))
-                }.loadAs(text, Map::class.java)
+                // SafeConstructor builds only standard YAML types: global tags in untrusted
+                // input can no longer instantiate arbitrary Java classes (CVE-2022-1471).
+                // The local !<str> tag is still read as a string, as before.
+                // loadAs(text, Map::class.java) would tag the root as java.util.Map, which
+                // SafeConstructor cannot build, hence load() and an explicit type check.
+                val yaml = Yaml(object : SafeConstructor(LoaderOptions().apply {
+                    codePointLimit = 16 * 1024 * 1024 // default in 1.33 is 3 MB
+                }) {
+                    init {
+                        yamlConstructors[Tag("str")] = yamlConstructors[Tag.STR]
+                    }
+                }).load<Any?>(text) as? Map<*, *> ?: throw YAMLException("Clash config is not a map")
 
                 val globalClientFingerprint = yaml["global-client-fingerprint"]?.toString() ?: ""
 
