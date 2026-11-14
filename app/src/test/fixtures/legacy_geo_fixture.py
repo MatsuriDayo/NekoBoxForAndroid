@@ -1,5 +1,5 @@
 from pathlib import Path
-import argparse, os, subprocess
+import argparse, json, os, subprocess
 parser=argparse.ArgumentParser(description="Actual ConfigBuilder Geo and Phase 1/2 regression fixtures")
 parser.add_argument('--repo', type=Path, required=True)
 parser.add_argument('--classpath-file', type=Path, required=True)
@@ -217,8 +217,17 @@ source('io.nekohasekai.sagernet.database.RemoteRuleSetManager', 'package io.neko
 argfile=FIX/'javac.args'
 args=['-classpath',os.pathsep.join(str(p) for p in cp),'-d',str(CLASSES)]+[str(p) for p in SRC.rglob('*.java')]
 argfile.write_text('\n'.join('"'+str(a).replace('\\','/')+'"' for a in args),encoding='utf-8')
-assert run('config-fixture-compile',[JAVA/'bin/javac.exe','@'+str(argfile)],FIX)==0
+executable_suffix = '.exe' if os.name == 'nt' else ''
+assert run('config-fixture-compile',[JAVA/('bin/javac'+executable_suffix),'@'+str(argfile)],FIX)==0
 argfile=FIX/'java.args'
 args=['-classpath',os.pathsep.join(str(p) for p in cp),'ConfigFixture',str(FIX/'configs')]
 argfile.write_text('\n'.join('"'+str(a).replace('\\','/')+'"' for a in args),encoding='utf-8')
-raise SystemExit(run('actual-config-builder',[JAVA/'bin/java.exe','@'+str(argfile)],FIX))
+result = run('actual-config-builder',[JAVA/('bin/java'+executable_suffix),'@'+str(argfile)],FIX)
+if result:
+    raise SystemExit(result)
+# A remote-only route must produce matching DNS conditions for direct, proxy and block.
+for outbound in [0, -1, -2]:
+    config = json.loads((FIX/'remotes/configs'/f'remote-outbound-{outbound}.json').read_text())
+    assert any(set(rule.get('rule_set', [])) == {'first', 'second'}
+               for rule in config['dns']['rules']), f'Missing remote DNS conditions: {outbound}'
+print('Remote-only routes preserve rule-set conditions in DNS rules')

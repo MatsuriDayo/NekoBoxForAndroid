@@ -133,10 +133,21 @@ public class RemoteRuleSetTest {
             File cache = new File(application.getFilesDir(),"remote-rule-sets/1.source"); cache.getParentFile().mkdirs(); Files.write(cache.toPath(),"valid".getBytes());
             assertTrue(RemoteRuleSetManager.INSTANCE.config(Collections.emptyList()).isEmpty());
             e.setEnabled(true); db.remoteRuleSetsDao().update(e);
-            List<moe.matsuri.nb4a.SingBoxOptions.RuleSet> options = RemoteRuleSetManager.INSTANCE.config(Collections.emptyList());
+            assertTrue(cache.delete());
+            assertTrue(RemoteRuleSetManager.INSTANCE.config(Collections.emptyList()).isEmpty());
+            rule.setEnabled(true); rule.setRemoteRuleSetTags("first");
+            try { RemoteRuleSetManager.INSTANCE.config(Collections.singletonList(rule)); fail("referenced missing cache"); }
+            catch (IllegalArgumentException expected) { assertTrue(expected.getMessage().contains("no valid cache")); }
+            Files.write(cache.toPath(),"valid".getBytes());
+            List<moe.matsuri.nb4a.SingBoxOptions.RuleSet> options = RemoteRuleSetManager.INSTANCE.config(Collections.singletonList(rule));
             assertEquals(1,options.size()); assertEquals("local",options.get(0).type);
             assertEquals("first",options.get(0).tag); assertEquals("source",options.get(0).format);
             assertEquals(cache.getAbsolutePath(),options.get(0).path); assertNull(options.get(0).url);
+            db.rulesDao().updateRule(rule);
+            try { RemoteRuleSetManager.INSTANCE.save(e.copy(1,"Fixture","first",e.getUrl(),"source",1440,false)); fail("disable referenced set"); }
+            catch (IllegalArgumentException expected) { }
+            assertTrue(db.remoteRuleSetsDao().get(1).getEnabled());
+            rule.setRemoteRuleSetTags(""); db.rulesDao().updateRule(rule);
             rule.setEnabled(true); rule.setRemoteRuleSetTags("first");
             e.setEnabled(false); db.remoteRuleSetsDao().update(e);
             try { RemoteRuleSetManager.INSTANCE.config(Collections.singletonList(rule)); fail("disabled reference config"); } catch (IllegalArgumentException expected) { }
@@ -145,6 +156,99 @@ public class RemoteRuleSetTest {
             RemoteRuleSetManager.INSTANCE.delete(1);
             assertNull(db.remoteRuleSetsDao().get(1)); assertFalse(cache.exists());
         } finally { db.close(); }
+    }
+
+    @Test public void unusedSubscriptionsDoNotRequireCachesOrAffectActiveRoutes() {
+        RemoteRuleSetEntity unused = entity(2,"unused");
+        RuleEntity disabled = new RuleEntity(); disabled.setEnabled(false); disabled.setRemoteRuleSetTags("missing");
+        assertTrue(store.required(Collections.singletonList(unused),Collections.singletonList(disabled)).isEmpty());
+        RuleEntity active = new RuleEntity(); active.setEnabled(true); active.setRemoteRuleSetTags("used");
+        RemoteRuleSetEntity used = entity(1,"used");
+        assertEquals(Collections.singletonList(used),store.required(Arrays.asList(used,unused),Arrays.asList(active,disabled)));
+        used.setEnabled(false);
+        try { store.required(Arrays.asList(used,unused),Collections.singletonList(active)); fail("disabled reference"); }
+        catch (IllegalArgumentException expected) { }
+    }
+
+    @Test public void failedImportRollsBackProfilesRoutesSettingsAndPreservesCache() throws Exception {
+        io.nekohasekai.sagernet.SagerNet application = new io.nekohasekai.sagernet.SagerNet();
+        org.robolectric.util.ReflectionHelpers.callInstanceMethod(application,"attach",
+            org.robolectric.util.ReflectionHelpers.ClassParameter.from(android.content.Context.class,RuntimeEnvironment.getApplication()));
+        io.nekohasekai.sagernet.SagerNet.Companion.setApplication(application);
+        androidx.work.WorkManager.initialize(application,new androidx.work.Configuration.Builder().build());
+        SagerDatabase db = SagerDatabase.Companion.getInstance();
+        io.nekohasekai.sagernet.database.preference.PublicDatabase publicDb = io.nekohasekai.sagernet.database.preference.PublicDatabase.Companion.getInstance();
+        try {
+            RuleEntity old = new RuleEntity(); old.setId(42); old.setName("before");
+            db.rulesDao().createRule(old);
+            ProxyGroup group = new ProxyGroup(); group.setId(7); group.setName("original group");
+            db.groupDao().insert(Collections.singletonList(group));
+            ProxyEntity node = new ProxyEntity(); node.setId(11); node.setGroupId(7);
+            io.nekohasekai.sagernet.fmt.socks.SOCKSBean bean = new io.nekohasekai.sagernet.fmt.socks.SOCKSBean();
+            bean.initializeDefaultValues(); bean.name="original node"; bean.serverAddress="example.invalid"; bean.serverPort=1080;
+            node.setSocksBean(bean); db.proxyDao().insert(Collections.singletonList(node));
+            RemoteRuleSetEntity set = entity(1,"first"); set.setEnabled(false); db.remoteRuleSetsDao().insert(set);
+            File cache = new File(application.getFilesDir(),"remote-rule-sets/1.source"); cache.getParentFile().mkdirs();
+            Files.write(cache.toPath(),"previous cache".getBytes());
+            io.nekohasekai.sagernet.database.preference.KeyValuePair value = new io.nekohasekai.sagernet.database.preference.KeyValuePair("fixture");
+            value.put("before"); publicDb.keyValuePairDao().put(value);
+            io.nekohasekai.sagernet.ui.BackupFragment backup = new io.nekohasekai.sagernet.ui.BackupFragment();
+            old.setName("after"); db.rulesDao().updateRule(old);
+            JSONObject incoming = new JSONObject(backup.doBackup(true,true,true));
+            incoming.put("profiles",new JSONArray());
+            old.setName("before"); db.rulesDao().updateRule(old);
+            JSONArray settings = incoming.getJSONArray("settings");
+            settings.put(settings.get(0)); // Valid parcels; duplicate key fails after all other writes.
+            try { backup.finishImport(incoming,true,true,true); fail("duplicate setting"); }
+            catch (android.database.sqlite.SQLiteConstraintException expected) { }
+            assertEquals("before",db.rulesDao().getById(42).getName());
+            assertEquals("original node",db.proxyDao().getById(11).getSocksBean().name);
+            assertEquals("original group",db.groupDao().getById(7).getName());
+            assertEquals(set,db.remoteRuleSetsDao().get(1));
+            assertEquals("before",publicDb.keyValuePairDao().get("fixture").getString());
+            assertEquals("previous cache",readText(cache.toPath()));
+            incoming.getJSONArray("settings").remove(settings.length()-1);
+            incoming.put("groups",new JSONArray().put("not a parcel"));
+            try { backup.finishImport(incoming,true,true,true); fail("invalid groups"); }
+            catch (Exception expected) { }
+            assertEquals("before",db.rulesDao().getById(42).getName());
+            assertEquals("previous cache",readText(cache.toPath()));
+            incoming.put("groups",new JSONArray());
+            backup.finishImport(incoming,true,true,true);
+            assertEquals("after",db.rulesDao().getById(42).getName());
+        } finally { db.close(); publicDb.close(); }
+    }
+
+    @Test public void redirectsAreRejectedBeforeContactingTheTarget() throws Exception {
+        java.net.ServerSocket target = new java.net.ServerSocket(0,10,java.net.InetAddress.getByName("127.0.0.1"));
+        target.setSoTimeout(300);
+        java.net.ServerSocket source = new java.net.ServerSocket(0,10,java.net.InetAddress.getByName("127.0.0.1"));
+        AtomicReference<Throwable> serverFailure = new AtomicReference<>();
+        Thread reply = new Thread(() -> {
+            try (java.net.Socket socket = source.accept()) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                while (!reader.readLine().isEmpty()) { }
+                socket.getOutputStream().write(("HTTP/1.1 302 Found\r\nLocation: http://127.0.0.1:"+target.getLocalPort()+"/private\r\nContent-Length: 0\r\nConnection: close\r\n\r\n").getBytes());
+                socket.getOutputStream().flush();
+            } catch (Throwable e) { serverFailure.set(e); }
+        });
+        reply.start();
+        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder().proxy(java.net.Proxy.NO_PROXY).callTimeout(3,TimeUnit.SECONDS).build();
+        File cache = Files.createTempDirectory("redirect-cache").resolve("1.source").toFile();
+        Files.write(cache.toPath(),"old".getBytes());
+        try {
+            try { RemoteRuleSetDownload.INSTANCE.fetch(client,"http://127.0.0.1:"+source.getLocalPort()+"/rules",cache,
+                file -> { throw new AssertionError("redirect must not be validated"); },
+                (from,to) -> { throw new AssertionError("redirect must not replace cache"); }); fail("redirect"); }
+            catch (Exception expected) { assertTrue(expected instanceof RemoteRuleSetManager.DownloadFailure); assertEquals("HTTP 302",expected.getMessage()); }
+            try (java.net.Socket ignored = target.accept()) { fail("redirect target contacted"); }
+            catch (java.net.SocketTimeoutException expected) { }
+            reply.join(3000); assertFalse(reply.isAlive()); assertNull(serverFailure.get());
+            assertEquals("old",readText(cache.toPath()));
+        } finally {
+            source.close(); target.close(); reply.join(3000);
+            client.connectionPool().evictAll(); client.dispatcher().executorService().shutdownNow();
+        }
     }
 
     @Test public void atomicReplacementKeepsPreviousCacheOnEveryFailure() throws Exception {

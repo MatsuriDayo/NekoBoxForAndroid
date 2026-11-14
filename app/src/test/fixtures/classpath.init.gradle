@@ -1,0 +1,17 @@
+allprojects { p ->
+    p.afterEvaluate {
+        if (p.path == ':app') {
+            p.tasks.register('writeFixtureClasspath') {
+                dependsOn 'compileOssDebugJavaWithJavac'
+                doLast {
+                    def output = new File(p.buildDir, 'fixture-classpath.txt')
+                    output.parentFile.mkdirs()
+                    def artifacts = p.configurations.ossDebugCompileClasspath.incoming.artifactView {
+                        attributes.attribute(org.gradle.api.attributes.Attribute.of('artifactType', String), 'android-classes-jar')
+                    }
+                    output.text = artifacts.files.collect { it.absolutePath }.join('\n')
+                }
+            }
+        }
+    }
+}

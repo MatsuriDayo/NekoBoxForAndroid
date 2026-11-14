@@ -7,6 +7,7 @@ import android.system.Os
 import androidx.work.*
 import androidx.work.multiprocess.RemoteWorkManager
 import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.ktx.Logs
 import libcore.Libcore
 import moe.matsuri.nb4a.SingBoxOptions.RuleSet
 import okhttp3.OkHttpClient
@@ -51,6 +52,11 @@ object RemoteRuleSetManager {
         val old = if (value.id == 0L) null else dao.get(value.id) ?: error("Rule-set no longer exists")
         require(dao.all().none { it.id != value.id && it.tag == value.tag }) { "Duplicate rule-set tag" }
         if (old != null && old.tag != value.tag) ensureUnreferenced(old.tag)
+        if (!value.enabled) {
+            require(SagerDatabase.rulesDao.enabledRules().none { value.tag in RemoteRuleSetStore.tags(it.remoteRuleSetTags) }) {
+                "Rule-set is used by an enabled route; disable the route first"
+            }
+        }
         SagerDatabase.instance.runInTransaction {
             if (old == null) value.id = dao.insert(value) else dao.update(value)
         }
@@ -133,7 +139,7 @@ object RemoteRuleSetManager {
         val client = OkHttpClient.Builder().proxy(Proxy.NO_PROXY)
             .socketFactory(network.socketFactory).dns { network.getAllByName(it).toList() }
             .connectTimeout(20, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
-            .callTimeout(90, TimeUnit.SECONDS).followSslRedirects(false).build()
+            .callTimeout(90, TimeUnit.SECONDS).followRedirects(false).followSslRedirects(false).build()
         try {
             RemoteRuleSetDownload.fetch(client, e.url, cache(e), { candidate -> validateContent(e, candidate) }) { from, to ->
                 locked {
@@ -160,23 +166,41 @@ object RemoteRuleSetManager {
     }
 
     fun config(rules: List<RuleEntity>): List<RuleSet> = locked {
-        val entities = dao.all()
-        RemoteRuleSetStore.validateReferences(entities, rules)
-        entities.filter { it.enabled }.map { e ->
+        RemoteRuleSetStore.required(dao.all(), rules).map { e ->
             require(cache(e).isFile) { "Rule-set ${e.tag} has no valid cache; update it first" }
             RuleSet().apply { type = "local"; tag = e.tag; format = e.format; path = cache(e).absolutePath }
         }
     }
 
-    fun restore(entities: List<RemoteRuleSetEntity>) = locked {
+    fun saveRoute(rule: RuleEntity, insert: Boolean) = locked {
+        RemoteRuleSetStore.required(dao.all(), listOf(rule))
+        if (insert) {
+            rule.userOrder = SagerDatabase.rulesDao.nextOrder() ?: 1
+            rule.id = SagerDatabase.rulesDao.createRule(rule)
+        } else {
+            SagerDatabase.rulesDao.updateRule(rule)
+        }
+    }
+
+    fun restore(entities: List<RemoteRuleSetEntity>) = restore(entities) {}
+
+    fun restore(entities: List<RemoteRuleSetEntity>, replaceDatabase: () -> Unit) = locked {
         val previous = dao.all()
-        SagerDatabase.instance.runInTransaction { dao.reset(); dao.insertAll(entities) }
+        SagerDatabase.instance.runInTransaction {
+            dao.reset()
+            dao.insertAll(entities)
+            replaceDatabase()
+        }
+        // Files and WorkManager must only change after the database transaction commits.
         previous.forEach { e ->
-            RemoteWorkManager.getInstance(SagerNet.application).cancelUniqueWork("rule-set-${e.id}")
+            runCatching { RemoteWorkManager.getInstance(SagerNet.application).cancelUniqueWork("rule-set-${e.id}") }
+                .onFailure { Logs.w(it) }
             listOf("source", "binary").forEach { File(root, "${e.id}.$it").delete() }
             errors.remove(e.id)
         }
-        entities.forEach { schedule(it, ExistingWorkPolicy.REPLACE, 0) }
+        entities.forEach { e ->
+            runCatching { schedule(e, ExistingWorkPolicy.REPLACE, 0) }.onFailure { Logs.w(it) }
+        }
     }
 
     class DownloadFailure(message: String) : Exception(message)

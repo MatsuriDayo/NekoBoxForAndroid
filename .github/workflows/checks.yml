@@ -1,0 +1,63 @@
+name: Regression checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.5'
+          cache-dependency-path: libcore/go.sum
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install Android toolchain
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.1' 'ndk;25.0.8775105'
+      - name: Build libcore from verified sources
+        run: ./run lib core
+      - name: Prepare Geo assets
+        run: ./run init action gradle
+      - name: Android JVM regressions and compile classpath
+        run: |
+          ./gradlew -I app/src/test/phase2.init.gradle -I app/src/test/fixtures/classpath.init.gradle :app:testOssDebugUnitTest :app:writeFixtureClasspath
+      - name: Generate actual ConfigBuilder fixtures
+        run: |
+          python3 app/src/test/fixtures/legacy_geo_fixture.py \
+            --repo "$PWD" --classpath-file app/build/fixture-classpath.txt \
+            --android-jar "$ANDROID_HOME/platforms/android-35/android.jar" \
+            --jdk "$JAVA_HOME" --output "$RUNNER_TEMP/neko-fixtures"
+      - name: Go core, DNS callbacks, Geo and generated config regressions
+        run: |
+          mkdir -p "$RUNNER_TEMP/neko-geo"
+          xz -dc app/src/main/assets/sing-box/geoip.db.xz > "$RUNNER_TEMP/neko-geo/geoip.db"
+          xz -dc app/src/main/assets/sing-box/geosite.db.xz > "$RUNNER_TEMP/neko-geo/geosite.db"
+          export NEKO_GEO_ASSETS="$RUNNER_TEMP/neko-geo"
+          export NEKO_CONFIG_FIXTURES="$RUNNER_TEMP/neko-fixtures/config-fixture/configs"
+          export NEKO_REMOTE_CONFIG_FIXTURES="$RUNNER_TEMP/neko-fixtures/config-fixture/remotes/configs"
+          export NEKO_LEGACY_GEO_FIXTURES="$RUNNER_TEMP/neko-fixtures/config-fixture/geo-configs"
+          bash buildScript/test/core.sh
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-results
+          path: |
+            app/build/reports/tests/
+            app/build/test-results/
+            ${{ runner.temp }}/neko-fixtures/*.log

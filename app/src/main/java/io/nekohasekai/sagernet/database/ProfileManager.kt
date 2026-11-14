@@ -154,8 +154,7 @@ object ProfileManager {
     }
 
     suspend fun createRule(rule: RuleEntity, post: Boolean = true): RuleEntity {
-        rule.userOrder = SagerDatabase.rulesDao.nextOrder() ?: 1
-        rule.id = SagerDatabase.rulesDao.createRule(rule)
+        RemoteRuleSetManager.saveRoute(rule, insert = true)
         if (post) {
             ruleIterator { onAdd(rule) }
         }
@@ -163,7 +162,7 @@ object ProfileManager {
     }
 
     suspend fun updateRule(rule: RuleEntity) {
-        SagerDatabase.rulesDao.updateRule(rule)
+        RemoteRuleSetManager.saveRoute(rule, insert = false)
         ruleIterator { onUpdated(rule) }
     }
 

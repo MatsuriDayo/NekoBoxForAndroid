@@ -2,6 +2,9 @@
 <data-extraction-rules xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="FullBackupContent">
     <cloud-backup>
+        <include domain="file" path="remote-rule-sets/" />
+        <exclude domain="file" path="remote-rule-sets/.lock" />
+        <exclude domain="file" path="remote-rule-sets/.download.lock" />
         <include
             domain="database"
             path="sager_net.db" />
@@ -10,6 +13,9 @@
             path="configuration.db" />
     </cloud-backup>
     <device-transfer>
+        <include domain="file" path="remote-rule-sets/" />
+        <exclude domain="file" path="remote-rule-sets/.lock" />
+        <exclude domain="file" path="remote-rule-sets/.download.lock" />
         <include
             domain="database"
             path="sager_net.db" />

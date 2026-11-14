@@ -32,6 +32,15 @@ object RemoteRuleSetStore {
         } }
     }
 
+    /** Only subscriptions used by enabled routes are required to start the proxy. */
+    fun required(entities: List<RemoteRuleSetEntity>, rules: List<RuleEntity>): List<RemoteRuleSetEntity> {
+        val active = rules.filter { it.enabled }
+        val referenced = active.flatMap { tags(it.remoteRuleSetTags) }.toSet()
+        val required = entities.filter { it.tag in referenced }
+        validateReferences(required, active)
+        return required
+    }
+
     fun export(entities: List<RemoteRuleSetEntity>): JSONArray = JSONArray().apply {
         entities.forEach { e -> put(JSONObject().apply {
             put("id", e.id); put("name", e.name); put("tag", e.tag); put("url", e.url)

@@ -558,6 +558,9 @@ fun buildConfig(
                     return DNSRule_DefaultOptions().apply {
                         if (uidList.isNotEmpty()) user_id = uidList
                         domainList?.let { makeSingBoxRule(it) }
+                        if (remoteTags.isNotEmpty()) {
+                            rule_set = (rule_set.orEmpty() + remoteTags).distinct()
+                        }
                     }
                 }
 

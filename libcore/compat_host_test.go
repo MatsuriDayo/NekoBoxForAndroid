@@ -139,6 +139,41 @@ func TestGeoSiteCompatibilityMatches(t *testing.T) {
 	}
 }
 
+func TestGeoSiteLoadsCloseTheirFiles(t *testing.T) {
+	if _, err := os.Stat("/proc/self/fd"); err != nil {
+		t.Skip("requires Linux file descriptor inspection")
+	}
+	previous := externalAssetsPath
+	externalAssetsPath = t.TempDir()
+	defer func() { externalAssetsPath = previous }()
+	var data bytes.Buffer
+	if err := geosites.Write(&data, map[string][]geosites.Item{"fixture": {{Type: geosites.RuleTypeDomain, Value: "example.org"}}}); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(externalAssetsPath, "geosite.db")
+	if err := os.WriteFile(path, data.Bytes(), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for range 64 {
+		if _, err := geoSiteHeadlessRules("fixture"); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := geoSiteHeadlessRules("missing"); err == nil {
+			t.Fatal("missing code should fail")
+		}
+	}
+	entries, err := os.ReadDir("/proc/self/fd")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		target, _ := os.Readlink(filepath.Join("/proc/self/fd", entry.Name()))
+		if target == path {
+			t.Fatalf("GeoSite file descriptor was leaked: %s", entry.Name())
+		}
+	}
+}
+
 func testBox(t *testing.T, config string) *BoxInstance {
 	t.Helper()
 	b, err := NewSingBoxInstance(config, nil)

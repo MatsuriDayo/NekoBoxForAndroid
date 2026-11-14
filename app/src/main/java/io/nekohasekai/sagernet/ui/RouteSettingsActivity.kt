@@ -118,7 +118,7 @@ class RouteSettingsActivity(
         val sets = SagerDatabase.remoteRuleSetsDao.all()
         val selection = findPreference<MultiSelectListPreference>("routeRemoteRuleSets")!!
         val selected = DataStore.profileCacheStore.getStringSet("routeRemoteRuleSets", mutableSetOf())!!
-        val tags = (sets.map { it.tag } + selected).distinct()
+        val tags = (sets.filter { it.enabled }.map { it.tag } + selected).distinct()
         selection.entryValues = tags.toTypedArray()
         selection.entries = tags.map { tag -> sets.find { it.tag == tag }?.let { "${it.name} ($tag)" } ?: tag }.toTypedArray()
         selection.summaryProvider = Preference.SummaryProvider<MultiSelectListPreference> { it.values.sorted().joinToString(", ") }
@@ -276,22 +276,28 @@ class RouteSettingsActivity(
             return
         }
 
-        val editingId = DataStore.editingId
-        if (editingId == 0L) {
-            if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
-                setResult(RESULT_OK, Intent())
-            }
+        try {
+            val editingId = DataStore.editingId
+            if (editingId == 0L) {
+                if (intent.hasExtra(EXTRA_PACKAGE_NAME)) {
+                    setResult(RESULT_OK, Intent())
+                }
 
-            ProfileManager.createRule(RuleEntity().apply { serialize() })
-        } else {
-            val entity = SagerDatabase.rulesDao.getById(DataStore.editingId)
-            if (entity == null) {
-                finish()
-                return
+                ProfileManager.createRule(RuleEntity().apply { serialize() })
+            } else {
+                val entity = SagerDatabase.rulesDao.getById(DataStore.editingId)
+                if (entity == null) {
+                    finish()
+                    return
+                }
+                ProfileManager.updateRule(entity.apply { serialize() })
             }
-            ProfileManager.updateRule(entity.apply { serialize() })
+            finish()
+        } catch (e: IllegalArgumentException) {
+            onMainDispatcher { Toast.makeText(this@RouteSettingsActivity, e.message, Toast.LENGTH_LONG).show() }
+        } catch (e: IllegalStateException) {
+            onMainDispatcher { Toast.makeText(this@RouteSettingsActivity, e.message, Toast.LENGTH_LONG).show() }
         }
-        finish()
 
     }
 

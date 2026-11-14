@@ -317,7 +317,11 @@ class BaseService {
             val profile = SagerDatabase.proxyDao.getById(DataStore.selectedProxy)
             this as Context
             if (profile == null) { // gracefully shutdown: https://stackoverflow.com/q/47337857/2245107
-                data.notification = createNotification("")
+                try {
+                    data.notification = createNotification("")
+                } catch (e: Exception) {
+                    Logs.w(e)
+                }
                 stopRunner(false, getString(R.string.profile_empty))
                 return Service.START_NOT_STICKY
             }

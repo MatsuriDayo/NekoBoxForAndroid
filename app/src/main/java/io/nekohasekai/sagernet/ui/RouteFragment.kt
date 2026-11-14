@@ -288,13 +288,22 @@ class RouteFragment : ToolbarFragment(R.layout.layout_route), Toolbar.OnMenuItem
                 itemView.setOnClickListener {
                     enableSwitch.performClick()
                 }
+                enableSwitch.setOnCheckedChangeListener(null)
+                enableSwitch.isEnabled = true
                 enableSwitch.isChecked = rule.enabled
                 enableSwitch.setOnCheckedChangeListener { _, isChecked ->
+                    val original = rule
+                    val changed = original.copy(enabled = isChecked)
+                    enableSwitch.isEnabled = false
                     runOnDefaultDispatcher {
-                        rule.enabled = isChecked
-                        SagerDatabase.rulesDao.updateRule(rule)
+                        val failure = runCatching { ProfileManager.updateRule(changed) }.exceptionOrNull()
                         onMainDispatcher {
-                            needReload()
+                            if (rule.id == changed.id) bind(if (failure == null) changed else original)
+                            if (failure != null) {
+                                snackbar(failure.readableMessage).show()
+                            } else {
+                                needReload()
+                            }
                         }
                     }
                 }

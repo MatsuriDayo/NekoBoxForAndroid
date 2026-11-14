@@ -288,62 +288,67 @@ class BackupFragment : NamedFragment(R.layout.layout_backup) {
         } catch (_: Exception) {
             throw IllegalArgumentException("Invalid remote rule-set backup data")
         }
-        if (profile && content.has("profiles")) {
-            val profiles = mutableListOf<ProxyEntity>()
-            val jsonProfiles = content.getJSONArray("profiles")
-            for (i in 0 until jsonProfiles.length()) {
-                val data = Util.b64Decode(jsonProfiles[i] as String)
+        fun <T> parse(name: String, create: (Parcel) -> T): List<T> {
+            val values = content.getJSONArray(name)
+            return (0 until values.length()).map { index ->
+                val data = Util.b64Decode(values.getString(index))
                 val parcel = Parcel.obtain()
-                parcel.unmarshall(data, 0, data.size)
-                parcel.setDataPosition(0)
-                profiles.add(ProxyEntity.CREATOR.createFromParcel(parcel))
-                parcel.recycle()
+                try {
+                    parcel.unmarshall(data, 0, data.size)
+                    parcel.setDataPosition(0)
+                    create(parcel)
+                } finally {
+                    parcel.recycle()
+                }
             }
-            SagerDatabase.proxyDao.reset()
-            SagerDatabase.proxyDao.insert(profiles)
+        }
 
-            val groups = mutableListOf<ProxyGroup>()
-            val jsonGroups = content.getJSONArray("groups")
-            for (i in 0 until jsonGroups.length()) {
-                val data = Util.b64Decode(jsonGroups[i] as String)
-                val parcel = Parcel.obtain()
-                parcel.unmarshall(data, 0, data.size)
-                parcel.setDataPosition(0)
-                groups.add(ProxyGroup.CREATOR.createFromParcel(parcel))
-                parcel.recycle()
-            }
-            SagerDatabase.groupDao.reset()
-            SagerDatabase.groupDao.insert(groups)
-        }
-        if (rule && content.has("rules")) {
-            val rules = mutableListOf<RuleEntity>()
-            val jsonRules = content.getJSONArray("rules")
-            for (i in 0 until jsonRules.length()) {
-                val data = Util.b64Decode(jsonRules[i] as String)
-                val parcel = Parcel.obtain()
-                parcel.unmarshall(data, 0, data.size)
-                parcel.setDataPosition(0)
-                rules.add(ParcelizeBridge.createRule(parcel).apply { remoteRuleSetTags = parsedReferences[id.toString()] ?: "" })
-                parcel.recycle()
-            }
+        // Parse every selected section before changing either database or any cache.
+        val profiles = if (profile && content.has("profiles")) parse("profiles", ProxyEntity.CREATOR::createFromParcel) else null
+        val groups = if (profiles != null) parse("groups", ProxyGroup.CREATOR::createFromParcel) else null
+        val rules = if (rule && content.has("rules")) parse("rules") { parcel ->
+            ParcelizeBridge.createRule(parcel).apply { remoteRuleSetTags = parsedReferences[id.toString()] ?: "" }
+        } else null
+        val settings = if (setting && content.has("settings")) parse("settings", KeyValuePair.CREATOR::createFromParcel) else null
+        if (rules != null) {
             require(parsedReferences.keys.all { id -> rules.any { it.id.toString() == id } }) { "Missing referenced route" }
-            RemoteRuleSetManager.restore(remoteSets)
-            SagerDatabase.rulesDao.reset()
-            SagerDatabase.rulesDao.insert(rules)
+            RemoteRuleSetStore.validateReferences(remoteSets, rules)
         }
-        if (setting && content.has("settings")) {
-            val settings = mutableListOf<KeyValuePair>()
-            val jsonSettings = content.getJSONArray("settings")
-            for (i in 0 until jsonSettings.length()) {
-                val data = Util.b64Decode(jsonSettings[i] as String)
-                val parcel = Parcel.obtain()
-                parcel.unmarshall(data, 0, data.size)
-                parcel.setDataPosition(0)
-                settings.add(KeyValuePair.CREATOR.createFromParcel(parcel))
-                parcel.recycle()
+
+        val database = SagerDatabase.instance
+        val sqlite = database.openHelper.writableDatabase
+        // Both Room databases use rollback journals. ATTACH makes their replacement one
+        // SQLite transaction, including a rollback if inserting settings fails.
+        if (settings != null) {
+            val settingsPath = PublicDatabase.instance.openHelper.writableDatabase.path
+            sqlite.execSQL("ATTACH DATABASE ? AS imported_settings", arrayOf(settingsPath))
+        }
+        try {
+            val replace: () -> Unit = {
+                if (profiles != null) {
+                    SagerDatabase.proxyDao.reset()
+                    SagerDatabase.proxyDao.insert(profiles)
+                    SagerDatabase.groupDao.reset()
+                    SagerDatabase.groupDao.insert(groups!!)
+                }
+                if (rules != null) {
+                    SagerDatabase.rulesDao.reset()
+                    SagerDatabase.rulesDao.insert(rules)
+                }
+                if (settings != null) {
+                    sqlite.execSQL("DELETE FROM imported_settings.KeyValuePair")
+                    settings.forEach { value ->
+                        sqlite.execSQL(
+                            "INSERT INTO imported_settings.KeyValuePair (`key`, valueType, value) VALUES (?, ?, ?)",
+                            arrayOf(value.key, value.valueType, value.value)
+                        )
+                    }
+                }
             }
-            PublicDatabase.kvPairDao.reset()
-            PublicDatabase.kvPairDao.insert(settings)
+            if (rules != null) RemoteRuleSetManager.restore(remoteSets, replace)
+            else database.runInTransaction { replace() }
+        } finally {
+            if (settings != null) sqlite.execSQL("DETACH DATABASE imported_settings")
         }
     }
 
