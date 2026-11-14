@@ -162,7 +162,8 @@ object RemoteRuleSetManager {
     fun config(rules: List<RuleEntity>): List<RuleSet> = locked {
         val entities = dao.all()
         RemoteRuleSetStore.validateReferences(entities, rules)
-        entities.filter { it.enabled }.map { e ->
+        val referencedTags = rules.flatMap { RemoteRuleSetStore.tags(it.remoteRuleSetTags) }.toSet()
+        entities.filter { it.enabled && it.tag in referencedTags }.map { e ->
             require(cache(e).isFile) { "Rule-set ${e.tag} has no valid cache; update it first" }
             RuleSet().apply { type = "local"; tag = e.tag; format = e.format; path = cache(e).absolutePath }
         }
