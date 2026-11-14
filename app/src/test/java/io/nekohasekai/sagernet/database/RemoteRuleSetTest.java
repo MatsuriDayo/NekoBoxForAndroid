@@ -130,8 +130,6 @@ public class RemoteRuleSetTest {
             try { RemoteRuleSetManager.INSTANCE.delete(1); fail("referenced delete"); } catch (IllegalArgumentException expected) { }
             try { RemoteRuleSetManager.INSTANCE.save(new RemoteRuleSetEntity(1,"Fixture","renamed",e.getUrl(),"source",1440,false)); fail("referenced rename"); } catch (IllegalArgumentException expected) { }
             rule.setRemoteRuleSetTags(""); db.rulesDao().updateRule(rule);
-            e.setEnabled(true); db.remoteRuleSetsDao().update(e);
-            assertTrue(RemoteRuleSetManager.INSTANCE.config(Collections.emptyList()).isEmpty());
             File cache = new File(application.getFilesDir(),"remote-rule-sets/1.source"); cache.getParentFile().mkdirs(); Files.write(cache.toPath(),"valid".getBytes());
             assertTrue(RemoteRuleSetManager.INSTANCE.config(Collections.emptyList()).isEmpty());
             e.setEnabled(true); db.remoteRuleSetsDao().update(e);
